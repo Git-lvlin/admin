@@ -373,7 +373,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     11: (
       <>
         {
-          data?.length !== 0 &&
+          curData.length !== 0 ?
           <>
             <Title level={5}>当前设备管理费信息：</Title>
             <Divider style={{margin: '-5px 0 10px 0'}}/>
@@ -390,11 +390,13 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
               <div>支付单号：{curData?.[0]?.payOrderSn}</div>
             </div>
             <Divider style={{margin: '10px 0 24px 0'}}/>
-            <Title level={5}>历史管理费信息：</Title>
-            <Divider style={{margin: '-5px 0 10px 0'}}/>
-          </>
+          </>: 
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
         }
+        <Title level={5}>历史管理费信息：</Title>
+        <Divider style={{margin: '-5px 0 10px 0'}}/>
         {
+          data.length !== 0 ?
           data?.map((item, idx) => (
             <div key={idx}>
               <div className={styles.cardList}>
@@ -411,7 +413,8 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
             </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>
             </div>
-          )) 
+          )):
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>
         }
       </>
     ),
@@ -446,7 +449,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     >
       <Spin delay={500} spinning={load}>
         {
-          data?.length === 0 &&
+          (data?.length === 0 && curData.length === 0) &&
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         }
         {
@@ -456,11 +459,12 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
           </div>
         }
         {
+          (data?.length !== 0 || curData.length !== 0) &&
           content[type]
         }
       </Spin>
       {
-        data?.length !== 0 &&
+        (data?.length !== 0) &&
         <div className={styles.pagination}>
           <Pagination
             total={pageTotal}

@@ -8,6 +8,7 @@ import type { DivideProps } from "./data"
 
 import styles from "./styles.less"
 import DealAmount from "./deal-amount"
+import DealAmounts from "./deal-amounts"
 
 const Divide: FC<DivideProps> = ({visible, setVisible, data}) => {
 
@@ -56,10 +57,10 @@ const Divide: FC<DivideProps> = ({visible, setVisible, data}) => {
           <DealAmount data={data} type={2}/>
         </ProCard.TabPane>
         <ProCard.TabPane key="3" tab="运营商管理费套餐">
-          <DealAmount data={data} type={3}/>
+          <DealAmounts data={data} type={3}/>
         </ProCard.TabPane>
         <ProCard.TabPane key="4" tab="设备启动费">
-          <DealAmount data={data} type={4}/>
+          <DealAmounts data={data} type={4}/>
         </ProCard.TabPane>
       </ProCard>
     </ModalForm>
