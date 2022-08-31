@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
 
-export const userCityCount = async (params = {}, options = {}) => {
-    const res = await request('/auth/commonService/agency/userCity/count', {
+export const agencyCityCount = async (params = {}, options = {}) => {
+    const res = await request('/auth/java-admin/report/config/agencyCityCount', {
         method: 'POST',
         data:params,
         ...options
@@ -15,9 +15,9 @@ export const userCityCount = async (params = {}, options = {}) => {
     }
 }
 
-export const userCityLists = async (params = {}, options = {}) => {
+export const agencyCityList = async (params = {}, options = {}) => {
     const { current, pageSize, ...rest } = params;
-    const res = await request('/auth/commonService/agency/userCity/lists', {
+    const res = await request('/auth/java-admin/report/config/agencyCityList', {
       method: 'POST',
       data: {
         page: current,

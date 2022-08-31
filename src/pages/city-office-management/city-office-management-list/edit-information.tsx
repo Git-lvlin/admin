@@ -46,7 +46,7 @@ export default (props) => {
     accountDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          name:msgDetail?.name,
+          name:msgDetail?.agencyName,
           ...res.data
         })
       }

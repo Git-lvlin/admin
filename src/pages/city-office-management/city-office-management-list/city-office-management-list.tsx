@@ -8,7 +8,7 @@ import ResetPasswords from './reset-passwords'
 import StoreInformation from './store-information'
 import { Descriptions } from 'antd';
 
-import { userCityLists,userCityCount } from "@/services/city-office-management/city-office-management-list"
+import { agencyCityList,agencyCityCount } from "@/services/city-office-management/city-office-management-list"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -27,12 +27,12 @@ export default function TransactionData () {
     },
     {
       title: '办事处名称',
-      dataIndex: 'name',
+      dataIndex: 'agencyName',
       align: 'center',
     },
     {
       title: '登录账号',
-      dataIndex: 'userName',
+      dataIndex: 'accountName',
       align: 'center',
       hideInSearch: true,
     },
@@ -50,7 +50,7 @@ export default function TransactionData () {
     },
     {
       title: 'VIP店主数',
-      dataIndex: 'vipStoreNums',
+      dataIndex: 'vipStoreNum',
       align: 'center',
       render: (_,data)=>{
         if(_){
@@ -63,7 +63,7 @@ export default function TransactionData () {
     },
     {
       title: '普通店主数',
-      dataIndex: 'commonStoreNums',
+      dataIndex: 'commonStoreNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -75,8 +75,8 @@ export default function TransactionData () {
       }
     },
     {
-      title: '销售氢原子数',
-      dataIndex: 'sellMachineNum',
+      title: '全款销售氢原子数',
+      dataIndex: 'salesDeviceNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -88,8 +88,8 @@ export default function TransactionData () {
       }
     },
     {
-      title: '租赁氢原子数',
-      dataIndex: 'rentMachineNum',
+      title: '托管氢原子数',
+      dataIndex: 'hostingDeviceNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -101,8 +101,8 @@ export default function TransactionData () {
       }
     },
     {
-      title: '托管氢原子数',
-      dataIndex: 'rentMachineNum',
+      title: '运营氢原子数',
+      dataIndex: 'operateDeviceNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -114,8 +114,8 @@ export default function TransactionData () {
       }
     },
     {
-      title: '运营氢原子数',
-      dataIndex: 'rentMachineNum',
+      title: '投资商总人数',
+      dataIndex: 'hostingUserNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -127,26 +127,13 @@ export default function TransactionData () {
       }
     },
     {
-      title: '投资商总人数',
-      dataIndex: 'rentMachineNum',
+      title: '运营商总人数',
+      dataIndex: 'operateUserNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(7)}}>{_}</a>
-        }else{
-          return _
-        }
-      }
-    },
-    {
-      title: '运营商总人数',
-      dataIndex: 'rentMachineNum',
-      align: 'center',
-      hideInSearch: true,
-      render: (_,data)=>{
-        if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(8)}}>{_}</a>
         }else{
           return _
         }
@@ -164,9 +151,9 @@ export default function TransactionData () {
     },
   ]
   useEffect(() => {
-    userCityCount({}).then(res=>{
+    agencyCityCount({}).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data[0])
       }
     })
 
@@ -177,7 +164,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="市办事处总数量">{detailList?.totalNum}  </Descriptions.Item>
         <Descriptions.Item  label="VIP店主数（家）">{detailList?.vipStoreNum}  </Descriptions.Item>
         <Descriptions.Item  label="普通店主数（家）">{detailList?.commonStoreNum}  </Descriptions.Item>
-        <Descriptions.Item  label="销售氢原子（台）">{detailList?.allDeviceNum}  </Descriptions.Item>
+        <Descriptions.Item  label="销售氢原子（台）">{detailList?.salesDeviceNum}  </Descriptions.Item>
         <Descriptions.Item  label="托管氢原子（台）">{detailList?.hostingDeviceNum}  </Descriptions.Item>
         <Descriptions.Item  label="运营氢原子（台）">{detailList?.operateNum}  </Descriptions.Item>
         <Descriptions.Item  label="投资商总人数">{detailList?.hostingUserNum}  </Descriptions.Item>
@@ -187,7 +174,7 @@ export default function TransactionData () {
         headerTitle='列表'
         rowKey="agencyId"
         columns={tableColumns}
-        request={userCityLists}
+        request={agencyCityList}
         columnEmptyText={false}
         actionRef={form}
         pagination={{

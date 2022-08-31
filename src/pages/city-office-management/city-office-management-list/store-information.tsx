@@ -34,16 +34,14 @@ export default (props) => {
       case 2:
         return '普通店主数'
       case 3:
-        return '销售氢原子数'
+        return '全款销售氢原子数'
       case 4:
-        return '租赁氢原子数'
-      case 5:
         return '托管氢原子数'
-      case 6:
+      case 5:
         return '运营氢原子数'
-      case 7:
+      case 6:
         return '投资商总人数'
-      case 8:
+      case 7:
         return '运营商总人数'
       default:
         return ''
@@ -108,7 +106,7 @@ export default (props) => {
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.name}  ${compute()}`}
+      title={`${msgDetail?.agencyName}  ${compute()}`}
       onVisibleChange={setVisible}
       visible={visible}
       width={1300}

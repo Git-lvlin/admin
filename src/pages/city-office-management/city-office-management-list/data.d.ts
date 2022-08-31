@@ -7,6 +7,7 @@ export type DescriptionsProps = {
   operateNum: string;
   hostingUserNum: string;
   operateUserNum: string;
+  salesDeviceNum: number;
 }
 
 export type TableProps = {
