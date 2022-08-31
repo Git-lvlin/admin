@@ -27,9 +27,7 @@ const WithdrawalBalanceDetails = () =>{
     },
     {
       title: '交易类型',
-      dataIndex: 'tradeType',
-      valueType: 'select',
-      valueEnum: tradeType
+      dataIndex: 'tradeTypeDesc',
     },
     {
       title: '订单号',

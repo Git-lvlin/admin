@@ -310,6 +310,7 @@ export default {
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
   'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
+  'menu.financial-management.transaction-detail-management.withdrawal-audit-management.details':'明细',
   'menu.financial-management.transaction-detail-management.show-detail':'提现详情',
   'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
