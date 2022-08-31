@@ -39,20 +39,20 @@ export default () => {
         return <span style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
-    {
-      title: '省办事处-管理奖',
-      dataIndex: 'provinceManageFee',
-      align: 'center',
-      tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
-      }
-    },
+    // {
+    //   title: '省办事处-管理奖',
+    //   dataIndex: 'provinceManageFee',
+    //   align: 'center',
+    //   tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
       title: '市办事处-管理奖',
       dataIndex: 'cityManageFee',
       align: 'center',
-      tip:'销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+      tip: '销售订单按直推人开店地址所属市办事处',
       render: (_)=>{
         return amountTransform(_,'/').toFixed(2)
       }
