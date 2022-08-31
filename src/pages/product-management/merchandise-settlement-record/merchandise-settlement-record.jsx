@@ -72,15 +72,15 @@ export default () => {
         return amountTransform(_,'/').toFixed(2)
       }
     },
-    {
-      title: '省办事处',
-      dataIndex: 'provinceManageFee',
-      align: 'center',
-      hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
-      }
-    },
+    // {
+    //   title: '省办事处',
+    //   dataIndex: 'provinceManageFee',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
       title: '市办事处',
       dataIndex: 'cityManageFee',
