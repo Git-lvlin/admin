@@ -129,7 +129,7 @@ const Operating: FC = () => {
           缴租明细
         </Menu.Item>
         {
-          e.isShowLeaseBtn === 1&&
+          (e.isShowLeaseBtn === 1 && !e.leaseTimeTip)&&
           <Menu.Item
             key="8"
             onClick={()=> {
@@ -142,9 +142,7 @@ const Operating: FC = () => {
         }
         {
           e.leaseTimeTip &&
-          <Menu.Item
-            key="9"
-          >
+          <Menu.Item key="9">
             {e.leaseTimeTip}
           </Menu.Item>
         }
@@ -215,11 +213,8 @@ const Operating: FC = () => {
       dataIndex: 'useStatus',
       valueType: 'select',
       valueEnum: {
-        0: "待绑定",
-        1: "待激活",
         2: "正常",
-        3: "已停用",
-        4: "已解绑"
+        3: "已停用"
       },
       hideInTable: true
     },

@@ -81,6 +81,12 @@ export default {
         path: '/hydrogen-atom-trusteeship/management-fee-configuration',
         component: './hydrogen-atom-trusteeship/management-fee-configuration',
         wrappers: [RouteWatcher],
+      },
+      {
+        name: 'data-report',
+        path: '/hydrogen-atom-trusteeship/data-report',
+        component: './hydrogen-atom-trusteeship/data-report',
+        wrappers: [RouteWatcher],
       }
     ]
   }
