@@ -35,24 +35,30 @@ export default function TransactionData () {
       hideInSearch: true,
       render: (_, r) => amountTransform(_,'/')
     },
+    // {
+    //   title: '推荐人是否店主',
+    //   dataIndex: 'store',
+    //   align: 'center',
+    //   valueEnum: {
+    //     false: '否',
+    //     true: '是'
+    //   },
+    //   hideInSearch: true,
+    // },
+    // {
+    //   title: '推荐人是否VIP',
+    //   dataIndex: 'vipStore',
+    //   align: 'center',
+    //   valueEnum: {
+    //     false: '否',
+    //     true: '是'
+    //   },
+    //   hideInSearch: true,
+    // },
     {
-      title: '推荐人是否店主',
-      dataIndex: 'store',
+      title: '推荐人店铺编号',
+      dataIndex: 'shopMemberAccount',
       align: 'center',
-      valueEnum: {
-        false: '否',
-        true: '是'
-      },
-      hideInSearch: true,
-    },
-    {
-      title: '推荐人是否VIP',
-      dataIndex: 'vipStore',
-      align: 'center',
-      valueEnum: {
-        false: '否',
-        true: '是'
-      },
       hideInSearch: true,
     },
     {
