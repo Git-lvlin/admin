@@ -407,6 +407,7 @@ export default {
   'menu.hydrogen-atom-trusteeship.order-management': '订单管理',
   'menu.hydrogen-atom-trusteeship.divided-configuration': '分成配置',
   'menu.hydrogen-atom-trusteeship.management-fee-configuration': '托管管理费配置',
+  'menu.hydrogen-atom-trusteeship.data-report': '数据报表',
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',

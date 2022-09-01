@@ -85,8 +85,8 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
 
 
   const submit = (e: ListProps) => {
-    return new Promise<void>((resolve, reject) => {
-      if(e) {
+    return new Promise<void>((resolve, reject) => { 
+      if(Object.keys(e).length) {
         api?.({...e, orderId}, {showSuccess: true}).then(res => {
           if(res.code === 0) {
             callback()
@@ -97,6 +97,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         })
       } else {
         message.error('请选择社区店')
+        reject()
       }
     })
   }
@@ -110,7 +111,6 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
       onFinish={async (v: ListProps)=> {
         await submit(v)
         return true
-        
       }}
       onVisibleChange={setVisible}
       submitter={{
@@ -118,6 +118,9 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           submitText: '确认投放',
           resetText: '取消投放'
         }
+      }}
+      modalProps={{
+        destroyOnClose: true
       }}
       layout='horizontal'
       wrapperCol={{span: 14}}

@@ -74,8 +74,25 @@ const CaptureExpendsEntrance: FC<ModificationProps> = (props) => {
       <ProFormTextArea
         label='开启说明'
         name='remark'
-        rules={[{required: true}]}
         width='md'
+        fieldProps={{
+          maxLength: 50,
+          showCount: true
+        }}
+        validateFirst
+        rules={[
+          { 
+            required: true
+          },
+          () => ({
+            validator(_, value) {
+              if (value.length < 5) {
+                return Promise.reject(new Error(`请输入5-50个字符`))
+              }
+              return Promise.resolve()
+            },
+          })
+        ]}
       />
       <ProFormText
         label='当前缴费截止日'
@@ -105,10 +122,20 @@ const CaptureExpendsEntrance: FC<ModificationProps> = (props) => {
         name='duration'
         width='md'
         rules={
-          [{
-            required: true,
-            message: '请输入入口显示时长，1-1000整数'
-          }]
+          [
+            {
+              required: true,
+              message: '请输入入口显示时长，1-1000整数'
+            },
+            () => ({
+              validator(_, value) {
+                if (`${value}`.indexOf('.') !== -1) {
+                  return Promise.reject(new Error('请输入1-1000内的整数'));
+                }
+                return Promise.resolve();
+              },
+            })
+          ]
         }
         fieldProps={{
           placeholder: '请输入入口显示时长，1-1000整数',
