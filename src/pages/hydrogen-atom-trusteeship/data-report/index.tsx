@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import ProForm, { ProFormSelect, ProFormDependency, ProFormText } from "@ant-design/pro-form"
+import ProForm, { ProFormSelect, ProFormDependency } from "@ant-design/pro-form"
 import moment from "moment"
 import { Button } from "antd"
 
@@ -186,10 +186,6 @@ const DataReport: FC = () => {
           await submit(v)
         }}
       >
-        <ProFormText
-          name='11'
-          label="111"
-        />
         <ProFormSelect
           name='year'
           valueEnum={{
@@ -230,6 +226,9 @@ const DataReport: FC = () => {
         column={8}
         bordered
         layout='vertical'
+        style={{
+          background: '#fff'
+        }}
       />
     </PageContainer>
   )
