@@ -131,7 +131,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         name='store'
       >
         <AutoComplete
-          placeholder='请输入店主姓名、手机号或店铺提货点搜索'
+          placeholder='请输入店铺编号、店主姓名、手机号或店铺提货点搜索'
           style={{
             width: 300
           }}
