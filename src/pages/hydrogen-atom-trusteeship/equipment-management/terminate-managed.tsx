@@ -70,7 +70,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
       />
       <ProFormText
         name='storePhone'
-        label='设备关联运营商手机号'
+        label='设备关联运营中心手机号'
         initialValue={data?.storePhone}
         readonly
       />
@@ -182,7 +182,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
       <div className={styles.stopOption}>
         <ExclamationCircleOutlined />
         <div>
-          <div className={styles.marginTop}>终止托管后，投资人将不能继续获得消费分成，设备将立即停用，并与运营商解绑，消费者无法继续使用健康卡在此设备消费。请及时在线下将设备收回！</div>
+          <div className={styles.marginTop}>终止托管后，投资人将不能继续获得消费分成，设备将立即停用，并与运营中心解绑，消费者无法继续使用健康卡在此设备消费。请及时在线下将设备收回！</div>
           <div className={styles.red}>请与投资人核实确认，谨慎操作！</div>
         </div>
       </div>

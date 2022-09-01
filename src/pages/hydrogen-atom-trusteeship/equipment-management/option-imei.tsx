@@ -44,7 +44,7 @@ const OptionImei: FC<OptionImeiProps> = (props) => {
       wrapperCol={{ span: 20 }}
     >
       <ProFormText
-        label='机器所属运营商手机'
+        label='机器所属运营中心手机'
         initialValue={data?.storePhone}
         name='phone'
         readonly

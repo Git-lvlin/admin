@@ -62,7 +62,7 @@ const OperatorRevenueManagement = () =>{
       dataIndex: 'accountType',
       valueType: 'select',
       valueEnum: {
-        'agentCompany': '运营商',
+        'agentCompany': '运营中心',
         'platform': '平台'
       }
     },
@@ -188,7 +188,7 @@ const OperatorRevenueManagement = () =>{
           id={selectItem}
           visible={royaltyVisible}
           setVisible={setRoyaltyVisible}
-          title='运营商收益明细'
+          title='运营中心收益明细'
           type={type}
         />
       }

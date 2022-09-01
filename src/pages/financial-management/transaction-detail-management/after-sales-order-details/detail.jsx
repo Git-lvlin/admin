@@ -74,7 +74,7 @@ const Detail = ({id, setVisible, visible}) => {
         'platform': '平台',
         'member': '会员',
         'agentStore': '代发店',
-        'agentCompany': '运营商'
+        'agentCompany': '运营中心'
       }
     },
     {

@@ -58,7 +58,7 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
       />
       <ProFormText
         name='storePhone'
-        label='设备关联运营商手机号'
+        label='设备关联运营中心手机号'
         initialValue={data?.storePhone}
         readonly
       />
@@ -134,8 +134,8 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
       <div className={styles.stopOption}>
         <ExclamationCircleOutlined />
         <div>
-          <div className={styles.marginTop}>到达停止生效时间后，设备将立即停用，并与运营商解绑，运营商无法继续获得设备健康卡营收的分成，消费者也无法继续使用健康卡在此设备消费。</div>
-          <div className={styles.red}>请与运营商核时确认，谨慎操作！</div>
+          <div className={styles.marginTop}>到达停止生效时间后，设备将立即停用，并与运营中心解绑，运营中心无法继续获得设备健康卡营收的分成，消费者也无法继续使用健康卡在此设备消费。</div>
+          <div className={styles.red}>请与运营中心核时确认，谨慎操作！</div>
         </div>
       </div>
     </ModalForm>

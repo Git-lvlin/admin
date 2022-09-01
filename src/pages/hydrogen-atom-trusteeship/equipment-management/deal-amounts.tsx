@@ -62,10 +62,10 @@ const DealAmounts: FC<DealAmountProps> = ({data, type}) => {
   const options = listData.map(d => <Option key={d.orderId} value={d.orderId}>{d.storeName}{d.storePhone}（{d.activationTime}-{d.stopOperateTime}）</Option>)
 
   const title = {
-    3: `运营商手机号：${data?.storePhone}`,
+    3: `运营中心手机号：${data?.storePhone}`,
     4: (
       <>
-        <div>运营商手机号：{data?.storePhone}</div>
+        <div>运营中心手机号：{data?.storePhone}</div>
         <div>启动费累计金额：{amountTransform(amount, '/')}</div>
       </>
     ),

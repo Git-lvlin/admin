@@ -47,7 +47,7 @@ const ServiceFee = () => {
       options={false}
       pagination={false}
       search={false}
-      headerTitle='运营商培训服务费_氢原子设备资质服务费对各个角色分成'
+      headerTitle='运营中心培训服务费_氢原子设备资质服务费对各个角色分成'
       params={{type: 'serviceFee'}}
       request={getCommissionConfig}
       postData={(v: any)=>{

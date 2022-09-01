@@ -51,7 +51,7 @@ const StopOperate: FC = () => {
       hideInTable: true
     },
     {
-      title: '运营商手机号',
+      title: '运营中心手机号',
       dataIndex: 'hostingMemberPhone',
       align: 'center',
       hideInSearch: true
