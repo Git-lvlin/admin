@@ -110,7 +110,7 @@ const PackageManagementFee = () => {
         options={false}
         pagination={false}
         search={false}
-        headerTitle='运营商套餐费_氢原子设备租赁套餐管理费对各个角色分成'
+        headerTitle='运营中心套餐费_氢原子设备租赁套餐管理费对各个角色分成'
         params={{type: 'manageFee'}}
         request={getCommissionConfig}
         postData={(v: any)=>{

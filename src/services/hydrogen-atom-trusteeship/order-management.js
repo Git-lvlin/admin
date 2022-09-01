@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 代运营订单（运营商）
+// 代运营订单（运营中心）
 export const adminOrderList = async (params, options = {}) => {
   const { current = 1, pageSize = 10, ...rest } = params
   const res = await request('/auth/healthy/operateOrder/adminOrderList', {

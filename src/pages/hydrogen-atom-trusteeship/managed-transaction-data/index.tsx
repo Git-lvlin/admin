@@ -15,7 +15,7 @@ const ManagedTransactionData = () => {
         <ProCard.TabPane key="1" tab="托管购买(投资方)">
           <ManagedBuy />
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="运营商">
+        <ProCard.TabPane key="2" tab="运营中心">
           <Operator />
         </ProCard.TabPane>
       </ProCard>

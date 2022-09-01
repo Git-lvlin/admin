@@ -18,10 +18,10 @@ const DividedConfiguration: FC = () => {
         <ProCard.TabPane key="1" tab="托管购买交易款">
           <Hosting/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="运营商培训服务费">
+        <ProCard.TabPane key="2" tab="运营中心培训服务费">
           <ServiceFee/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="3" tab="运营商套餐管理费">
+        <ProCard.TabPane key="3" tab="运营中心套餐管理费">
           <PackageManagementFee/>
         </ProCard.TabPane>
       </ProCard>

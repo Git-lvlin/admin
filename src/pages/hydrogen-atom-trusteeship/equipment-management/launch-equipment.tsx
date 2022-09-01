@@ -250,7 +250,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
               <li>根据托管订单生成新的运营订单；</li>
               <li>将确认投放时间作为新运营订单的下单时间；</li>
               <li>根据托管订单单号生成新运营订单单号；</li>
-              <li>将投放的运营商社区店提货点设为运营订单的收货地址；</li>
+              <li>将投放的运营中心社区店提货点设为运营订单的收货地址；</li>
               <li>将运营订单推送给设备供应商，以便其发货；</li>
             </ol>
           </Paragraph>

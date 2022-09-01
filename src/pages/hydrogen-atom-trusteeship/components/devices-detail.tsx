@@ -327,11 +327,11 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
             <div>激活时间：{item.optTime}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>运营商姓名：{item.storeName}</div>
+            <div>运营中心姓名：{item.storeName}</div>
             <div>购买托管单号：{item.hostingOrderId}</div>
           </div>
           <div className={styles.cardListContent}>
-            <div>运营商店铺地址：{item.storeAddress}</div>
+            <div>运营中心店铺地址：{item.storeAddress}</div>
           </div>
           <Divider style={{margin: '10px 0 24px 0'}}/>
         </div>
