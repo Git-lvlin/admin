@@ -48,9 +48,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
     },
     {
       title: '交易类型',
-      dataIndex:'tradeType',
-      valueType: 'select',
-      valueEnum: tradeType,
+      dataIndex:'tradeTypeDesc',
       width: '7%',
       hideInSearch: true
     },

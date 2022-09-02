@@ -44,10 +44,10 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
   const orderInfoRender = (_) => {
     return (
       {
-        'commandSalesOrder': `￥${amountTransform(_, '/')}%`,
+        'commandSalesOrder': `￥${amountTransform(_, '*')}%`,
         'hydrogen': _,
         'hydrogenRent': _,
-        'wholesaleFresh': `￥${amountTransform(_, '/')}%`, 
+        'wholesaleFresh': `￥${amountTransform(_, '*')}%`, 
         'wholesaleSeckill': (
           <>
             <div>活动类型：{info?.activityTypeDesc}</div>

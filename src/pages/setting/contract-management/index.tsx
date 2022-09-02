@@ -5,6 +5,7 @@ import type { FC } from "react"
 
 import SupplierEntryContract from "./supplier-entry-contract"
 import HydrogenLeaseContract from "./hydrogen-lease-contract"
+import HydrogenThirdpartnarContract from "./hydrogen-thirdpartnar-contract"
 
  const ContractManagement:FC = () => {
   return (
@@ -21,9 +22,9 @@ import HydrogenLeaseContract from "./hydrogen-lease-contract"
         <ProCard.TabPane key="tab3" tab="氢原子托管合同">
           <HydrogenLeaseContract type={3}/>
         </ProCard.TabPane>
-        {/* <ProCard.TabPane key="tab4" tab="氢原子代运营合同">
-          <HydrogenLeaseContract type={2}/> 
-        </ProCard.TabPane> */}
+        <ProCard.TabPane key="tab4" tab="氢原子代运营合同">
+          <HydrogenThirdpartnarContract/> 
+        </ProCard.TabPane>
       </ProCard>
     </PageContainer>
   )

@@ -19,6 +19,7 @@ const StartUpTime:FC<StartUpTimeProps> = ({imei, pageTotal, memberId}) => {
           slot={<a>导出</a>}
           slotHistory={(e)=><a onClick={e}>···</a>}
           conditions={{occupantId: memberId, deviceImei: imei}}
+          placement='bottom'
         />
     </>
   )
@@ -33,6 +34,7 @@ const OrderRecord:FC<StartUpTimeProps> = ({imei, memberId, memberPhone}) => {
           slot={<a>导出</a>}
           slotHistory={(e)=><a onClick={e}>···</a>}
           conditions={{memberDeviceId: memberId}}
+          placement='bottom'
         />
     </>
   )
