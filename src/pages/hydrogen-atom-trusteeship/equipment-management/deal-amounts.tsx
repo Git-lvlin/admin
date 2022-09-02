@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
-import { Empty, Select } from "antd"
+import { Empty, Select, Space } from "antd"
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FC } from "react"
@@ -59,15 +59,20 @@ const DealAmounts: FC<DealAmountProps> = ({data, type}) => {
     }
   }, [type, params])
 
-  const options = listData.map(d => <Option key={d.orderId} value={d.orderId}>{d.storeName}{d.storePhone}（{d.activationTime}-{d.stopOperateTime}）</Option>)
+  const options = listData.map(d => {
+    const res = `${d.storeName}${d.storePhone}（${d.activationTime}-${d.stopOperateTime}）`
+    return (
+      <Option key={d.orderId} value={d.orderId}>{res}</Option>
+    )
+  })
 
   const title = {
     3: `运营商手机号：${data?.storePhone}`,
     4: (
-      <>
+      <Space direction='vertical' size={5}>
         <div>运营商手机号：{data?.storePhone}</div>
         <div>启动费累计金额：{amountTransform(amount, '/')}</div>
-      </>
+      </Space>
     ),
   }
 

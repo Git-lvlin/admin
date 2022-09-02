@@ -40,7 +40,9 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     deviceNum,
     user, 
     amount,
-    imei
+    imei,
+    normal,
+    deductible
   } = props
 
   const [page, setPage] = useState<number>(1)
@@ -50,6 +52,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
   const [data, setData] = useState<DataProps[]>([])
   const [curData, setCurData] = useState<DataProps[]>([])
   const [month, setMonth] = useState<string>()
+  const [checked, setChecked] = useState<string>('normal')
   
   const api = {
     1: devicePage,
@@ -80,7 +83,8 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       status: 'terminated'
     },
     4: {
-      memberId: storeNo
+      memberId: storeNo,
+      status: checked
     },
     5: {
       hostingMemberId: storeNo
@@ -121,7 +125,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       setMonth(res?.monthSum)
     })
    
-  }, [pageSize, page])
+  }, [pageSize, page, checked])
 
   useEffect(()=> {
     if(type === 11) {
@@ -172,7 +176,20 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     4: (
       <Space size={20}>
         <div>总金额：{amountTransform(amount, '/')}元</div>
-        <div>总产品数：{deviceNum}台</div>
+        <Space size={10}> 
+          <a 
+            style={{color: checked === 'normal' ? '#1890ff' : '#fff'}}
+            onClick={()=> setChecked('normal')}
+          >
+            正常：{normal}台
+          </a>
+          <a 
+            style={{color: checked === 'deductible' ? '#1890ff' : '#fff'}}
+            onClick={()=> setChecked('deductible')}
+          >
+            已扣除：{deductible}台
+          </a>
+        </Space>
       </Space>
     ),
     5: (
@@ -449,18 +466,15 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     >
       <Spin delay={500} spinning={load}>
         {
-          (data?.length === 0 && curData.length === 0) &&
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        }
-        {
-          (data?.length !== 0 && !showTitle) &&
+          !showTitle &&
           <div className={styles.cardTitle}>
             {cardTitle[type]}
           </div>
         }
         {
-          (data?.length !== 0 || curData.length !== 0) &&
-          content[type]
+          (data?.length !== 0 || curData.length !== 0) ?
+          content[type]:
+          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         }
       </Spin>
       {
