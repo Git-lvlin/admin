@@ -68,12 +68,14 @@ const TableList = () => {
   }
 
   const getFieldValue = () => {
-    const { time, orderStatusSet, ...rest } = form.getFieldsValue();
+    const { time, orderStatusSet, payTime, ...rest } = form.getFieldsValue();
 
     return {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       endCreateTime: time?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
+      payStartCreateTime: payTime?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
+      payEndCreateTime: payTime?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
       orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18] : [orderTypes],
       ...rest,
@@ -334,6 +336,16 @@ const TableList = () => {
             />
           </>
         }
+        <ProFormDateTimeRangePicker
+          name="payTime"
+          label="支付时间"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            },
+            showTime: true,
+          }}
+        />
 
       </ProForm>
       <Radio.Group
