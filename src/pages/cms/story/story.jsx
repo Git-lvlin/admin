@@ -21,14 +21,14 @@ const Poster = () => {
     posterDel({id: id}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 

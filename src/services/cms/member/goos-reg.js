@@ -15,7 +15,7 @@ export const seckillingClassList = async (params = {}, options = {}) => {
     return {
         data: res.data?.records,
         success: true,
-        total: res.total
+        total: res.data.total
     }
 }
 

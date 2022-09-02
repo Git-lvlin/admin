@@ -50,11 +50,16 @@ const MemberStoreFundManagement = () => {
     setDetailVisible(true)
   }
   const disable = data =>{
-    enabledDisabledSubmit({...data}).then(res=> {
-      if(res?.success){
-        actionRef.current.reload()
-        message.success('操作成功')
-      }
+    return new Promise((resolve, reject) => {
+      enabledDisabledSubmit({...data}).then(res=> {
+        if(res?.success){
+          resolve()
+          actionRef.current.reload()
+          message.success('操作成功')
+        } else {
+          reject()
+        }
+      })
     })
   }
   const restore = data => {
@@ -303,7 +308,7 @@ const MemberStoreFundManagement = () => {
           </>
         )}
       />
-       {
+      {
         detailedVisible &&
         <Detailed
           query={query}

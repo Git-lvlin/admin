@@ -125,7 +125,7 @@ export default () => {
   }
   useEffect(() => {
     if (flag) {
-      ref.current.reset()
+      ref.current.reload()
       setFlag(false)
     }
   }, [flag]);

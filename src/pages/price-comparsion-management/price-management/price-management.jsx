@@ -42,7 +42,7 @@ const PriceManagement = () => {
     delContestGoods({id: ids.toString()}).then((res) => {
       if (res.code === 0) {
         message.success(`成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -51,7 +51,7 @@ const PriceManagement = () => {
     delContestGoods({id: id.toString()}).then((res) => {
       if (res.code === 0) {
         message.success(`成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -123,7 +123,7 @@ const PriceManagement = () => {
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset()
+      actionRef.current.reload()
       setFlag(false)
     }
   }, [flag])

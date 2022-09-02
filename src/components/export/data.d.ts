@@ -1,11 +1,13 @@
+declare type TooltipPlacement = 'top' | 'left' | 'right' | 'bottom' | 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'leftTop' | 'leftBottom' | 'rightTop' | 'rightBottom'
+
 export type ExprotProps = {
   type: string
-  change?: React.Dispatch<React.SetStateAction<boolean>>
   conditions?: object | [ () => void ]
   text?: string
-  slot?: React.ReactChild
+  slot?: JSX.Element
   slotHistory?: (v: React.DOMAttributes)=> React.ReactChild
   fileName?: string
+  placement?: TooltipPlacement
 }
 
 export type ExportHistoryProps = {
@@ -13,6 +15,7 @@ export type ExportHistoryProps = {
   setShow: React.Dispatch<React.SetStateAction<boolean>>
   type: string,
   slot?: (v: React.DOMAttributes)=> React.ReactChild
+  placement?: TooltipPlacement
 }
 
 export type ExprotStateProps = {
@@ -20,7 +23,7 @@ export type ExprotStateProps = {
   desc: string
 }
 
-export type dataProps = {
+export type DataProps = {
   code: string
   createId: string
   createName: string
@@ -30,7 +33,7 @@ export type dataProps = {
   exportType: number
   fileType: number
   fileUrl: string
-  id: string
+  id: number
   process: number
   state: number
 }
