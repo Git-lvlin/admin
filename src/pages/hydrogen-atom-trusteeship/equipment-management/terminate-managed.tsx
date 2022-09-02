@@ -2,7 +2,7 @@ import { ModalForm, ProFormRadio, ProFormSelect, ProFormText, ProFormTextArea } 
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import type { FC } from "react"
-import type { TerminateManagedFormProps, TerminateManagedProps } from "./data"
+import type { TerminateManagedProps } from "./data"
 
 import styles from "./styles.less"
 import { stopOperateHosting, stopHosting } from "@/services/hydrogen-atom-trusteeship/equipment-management"
@@ -15,7 +15,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
     2: stopHosting
   }[type]
 
-  const submit = (e: TerminateManagedFormProps) => {
+  const submit = (e: any) => {
     return new Promise<void>((resolve, reject) => {
       api?.({
         orderId: data?.orderId,
@@ -45,7 +45,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
       }}
       labelCol={{span: 8}}
       wrapperCol={{ span: 14 }}
-      onFinish={async (e: TerminateManagedFormProps)=> {
+      onFinish={async (e)=> {
         await submit(e)
         return true
       }}
@@ -137,11 +137,11 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
             rules={[{required: true}]}
             options={[
               {
-                label: '立即停止',
+                label: '立即停止运营和终止托管',
                 value: 1
               },
               {
-                label: '本月底24点停止(考核本月业绩)',
+                label: '本月底24点停止运营和终止托管',
                 value: 3
               }
             ]}
@@ -164,7 +164,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
           () => ({
             validator(_, value) {
               if (value.length < 5) {
-                return Promise.reject(new Error('请输入5-30个字符'))
+                return Promise.reject(new Error('请输入5-30个汉字'))
               }
               return Promise.resolve()
             }
