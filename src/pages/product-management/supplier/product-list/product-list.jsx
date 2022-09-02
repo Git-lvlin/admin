@@ -17,7 +17,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
 import { useLocation } from 'umi';
-import { changeStoreState } from '@/services/product-management/product-list';
+import { changeStoreState,getCommissionConfigBySpuId } from '@/services/product-management/product-list';
 
 
 const SubTable = (props) => {
@@ -150,9 +150,18 @@ const TableList = () => {
     }
 
     if (key === '4') {
-      onShelf({ spuId: record.spuId, type: 1 })
-      // setDetailData({ ...record, type: 2 })
-      // setPutawayVisible(true)
+      getCommissionConfigBySpuId({spuId:record.spuId}).then(res=>{
+        if(res.code==0){
+          if(res.data.length){
+             setDetailData({ ...record })
+             setPutawayVisible(true)
+          }else{
+            onShelf({ spuId: record.spuId, type: 1 })
+          }
+        }
+      })
+      
+  
     }
 
     if (key === '5') {
