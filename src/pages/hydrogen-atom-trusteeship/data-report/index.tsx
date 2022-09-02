@@ -226,9 +226,6 @@ const DataReport: FC = () => {
         column={8}
         bordered
         layout='vertical'
-        style={{
-          background: '#fff'
-        }}
       />
     </PageContainer>
   )
