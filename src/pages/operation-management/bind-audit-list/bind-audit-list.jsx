@@ -25,7 +25,7 @@ const BindAuditList = () => {
       dataIndex: 'storeName',
     },
     {
-      title: '绑定运营中心',
+      title: '绑定运营商',
       dataIndex: 'operationName',
       valueType: 'text',
       hideInSearch: true,

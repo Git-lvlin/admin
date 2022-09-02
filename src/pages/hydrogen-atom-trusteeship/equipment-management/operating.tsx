@@ -162,7 +162,7 @@ const Operating: FC = () => {
       align: 'center'
     },
     {
-      title: '运营中心手机',
+      title: '运营商手机',
       dataIndex: 'storePhone',
       align: 'center'
     },
@@ -172,7 +172,7 @@ const Operating: FC = () => {
       align: 'center'
     },
     {
-      title: '运营中心店铺编号',
+      title: '运营商店铺编号',
       dataIndex: 'storeHouseNumber',
       align: 'center'
     },

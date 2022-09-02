@@ -20,11 +20,11 @@ const TableList = () => {
       width: 70,
     },
     {
-      title: '运营中心名称',
+      title: '运营商名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入运营中心名称'
+        placeholder: '请输入运营商名称'
       }
     },
     {

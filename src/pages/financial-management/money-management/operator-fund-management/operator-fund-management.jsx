@@ -109,7 +109,7 @@ const OperatorFundManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '运营中心ID',
+      title: '运营商ID',
       dataIndex: 'accountId'
     },
     {

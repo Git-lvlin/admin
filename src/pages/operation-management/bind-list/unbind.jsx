@@ -71,7 +71,7 @@ export default (props) => {
       }
     },
     {
-      title: '绑定的运营中心',
+      title: '绑定的运营商',
       dataIndex: 'operationCompanyName',
       valueType: 'text',
     },
@@ -83,7 +83,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`解绑运营中心`}
+      title={`解绑运营商`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,

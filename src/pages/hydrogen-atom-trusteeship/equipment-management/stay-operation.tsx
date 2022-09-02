@@ -40,13 +40,13 @@ const StayOperation: FC = () => {
       align: 'center'
     },
     {
-      title: '运营中心手机号',
+      title: '运营商手机号',
       dataIndex: 'storePhone',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '运营中心店铺名称',
+      title: '运营商店铺名称',
       dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true

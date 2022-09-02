@@ -248,7 +248,7 @@ const TableList = () => {
           options={[
             {
               value: 1,
-              label: '代理运营中心家'
+              label: '代理运营商家'
             }
           ]}
           fieldProps={{
