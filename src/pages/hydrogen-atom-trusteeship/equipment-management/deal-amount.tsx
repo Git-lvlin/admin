@@ -19,7 +19,7 @@ const DealAmount: FC<DealAmountProps> = ({data, type}) => {
 
   const title = {
     1: `投资人手机号：${data?.hostingMemberPhone}`,
-    2: `运营中心手机号：${data?.storePhone}`
+    2: `运营商手机号：${data?.storePhone}`
   }
 
   const optionsRender = {

@@ -73,7 +73,7 @@ const Detail = ({id, visible, setVisible}) => {
         'platform': '平台',
         'member': '会员',
         'agentStore': '代发店',
-        'agentCompany': '运营中心'
+        'agentCompany': '运营商'
       }
     },
     {

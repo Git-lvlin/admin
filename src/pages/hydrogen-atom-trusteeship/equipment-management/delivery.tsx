@@ -33,7 +33,7 @@ const Delivery: FC<DeliveryProps> = (props: DeliveryProps) => {
 
   return (
     <ModalForm
-      title='确认投放设备给运营中心'
+      title='确认投放设备给运营商'
       width={500}
       visible={visible}
       formRef={formRef}
@@ -53,24 +53,24 @@ const Delivery: FC<DeliveryProps> = (props: DeliveryProps) => {
       wrapperCol={{span: 14}}
       labelCol={{span: 10}}
     >
-      <Title level={4}>确认要托管订单设备商品投放到运营中心？</Title>
+      <Title level={4}>确认要托管订单设备商品投放到运营商？</Title>
       <ProForm.Item
         label='当前订单号'
       >
         {data?.hostingOrderId}
       </ProForm.Item>
       <ProForm.Item
-        label='被投放运营中心店主手机号'
+        label='被投放运营商店主手机号'
       >
         {data?.storePhone}
       </ProForm.Item>
       <ProForm.Item
-        label='被投放运营中心店铺名称'
+        label='被投放运营商店铺名称'
       >
         {data?.storeName}（编号：{data?.storeHouseNumber}）
       </ProForm.Item>
       <ProForm.Item
-        label='被投放运营中心店信息'
+        label='被投放运营商店信息'
       >
         <Space direction='vertical' align='start'>
           <div>{data?.storeUserName}</div>
@@ -84,7 +84,7 @@ const Delivery: FC<DeliveryProps> = (props: DeliveryProps) => {
             <li>根据托管订单生成新的运营订单；</li>
             <li>将确认投放时间作为新运营订单的下单时间；</li>
             <li>根据托管订单单号生成新运营订单单号；</li>
-            <li>将投放的运营中心社区店提货点设为运营订单的收货地址；</li>
+            <li>将投放的运营商社区店提货点设为运营订单的收货地址；</li>
             <li>将运营订单推送给设备供应商，以便其发货；</li>
           </ol>
         </Paragraph>

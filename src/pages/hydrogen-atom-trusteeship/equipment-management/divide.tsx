@@ -53,10 +53,10 @@ const Divide: FC<DivideProps> = ({visible, setVisible, data}) => {
         <ProCard.TabPane key="1" tab="托管购买交易款">
           <DealAmount data={data} type={1}/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="运营中心培训服务费">
+        <ProCard.TabPane key="2" tab="运营商培训服务费">
           <DealAmount data={data} type={2}/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="3" tab="运营中心管理费套餐">
+        <ProCard.TabPane key="3" tab="运营商管理费套餐">
           <DealAmounts data={data} type={3}/>
         </ProCard.TabPane>
         <ProCard.TabPane key="4" tab="设备启动费">

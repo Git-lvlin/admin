@@ -24,7 +24,7 @@ function EquipmentManagement () {
         <ProCard.TabPane key="3" tab="运营中">
           <Operating/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="4" tab="停止运营（运营中心）">
+        <ProCard.TabPane key="4" tab="停止运营（运营商）">
           <StopOperate/>
         </ProCard.TabPane>
         <ProCard.TabPane key="5" tab="终止托管（投资人）">

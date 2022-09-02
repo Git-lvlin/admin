@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 运营中心收益分页
+// 运营商收益分页
 export const operationCommissionPage = async (params, options= {}) => {
   const { current=1, pageSize=10, createTime, ...rest } = params
   const res = await request('/auth/java-admin/financial/trans/operationCommissionPage', {

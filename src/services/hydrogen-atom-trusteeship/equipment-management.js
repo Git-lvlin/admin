@@ -307,7 +307,7 @@ export const manageAndStartUp = async (params, options = {}) => {
   }
 }
 
-// 设备分成-获取历史运营中心列表
+// 设备分成-获取历史运营商列表
 export const getHistoryDeviceShop = async (params, options = {}) => {
   const res = await request('/auth/healthy/deviceManage/getHistoryDeviceShop', {
     method: 'POST',

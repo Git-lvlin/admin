@@ -58,7 +58,7 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
       />
       <ProFormText
         name='storePhone'
-        label='设备关联运营中心手机号'
+        label='设备关联运营商手机号'
         initialValue={data?.storePhone}
         readonly
       />

@@ -59,7 +59,7 @@ const TableList = () => {
 
   const deleteSup = (operationId) => {
     confirm({
-      title: '确认要删除已创建的运营中心么？',
+      title: '确认要删除已创建的运营商么？',
       icon: <ExclamationCircleOutlined />,
       onOk() {
         deloperation({
@@ -92,11 +92,11 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '运营中心名称',
+      title: '运营商名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入运营中心名称'
+        placeholder: '请输入运营商名称'
       },
     },
     {
@@ -111,11 +111,11 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '运营中心ID',
+      title: '运营商ID',
       dataIndex: 'operationId',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入运营中心ID'
+        placeholder: '请输入运营商ID'
       },
       hideInTable: true,
     },
@@ -333,13 +333,13 @@ const TableList = () => {
       }
 
       <Modal
-        title={`请确认要重置运营中心：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
+        title={`请确认要重置运营商：${selectItem?.companyName}（账号：${selectItem?.accountName}）的登录密码？`}
         visible={isModalVisible}
         onOk={() => { pwdReset() }}
         onCancel={() => { setIsModalVisible(false) }}
       >
         <p>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
-        <p style={{ fontSize: 12 }}>重置密码将同步发送给运营中心</p>
+        <p style={{ fontSize: 12 }}>重置密码将同步发送给运营商</p>
       </Modal>
     </PageContainer>
 

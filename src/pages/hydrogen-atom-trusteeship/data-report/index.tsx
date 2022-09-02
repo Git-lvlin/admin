@@ -62,7 +62,7 @@ const DataReport: FC = () => {
       dataIndex: 'hostingUserNum',
     },
     {
-      title: '运营中心数',
+      title: '运营商数',
       dataIndex: 'operateUserNum',
     },
     {
@@ -79,7 +79,7 @@ const DataReport: FC = () => {
       dataIndex: 'operateDeviceNum'
     },
     {
-      title: '运营中心总服务费',
+      title: '运营商总服务费',
       dataIndex: 'operateServiceFee',
       render: (_)=> amountTransform(_, '/')
     },
@@ -88,7 +88,7 @@ const DataReport: FC = () => {
       dataIndex: 'opereateRatio',
     },
     {
-      title: '运营中心用户占比',
+      title: '运营商用户占比',
       dataIndex: 'operateUserRatio',
     },
     {
@@ -129,7 +129,7 @@ const DataReport: FC = () => {
       dataIndex: 'hostingPromoteUserNum',
     },
     {
-      title: '运营中心推广人数',
+      title: '运营商推广人数',
       dataIndex: 'operatePromoteUserNum',
     },
     {
@@ -143,7 +143,7 @@ const DataReport: FC = () => {
       render: (_)=> amountTransform(_, '/')
     },
     {
-      title: '运营中心推广人总收益',
+      title: '运营商推广人总收益',
       dataIndex: 'operatePromoteCommisstion',
       render: (_)=> amountTransform(_, '/')
     },
@@ -156,7 +156,7 @@ const DataReport: FC = () => {
       dataIndex: 'operateIngDeviceNum',
     },
     {
-      title: '运营中心服务资质数',
+      title: '运营商服务资质数',
       dataIndex: 'operateQualificationNum',
     },
   ]
@@ -226,9 +226,6 @@ const DataReport: FC = () => {
         column={8}
         bordered
         layout='vertical'
-        style={{
-          background: '#fff'
-        }}
       />
     </PageContainer>
   )
