@@ -14,6 +14,8 @@ const Operator = () => {
   const [storeNo, setStoreNo] = useState<string>()
   const [deviceNum, setDeviceNum] = useState<number>()
   const [user, setUser] = useState<string>()
+  const [normal, setNormal] = useState<string>()
+  const [deductible, setDeductible] = useState<string>()
   const [amount, setAmount] = useState<number>()
 
   const columns: ProColumns[] = [
@@ -158,10 +160,11 @@ const Operator = () => {
               onClick={()=>{
                 setVisible(true)
                 setStoreNo(r.memberId)
-                setDeviceNum(r.availableTotal)
                 setType(4)
                 setUser(r.memberPhone)
                 setAmount(r.deviceTotalPay)
+                setNormal(r.availableTotal)
+                setDeductible(r.deviceDeduction)
               }}
             >
               {amountTransform(_, '/')}元
@@ -229,6 +232,8 @@ const Operator = () => {
           deviceNum={deviceNum}
           user={user}
           amount={amount}
+          normal={normal}
+          deductible={deductible}
         />
       }
     </>

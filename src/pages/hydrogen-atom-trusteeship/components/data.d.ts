@@ -15,6 +15,8 @@ export type DevicesProps = {
   deviceNum?: number
   amount?: number
   imei?: string
+  deductible?: string
+  normal?: string
 }
 
 export type DataProps = {
