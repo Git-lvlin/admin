@@ -35,7 +35,7 @@ export default (props) => {
 
   const submit = (values) => {
     if (!selectItem) {
-      message.error('请选择要绑定的运营商');
+      message.error('请选择要绑定的运营中心');
       reject();
     }
     return new Promise((resolve, reject) => {
@@ -61,11 +61,11 @@ export default (props) => {
   const columns = [
 
     {
-      title: '运营商名称',
+      title: '运营中心名称',
       dataIndex: 'companyName',
       valueType: 'text',
       fieldProps: {
-        placeholder: '请输入运营商名称'
+        placeholder: '请输入运营中心名称'
       },
     },
     {
@@ -88,7 +88,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`绑定运营商`}
+      title={`绑定运营中心`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
