@@ -15,7 +15,7 @@ const ExpressNews = () => {
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset()
+      actionRef.current.reload()
       setFlag(false)
     }
   }, [flag])
@@ -33,7 +33,7 @@ const ExpressNews = () => {
     expressNewsDel({deleteIdLists: data}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -43,7 +43,7 @@ const ExpressNews = () => {
     expressNewsDown(record).then((res) => {
       if (res.code === 0) {
         message.success(`下线成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -52,7 +52,7 @@ const ExpressNews = () => {
     expressNewsTop({id:id}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }

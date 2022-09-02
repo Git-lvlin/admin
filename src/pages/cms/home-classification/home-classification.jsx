@@ -30,7 +30,7 @@ const HomeClassification = () => {
     homeClassificationSortTop({id:id, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -44,7 +44,7 @@ const HomeClassification = () => {
     homeClassificationStatus(param).then((res) => {
       if (res.code === 0) {
         message.success(`切换状态成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
     
@@ -58,14 +58,14 @@ const HomeClassification = () => {
     homeClassificationSetSort({sortList:param, verifyVersionId: verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`编辑排序成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 

@@ -15,7 +15,7 @@ const LowGoods = () => {
     if (flag) {
       setLoading(true)
       setTimeout(() => {
-        actionRef.current.reset()
+        actionRef.current.reload()
         setFlag(false)
         setLoading(false)
       }, 0)
@@ -32,7 +32,7 @@ const LowGoods = () => {
       if (res.code === 0) {
         setTimeout(() => {
           message.success(`删除成功`);
-          actionRef.current.reset();
+          actionRef.current.reload();
           setLoading(false)
         }, 0)
       } else {

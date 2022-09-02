@@ -36,7 +36,7 @@ const Member = () => {
     memberOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -44,13 +44,13 @@ const Member = () => {
     memberSortTop({id:data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
-    actionRef.current.reset();
+    actionRef.current.reload();
   }, [modalVisible, formVisible])
 
   const columns = [

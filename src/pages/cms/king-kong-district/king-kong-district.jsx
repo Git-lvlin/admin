@@ -18,7 +18,7 @@ const KingKongDistrict = () => {
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset();
+      actionRef.current.reload();
       setFlag(false)
     }
   }, [flag])
@@ -36,7 +36,7 @@ const KingKongDistrict = () => {
     kongKongDistrictDel({id: data, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -54,7 +54,7 @@ const KingKongDistrict = () => {
     kongKongModifyType({goodsTypeUpdateStateRequestList:goodsTypeUpdateStateRequestList, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`操作成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -63,7 +63,7 @@ const KingKongDistrict = () => {
     kingKongTop({id:id, verifyVersionId:verifyVersionId}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
