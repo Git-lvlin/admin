@@ -52,13 +52,13 @@ const StopOperate: FC = () => {
     },
     {
       title: '运营商手机号',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'storePhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '原店主手机',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'storePhone',
       align: 'center',
       hideInTable: true
     },
