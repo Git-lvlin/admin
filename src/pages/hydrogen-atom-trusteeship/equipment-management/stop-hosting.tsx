@@ -1,6 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import moment from "moment"
+import { Space } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { FC } from 'react'
@@ -8,8 +9,17 @@ import type { FormInstance } from "antd"
 
 import { stopHostingList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
 import Export from "@/components/export"
+import DevicesDetail from "../components/devices-detail"
+import Divide from "./divide"
 
 const StopHosting: FC = () => {
+  const [divideVisible, setDivideVisible] = useState<boolean>(false)
+  const [devicesDetailVisible, setDevicesDetailVisible] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>()
+  const [imei, setImei] = useState<string>()
+  const [type, setType] = useState<number>(0)
+  const [user, setUser] = useState<string>()
+  const [data, setData] = useState()
 
   const form = useRef<FormInstance>()
 
@@ -85,6 +95,45 @@ const StopHosting: FC = () => {
       align: 'center',
       render: (_, r)=> `${r.operateLog.reason}`,
       hideInSearch: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      width: '220px',
+      align: 'center',
+      render: (_, r) => (
+        <Space size={10} style={{width: 220, flexWrap: 'wrap'}}>
+          <a 
+            onClick={()=>{
+              setDivideVisible(true)
+              setData(r)
+            }}
+          >
+            分成明细
+          </a>
+          <a 
+            onClick={()=>{
+              setDevicesDetailVisible(true)
+              setType(11)
+              setOrderId(r.orderId)
+              setImei(r.imei)
+              setUser(r.storePhone)
+            }}
+          >
+            缴租明细
+          </a>
+          <a 
+            onClick={()=>{
+              setDevicesDetailVisible(true)
+              setOrderId(r.orderId)
+              setImei(r.imei)
+              setType(10)
+            }}
+          >
+            操作日志
+          </a>
+        </Space>
+      )
     }
   ]
 
@@ -100,25 +149,51 @@ const StopHosting: FC = () => {
   }
 
   return (
-    <ProTable
-      rowKey='id'
-      columns={columns}
-      params={{}}
-      request={stopHostingList}
-      formRef={form}
-      pagination={{
-        showQuickJumper: true,
-        pageSize: 10
-      }}
-      options={false}
-      search={{
-        labelWidth: 150,
-        optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse(),
-          <Export type='healthyDeviceStopHosting' conditions={getFieldsValue}/>
-        ]
-      }}
-    />
+    <>
+      <ProTable
+        rowKey='id'
+        columns={columns}
+        params={{}}
+        request={stopHostingList}
+        formRef={form}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        options={false}
+        search={{
+          labelWidth: 150,
+          optionRender: (searchConfig, props, dom)=> [
+            ...dom.reverse(),
+            <Export 
+              type='healthyDeviceStopHosting' 
+              conditions={getFieldsValue}
+              key='export'
+            />
+          ]
+        }}
+      />
+      {
+        devicesDetailVisible &&
+        <DevicesDetail
+          visible={devicesDetailVisible}
+          setVisible={setDevicesDetailVisible}
+          type={type}
+          storeNo={orderId}
+          showTitle
+          imei={imei}
+          user={user}
+        />
+      }
+      {
+        divideVisible &&
+        <Divide
+          visible={divideVisible}
+          setVisible={setDivideVisible}
+          data={data}
+        />
+      }
+    </>
   )
 }
 

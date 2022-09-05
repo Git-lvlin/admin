@@ -14,6 +14,8 @@ const Operator = () => {
   const [storeNo, setStoreNo] = useState<string>()
   const [deviceNum, setDeviceNum] = useState<number>()
   const [user, setUser] = useState<string>()
+  const [normal, setNormal] = useState<string>()
+  const [deductible, setDeductible] = useState<string>()
   const [amount, setAmount] = useState<number>()
 
   const columns: ProColumns[] = [
@@ -147,7 +149,7 @@ const Operator = () => {
       }
     },
     {
-      title: '运营服务费金额',
+      title: '服务费金额',
       dataIndex: 'deviceTotalPay',
       align: 'center',
       hideInSearch: true,
@@ -157,11 +159,38 @@ const Operator = () => {
             <a
               onClick={()=>{
                 setVisible(true)
-                setStoreNo(r.storeNo)
-                setDeviceNum(r.availableTotal)
+                setStoreNo(r.memberId)
                 setType(4)
                 setUser(r.memberPhone)
                 setAmount(r.deviceTotalPay)
+                setNormal(r.availableTotal)
+                setDeductible(r.deviceDeduction)
+              }}
+            >
+              {amountTransform(_, '/')}元
+            </a>
+          )
+        } else {
+          return <span>{amountTransform(_, '/')}元</span>
+        }
+      }
+    },
+    { 
+      title: '托管管理费金额',
+      dataIndex: 'paidRental',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.paidRental > 0) {
+          return (
+            <a
+              onClick={()=>{
+                setVisible(true)
+                setStoreNo(r.memberId)
+                setDeviceNum(r.availableTotal)
+                setType(12)
+                setUser(r.memberPhone)
+                setAmount(r.paidRental)
               }}
             >
               {amountTransform(_, '/')}元
@@ -203,6 +232,8 @@ const Operator = () => {
           deviceNum={deviceNum}
           user={user}
           amount={amount}
+          normal={normal}
+          deductible={deductible}
         />
       }
     </>

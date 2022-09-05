@@ -16,6 +16,8 @@ import OptionImei from "./option-imei"
 import StopOperation from "./stop-operation"
 import TerminateManaged from "./terminate-managed"
 import Export from "@/components/export"
+import CaptureExpendsEntrance from "./capture-expends-entrance"
+import Divide from "./divide"
 
 const Operating: FC = () => {
   const [blockUpVisible, setBlockUpVisible] = useState<boolean>(false)
@@ -29,6 +31,9 @@ const Operating: FC = () => {
   const [data, setData] = useState<OperatingProps>()
   const [stopOperationVisivle, setStopOperationVisivle] = useState<boolean>(false)
   const [terminateManagedVisible, setTerminateManagedVisible] = useState<boolean>(false)
+  const [user, setUser] = useState<string>()
+  const [captureExpendsEntranceVisible, setCaptureExpendsEntranceVisible] = useState<boolean>(false)
+  const [divideVisible, setDivideVisible] = useState<boolean>(false)
 
   const actRef = useRef<ActionType>()
   const form = useRef<FormInstance>()
@@ -39,6 +44,8 @@ const Operating: FC = () => {
         <Menu.Item
           key="1"
           onClick={()=>{ 
+            setDivideVisible(true)
+            setData(e)
           }}
         >
           分成
@@ -84,7 +91,7 @@ const Operating: FC = () => {
           <Space size={5}>
             停止运营
             {
-              e?.stopOperateType === 'operate' &&
+              (e?.stopOperateType === 'operate' && e.examType === 3) &&
               <Tooltip title={e.examReason}>
                 <ExclamationCircleOutlined />
               </Tooltip>
@@ -97,18 +104,12 @@ const Operating: FC = () => {
             setTerminateManagedVisible(true)
             setData(e)
           }}
-          disabled={e?.examType === 3 || e?.useStatus === '正常'}
+          disabled={e?.examType === 3}
         >
           <Space size={5}>
             终止托管
             {
-              (e?.useStatus === '正常' && e?.stopOperateType !== 'operateHosting') &&
-              <Tooltip title='设备停止运营后方可终止托管'>
-                <ExclamationCircleOutlined />
-              </Tooltip>
-            }
-            {
-              e?.stopOperateType === 'operateHosting' &&
+              (e?.stopOperateType === 'operateHosting' && e.examType === 3) &&
               <Tooltip title={e.examReason}>
                 <ExclamationCircleOutlined />
               </Tooltip>
@@ -122,10 +123,29 @@ const Operating: FC = () => {
             setType(11)
             setOrderId(e.orderId)
             setImei(e.imei)
+            setUser(e.storePhone)
           }}
         >
-          营收概述
+          缴租明细
         </Menu.Item>
+        {
+          (e.isShowLeaseBtn === 1 && !e.leaseTimeTip)&&
+          <Menu.Item
+            key="8"
+            onClick={()=> {
+              setCaptureExpendsEntranceVisible(true)
+              setData(e)
+            }}
+          >
+            开启缴费入口
+          </Menu.Item>
+        }
+        {
+          e.leaseTimeTip &&
+          <Menu.Item key="9">
+            {e.leaseTimeTip}
+          </Menu.Item>
+        }
       </Menu>
     )
   }
@@ -157,16 +177,46 @@ const Operating: FC = () => {
       align: 'center'
     },
     {
+      title: '租期状态',
+      dataIndex: 'leaseStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1:'免租期',
+        2:'租期中',
+        3:'已逾期'
+      }
+    },
+    {
+      title: '缴租时间',
+      dataIndex: 'deadlineDay',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => (
+        <div dangerouslySetInnerHTML={{__html: r.deadlineDay}}/>
+      )
+    },
+    {
       title: '最近启动时间',
-      dataIndex: 'lastStartUp',
+      dataIndex: 'lastStartUpTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '使用状态',
+      dataIndex: 'useStatusDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '使用状态',
       dataIndex: 'useStatus',
-      align: 'center',
-      hideInSearch: true
+      valueType: 'select',
+      valueEnum: {
+        2: "正常",
+        3: "已停用"
+      },
+      hideInTable: true
     },
     {
       title: '操作',
@@ -177,7 +227,7 @@ const Operating: FC = () => {
           overlay={() => menu(r)}
           buttonsRender={()=> [
             ( 
-              r?.useStatus !== '正常'&&
+              r?.useStatus !== 2&&
               <Button
                 onClick={()=>{ 
                   setType(2)
@@ -187,7 +237,7 @@ const Operating: FC = () => {
               >
                 启用
               </Button> ||
-              r?.useStatus === '正常'&&
+              r?.useStatus === 2&&
               <Button 
                 onClick={()=>{ 
                   setType(1)
@@ -223,7 +273,11 @@ const Operating: FC = () => {
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export type='healthyDeviceIngOperate' conditions={{...form.current?.getFieldsValue()}}/>
+            <Export 
+              type='healthyDeviceIngOperate' 
+              conditions={{...form.current?.getFieldsValue()}}
+              key='export'
+            />
           ]
         }}
       />
@@ -246,6 +300,7 @@ const Operating: FC = () => {
           storeNo={orderId}
           showTitle
           imei={imei}
+          user={user}
         />
       }
       {
@@ -282,6 +337,23 @@ const Operating: FC = () => {
           visible={terminateManagedVisible}
           setVisible={setTerminateManagedVisible}
           callback={()=>actRef.current?.reload()}
+          data={data}
+        />
+      }
+      {
+        captureExpendsEntranceVisible &&
+        <CaptureExpendsEntrance
+          visible={captureExpendsEntranceVisible}
+          setVisible={setCaptureExpendsEntranceVisible}
+          data={data}
+          callback={()=>actRef.current?.reload()}
+        />
+      }
+      {
+        divideVisible &&
+        <Divide
+          visible={divideVisible}
+          setVisible={setDivideVisible}
           data={data}
         />
       }

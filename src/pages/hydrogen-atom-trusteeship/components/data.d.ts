@@ -15,6 +15,8 @@ export type DevicesProps = {
   deviceNum?: number
   amount?: number
   imei?: string
+  deductible?: string
+  normal?: string
 }
 
 export type DataProps = {
@@ -49,4 +51,12 @@ export type DataProps = {
   optRole: string
   name: string
   val: string
+  packageName: string
+  leaseEnd: string
+  payAmount: number
+  payTime: string
+  payTypeDesc: string
+  payOrderSn: string
+  leaseTitle: string
+  leasePeriodDay: string
 }

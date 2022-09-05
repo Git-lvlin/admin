@@ -47,6 +47,21 @@ export const payPage = async (data, options = {}) => {
   }
 }
 
+// 租金缴纳记录
+export const hostingLease = async (data, options = {}) => {
+  const res = await request('/auth/store/hostingLease/payPage', {
+    method: 'GET',
+    params: data,
+    ...options
+  })
+  return {
+    data: res.data.records,
+    total: res.data.total,
+    success: res.success,
+    monthSum: res.monthSum
+  }
+}
+
 // 托管购买列表
 export const deviceTransList = async (params, options = {}) => {
   const { current = 1, pageSize = 10, ...rest } = params

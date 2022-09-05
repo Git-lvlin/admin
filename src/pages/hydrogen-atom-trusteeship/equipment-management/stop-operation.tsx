@@ -1,4 +1,4 @@
-import { ModalForm, ProFormRadio, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
+import { ModalForm, ProFormRadio, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import type { FC } from 'react'
@@ -62,6 +62,23 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
         initialValue={data?.storePhone}
         readonly
       />
+      <ProFormSelect
+        name='leaseStatus'
+        label='当前租期状态'
+        initialValue={data?.leaseStatus}
+        valueEnum={{
+          1:`免租期（${data?.packageName}）`,
+          2:`租期中（${data?.packageName}）`,
+          3:`已逾期（${data?.packageName}）`
+        }}
+        readonly
+      />
+      <ProFormText
+        name='leaseDeadline'
+        label='当前租期截止日'
+        initialValue={data?.leaseDeadline}
+        readonly
+      />
       <ProFormRadio.Group
         name='optType'
         label="运营资质操作"
@@ -105,15 +122,11 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
         rules={[{required: true}]}
         options={[
           {
-            label: '立即停止(不考核本月业绩)',
+            label: '立即停止',
             value: 1
           },
           {
-            label: '立即停止(考核本月业绩)',
-            value: 2
-          },
-          {
-            label: '本月底24点停止(考核本月业绩)',
+            label: '本月底24点停止',
             value: 3
           }
         ]}
@@ -121,8 +134,8 @@ const StopOperation: FC<StopOperationProps> = ({visible, setVisible, data, callb
       <div className={styles.stopOption}>
         <ExclamationCircleOutlined />
         <div>
-          <div className={styles.marginTop}>到达停止生效时间后，设备将立即停用，并与运营商解绑，运营商无法继续获得设备健康卡营收的分成，消费者也无法继续使用健康卡在此设备消费。</div>
-          <div className={styles.red}>请与运营商核时确认，谨慎操作！</div>
+          <div className={styles.marginTop}>到达停止生效时间后，设备将立即停用，并与运营商解绑。</div>
+          <div className={styles.red}>请与运营中心核时确认，谨慎操作！</div>
         </div>
       </div>
     </ModalForm>

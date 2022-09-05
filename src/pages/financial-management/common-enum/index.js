@@ -1,8 +1,8 @@
 export const tradeType =  {
   'goodsAmount': '货款',
   'goodsAmountReturn': '货款回退',
-  'commission': '店主收益',
-  'commissionReturn': '店主收益回退',
+  'commission': '店铺收益',
+  'commissionReturn': '店铺收益回退',
   'platformCommission': '平台收益',
   'platformCommissionReturn': '平台收益回退',
   'fee': '交易通道费',
@@ -28,5 +28,6 @@ export const tradeType =  {
   'chargeFeeCommissionReturn': '服务费收益回退',
   'goodsDeposit': '押金',
   'rentCommission': '租金收益',
-  'shareCommission': '店铺分享收益'
+  'shareCommission': '店铺分享收益',
+  'directCommission': '服务佣金'
 }

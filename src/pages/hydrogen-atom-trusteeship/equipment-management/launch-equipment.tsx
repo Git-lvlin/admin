@@ -19,6 +19,7 @@ import {
   stopResetHosting,
   getExpressList 
 } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import styles from "./styles.less"
 
 const { Option } = AutoComplete
 const { Title, Paragraph } = Typography
@@ -38,7 +39,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
   }[type]
 
   useEffect(()=>{
-    if(num === 2) {
+    if(num === 1) {
       getExpressList({}).then(res => {
         const arr = res.data.map((item: {expressName: string}) => ({ 
           label: item.expressName,
@@ -73,7 +74,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
     arr.forEach(item=>{
       formRef.current?.setFieldsValue({
         storeNo: item.id,
-        storeName: item.storeName,
+        storeName: `【${item.shopMemberAccount}】${item.storeName}`,
         realname: item.realname,
         memberPhone: item.memberPhone,
         fullAddress: item.fullAddress,
@@ -84,8 +85,8 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
 
 
   const submit = (e: ListProps) => {
-    return new Promise<void>((resolve, reject) => {
-      if(e) {
+    return new Promise<void>((resolve, reject) => { 
+      if(Object.keys(e).length) {
         api?.({...e, orderId}, {showSuccess: true}).then(res => {
           if(res.code === 0) {
             callback()
@@ -96,6 +97,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         })
       } else {
         message.error('请选择社区店')
+        reject()
       }
     })
   }
@@ -109,7 +111,6 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
       onFinish={async (v: ListProps)=> {
         await submit(v)
         return true
-        
       }}
       onVisibleChange={setVisible}
       submitter={{
@@ -117,6 +118,9 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           submitText: '确认投放',
           resetText: '取消投放'
         }
+      }}
+      modalProps={{
+        destroyOnClose: true
       }}
       layout='horizontal'
       wrapperCol={{span: 14}}
@@ -127,7 +131,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         name='store'
       >
         <AutoComplete
-          placeholder='请输入店主姓名、手机号或店铺提货点搜索'
+          placeholder='请输入店铺编号、店主姓名、手机号或店铺提货点搜索'
           style={{
             width: 300
           }}
@@ -143,9 +147,17 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
                   width: 20
                 }}
               >
+                <Descriptions.Item label="店铺">
+                  <div className={styles.address}>
+                    【{value.shopMemberAccount}】{value.storeName}
+                  </div>
+                </Descriptions.Item>
                 <Descriptions.Item label="店主">{value.realname}</Descriptions.Item>
                 <Descriptions.Item label="手机">{value.memberPhone}</Descriptions.Item>
-                <Descriptions.Item label="地址">{value.fullAddress}</Descriptions.Item>
+                <Descriptions.Item label="地址">
+                  <div className={styles.address}>{value.provinceName}{value.cityName}{value.regionName}</div>
+                  <div className={styles.address}>{value.address}{value.houseNumber}</div>
+                </Descriptions.Item>
               </Descriptions>
             </Option>
           ))}
@@ -188,15 +200,15 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
             onChange: (e)=> setNum(e)
           }}
           options={[
-            {label: '线下取货', value: 1},
-            {label: '快递配送', value: 2}
+            {label: '线下取货', value: 2},
+            {label: '快递配送', value: 1}
           ]}
         />
       }
       <ProFormDependency name={['expressType']}>
         {
           ({expressType})=> {
-            if(expressType === 1) {
+            if(expressType === 2) {
               return (
                 <ProFormText
                   label='线下取货联系手机号'
@@ -204,7 +216,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
                   rules={[{required: true}]}
                 />
               )
-            } else if(expressType === 2){
+            } else if(expressType === 1){
               return (
                 <>
                   <ProFormSelect

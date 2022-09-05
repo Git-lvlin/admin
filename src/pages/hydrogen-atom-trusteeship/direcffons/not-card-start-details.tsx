@@ -1,11 +1,25 @@
+import { useRef } from "react"
 import ProTable from '@ant-design/pro-table'
+import moment from "moment"
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance  } from "antd"
 
 import { deviceStartUpList } from "@/services/hydrogen-atom-trusteeship/direcffons"
 import { amountTransform } from '@/utils/utils'
+import Export from "@/components/export"
 
 const NotCardStartDetails = () => {
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { useTime, ...rest } = form.current?.getFieldsValue()
+    return {
+      useStartTime: useTime && moment(useTime?.[0]).format('YYYY-MM-DD'),
+      useEndTime: useTime && moment(useTime?.[1]).format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -67,11 +81,17 @@ const NotCardStartDetails = () => {
       columns={columns}
       options={false}
       params={{}}
+      formRef={form}
       request={deviceStartUpList}
       search={{
         labelWidth: 120,
         optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export 
+            key='export'
+            type='healthyDeviceStartUp'
+            conditions={getFieldsValue}
+          />
         ]
       }}
       pagination={{

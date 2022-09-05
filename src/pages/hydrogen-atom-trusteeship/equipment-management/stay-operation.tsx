@@ -98,7 +98,11 @@ const StayOperation: FC = () => {
         labelWidth: 100,
         optionRender: (searchConfig, props, dom)=> [
           ...dom.reverse(),
-          <Export type='healthyDeviceWaitOperate' conditions={{...form.current?.getFieldsValue()}}/>
+          <Export 
+            type='healthyDeviceWaitOperate' 
+            conditions={{...form.current?.getFieldsValue()}}
+            key='export'
+          />
         ]
       }}
     />

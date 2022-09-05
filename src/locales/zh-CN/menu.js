@@ -310,6 +310,7 @@ export default {
   'menu.financial-management.money-management.details':'详情',
   'menu.financial-management.transaction-detail-management':'交易明细管理',
   'menu.financial-management.transaction-detail-management.withdrawal-audit-management':'提现审核管理',
+  'menu.financial-management.transaction-detail-management.withdrawal-audit-management.details':'明细',
   'menu.financial-management.transaction-detail-management.show-detail':'提现详情',
   'menu.financial-management.transaction-detail-management.withdrawal-balance-details':'可提现余额明细',
   'menu.financial-management.transaction-detail-management.order-pay-detail-management':'订单支付明细管理',
@@ -408,6 +409,9 @@ export default {
   'menu.hydrogen-atom-trusteeship.managed-transaction-data': '托管交易数据',
   'menu.hydrogen-atom-trusteeship.direcffons': '使用明细',
   'menu.hydrogen-atom-trusteeship.order-management': '订单管理',
+  'menu.hydrogen-atom-trusteeship.divided-configuration': '分成配置',
+  'menu.hydrogen-atom-trusteeship.management-fee-configuration': '托管管理费配置',
+  'menu.hydrogen-atom-trusteeship.data-report': '数据报表',
 
   'menu.buried-point': '埋点数据看板',
   'menu.buried-point.incident-analysts': '事件分析',
