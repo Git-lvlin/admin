@@ -154,7 +154,7 @@ export default (props) => {
   const [editableKeys, setEditableRowKeys] = useState(()=>bloodData?.map(item => item.id));
   const [dataSource, setDataSource] = useState(()=>bloodData);
   const [roleVisible, setRoleVisible] = useState();
-  const [sum, setSum] = useState(12)
+  // const [sum, setSum] = useState(12)
   const [userList, setUserList] = useState([])
   const [recordList, setRecordList] = useState([])
   const [recordId, setRecordId] = useState()
@@ -301,16 +301,12 @@ export default (props) => {
   }, [])
   const compute = () => {
     let sum = 0
-    for (let index = 0; index < dataSource?.length; index++) {
-      if (dataSource[index]?.price && dataSource?.length <= 12) {
+    for (let index = 0; index < 12; index++) {
+      if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    console.log('recordList',recordList)
-    console.log('recordId',recordId)
-    console.log('sum',sum)
     const company=recordId?amountTransform(recordId?.salePrice - amountTransform(sum, '*')-recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.salePrice - amountTransform(sum, '*')-recordList?.retailSupplyPrice, '/').toFixed(2)
-    console.log('company',company)
     return company
   }
 
