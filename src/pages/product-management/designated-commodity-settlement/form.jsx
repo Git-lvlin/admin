@@ -159,6 +159,7 @@ export default (props) => {
   const [recordList, setRecordList] = useState([])
   const [recordId, setRecordId] = useState()
   const actionRef = useRef();
+  const [submitType,setSubmitType] = useState()
 
   useEffect(() => {
     if (detailData?.spuId) {
@@ -284,9 +285,9 @@ export default (props) => {
       cityAgent: amountTransform(dataSource[9].price, '*'),
       dividends: amountTransform(dataSource[10].price, '*'),
       company: amountTransform(compute(), '*'),
-      extData: dataSource.filter(ele => ele.id > 12).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') }))
+      extData: dataSource.filter(ele => ele.id > 12).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') })),
     }
-    saveCommissionConfig(params).then(res => {
+    saveCommissionConfig(submitType==1?{status:1,...params}:params).then(res => {
       if (res.code == 0) {
         setVisible(false)
         callback()
@@ -406,11 +407,23 @@ export default (props) => {
         }
       }}
       submitter={{
-        searchConfig: {
-          resetText: '',
-          submitText: detailData?.id?'保存':'提交'
-        }
-      }}
+        render: (props, defaultDoms) => {
+            return [
+                <Button  type="default" style={{color:'red',borderColor:'red'}} key="submitUse" onClick={() => {
+                  props.form?.submit?.()
+                  setSubmitType(1)
+                }}>
+                  {detailData?.id?'保存':'提交'}并立即应用
+                </Button>,
+                <Button  type="primary" key="submit" onClick={() => {
+                  props.form?.submit?.()
+                  setSubmitType(2)
+                }}>
+                  {detailData?.id?'保存':'提交'}
+                </Button>
+            ];
+        },
+        }}
       onFinish={async (values) => {
         await submit(values);
       }}
