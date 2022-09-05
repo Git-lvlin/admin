@@ -306,7 +306,11 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
+    console.log('recordList',recordList)
+    console.log('recordId',recordId)
+    console.log('sum',sum)
     const company=recordId?amountTransform(recordId?.salePrice - amountTransform(sum, '*')-recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.salePrice - amountTransform(sum, '*')-recordList?.retailSupplyPrice, '/').toFixed(2)
+    console.log('company',company)
     return company
   }
 
