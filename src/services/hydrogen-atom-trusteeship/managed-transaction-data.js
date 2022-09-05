@@ -58,7 +58,7 @@ export const hostingLease = async (data, options = {}) => {
     data: res.data.records,
     total: res.data.total,
     success: res.success,
-    monthSum: res.monthSum
+    monthSum: res.data.monthSum
   }
 }
 
