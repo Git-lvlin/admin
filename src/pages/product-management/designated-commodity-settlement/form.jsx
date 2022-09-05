@@ -375,7 +375,7 @@ export default (props) => {
             } else if (_?.entry?.id == 12) {
               return <>
                 <p>{compute()}元</p>
-                <p style={{ color: '#F88000' }}>= 售价  -  前12项之和（随前11项数据即时更新）</p>
+                <p style={{ color: '#F88000' }}>= 售价  -  前11项之和（随前11项数据即时更新）</p>
               </>
             }
             return <InputNumber  
