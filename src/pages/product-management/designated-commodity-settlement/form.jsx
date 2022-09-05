@@ -300,6 +300,7 @@ export default (props) => {
     })
   }, [])
   const compute = () => {
+    console.log('dataSource',dataSource)
     let sum = 0
     for (let index = 0; index < dataSource?.length; index++) {
       if (dataSource[index]?.price && dataSource?.length <= 12) {
