@@ -11,6 +11,7 @@ import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import ProCard from "@ant-design/pro-card"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -25,30 +26,13 @@ const formItemLayout = {
     }
   };
 
-export default (props) => {
-  const { visible, setVisible,msgDetail,onClose,type} = props;
-  const [form] = Form.useForm();
+const CumulativePerformance=(props) => {
+  const { type,msgDetail } = props
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState({})
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
-  const divideName=()=>{
-    switch (type) {
-      case 1:
-        return '累计业绩'
-      case 2:
-        return '销售提成'
-      case 3:
-        return '托管推广提成'
-      case 4:
-        return '运营推广提成'
-      case 5:
-        return '托管租赁管理费提成'
-      default:
-        return ''
-    }
-  }
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
@@ -69,29 +53,9 @@ export default (props) => {
       align: 'center',
     },
     {
-      title: '订单类型',
+      title: '下单人手机号',
       dataIndex: 'orderType',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenRent': '氢原子租金'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenRent': '氢原子租金'
-      },
       hideInSearch: true
     },
     {
@@ -108,7 +72,7 @@ export default (props) => {
       hideInSearch: true,
     },
     {
-      title: '收益',
+      title: '店铺编号',
       dataIndex: 'commissionDesc',
       align: 'center',
       hideInSearch: true
@@ -142,30 +106,6 @@ export default (props) => {
     }
   }
   return (
-    <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
-      onVisibleChange={setVisible}
-      visible={visible}
-      form={form}
-      width={1300}
-      drawerProps={{
-        forceRender: true,
-        destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
-      }}
-      submitter={{
-        render:()=>{
-            return []
-        }
-      }}
-      onFinish={()=>{
-        return false
-      }}
-      {...formItemLayout}
-      className={styles.store_information}
-    >
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}
@@ -210,6 +150,57 @@ export default (props) => {
           </>
         }}
       />
-    </DrawerForm >
   );
 };
+
+
+export default (props)=>{
+  const { visible, setVisible,msgDetail,onClose} = props;
+  const [form] = Form.useForm();
+  const [activeKey, setActiveKey] = useState<string>('1')
+  return (
+      <DrawerForm
+        title={`${msgDetail?.cityBusinessDeptName} 累计业绩 （ID:${msgDetail?.cityBusinessDeptId}）`}
+        onVisibleChange={setVisible}
+        visible={visible}
+        form={form}
+        width={1300}
+        drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+            onClose();
+        }
+        }}
+        submitter={{
+        render:()=>{
+          return []
+        }
+        }}
+        {...formItemLayout}
+        className={styles.store_information}
+      >
+       <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="1" tab="托管购买订单">
+          <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+        </ProCard.TabPane>
+        <ProCard.TabPane key="2" tab="缴纳培训服务费">
+          <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+        </ProCard.TabPane>
+        <ProCard.TabPane key="3" tab="缴纳租赁管理费">
+          <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+        </ProCard.TabPane>
+        <ProCard.TabPane key="4" tab="全款购买订单">
+          <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+        </ProCard.TabPane>
+      </ProCard>
+    </DrawerForm >
+  )
+}
+

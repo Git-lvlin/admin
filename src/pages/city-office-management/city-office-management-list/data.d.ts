@@ -8,6 +8,7 @@ export type DescriptionsProps = {
   hostingUserNum: string;
   operateUserNum: string;
   salesDeviceNum: number;
+  leaseOrderNum: string;
 }
 
 export type TableProps = {
@@ -26,18 +27,47 @@ export type TableProps = {
   operateUserNum: string;
 }
 
-export type GithubIssueItem = {
-  url: string;
-  id: number;
-  number: number;
-  title: string;
-  labels: {
-    name: string;
-    color: string;
-  }[];
-  state: string;
-  comments: number;
-  created_at: string;
-  updated_at: string;
-  closed_at?: string;
+export type AgencySalesListItem= {
+  orderSn: string;
+  payTime: string;
+  userPhone: string;
+  contactPhone: string;
+  address: string;
+};
+
+export type HostingDeviceListItem= {
+  orderSn: string;
+  createTime: string;
+  hostingMemberPhone: string;
+  recomPhone: string;
+  recomStoreHouseNumber: string;
+  recomStoreAddress: string;
+  imei: string;
+  statusDesc: string;
+};
+
+export type AgencyleaseOrderItem= {
+  leaseTitle: string;
+  orderSn: string;
+  payTime: string;
+  memberPhone: string;
+  houseNumber: string;
+  address: string;
+  imei: string;
+};
+
+export type HostingUserListItem= {
+  hostingMemberPhone: string;
+  realname: string;
+  hostingStoreName: string;
+  hostingHouseNumber: string;
+  hostingAddress: string;
+};
+
+export type AgencyOperateUserItem= {
+  memberPhone: string;
+  realname: string;
+  storeName: string;
+  houseNumber: string;
+  address: string;
 };

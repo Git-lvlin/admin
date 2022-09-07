@@ -1,33 +1,28 @@
 export type DescriptionsProps = {
-  totalCommission: string;
-  totalSaleCommission: string;
-  totalRentCommission: string;
-  totalOrderAmount: string;
-  totalBootCommission: string;
+  totalTradeCommission: number;
+  totalCommission: number;
+  totalSaleCommission: number;
+  totalBuyCommission: number;
+  totalTrainingCommission: number;
+  totalLeaseCommission: number;
 }
 
 export type TableProps = {
-  businessDeptId: string;
-  businessDeptName: string;
+  cityBusinessDeptId: string;
+  cityBusinessDeptName: string;
+  totalTradeCommission: string;
   totalCommission: string;
   totalSaleCommission: string;
-  totalRentCommission: string;
-  totalOrderAmount: string;
-  totalCount: string;
-  totalSaleCount: string;
-  totalRentCount: string;
-  totalBootCount: string;
+  totalBuyCommission: string;
+  totalTrainingCommission: string;
+  totalLeaseCommission: string;
 }
 
 
 export type GithubIssueItem = {
-  date: string;
-  orderCount: string;
-  totalCommission: string;
-  totalSaleCommission: string;
-  totalRentCommission: string;
-  totalOrderAmount: string;
-  totalCount: string;
-  totalSaleCount: string;
-  totalRentCount: string;
+  orderTime: string;
+  orderNo: string;
+  orderType: string;
+  orderTypeDesc: string;
+  orderAmount: string;
 };
