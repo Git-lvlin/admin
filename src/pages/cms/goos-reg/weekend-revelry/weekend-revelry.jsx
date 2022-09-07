@@ -154,6 +154,7 @@ const CrazyDate = () => {
       )}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [

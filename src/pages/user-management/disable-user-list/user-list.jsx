@@ -202,6 +202,10 @@ const TableList = () => {
         scroll={{ scrollToFirstRowOnChange: true }}
         request={userList}
         actionRef={actionRef}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
         search={{
           labelWidth: 120,
           defaultCollapsed: true,

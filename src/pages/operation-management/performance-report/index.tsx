@@ -94,6 +94,7 @@ function PerformanceReport () {
         formRef={form}
         options={false}
         search={{
+          labelWidth: 120,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
             <Export 

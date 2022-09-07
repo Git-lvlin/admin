@@ -200,6 +200,7 @@ const BannerAdmin = () => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 5,
+          showQuickJumper: true,
         }}
         rowSelection={{
           // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom

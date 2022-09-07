@@ -107,6 +107,10 @@ export default (props) =>{
               ...dom.reverse(),
           ],
           }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
           columns={columns}
           toolBarRender={() => [
             <Button

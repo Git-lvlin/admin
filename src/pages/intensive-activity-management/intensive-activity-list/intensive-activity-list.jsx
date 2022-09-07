@@ -526,6 +526,7 @@ const TableList = () => {
           actionRef={actionRef}
           pagination={{
             pageSize: 10,
+            showQuickJumper: true,
           }}
         />
       </div>
