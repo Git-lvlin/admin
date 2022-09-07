@@ -21,31 +21,43 @@ export type ListProps = {
   houseNumber: string
 }
 
-export interface StayPutProps {
-  orderId: string
-  hostingOrderId: string
-  hostingMemberPhone: string
-  hostingArea: string
-  hostingHouseNumber: string
-  hostingPayTime: number
-  status: string
-  reason: string
-  storePhone: string
-  storeArea: string
-  storeName: string
-  storeHouseNumber: string
-  storeUserName: string
-  storeAddress: string
-  deadlineDay: string
+export interface TableProps {
+  id: number;
+  memberPhone: string;
+  memberId: string;
+  payOrderSn: string;
+  payTime: string;
+  payType: string;
+  payAmount: number;
+  shopMemberAccount: string;
+  storeName: string;
+  area: string;
+  qualificationNum: number;
+}
+
+export interface LeaseTableProps {
+  id: number;
+  memberPhone: string;
+  memberId: string;
+  payOrderSn: string;
+  payTime: string;
+  payType: number;
+  leasePeriodAmount: number;
+  shopMemberAccount: string;
+  storeName: string;
+  area: string;
+  leaseDay: number;
+  subOrderSn: string;
+  leaseTitle: string;
+  imei: string;
 }
 
 export type DescriptionsProps = {
-  agencyTotalNum: string;
-  agencyLoginNum: string;
-  vipStoreNum: string;
-  commonStoreNum: number;
-  rentMachineNum: number;
-  sellMachineNum: number;
+  deviceTotalPay: number;
+  memberIdCount: number;
+  deviceTotal: number;
+  paidRental: number;
+  leaseCount: number;
 }
 
 export type DeliveryProps = {

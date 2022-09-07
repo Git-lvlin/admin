@@ -6,39 +6,40 @@ import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { FC } from "react"
 import type { FormInstance } from 'antd'
 import { Descriptions } from 'antd'
-import { StayPutProps,DescriptionsProps } from "./data"
+import { TableProps,DescriptionsProps } from "./data"
 
-import { waitPutList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
+import { payPageForAdmin,deviceManageStatsForAdmin } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
 import Export from "@/components/export"
 import AddressCascader from '@/components/address-cascader'
 import styles from './styles.less'
+import { amountTransform } from '@/utils/utils'
 
-const StayPut: FC = () => {
+export default () => {
   const actRef = useRef<ActionType>()
   const formRef = useRef<FormInstance>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const getFieldsValue = () => {
-    const { hostingPayTime, ...rest } = formRef.current?.getFieldsValue()
+    const { payTime, ...rest } = formRef.current?.getFieldsValue()
     return {
-      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
-      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
+      payTimeStart: payTime && moment(payTime?.[0]).unix(),
+      payTimeEnd: payTime && moment(payTime?.[1]).unix(),
       ...rest
     }
   }
 
   useEffect(() => {
-    // userCount({}).then(res=>{
-    //   if(res.code==0){
-    //     setDetailList(res.data)
-    //   }
-    // })
+    deviceManageStatsForAdmin({}).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
 
   }, [])
 
-  const columns: ProColumns<StayPutProps>[] = [
+  const columns: ProColumns<TableProps>[] = [
     {
       title: '下单人手机号码',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'memberPhone',
       align: 'center',
       fieldProps: {
         placeholder: '请输入用户手机'
@@ -47,7 +48,7 @@ const StayPut: FC = () => {
     },
     {
       title: '订单编号',
-      dataIndex: 'hostingOrderId',
+      dataIndex: 'payOrderSn',
       align: 'center',
       fieldProps: {
         placeholder: '请输入订单编号'
@@ -56,28 +57,27 @@ const StayPut: FC = () => {
     },
     {
       title: '支付时间',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => moment(r?.hostingPayTime * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '支付时间',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       order: 6
     },
     {
       title: '订单金额（元）',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => moment(r?.hostingPayTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+      render: (_, r) => amountTransform(_,'/')
     },
      {
       title: '下单人店铺编号',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'storeNo',
       align: 'center',
       fieldProps: {
         placeholder:'请输入社区店编号'
@@ -86,13 +86,13 @@ const StayPut: FC = () => {
     },
     {
       title: '下单人店铺名称',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '下单人店铺所属地区',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'area',
       align: 'center',
       hideInSearch: true
     },
@@ -105,13 +105,13 @@ const StayPut: FC = () => {
     },
     {
       title: '交易资质数(个)',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'qualificationNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '交易资质数(个)',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'qualificationNum',
       align: 'center',
       hideInTable: true,
       valueEnum: {
@@ -125,7 +125,7 @@ const StayPut: FC = () => {
 
   return (
     <>
-      <ProTable<StayPutProps>
+      <ProTable<TableProps>
         rowKey='id'
         columns={columns}
         params={{}}
@@ -133,32 +133,29 @@ const StayPut: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
-        request={waitPutList}
+        request={payPageForAdmin}
         options={false}
         actionRef={actRef}
-        formRef={formRef}
-        search={{
-          labelWidth: 120,
-          optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse(),
-            <Export 
-              type='healthyDeviceWaitPut' 
-              conditions={getFieldsValue}
-              key='export'
-            />
-          ]
-        }}
+        // formRef={formRef}
+        // search={{
+        //   optionRender: (searchConfig, props, dom)=> [
+        //     ...dom.reverse(),
+        //     <Export 
+        //     type='healthyDeviceWaitPut' 
+        //     conditions={getFieldsValue}
+        //     key='export'
+        //   />
+        //   ]
+        // }}
         className={styles.escrow_purchase_transaction}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
-            <Descriptions.Item  label="总业绩金额">{detailList?.agencyTotalNum} 元</Descriptions.Item>
-            <Descriptions.Item  label="总下单店铺数量">{detailList?.agencyLoginNum} 家</Descriptions.Item>
-            <Descriptions.Item  label="总交易资质数量">{detailList?.vipStoreNum} 台</Descriptions.Item>
+            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.deviceTotalPay,'/')} 元</Descriptions.Item>
+            <Descriptions.Item  label="总下单店铺数量">{detailList?.memberIdCount} 家</Descriptions.Item>
+            <Descriptions.Item  label="总交易资质数量">{detailList?.deviceTotal} 台</Descriptions.Item>
           </Descriptions>
         )}
       />
     </>
   )
 }
-
-export default StayPut
