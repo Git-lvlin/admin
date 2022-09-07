@@ -412,6 +412,7 @@ const TableList = () => {
         }}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {overruleVisible && <Overrule

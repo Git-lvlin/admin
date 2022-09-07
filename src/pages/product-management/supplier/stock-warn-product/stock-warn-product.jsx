@@ -208,6 +208,7 @@ const TableList = () => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {/* {formVisible && <Edit

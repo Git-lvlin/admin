@@ -200,6 +200,7 @@ const NewPoster = () => {
         pageSize={pageSize}
         current={page}
         onChange={pageChange}
+        showQuickJumper
       />
       {formVisible && <Edit
         visible={formVisible}

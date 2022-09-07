@@ -573,6 +573,7 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         revalidateOnFocus={false}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}

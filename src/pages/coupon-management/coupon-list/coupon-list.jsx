@@ -310,7 +310,8 @@ return(
         ],
       }}
       pagination={{
-        pageSize:10
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       columns={columns}
     />

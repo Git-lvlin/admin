@@ -81,7 +81,10 @@ const ContentVersion = () => {
       actionRef={actionRef}
       request={contentVersionList}
       search={false}
-      pagination={false}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true,
+      }}
       dateFormatter="string"
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
     />

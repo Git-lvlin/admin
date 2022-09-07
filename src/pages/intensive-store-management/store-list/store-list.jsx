@@ -926,6 +926,7 @@ const StoreList = (props) => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         className={styles.store_list}
       />

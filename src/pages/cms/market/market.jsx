@@ -116,7 +116,8 @@ const BannerAdmin = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       dateFormatter="string"

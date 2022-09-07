@@ -270,6 +270,7 @@ const StrategyToday = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle={<Title actRef={actionRef}/>}

@@ -79,7 +79,10 @@ const Poster = () => {
       actionRef={actionRef}
       request={storyList}
       search={false}
-      pagination={false}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true,
+      }}
       dateFormatter="string"
     />
     {formVisible && <Edit

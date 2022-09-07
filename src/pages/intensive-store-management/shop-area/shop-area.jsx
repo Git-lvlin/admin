@@ -308,6 +308,7 @@ const ShopArea = () => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         editable={{
           type: 'multiple',

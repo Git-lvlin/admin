@@ -119,6 +119,7 @@ const CrazyDate = ( props ) => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         dateFormatter="string"
         toolBarRender={(_,record) => [
