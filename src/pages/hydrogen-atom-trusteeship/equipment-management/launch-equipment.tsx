@@ -145,7 +145,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           onSelect={checkedValue}
         >
           {result.map((value: ListProps) => (
-            <Option key={value.id}>
+            <Option key={value.id} disabled={value.statusCode === 1}>
               <Descriptions
                 bordered
                 column={1}

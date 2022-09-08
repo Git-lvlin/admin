@@ -20,6 +20,7 @@ export type ListProps = {
   address: string
   houseNumber: string
   statusStr: string
+  statusCode: number
 }
 
 export interface StayPutProps {
