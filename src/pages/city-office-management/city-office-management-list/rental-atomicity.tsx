@@ -116,10 +116,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'financial-businessDept-commission-page'}
+              type={'healthyAgencyleaseOrder'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'healthyAgencyleaseOrder'}/>
           ],
         }}
       />
