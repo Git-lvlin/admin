@@ -64,7 +64,7 @@ const Operator = () => {
             已签
             {
               r.contractCountSigned > 0 ?
-              <a href={`/setting/contract-management?type=3&memberPhone=${r.memberPhone}`}>{r.contractCountSigned}</a>:
+              <a href={`/setting/contract-management?type=4&memberPhone=${r.memberPhone}`}>{r.contractCountSigned}</a>:
               <span>{r.contractCountSigned}</span>
             }
             份+待签{r.contractCountAwaiting}份
