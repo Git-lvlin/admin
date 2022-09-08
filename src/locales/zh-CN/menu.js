@@ -419,8 +419,12 @@ export default {
   'menu.buried-point.metadata-management': '元数据管理',
   'menu.buried-point.metadata-management.meta-event': '元事件',
   
-  'menu.office-management': '办事处管理',
-  'menu.office-management.office-management-list': '办事处管理',
-  'menu.office-management.office-achievements': '办事处业绩',
+  'menu.office-management': '省办事处',
+  'menu.office-management.office-management-list': '省办事处管理',
+  'menu.office-management.office-achievements': '省办事处业绩',
+
+  'menu.city-office-management': '市办事处',
+  'menu.city-office-management.city-office-management-list': '市办事处管理',
+  'menu.city-office-management.city-office-achievements': '市办事处业绩',
 
 };
