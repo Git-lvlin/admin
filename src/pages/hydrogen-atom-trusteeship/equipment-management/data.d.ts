@@ -19,6 +19,7 @@ export type ListProps = {
   regionName: string
   address: string
   houseNumber: string
+  statusStr: string
 }
 
 export interface StayPutProps {
