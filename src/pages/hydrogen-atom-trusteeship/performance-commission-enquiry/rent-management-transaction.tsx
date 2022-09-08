@@ -3,13 +3,13 @@ import ProTable from '@ant-design/pro-table'
 import moment from 'moment'
 
 import type { ProColumns, ActionType } from "@ant-design/pro-table"
-import type { FC } from "react"
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 import type { FormInstance } from 'antd'
 import { Descriptions } from 'antd'
 import { LeaseTableProps,DescriptionsProps } from "./data"
 
-import { hostingLease,deviceManageStatsForAdmin } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
-import Export from "@/components/export"
+import { hostingLease } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
 import AddressCascader from '@/components/address-cascader'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
@@ -18,7 +18,8 @@ export default () => {
   const actRef = useRef<ActionType>()
   const formRef = useRef<FormInstance>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const getFieldsValue = () => {
+  const [visit, setVisit] = useState<boolean>(false)
+  const getFieldValue = () => {
     const { payTime, ...rest } = formRef.current?.getFieldsValue()
     return {
       payTimeStart: payTime && moment(payTime?.[0]).unix(),
@@ -26,16 +27,6 @@ export default () => {
       ...rest
     }
   }
-
-  useEffect(() => {
-    deviceManageStatsForAdmin({}).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data)
-      }
-    })
-
-  }, [])
-
   const columns: ProColumns<LeaseTableProps>[] = [
     {
       title: '下单人手机号码',
@@ -149,6 +140,10 @@ export default () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        postData={(data)=>{
+          setDetailList(data)
+          return data?.records
+        }}
         request={hostingLease}
         options={false}
         actionRef={actRef}
@@ -157,10 +152,17 @@ export default () => {
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export 
-              type='healthyDeviceWaitPut' 
-              conditions={getFieldsValue}
-              key='export'
+            <Export
+            change={(e)=> {setVisit(e)}}
+            key="export" 
+            type="membershop-servicefee-export"
+            conditions={()=>{return getFieldValue()}}
+            />,
+            <ExportHistory 
+              key="export-history" 
+              show={visit}
+              setShow={setVisit}
+              type="membershop-servicefee-export"
             />
           ]
         }}

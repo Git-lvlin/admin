@@ -1,24 +1,22 @@
 import { useState, useRef, useEffect } from 'react'
 import ProTable from '@ant-design/pro-table'
-import moment from 'moment'
 
-import type { ProColumns, ActionType } from "@ant-design/pro-table"
-import type { FC } from "react"
-import type { FormInstance } from 'antd'
-import { Descriptions } from 'antd'
+import type { ProColumns } from "@ant-design/pro-table"
+import { Descriptions, FormInstance } from 'antd'
 import { TableProps,DescriptionsProps } from "./data"
 
-import { payPageForAdmin,deviceManageStatsForAdmin } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
-import Export from "@/components/export"
+import { payPageForAdmin } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
 import AddressCascader from '@/components/address-cascader'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 export default () => {
-  const actRef = useRef<ActionType>()
-  const formRef = useRef<FormInstance>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const getFieldsValue = () => {
+  const formRef = useRef<FormInstance>()
+  const [visit, setVisit] = useState<boolean>(false)
+  const getFieldValue = () => {
     const { payTime, ...rest } = formRef.current?.getFieldsValue()
     return {
       payTimeStart: payTime && moment(payTime?.[0]).unix(),
@@ -26,16 +24,6 @@ export default () => {
       ...rest
     }
   }
-
-  useEffect(() => {
-    deviceManageStatsForAdmin({}).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data)
-      }
-    })
-
-  }, [])
-
   const columns: ProColumns<TableProps>[] = [
     {
       title: '下单人手机号码',
@@ -124,7 +112,6 @@ export default () => {
   ]
 
   return (
-    <>
       <ProTable<TableProps>
         rowKey='id'
         columns={columns}
@@ -133,20 +120,30 @@ export default () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        postData={(data)=>{
+          setDetailList(data)
+          return data?.records
+        }}
+        formRef={formRef}
         request={payPageForAdmin}
         options={false}
-        actionRef={actRef}
-        // formRef={formRef}
-        // search={{
-        //   optionRender: (searchConfig, props, dom)=> [
-        //     ...dom.reverse(),
-        //     <Export 
-        //     type='healthyDeviceWaitPut' 
-        //     conditions={getFieldsValue}
-        //     key='export'
-        //   />
-        //   ]
-        // }}
+        search={{
+          optionRender: (searchConfig, formProps, dom) => [
+             ...dom.reverse(),
+             <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="membershop-servicefee-export"
+              conditions={()=>{return getFieldValue()}}
+            />,
+            <ExportHistory 
+              key="export-history" 
+              show={visit}
+              setShow={setVisit}
+              type="membershop-servicefee-export"
+            />
+          ],
+        }}
         className={styles.escrow_purchase_transaction}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
@@ -156,6 +153,5 @@ export default () => {
           </Descriptions>
         )}
       />
-    </>
   )
 }

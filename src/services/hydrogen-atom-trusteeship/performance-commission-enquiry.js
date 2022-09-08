@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export const payPageForAdmin = async (params, options = {}) => {
   const { current = 1, pageSize = 10, payTime, ...rest } = params
   const res = await request('/auth/store/memberShopOperator/payPageForAdmin', {
-    method: 'GET',
+    method: 'POST',
     data: {
       page: current,
       size: pageSize,
@@ -15,7 +15,7 @@ export const payPageForAdmin = async (params, options = {}) => {
     ...options
   })
   return {
-    data: res.data.records,
+    data: res.data,
     total: res.data.total,
     success: res.success
   }
@@ -26,7 +26,7 @@ export const payPageForAdmin = async (params, options = {}) => {
 export const hostingLease = async (params, options = {}) => {
     const { current = 1, pageSize = 10, payTime, ...rest } = params
     const res = await request('/auth/store/hostingLease/payPageForAdmin', {
-      method: 'GET',
+      method: 'POST',
       data: {
         page: current,
         size: pageSize,
@@ -37,7 +37,7 @@ export const hostingLease = async (params, options = {}) => {
       ...options
     })
     return {
-      data: res.data.records,
+      data: res.data,
       total: res.data.total,
       success: res.success
     }
