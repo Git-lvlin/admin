@@ -26,6 +26,7 @@ export default (props) => {
       align: 'center',
       valueEnum: {
         'directVipStoreCommissionProxy': 'VIP店主-服务佣金(直)',
+        'investorCommission': '投资方'
       },
       hideInTable: true,
     },
@@ -35,6 +36,7 @@ export default (props) => {
       align: 'center',
       valueEnum: {
         'directVipStoreCommissionProxy': 'VIP店主-服务佣金(直)',
+        'investorCommission': '投资方'
       },
       hideInSearch: true,
     },
