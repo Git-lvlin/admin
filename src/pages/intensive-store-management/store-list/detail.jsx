@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, Drawer, Space, Spin, Row, Divider, Avatar, Descriptions, Image } from 'antd';
+import { Typography, Button, Drawer, Space, Spin, Row, Divider, Avatar, Descriptions, Image, Col } from 'antd';
 import { getDetail } from '@/services/intensive-store-management/store-detail';
 import { amountTransform } from '@/utils/utils'
 import Auth from '@/components/auth'
@@ -92,44 +92,66 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                 {/* <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item> */}
                 {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
               </Descriptions>
-              {detailData?.memberShop?.applyType?.code === 20 &&
-                <div style={{ display: 'flex', marginBottom: 10 }}>
-                  <div>绿色通道证明文件</div>
-                  {
-                    detailData?.memberShop?.applyRow?.credentialList.map(item => (<Image style={{marginRight: 10}} width={50} height={50} src={item} key={item} />))
+              <Row>
+                <Col span={8}>
+                  {detailData?.memberShop?.applyType?.code === 20 &&
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>绿色通道证明文件</div>
+                      {
+                        detailData?.memberShop?.applyRow?.credentialList.map(item => (<Image style={{ marginRight: 10 }} width={50} height={50} src={item} key={item} />))
+                      }
+                    </div>
                   }
-                </div>
-              }
-              <div style={{ display: 'flex', marginBottom: 10 }}>
-                <div>在平台购买生鲜柜的情况：</div>
-                {
-                  (detailData?.freshApplyRow?.id === 0 || detailData?.freshApplyRow?.details?.isOrdered === 0) && '未购买'
-                }
-                {
-                  detailData?.freshApplyRow?.details?.isOrdered === 1 &&
-                  <>购买生鲜柜订单号<a onClick={() => { setSelectItem({ id: detailData?.freshApplyRow?.details?.order?.id }); setOrderDetailVisible(true) }} >{detailData?.freshApplyRow?.details?.order?.orderSn}【{orderStatus[detailData?.freshApplyRow?.details?.order?.status]}】</a></>
-                }
-              </div>
-              <div style={{ display: 'flex', marginBottom: 10 }}>
-                <div>已有生鲜柜的情况：</div>
-                {
-                  !detailData?.freshApplyRow?.details?.attachList && '没有生鲜柜'
-                }
-                {
-                  detailData?.freshApplyRow?.details?.attachList?.length > 0 && <>已有生鲜柜图片{detailData?.freshApplyRow?.details?.attachList.map(item => (<Image width={50} height={50} src={item} key={item} />))}</>
-                }
-              </div>
-              <div style={{ display: 'flex', marginBottom: 10 }}>
-                <div>必备礼包订单号：</div>
-                {
-                  detailData?.memberShop?.giftOrder?.isGiftOrdered === 0
-                  && <span style={{ color: 'red' }}>没有购买记录 </span>
-                }
-                {
-                  detailData?.memberShop?.giftOrder?.isGiftOrdered === 1
-                  && <a onClick={() => { setSelectItem({ id: detailData?.memberShop?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.memberShop?.giftOrder?.orderSn}【{orderStatus[detailData?.memberShop?.giftOrder?.status]}】 </a>
-                }
-              </div>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>在平台购买生鲜柜的情况：</div>
+                    {
+                      (detailData?.freshApplyRow?.id === 0 || detailData?.freshApplyRow?.details?.isOrdered === 0) && '未购买'
+                    }
+                    {
+                      detailData?.freshApplyRow?.details?.isOrdered === 1 &&
+                      <>购买生鲜柜订单号<a onClick={() => { setSelectItem({ id: detailData?.freshApplyRow?.details?.order?.id }); setOrderDetailVisible(true) }} >{detailData?.freshApplyRow?.details?.order?.orderSn}【{orderStatus[detailData?.freshApplyRow?.details?.order?.status]}】</a></>
+                    }
+                  </div>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>已有生鲜柜的情况：</div>
+                    {
+                      !detailData?.freshApplyRow?.details?.attachList && '没有生鲜柜'
+                    }
+                    {
+                      detailData?.freshApplyRow?.details?.attachList?.length > 0 && <>已有生鲜柜图片{detailData?.freshApplyRow?.details?.attachList.map(item => (<Image width={50} height={50} src={item} key={item} />))}</>
+                    }
+                  </div>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>必备礼包订单号：</div>
+                    {
+                      detailData?.memberShop?.giftOrder?.isGiftOrdered === 0
+                      && <span>没有购买记录 </span>
+                    }
+                    {
+                      detailData?.memberShop?.giftOrder?.isGiftOrdered === 1
+                      && <a onClick={() => { setSelectItem({ id: detailData?.memberShop?.giftOrder?.id }); setOrderDetailVisible(true) }}>{detailData?.memberShop?.giftOrder?.orderSn}【{orderStatus[detailData?.memberShop?.giftOrder?.status]}】 </a>
+                    }
+                  </div>
+                </Col>
+                <Col span={8}>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>氢原子托管购买订单：</div>
+                    {
+                      !detailData.investmentAmount
+                        ? <span>没有购买记录 </span>
+                        : <span>{detailData.investmentAmount}单</span>
+                    }
+                  </div>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    {
+                      !detailData.operationAmount
+                        ? <> <div>氢原子托管运营订单：</div><span>没有缴费记录 </span></>
+                        : <> <div>氢原子托管运营设备资质台数：</div><span>{detailData.operationAmount}台 </span></>
+                    }
+                  </div>
+                </Col>
+              </Row>
+
             </div>
           </Row>
           <Row>
