@@ -86,7 +86,7 @@ const ManagedBuy: FC = () => {
       title: '设备合同数量',
       dataIndex: 'contractTotalNums',
       align: 'center',
-      render: ()=> <RangeInput firstPlaceholder='最低数量' lastPlaceholder='最高数量'/>,
+      renderFormItem: ()=> <RangeInput />,
       hideInTable: true
     },
     {
