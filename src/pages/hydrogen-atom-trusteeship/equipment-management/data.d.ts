@@ -31,6 +31,7 @@ export interface StayPutProps {
   hostingHouseNumber: string
   hostingPayTime: number
   status: string
+  statusVal: number
   reason: string
   storePhone: string
   storeArea: string
