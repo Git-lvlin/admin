@@ -153,7 +153,8 @@ const Message = (props) => {
         }}
         columns={columns}
         pagination={{
-          pageSize:10
+          pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {detailsVisible&& <ListDetails

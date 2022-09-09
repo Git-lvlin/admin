@@ -84,6 +84,7 @@ const CancelReason=(props)=> {
         toolBarRender={false}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {visible && <CancelModel

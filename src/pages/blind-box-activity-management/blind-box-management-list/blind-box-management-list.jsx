@@ -136,6 +136,10 @@ export default () => {
           postData={postData}
           search={false}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
          {
           visible&&<BindBoxSet

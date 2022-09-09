@@ -297,6 +297,7 @@ const TableList = () => {
         formRef={formRef}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {basicInfoVisible && <BasicInfo

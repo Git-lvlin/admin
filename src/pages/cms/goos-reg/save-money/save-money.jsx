@@ -210,6 +210,7 @@ const SaveMoney = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [

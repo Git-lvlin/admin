@@ -149,6 +149,9 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                         : <> <div>氢原子托管运营设备资质台数：</div><span>{detailData.operationAmount}台 </span></>
                     }
                   </div>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>氢原子托管租赁设备套餐数：</div><span>{detailData.hostingLeaseAmount}次 </span>
+                  </div>
                 </Col>
               </Row>
 

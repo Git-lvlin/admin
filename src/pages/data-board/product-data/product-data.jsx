@@ -503,7 +503,8 @@ const ProductData = () => {
           request={goodDetail}
           pagination={{
             total: goodsTotal,
-            pageSize: 10
+            pageSize: 10,
+            showQuickJumper: true,
           }}
 
           onSubmit= {()=>setState(state+1)}
