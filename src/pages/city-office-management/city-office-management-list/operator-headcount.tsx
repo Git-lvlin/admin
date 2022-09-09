@@ -4,7 +4,7 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { hostingUserList } from "@/services/city-office-management/city-office-management-list"
+import { agencyOperateUser } from "@/services/city-office-management/city-office-management-list"
 import type { ProColumns } from "@ant-design/pro-table"
 import type { AgencyOperateUserItem } from "./data"
 import Export from '@/pages/export-excel/export'
@@ -89,7 +89,7 @@ export default (props) => {
       <ProTable<AgencyOperateUserItem>
         rowKey="date"
         columns={Columns}
-        request={hostingUserList}
+        request={agencyOperateUser}
         columnEmptyText={false} 
         params={{
           agencyCityId:msgDetail?.agencyId,

@@ -5,7 +5,7 @@ import {
   DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/office-management/office-achievements"
+import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
 
 const formItemLayout = {
     labelCol: { span: 4 },
