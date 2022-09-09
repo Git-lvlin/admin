@@ -144,6 +144,64 @@ export const agencyOperateUser = async (params = {}, options = {}) => {
   }
 
 
+  export const accountCityDetail = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/accountCity/detail', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+  
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+  }
+  
+  export const accountCityEdit = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/accountCity/edit', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+  
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+  }
+  
+  
+  export const checkAccount = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/accountCity/checkAccount', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+  
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+  }
+  
+  export const accountCityResetPwd = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/accountCity/resetPwd', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+  
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+  }
+
+
 
 
 

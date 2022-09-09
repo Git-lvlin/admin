@@ -4,7 +4,7 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/office-management/office-achievements"
+import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/city-office-management-list"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
