@@ -389,11 +389,12 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
     ),
     11: (
       <>
+        <Title level={5}>当前设备管理费信息：</Title>
+        <Divider style={{margin: '-5px 0 10px 0'}}/>
         {
           curData.length !== 0 ?
           <>
-            <Title level={5}>当前设备管理费信息：</Title>
-            <Divider style={{margin: '-5px 0 10px 0'}}/>
+           
             <div className={styles.cardList}>
               <div>{curData?.[0]?.packageName}</div>
               <div>租期截至时间：{curData?.[0]?.leaseEnd}</div>
