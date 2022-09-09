@@ -25,7 +25,9 @@ export default (props) => {
       dataIndex: 'commissionType',
       align: 'center',
       valueEnum: {
-        'directVipStoreCommissionProxy': 'VIP店主-服务佣金(直)',
+        'directVipStoreCommissionProxy': '投资人推荐佣金',
+        'investorCommission': '运营商推荐佣金',
+        'investorIncome': '投资人投资收益'
       },
       hideInTable: true,
     },
@@ -34,7 +36,9 @@ export default (props) => {
       dataIndex: 'tradeType',
       align: 'center',
       valueEnum: {
-        'directVipStoreCommissionProxy': 'VIP店主-服务佣金(直)',
+        'directVipStoreCommissionProxy': '投资人推荐佣金',
+        'investorCommission': '运营商推荐佣金',
+        'investorIncome': '投资人投资收益'
       },
       hideInSearch: true,
     },
