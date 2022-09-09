@@ -21,18 +21,22 @@ const AgentOperatingOrder = () => {
     {
       title: '订单状态',
       dataIndex: 'status',
-      align: 'center',
       valueType: 'select',
       valueEnum: {
-        1: '投放失败',
-        2: '投放成功',
         5: '待发货',
         6: '待收货',
         7: '已收货',
         10: '运营中',
         15: '停止运营',
         20: '停止托管'
-      }
+      },
+      hideInTable: true
+    },
+    {
+      title: '订单状态',
+      dataIndex: 'statusDesc',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '运营商手机号',
