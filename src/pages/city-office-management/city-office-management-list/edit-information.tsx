@@ -4,7 +4,7 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountDetail,accountEdit,checkAccount } from "@/services/office-management/office-management-list"
+import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/office-management/office-achievements"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
@@ -43,7 +43,7 @@ export default (props) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    accountDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
+    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
           name:msgDetail?.agencyName,
@@ -99,7 +99,7 @@ export default (props) => {
           ...values,
           password:values?.password&&md5(values?.password)
         }
-        accountEdit(params).then(res=>{
+        accountCityEdit(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)

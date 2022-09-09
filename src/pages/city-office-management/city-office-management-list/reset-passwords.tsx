@@ -5,7 +5,7 @@ import {
   DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountResetPwd } from "@/services/office-management/office-management-list"
+import { accountCityResetPwd } from "@/services/office-management/office-achievements"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -51,7 +51,7 @@ export default (props) => {
         },
       }}
       onFinish={async (values) => {
-        accountResetPwd(values).then(res=>{
+        accountCityResetPwd(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
