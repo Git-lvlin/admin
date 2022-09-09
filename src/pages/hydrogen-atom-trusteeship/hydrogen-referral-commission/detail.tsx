@@ -19,6 +19,13 @@ export default (props) => {
       title: '被推荐人手机',
       dataIndex: 'buyerMobile',
       align: 'center',
+      render: (_,data)=>{
+        if(data?.tradeType=='investorIncome'){
+          return '-'
+        }else{
+          return _
+        }
+      }
     },
     {
       title: '佣金类型',
