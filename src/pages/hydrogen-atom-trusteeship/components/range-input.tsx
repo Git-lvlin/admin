@@ -1,9 +1,17 @@
+import { useRef } from "react"
 import { Input, InputNumber } from 'antd'
 
 import type { FC } from "react"
 import type { RangeInputProps } from './data'
 
-const RangeInput: FC<RangeInputProps> = ({firstPlaceholder , lastPlaceholder}) => {
+const RangeInput: FC<RangeInputProps> = ({
+  firstPlaceholder='最低数量',
+  lastPlaceholder='最高数量',
+  onChange= ()=>{}
+}) => {
+  const min = useRef<number>()
+  const max = useRef<number>()
+
   return (
     <Input.Group compact>
       <InputNumber  
@@ -14,6 +22,10 @@ const RangeInput: FC<RangeInputProps> = ({firstPlaceholder , lastPlaceholder}) =
         }}
         min={0}
         placeholder={firstPlaceholder} 
+        onChange={(v)=>{
+          min.current = v
+          onChange({min: v, max: max.current})
+        }}
       />
       <Input
         style={{
@@ -34,6 +46,10 @@ const RangeInput: FC<RangeInputProps> = ({firstPlaceholder , lastPlaceholder}) =
         }}
         min={0}
         placeholder={lastPlaceholder}
+        onChange={(v)=> {
+          max.current = v
+          onChange({min: min.current, max: v})
+        }}
       />
     </Input.Group>
   )

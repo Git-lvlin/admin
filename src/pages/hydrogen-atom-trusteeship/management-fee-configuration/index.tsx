@@ -32,13 +32,13 @@ const ManagementFeeConfiguration: FC = () => {
       title: '售价',
       dataIndex: 'periodAmount',
       align: 'center',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `${amountTransform(_, '/')}元`
     },
     {
       title: '折合每月管理费',
       dataIndex: 'fee',
       align: 'center',
-      render: (_, r) => amountTransform(Math.round(+new Big(parseFloat(r.periodAmount)).div(parseFloat(r.period))), '/')
+      render: (_, r) => `${amountTransform(Math.round(+new Big(parseFloat(r.periodAmount)).div(parseFloat(r.period))), '/')}元`
     },
     {
       title: '备注说明',

@@ -5,6 +5,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { TableProps } from "../data"
 
 import { contractPage } from "@/services/setting/contract-management"
+import { getPageQuery } from '@/utils/utils'
 
 const HydrogenThirdpartnarContract: FC = () => {
 
@@ -21,7 +22,8 @@ const HydrogenThirdpartnarContract: FC = () => {
     {
       title: '店主手机',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      initialValue: getPageQuery().memberPhone
     },
     {
       title: '社区店ID',

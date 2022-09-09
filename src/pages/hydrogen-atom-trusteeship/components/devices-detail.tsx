@@ -122,7 +122,7 @@ const DevicesDetail: FC<DevicesProps> = (props) => {
       setLoad(false)
       setData(res.data)
       setPageTotal(res.total)
-      setMonth(res?.monthSum)
+      setMonth(res.monthSum)
     })
    
   }, [pageSize, page, checked])
