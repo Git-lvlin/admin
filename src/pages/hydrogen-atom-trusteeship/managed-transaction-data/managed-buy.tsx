@@ -29,8 +29,7 @@ const ManagedBuy: FC = () => {
     {
       title: '手机号码',
       dataIndex: 'hostingMemberPhone',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '姓名',
@@ -103,8 +102,7 @@ const ManagedBuy: FC = () => {
     {
       title: '店铺编号',
       dataIndex: 'houseNumber',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '店铺名称',
@@ -269,13 +267,6 @@ const ManagedBuy: FC = () => {
           return <span>{amountTransform(_, '/')}</span>
         }
       }
-    },
-    {
-      dataIndex: 'searchVal',
-      fieldProps: {
-        placeholder: '请输入手机号或店铺编号'
-      },
-      hideInTable: true
     }
   ]
 
