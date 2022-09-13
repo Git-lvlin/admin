@@ -163,6 +163,11 @@ const TableList = () => {
       valueEnum: typeTransform(config.goodsState),
       hideInTable: true,
     },
+    {
+      title: '预警更新时间',
+      dataIndex: 'updateTime',
+      hideInSearch: true,
+    },
   ];
 
   useEffect(() => {
