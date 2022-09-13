@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 
+import type { FormInstance } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 
 import { MemberShopOperatorPage } from '@/services/hydrogen-atom-trusteeship/managed-transaction-data'
 import { amountTransform, getPageQuery } from "@/utils/utils"
 import DevicesDetail from "../components/devices-detail"
-
+import Export from "@/components/export"
+import RangeInput from "../components/range-input"
 
 const Operator = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -17,18 +19,20 @@ const Operator = () => {
   const [normal, setNormal] = useState<string>()
   const [deductible, setDeductible] = useState<string>()
   const [amount, setAmount] = useState<number>()
+  const form = useRef<FormInstance>()
 
   const paramsData = getPageQuery()
 
+  const getFieldsValue = () =>{
+    const { contractTotalNums, ...rest } = form.current?.getFieldsValue()
+    return {
+      contractNumStart: contractTotalNums && contractTotalNums?.min,
+      contractNumEnd: contractTotalNums && contractTotalNums?.max,
+      ...rest
+    }
+  }
+
   const columns: ProColumns[] = [
-    {
-      dataIndex: 'keyword',
-      fieldProps: {
-        placeholder: '请输入手机号或店铺编号'
-      },
-      initialValue: paramsData.searchVal ?? paramsData.searchVal,
-      hideInTable: true
-    },
     {
       dataIndex: 'memberId',
       hideInTable: true,
@@ -38,7 +42,7 @@ const Operator = () => {
       title: '手机号码',
       dataIndex: 'memberPhone',
       align: 'center',
-      hideInSearch: true
+      initialValue: paramsData.searchVal ?? paramsData.searchVal
     },
     {
       title: '姓名',
@@ -47,10 +51,27 @@ const Operator = () => {
       hideInSearch: true
     },
     {
+      title: '运营商姓名',
+      dataIndex: 'realname',
+      align: 'center',
+      hideInTable: true
+    },
+    {
       title: '合同状态',
       dataIndex: 'contractStatusStr',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '运营合同签订状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        'contractsignedall': '全部签订',
+        'contractpartofsign': '部分签订',
+        'contractunsigned': '没有签订'
+      },
+      hideInTable: true
     },
     {
       title: '合同数量',
@@ -64,7 +85,7 @@ const Operator = () => {
             已签
             {
               r.contractCountSigned > 0 ?
-              <a href={`/setting/contract-management?type=4&memberPhone=${r.memberPhone}`}>{r.contractCountSigned}</a>:
+              <a href={`/setting/contract-management`} onClick={()=> {window.localStorage.setItem('managed', JSON.stringify({"type": 4, "memberPhone": r.memberPhone}))}}>{r.contractCountSigned}</a>:
               <span>{r.contractCountSigned}</span>
             }
             份+待签{r.contractCountAwaiting}份
@@ -93,14 +114,26 @@ const Operator = () => {
     {
       title: '店铺编号',
       dataIndex: 'shopMemberAccount',
+      align: 'center'
+    },
+    {
+      title: '缴费合同数',
+      dataIndex: 'contractTotalNums',
       align: 'center',
-      hideInSearch: true
+      renderFormItem: ()=> <RangeInput />,
+      hideInTable: true
     },
     {
       title: '社区店名称',
       dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '运营商店铺名称',
+      dataIndex: 'storeName',
+      align: 'center',
+      hideInTable: true
     },
     {
       title: '待运营设备数',
@@ -242,10 +275,16 @@ const Operator = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         search={{
-          labelWidth: 80,
+          labelWidth: 120,
           optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='export'
+              type='store-export-membershopoperator'
+              conditions={getFieldsValue}
+            />
           ]
         }}
         params={{}}

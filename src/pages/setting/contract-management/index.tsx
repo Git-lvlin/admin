@@ -6,15 +6,16 @@ import type { FC } from "react"
 import SupplierEntryContract from "./supplier-entry-contract"
 import HydrogenLeaseContract from "./hydrogen-lease-contract"
 import HydrogenThirdpartnarContract from "./hydrogen-thirdpartnar-contract"
-import { getPageQuery } from '@/utils/utils'
 
  const ContractManagement:FC = () => {
+  const key = JSON.parse(window.localStorage.getItem('managed') as string)?.type
+  
   return (
     <PageContainer title={false}>
       <ProCard
         tabs={{
           type: 'card',
-          defaultActiveKey: getPageQuery().type as string || '1',
+          defaultActiveKey: `${key}` || '1',
         }}
       >
         <ProCard.TabPane key="1" tab="供应商入驻合同">

@@ -20,6 +20,15 @@ const ManagedBuy: FC = () => {
   const [amount, setAmount] = useState<number>()
   const form = useRef<FormInstance>()
 
+  const getFieldsValue = () =>{
+    const { contractTotalNums, ...rest } = form.current?.getFieldsValue()
+    return {
+      contractStartNums: contractTotalNums && contractTotalNums?.min,
+      contractEndNums: contractTotalNums && contractTotalNums?.max,
+      ...rest
+    }
+  }
+
   const columns: ProColumns[] = [
     {
       dataIndex: 'orderId',
@@ -72,7 +81,7 @@ const ManagedBuy: FC = () => {
             已签
             {
               r.contractSignedNums > 0 ?
-              <a href={`/setting/contract-management?type=3&memberPhone=${r.hostingMemberPhone}`}>{r.contractSignedNums}</a>:
+              <a href={`/setting/contract-management`} onClick={()=> {window.localStorage.setItem('managed', JSON.stringify({"type": 3, "memberPhone": r.hostingMemberPhone}))}}>{r.contractSignedNums}</a>:
               <span>{r.contractSignedNums}</span>
             }
             份+待签{r.contractPendSignNums}份
@@ -290,7 +299,7 @@ const ManagedBuy: FC = () => {
             <Export 
               key='exprot'
               type='healthyDeviceTransList'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={getFieldsValue}
             />
           ]
         }}
