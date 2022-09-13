@@ -58,7 +58,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         if (res.code === 0) {
           setResult(res.data.records.map((item: ListProps)=>({
             ...item,
-            id: item.storeNo,
+            id: item.id,
             realname: item.realname,
             memberPhone: item.memberPhone,
             fullAddress: item.fullAddress
