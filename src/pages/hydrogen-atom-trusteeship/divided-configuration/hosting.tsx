@@ -27,7 +27,7 @@ const Hosting = () => {
       width: '30%'
     },
     {
-      title: '累计分成金额(元)',
+      title: '分成金额(元)',
       dataIndex: 'divideMoney',
       align: 'center',
       render: (_) => amountTransform(_, '/')
