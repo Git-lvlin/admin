@@ -1,7 +1,6 @@
-import { useRef } from "react"
+import { useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
 import moment from "moment"
-import { history } from "umi"
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
@@ -9,11 +8,12 @@ import type { FormInstance } from "antd"
 import type { TableProps, LeaseContractProps } from "../data"
 
 import { deviceContract } from "@/services/setting/contract-management"
-import { getPageQuery } from '@/utils/utils'
 
 const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps) => {
   const { type } = props
+  const [memberPhone, setMemberPhone] = useState(JSON.parse(window.localStorage.getItem('managed') as string)?.memberPhone)
   const form = useRef<FormInstance>()
+  window.localStorage.removeItem('managed')
 
   const tableHeader = {
     1: '租赁订单号',
@@ -34,7 +34,7 @@ const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps
       title: '店主手机',
       dataIndex: 'memberPhone',
       align: 'center',
-      initialValue: getPageQuery().memberPhone
+      initialValue: memberPhone
     },
     {
       title: '社区店ID',
@@ -90,14 +90,12 @@ const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps
             ...dom.reverse()
           ]
         }}
-        onReset={ async ()=> {
-          await new Promise<void>((resolve) => {
-            getPageQuery()?.memberPhone && history.push(`/setting/contract-management`)
-            resolve()
-          }).then(()=> {
+        onReset={()=> {
+          setTimeout(()=> {
+            setMemberPhone(undefined)
             form.current?.resetFields()
             form.current?.submit()
-          })
+          }, 0)
         }}
       />
     </>

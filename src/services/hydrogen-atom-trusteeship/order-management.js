@@ -39,3 +39,14 @@ export const agentOrderPage = async (params, options = {}) => {
     success: res.success
   }
 }
+
+// 查询物流信息
+export const expressInfo = async (params={}, options={}) => {
+  return await request('/auth/express/express/expressInfo', {
+    method: 'POST',
+    data: {
+      ...params
+    },
+    ...options
+  })
+}
