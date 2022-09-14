@@ -155,7 +155,7 @@ const StayPut: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
-        request={waitPutList}
+        // request={waitPutList}
         options={false}
         actionRef={actRef}
         formRef={formRef}

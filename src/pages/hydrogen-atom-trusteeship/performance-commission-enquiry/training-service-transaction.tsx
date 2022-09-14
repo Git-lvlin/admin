@@ -133,14 +133,14 @@ export default () => {
              <Export
               change={(e)=> {setVisit(e)}}
               key="export" 
-              type="membershop-servicefee-export"
+              type="store-export-membershopoperator-paypage"
               conditions={()=>{return getFieldValue()}}
             />,
             <ExportHistory 
               key="export-history" 
               show={visit}
               setShow={setVisit}
-              type="membershop-servicefee-export"
+              type="store-export-membershopoperator-paypage"
             />
           ],
         }}
