@@ -59,6 +59,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           setResult(res.data.records.map((item: ListProps)=>({
             ...item,
             id: item.id,
+            storeNo: item.storeNo,
             realname: item.realname,
             memberPhone: item.memberPhone,
             fullAddress: item.fullAddress
@@ -70,10 +71,10 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
   }, [])
 
   const checkedValue = (e: string) => {
-    const arr = result.filter(item=> item.storeNo === e)
+    const arr = result.filter(item=> item.id === parseInt(e))
     arr.forEach(item=>{
       formRef.current?.setFieldsValue({
-        storeNo: item.id,
+        storeNo: item.storeNo,
         storeName: `【${item.shopMemberAccount}】${item.storeName}`,
         realname: item.realname,
         memberPhone: item.memberPhone,
