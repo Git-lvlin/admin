@@ -4,7 +4,8 @@ import {
   AutoComplete, 
   Descriptions,
   message,
-  Typography
+  Typography,
+  Empty
 } from "antd"
 import { debounce } from 'lodash'
 
@@ -86,6 +87,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
 
 
   const submit = (e: ListProps) => {
+    delete e['store']
     return new Promise<void>((resolve, reject) => { 
       if(Object.keys(e).length) {
         api?.({...e, orderId}, {showSuccess: true}).then(res => {
@@ -144,6 +146,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           }}
           onSearch={debounceFetcher}
           onSelect={checkedValue}
+          notFoundContent={<Empty/>}
         >
           {result.map((value: ListProps) => (
             <Option key={value.id} disabled={value.statusCode === 1}>
