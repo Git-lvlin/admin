@@ -8,6 +8,7 @@ import { getDetail, getConfig } from '@/services/product-management/product-list
 import { amountTransform, typeTransform } from '@/utils/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
+import Export from '@/components/export'
 
 
 const TableList = () => {
@@ -170,6 +171,19 @@ const TableList = () => {
     },
   ];
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        selectType: 1,
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     getConfig()
       .then(res => {
@@ -208,6 +222,11 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
+            <Export
+              key='export'
+              type='goods-stock-alarm'
+              conditions={getFieldValue}
+            />
           ],
         }}
         columns={columns}
