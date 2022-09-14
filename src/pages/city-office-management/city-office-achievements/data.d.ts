@@ -25,4 +25,5 @@ export type GithubIssueItem = {
   orderType: string;
   orderTypeDesc: string;
   orderAmount: string;
+  buyerMobile: string
 };
