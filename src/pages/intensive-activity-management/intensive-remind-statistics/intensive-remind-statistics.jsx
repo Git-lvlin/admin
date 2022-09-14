@@ -64,6 +64,10 @@ return(
           ...dom.reverse()
         ],
       }}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true,
+      }}
       columns={columns}
     />
   </PageContainer>

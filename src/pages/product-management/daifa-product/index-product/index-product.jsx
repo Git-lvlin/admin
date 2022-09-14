@@ -97,7 +97,7 @@ export default function EditTable() {
     goodsLoading(params).then((res) => {
       if (res.code === 0) {
         message.success('更新成功')
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -257,7 +257,8 @@ export default function EditTable() {
         }
       }}
       pagination={{
-        pageSize: 10
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       // rowSelection={{
       //   onChange: (_, val) => {

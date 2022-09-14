@@ -51,6 +51,7 @@ const index = () => {
         request={standLetterList}
         scroll={{ y: window.innerHeight - 400, scrollToFirstRowOnChange: true, }}
         pagination={{
+          pageSize: 10,
           showQuickJumper: true,
         }}
       />

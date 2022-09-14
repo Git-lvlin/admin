@@ -22,14 +22,14 @@ const HotSearch = () => {
     hotSearchDel({id}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 
@@ -110,6 +110,7 @@ const HotSearch = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       toolBarRender={(_) => [

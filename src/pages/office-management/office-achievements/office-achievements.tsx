@@ -170,7 +170,8 @@ export default function TransactionData () {
           setTime(val)
         }}
         pagination={{
-          pageSize: 10
+          pageSize: 10,
+          showQuickJumper: true,
         }}
         options={false}
         search={{

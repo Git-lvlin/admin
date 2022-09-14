@@ -269,6 +269,7 @@ const StoreReview = () => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {drawerVisible &&

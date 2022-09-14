@@ -28,7 +28,7 @@ const BannerAdmin = () => {
     bannerSortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -50,14 +50,14 @@ const BannerAdmin = () => {
     homeBannerDel({ids: ids}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 
@@ -224,6 +224,7 @@ const BannerAdmin = () => {
       }}
       pagination={{
         pageSize: 5,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle="banner管理"

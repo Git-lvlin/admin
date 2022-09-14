@@ -88,17 +88,17 @@ const Detail = (props) => {
         <div style={{ display: 'flex' }}>
           <div style={{ flex: 1 }}>
             <Form.Item
-              label="运营商名称"
+              label="运营中心名称"
             >
               {detailData.companyName}
             </Form.Item>
             <Form.Item
-              label="运营商登录账号"
+              label="运营中心登录账号"
             >
               {detailData.accountName}
             </Form.Item>
             <Form.Item
-              label="运营商联系人"
+              label="运营中心联系人"
             >
               {detailData.companyUserName}
             </Form.Item>
@@ -115,7 +115,7 @@ const Detail = (props) => {
               {detailData.companyUserPhone}
             </Form.Item>
             <Form.Item
-              label="运营商所管辖区域"
+              label="运营中心所管辖区域"
             >
               {detailData.provinceName}{detailData.cityName}{detailData.areaName}
             </Form.Item>
@@ -126,11 +126,11 @@ const Detail = (props) => {
             </Form.Item>
           </div>
         </div>
-        <Title level={4}>运营商资金账户信息</Title>
+        <Title level={4}>运营中心资金账户信息</Title>
         <div style={{ display: 'flex' }}>
           <div style={{ flex: 1 }}>
             <Form.Item
-              label="运营商名称"
+              label="运营中心名称"
             >
               {detailData.companyName}
             </Form.Item>

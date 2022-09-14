@@ -28,14 +28,14 @@ const BannerAdmin = () => {
     marketDel({id: id}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (!formVisible) {
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [formVisible])
 
@@ -116,7 +116,8 @@ const BannerAdmin = () => {
         labelWidth: 'auto',
       }}
       pagination={{
-        pageSize: 5,
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       dateFormatter="string"

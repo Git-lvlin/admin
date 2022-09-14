@@ -111,7 +111,8 @@ const ServiceCharge = () => {
       request={serviceFee}
       pagination={{
         total,
-        pageSize: 10
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       toolbar={{
         settings: false

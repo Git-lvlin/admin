@@ -35,7 +35,7 @@ const DetailList = (props) => {
     cmsGoodsStatusSub({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -170,7 +170,7 @@ const DetailList = (props) => {
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset()
+      actionRef.current.reload()
       setFlag(false)
     }
   }, [flag]);

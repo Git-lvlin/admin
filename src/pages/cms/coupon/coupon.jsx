@@ -16,7 +16,7 @@ const Coupon = () => {
     couponCmsSortTop({id: data}).then((res) => {
       if (res.code === 0) {
         message.success(`置顶成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -25,14 +25,14 @@ const Coupon = () => {
     couponDel({ids: ids}).then((res) => {
       if (res.code === 0) {
         message.success(`删除成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset();
+      actionRef.current.reload();
       setFlag(false)
     }
   }, [flag])
@@ -176,6 +176,7 @@ const Coupon = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [

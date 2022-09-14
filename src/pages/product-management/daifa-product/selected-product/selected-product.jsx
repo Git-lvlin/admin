@@ -194,7 +194,7 @@ export default function EditTable() {
   }
 
   useEffect(() => {
-    hasData&&actionRef.current.reset();
+    hasData&&actionRef.current.reload();
   }, [hasData])
 
   const getGoodsList = () => {
@@ -265,7 +265,8 @@ export default function EditTable() {
         }
       }}
       pagination={{
-        pageSize: 5
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       // rowSelection={{
       //   onChange: (_, val) => {

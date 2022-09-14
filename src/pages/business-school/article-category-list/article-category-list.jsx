@@ -109,7 +109,10 @@ const ArticleCategoryList = () => {
         columns={columns}
         actionRef={actionRef}
         request={findAdminArticleTypeList}
-        pagination={false}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
         dateFormatter="string"
         search={false}
         toolBarRender={(_,record) => [

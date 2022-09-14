@@ -35,7 +35,7 @@ const StrategyToday = () => {
   const formControl = (data,type) => {
     hotGoosOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -54,7 +54,7 @@ const StrategyToday = () => {
   useEffect(() => {
     if (flag) {
       setFlag(false)
-      actionRef.current.reset();
+      actionRef.current.reload();
     }
   }, [flag])
 
@@ -270,6 +270,7 @@ const StrategyToday = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle={<Title actRef={actionRef}/>}

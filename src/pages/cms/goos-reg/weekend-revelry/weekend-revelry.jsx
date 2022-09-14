@@ -25,14 +25,14 @@ const CrazyDate = () => {
     cmsWeekStatusSub({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
 
   useEffect(() => {
     if(flag) {
-      actionRef.current.reset();
+      actionRef.current.reload();
       setFlag(false)
     }
   }, [flag])
@@ -154,6 +154,7 @@ const CrazyDate = () => {
       )}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       toolBarRender={(_,record) => [

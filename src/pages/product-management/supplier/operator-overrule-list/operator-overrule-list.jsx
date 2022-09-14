@@ -305,6 +305,7 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
           onChange: () => {
             setSelectedRowKeys([])
           }

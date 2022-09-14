@@ -24,7 +24,7 @@ const HotGoos = () => {
 
   useEffect(() => {
     if (flag) {
-      actionRef.current.reset();
+      actionRef.current.reload();
       setFlag(false)
     }
   }, [flag])
@@ -38,7 +38,7 @@ const HotGoos = () => {
     hotGoosOperation({ids: data,status: type}).then((res) => {
       if (res.code === 0) {
         message.success(`${ACTION_TYPE[type]}成功`);
-        actionRef.current.reset();
+        actionRef.current.reload();
       }
     })
   }
@@ -249,6 +249,7 @@ const HotGoos = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle={<Title actRef={actionRef}/>}

@@ -125,7 +125,7 @@ export default () => {
   }
   useEffect(() => {
     if (flag) {
-      ref.current.reset()
+      ref.current.reload()
       setFlag(false)
     }
   }, [flag]);
@@ -135,7 +135,10 @@ export default () => {
         actionRef={ref}
         rowKey="id"
         headerTitle="签到红包可用商品配置"
-        options={false}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={productPage}
         search={{

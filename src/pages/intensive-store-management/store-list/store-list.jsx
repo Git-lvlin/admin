@@ -249,6 +249,13 @@ const StoreList = (props) => {
       },
     },
     {
+      title: '氢原子交易',
+      dataIndex: 'iotType',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'normal',
+    },
+    {
       title: '缴纳服务费方式',
       dataIndex: 'servicefeeType',
       valueType: 'text',
@@ -833,6 +840,17 @@ const StoreList = (props) => {
       hideInTable: true,
     },
     {
+      title: '有氢原子交易店铺',
+      dataIndex: 'iotType',
+      valueType: 'text',
+      hideInTable: true,
+      hideInSearch: storeType !== 'normal',
+      valueEnum: {
+        investor: '购买托管',
+        operator: '代运营'
+      }
+    },
+    {
       title: '操作',
       dataIndex: '',
       valueType: 'option',
@@ -908,6 +926,7 @@ const StoreList = (props) => {
         columns={columns}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         className={styles.store_list}
       />
