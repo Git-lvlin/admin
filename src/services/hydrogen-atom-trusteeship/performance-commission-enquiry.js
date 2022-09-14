@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 // 资质支付分页列表 - 培训服务费交易
 export const payPageForAdmin = async (params, options = {}) => {
-  const { current = 1, pageSize = 10, payTime, ...rest } = params
+  const { current = 1, pageSize = 10, payTime,area = [], ...rest } = params
   const res = await request('/auth/store/memberShopOperator/payPageForAdmin', {
     method: 'POST',
     data: {
@@ -10,6 +10,9 @@ export const payPageForAdmin = async (params, options = {}) => {
       size: pageSize,
       payTimeStart:payTime&&payTime[0],
       payTimeEnd:payTime&&payTime[1],
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
       ...rest
     },
     ...options
@@ -24,7 +27,7 @@ export const payPageForAdmin = async (params, options = {}) => {
 
 // 租金支付分页列表 - 租金管理费交易(李源炳)
 export const hostingLease = async (params, options = {}) => {
-    const { current = 1, pageSize = 10, payTime, ...rest } = params
+    const { current = 1, pageSize = 10, payTime,area = [], ...rest } = params
     const res = await request('/auth/store/hostingLease/payPageForAdmin', {
       method: 'POST',
       data: {
@@ -32,6 +35,9 @@ export const hostingLease = async (params, options = {}) => {
         size: pageSize,
         payTimeStart:payTime&&payTime[0],
         payTimeEnd:payTime&&payTime[1],
+        provinceId: area[0]?.value,
+        cityId: area[1]?.value,
+        regionId: area[2]?.value,
         ...rest
       },
       ...options

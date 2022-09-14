@@ -68,7 +68,7 @@ export default () => {
     },
     {
       title: '下单人店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'shopMemberAccount',
       align: 'center',
       fieldProps: {
         placeholder:'请输入社区店编号'
