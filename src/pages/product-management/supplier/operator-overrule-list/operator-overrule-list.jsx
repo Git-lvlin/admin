@@ -10,6 +10,7 @@ import { amountTransform, typeTransform } from '@/utils/utils'
 import Overrule from '../product-review/overrule';
 import { purchaseAuditRefuse, purchaseAuditPass } from '@/services/product-management/product-review'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
+import Export from '@/components/export'
 
 
 const SubTable = (props) => {
@@ -282,6 +283,20 @@ const TableList = () => {
       })
   }
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        goodsVerifyState: 3,
+        selectType: 1,
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -349,7 +364,12 @@ const TableList = () => {
                 setOverruleVisible(true)
               }}>
               批量驳回
-            </Button>
+            </Button>,
+            <Export
+              key='export'
+              type='goods-reject-operateor'
+              conditions={getFieldValue}
+            />
           ],
         }}
         columns={columns}

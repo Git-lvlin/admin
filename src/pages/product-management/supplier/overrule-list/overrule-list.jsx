@@ -7,6 +7,8 @@ import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
 import { amountTransform, typeTransform } from '@/utils/utils'
+import Export from '@/components/export'
+
 
 const SubTable = (props) => {
   const [data, setData] = useState([])
@@ -232,6 +234,34 @@ const TableList = () => {
     },
   ];
 
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], createTime, auditTime, ...rest } = formRef?.current?.getFieldsValue?.();
+
+      const obj = {};
+
+      if (createTime) {
+        obj.createTimeStart = moment(createTime[0]).unix();
+        obj.createTimeEnd = moment(createTime[1]).unix();
+      }
+
+      if (auditTime) {
+        obj.auditTimeStart = moment(auditTime[0]).unix();
+        obj.auditTimeEnd = moment(auditTime[1]).unix();
+      }
+
+      return {
+        ...obj,
+        goodsVerifyState: 2,
+        selectType: 1,
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
+
   useEffect(() => {
     api.getConfig()
       .then(res => {
@@ -278,6 +308,11 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
+            <Export
+              key='export'
+              type='goods-reject-purchase'
+              conditions={getFieldValue}
+            />
           ],
         }}
         columns={columns}
