@@ -109,16 +109,18 @@ export default (props) => {
     },
     {
       title: '收益',
-      dataIndex: 'commissionDesc',
+      dataIndex: 'amount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <p>￥{amountTransform(_,'/').toFixed(2)}</p>
+        }else{
+          return _
+        }
+      },
     }
   ]
-  // const OrderSum=async ()=>{
-  //  let sum=await cityItemOrderSum({})
-  //  console.log('sum',sum)
-  //  return sum?.data?.total
-  // }
   useEffect(()=>{
     const params={
       type:type,
