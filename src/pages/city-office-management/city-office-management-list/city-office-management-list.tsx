@@ -98,7 +98,7 @@ export default function TransactionData () {
     },
     {
       title: '投资商总人数',
-      dataIndex: 'hosingUserNum',
+      dataIndex: 'hostingUserNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
