@@ -5,7 +5,7 @@ import {
   DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountResetPwd } from "@/services/office-management/office-management-list"
+import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -31,7 +31,7 @@ export default (props) => {
   },[])
   return (
     <ModalForm
-      title={`请确认要重置事业部：${msgDetail?.name}（账号：${msgDetail?.userName}）的登录密码？`}
+      title={`请确认要重置事业部：${msgDetail?.agencyName}（账号：${msgDetail?.accountName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -51,7 +51,7 @@ export default (props) => {
         },
       }}
       onFinish={async (values) => {
-        accountResetPwd(values).then(res=>{
+        accountCityResetPwd(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)

@@ -5,15 +5,24 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps,DescriptionsProps } from "./data"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
-import StoreInformation from './store-information'
+import MarketAtomicity from './market-atomicity'
+import CollocationAtomicity from './collocation-atomicity'
+import RentalAtomicity from './rental-atomicity'
+import InvestorHeadcount from './investor-headcount'
+import OperatorHeadcount from './operator-headcount'
+
 import { Descriptions } from 'antd';
 
-import { userLists,userCount } from "@/services/office-management/office-management-list"
+import { agencyCityList,agencyCityCount } from "@/services/city-office-management/city-office-management-list"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
   const [resetVisible, setResetVisible] = useState<boolean>(false)
-  const [storeVisible, setStoreVisible] = useState<boolean>(false)
+  const [storeVisible1, setStoreVisible1] = useState<boolean>(false)
+  const [storeVisible2, setStoreVisible2] = useState<boolean>(false)
+  const [storeVisible3, setStoreVisible3] = useState<boolean>(false)
+  const [storeVisible4, setStoreVisible4] = useState<boolean>(false)
+  const [storeVisible5, setStoreVisible5] = useState<boolean>(false)
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [type, setType] = useState<number>(0)
   const [msgDetail, setMsgDetail] = useState<string>()
@@ -23,16 +32,16 @@ export default function TransactionData () {
       title: 'ID',
       dataIndex: 'agencyId',
       align: 'center',
+      hideInSearch: true,
     },
     {
       title: '办事处名称',
-      dataIndex: 'name',
+      dataIndex: 'agencyName',
       align: 'center',
-      hideInSearch: true
     },
     {
       title: '登录账号',
-      dataIndex: 'userName',
+      dataIndex: 'accountName',
       align: 'center',
       hideInSearch: true,
     },
@@ -45,54 +54,17 @@ export default function TransactionData () {
     {
       title: '负责人手机',
       dataIndex: 'managerPhone',
-      align: 'center'
-    },
-    {
-      title: 'VIP店主数',
-      dataIndex: 'vipStoreNums',
       align: 'center',
-      render: (_,data)=>{
-        if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{_}</a>
-        }else{
-          return _
-        }
-      }
+      hideInSearch: true,
     },
     {
-      title: '普通店主数',
-      dataIndex: 'commonStoreNums',
+      title: '全款销售氢原子数',
+      dataIndex: 'salesDeviceNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
-        }else{
-          return _
-        }
-      }
-    },
-    {
-      title: '销售氢原子数',
-      dataIndex: 'sellMachineNum',
-      align: 'center',
-      hideInSearch: true,
-      render: (_,data)=>{
-        if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
-        }else{
-          return _
-        }
-      }
-    },
-    {
-      title: '租赁氢原子数',
-      dataIndex: 'rentMachineNum',
-      align: 'center',
-      hideInSearch: true,
-      render: (_,data)=>{
-        if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible1(true);setMsgDetail(data);setType(1)}}>{_}</a>
         }else{
           return _
         }
@@ -100,25 +72,25 @@ export default function TransactionData () {
     },
     {
       title: '托管氢原子数',
-      dataIndex: 'rentMachineNum',
+      dataIndex: 'hostingDeviceNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible2(true);setMsgDetail(data);setType(2)}}>{_}</a>
         }else{
           return _
         }
       }
     },
     {
-      title: '运营氢原子数',
-      dataIndex: 'rentMachineNum',
+      title: '氢原子租金单数',
+      dataIndex: 'leaseOrderNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible3(true);setMsgDetail(data);setType(3)}}>{_}</a>
         }else{
           return _
         }
@@ -126,12 +98,12 @@ export default function TransactionData () {
     },
     {
       title: '投资商总人数',
-      dataIndex: 'rentMachineNum',
+      dataIndex: 'hostingUserNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible4(true);setMsgDetail(data);setType(4)}}>{_}</a>
         }else{
           return _
         }
@@ -139,12 +111,12 @@ export default function TransactionData () {
     },
     {
       title: '运营商总人数',
-      dataIndex: 'rentMachineNum',
+      dataIndex: 'operateUserNum',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
         if(_){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(0)}}>{_}</a>
+          return <a onClick={()=>{setStoreVisible5(true);setMsgDetail(data);setType(5)}}>{_}</a>
         }else{
           return _
         }
@@ -162,9 +134,9 @@ export default function TransactionData () {
     },
   ]
   useEffect(() => {
-    userCount({}).then(res=>{
+    agencyCityCount({}).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data[0])
       }
     })
 
@@ -172,28 +144,32 @@ export default function TransactionData () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="市办事处总数量">{detailList?.agencyTotalNum}  </Descriptions.Item>
-        {/* <Descriptions.Item  label="有登录记录办事处数">{detailList?.agencyLoginNum}  </Descriptions.Item> */}
-        <Descriptions.Item  label="VIP店主数（家）">{detailList?.vipStoreNum}  </Descriptions.Item>
-        <Descriptions.Item  label="普通店主数（家）">{detailList?.commonStoreNum}  </Descriptions.Item>
-        <Descriptions.Item  label="销售氢原子（台）">{detailList?.sellMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="租赁氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="托管氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="运营氢原子（台）">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="投资商总人数">{detailList?.rentMachineNum}  </Descriptions.Item>
-        <Descriptions.Item  label="运营商总人数">{detailList?.rentMachineNum}  </Descriptions.Item>
+        <Descriptions.Item  label="市办事处总数量">{detailList?.totalNum}  </Descriptions.Item>
+        <Descriptions.Item  label="全款销售氢原子（台）">{detailList?.salesDeviceNum}  </Descriptions.Item>
+        <Descriptions.Item  label="托管氢原子（台）">{detailList?.hostingDeviceNum}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子托管租金订单（笔）">{detailList?.leaseOrderNum}  </Descriptions.Item>
+        <Descriptions.Item  label="投资商总人数">{detailList?.hostingUserNum}  </Descriptions.Item>
+        <Descriptions.Item  label="运营商总人数">{detailList?.operateUserNum}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
+        headerTitle='列表'
         rowKey="agencyId"
         columns={tableColumns}
-        request={userLists}
+        request={agencyCityList}
         columnEmptyText={false}
         actionRef={form}
         pagination={{
-          pageSize: 10
+          pageSize: 10,
+          showQuickJumper: true,
         }}
         options={false}
-        search={false}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+          ],
+        }}
       />
       {
         visible&&
@@ -216,10 +192,50 @@ export default function TransactionData () {
         />
       }
       {
-        storeVisible&&
-        <StoreInformation
-          visible={storeVisible}
-          setVisible={setStoreVisible}
+        storeVisible1&&
+        <MarketAtomicity
+          visible={storeVisible1}
+          setVisible={setStoreVisible1}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          type={type}
+        />
+      }
+      {
+        storeVisible2&&
+        <CollocationAtomicity
+          visible={storeVisible2}
+          setVisible={setStoreVisible2}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          type={type}
+        />
+      }
+      {
+        storeVisible3&&
+        <RentalAtomicity
+          visible={storeVisible3}
+          setVisible={setStoreVisible3}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          type={type}
+        />
+      }
+      {
+        storeVisible4&&
+        <InvestorHeadcount
+          visible={storeVisible4}
+          setVisible={setStoreVisible4}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          type={type}
+        />
+      }
+      {
+        storeVisible5&&
+        <OperatorHeadcount
+          visible={storeVisible5}
+          setVisible={setStoreVisible5}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           type={type}
