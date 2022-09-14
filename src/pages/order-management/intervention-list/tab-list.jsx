@@ -122,7 +122,8 @@ const TabList =({done})=> {
         scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
         request={interventionList}
         pagination={{
-          showQuickJumper: true
+          showQuickJumper: true,
+          pageSize: 10
         }}
         search={{
           defaultCollapsed: false,
