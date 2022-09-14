@@ -188,7 +188,7 @@ const OperatorRevenueManagement = () =>{
           id={selectItem}
           visible={royaltyVisible}
           setVisible={setRoyaltyVisible}
-          title='运营商收益明细'
+          title='运营中心收益明细'
           type={type}
         />
       }
