@@ -87,6 +87,12 @@ export default {
         path: '/hydrogen-atom-trusteeship/data-report',
         component: './hydrogen-atom-trusteeship/data-report',
         wrappers: [RouteWatcher],
+      },
+      {
+        name: 'performance-commission-enquiry',
+        path: '/hydrogen-atom-trusteeship/performance-commission-enquiry',
+        component: './hydrogen-atom-trusteeship/performance-commission-enquiry',
+        wrappers: [RouteWatcher],
       }
     ]
   }
