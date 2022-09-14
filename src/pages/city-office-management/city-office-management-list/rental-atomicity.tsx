@@ -73,6 +73,7 @@ export default (props) => {
   const getFieldValue = (searchConfig) => {
     const {...rest}=searchConfig.form.getFieldsValue()
     return {
+      agencyCityId:msgDetail?.agencyId,
       ...rest,
     }
   }

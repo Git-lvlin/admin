@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { cityTotalTradeItemListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -85,9 +85,8 @@ const CumulativePerformance=(props) => {
   // }
   useEffect(()=>{
     const params={
-      type:type,
       cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
+      orderType:type,
       orderNo:time?.orderNo,
       begin:time?.dateRange?.[0]||msgDetail?.begin,
       end:time?.dateRange?.[1]||msgDetail?.end
@@ -109,14 +108,12 @@ const CumulativePerformance=(props) => {
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={cityTotalTradeItemListPage}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          type:type,
-          businessDeptId:msgDetail?.businessDeptId,
-          begin:msgDetail?.begin,
-          end:msgDetail?.end
+          orderType:type,
+          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
         }}
         pagination={{
           pageSize: 10,
@@ -157,7 +154,7 @@ const CumulativePerformance=(props) => {
 export default (props)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
-  const [activeKey, setActiveKey] = useState<string>('1')
+  const [activeKey, setActiveKey] = useState<string>('hydrogenAgent')
   return (
       <DrawerForm
         title={`${msgDetail?.cityBusinessDeptName} 累计业绩 （ID:${msgDetail?.cityBusinessDeptId}）`}
@@ -187,16 +184,16 @@ export default (props)=>{
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="1" tab="托管购买订单">
+        <ProCard.TabPane key="hydrogenAgent" tab="托管购买订单">
           <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="缴纳培训服务费">
+        <ProCard.TabPane key="operatorEquipment" tab="缴纳培训服务费">
           <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="3" tab="缴纳租赁管理费">
+        <ProCard.TabPane key="hydrogenRent" tab="缴纳租赁管理费">
           <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
         </ProCard.TabPane>
-        <ProCard.TabPane key="4" tab="全款购买订单">
+        <ProCard.TabPane key="hydrogen" tab="全款购买订单">
           <CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
         </ProCard.TabPane>
       </ProCard>

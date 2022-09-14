@@ -175,8 +175,6 @@ export default (props) => {
         params={{
           type:type,
           businessDeptId:msgDetail?.businessDeptId,
-          begin:msgDetail?.begin,
-          end:msgDetail?.end
         }}
         pagination={{
           pageSize: 10,
