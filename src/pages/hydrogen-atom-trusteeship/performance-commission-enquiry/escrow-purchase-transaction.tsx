@@ -6,17 +6,20 @@ import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { FC } from "react"
 import type { FormInstance } from 'antd'
 import { Descriptions } from 'antd'
-import { StayPutProps,DescriptionsProps } from "./data"
+import { TransactionProps,DescriptionsProps } from "./data"
 
-import { waitPutList } from "@/services/hydrogen-atom-trusteeship/equipment-management"
-import Export from "@/components/export"
+import { reportPage, reportStatistics } from "@/services/hydrogen-atom-trusteeship/performance-commission-enquiry"
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 import AddressCascader from '@/components/address-cascader'
 import styles from './styles.less'
+import { amountTransform } from '@/utils/utils'
 
 const StayPut: FC = () => {
   const actRef = useRef<ActionType>()
   const formRef = useRef<FormInstance>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
+  const [visit, setVisit] = useState<boolean>(false)
   const getFieldsValue = () => {
     const { hostingPayTime, ...rest } = formRef.current?.getFieldsValue()
     return {
@@ -27,18 +30,18 @@ const StayPut: FC = () => {
   }
 
   useEffect(() => {
-    // userCount({}).then(res=>{
-    //   if(res.code==0){
-    //     setDetailList(res.data)
-    //   }
-    // })
+    reportStatistics({}).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
 
   }, [])
 
-  const columns: ProColumns<StayPutProps>[] = [
+  const columns: ProColumns<TransactionProps>[] = [
     {
       title: '下单人手机号码',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'buyerPhone',
       align: 'center',
       fieldProps: {
         placeholder: '请输入用户手机'
@@ -47,30 +50,30 @@ const StayPut: FC = () => {
     },
     {
       title: '订单编号',
-      dataIndex: 'hostingOrderId',
+      dataIndex: 'orderSn',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '支付时间',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => moment(r?.hostingPayTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+      render: (_, r) => moment(r?.payTime * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '支付时间',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
       order: 2
     },
     {
       title: '订单金额',
-      dataIndex: 'hostingPayTime',
+      dataIndex: 'payAmount',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => moment(r?.hostingPayTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+      render: (_, r) => amountTransform(_,'/')
     },
     {
       title: '订单状态',
@@ -89,17 +92,23 @@ const StayPut: FC = () => {
       title: '订单状态',
       dataIndex: 'status',
       hideInSearch: true,
+      valueEnum: {
+        1: '已完成（已过售后期）',
+        2: '售后中',
+        3: '已售后',
+        4: '所有已完成'
+      },
       align: 'center'
     },
     {
       title: '推荐人手机号',
-      dataIndex: 'hostingMemberPhone',
+      dataIndex: 'inviterPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '推荐人店铺编号',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'inviterStoreNo',
       align: 'center',
       fieldProps: {
         placeholder:'请输入社区店编号'
@@ -108,9 +117,18 @@ const StayPut: FC = () => {
     },
     {
       title: '推荐人店铺所在区域',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'inviterAreaInfo',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_)=>{
+        var str=''
+        // console.log('JSON.parse(_)',JSON.parse(_))
+        for( var i in JSON.parse(JSON.stringify(_)) ){
+          str+=JSON.parse(JSON.stringify(_))[i]
+        }
+        console.log('str',str)
+        return str
+      }
     },
     {
       title: '推荐人的店铺省市区',
@@ -121,25 +139,25 @@ const StayPut: FC = () => {
     },
     {
       title: '推荐人店铺地址',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'inviterAddress',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '省代名称',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'provinceAgent',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '市代名称',
-      dataIndex: 'hostingHouseNumber',
+      dataIndex: 'cityAgent',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '运营中心',
-      dataIndex: 'reason',
+      dataIndex: 'operationCenter',
       align: 'center',
       hideInSearch: true
     }
@@ -147,15 +165,15 @@ const StayPut: FC = () => {
 
   return (
     <>
-      <ProTable<StayPutProps>
-        rowKey='id'
+      <ProTable<TransactionProps>
+        rowKey='orderSn'
         columns={columns}
         params={{}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
-        // request={waitPutList}
+        request={reportPage}
         options={false}
         actionRef={actRef}
         formRef={formRef}
@@ -163,19 +181,26 @@ const StayPut: FC = () => {
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export 
-              type='healthyDeviceWaitPut' 
-              conditions={getFieldsValue}
-              key='export'
+            <Export
+              change={(e)=> {setVisit(e)}}
+              key="export" 
+              type="store-export-membershopoperator-paypage"
+              conditions={()=>{return getFieldValue()}}
+            />,
+            <ExportHistory 
+              key="export-history" 
+              show={visit}
+              setShow={setVisit}
+              type="store-export-membershopoperator-paypage"
             />
           ]
         }}
         className={styles.escrow_purchase_transaction}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
-            <Descriptions.Item  label="总业绩金额">{detailList?.agencyTotalNum} 元</Descriptions.Item>
-            <Descriptions.Item  label="总下单店铺数量">{detailList?.agencyLoginNum} 家</Descriptions.Item>
-            <Descriptions.Item  label="总销售数量">{detailList?.vipStoreNum} 台</Descriptions.Item>
+            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.totalAmount,'/')} 元</Descriptions.Item>
+            <Descriptions.Item  label="总下单店铺数量">{detailList?.totalStoreNum} 家</Descriptions.Item>
+            <Descriptions.Item  label="总销售数量">{detailList?.totalSalesVolume} 台</Descriptions.Item>
           </Descriptions>
         )}
       />
