@@ -39,7 +39,7 @@ export default () => {
     },
     {
       title: '订单编号',
-      dataIndex: 'payOrderSn',
+      dataIndex: 'subOrderSn',
       align: 'center',
       fieldProps: {
         placeholder: '请输入订单编号'
