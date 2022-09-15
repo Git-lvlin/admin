@@ -169,9 +169,9 @@ export default () => {
         className={styles.escrow_purchase_transaction}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
-            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.deviceTotalPay,'/')} 元</Descriptions.Item>
+            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.paidRental,'/')} 元</Descriptions.Item>
             <Descriptions.Item  label="总下单店铺数量">{detailList?.memberIdCount} 家</Descriptions.Item>
-            <Descriptions.Item  label="总套餐销售笔数">{detailList?.leaseCount} 台</Descriptions.Item>
+            <Descriptions.Item  label="总套餐销售笔数">{detailList?.leaseCount} 笔</Descriptions.Item>
           </Descriptions>
         )}
       />
