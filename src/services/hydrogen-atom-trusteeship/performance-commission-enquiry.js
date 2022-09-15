@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 资质支付分页列表 - 培训服务费交易
 export const payPageForAdmin = async (params, options = {}) => {
@@ -68,17 +69,18 @@ return {
 
 // 业绩佣金查询【托管购买交易】
 export const reportPage = async (params, options = {}) => {
-  const { current = 1, pageSize = 10, payTime,area = [], ...rest } = params
+  const { current = 1, pageSize = 10, payTime,area = [],status, ...rest } = params
   const res = await request('/auth/java-admin/order/agent/report/page', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
-      payTimeStart:payTime&&payTime[0],
-      payTimeEnd:payTime&&payTime[1],
+      startTime:payTime&&moment(payTime[0]).valueOf(),
+      endTime:payTime&&moment(payTime[1]).valueOf(),
       provinceId: area[0]?.value,
       cityId: area[1]?.value,
       districtId: area[2]?.value,
+      status:status&&parseInt(status),
       ...rest
     },
     ...options
@@ -92,9 +94,18 @@ export const reportPage = async (params, options = {}) => {
 
 //业绩佣金查询【托管购买交易】统计
 export const reportStatistics = async (params = {}, options = {}) => {
+  const { current = 1, pageSize = 10, payTime,area = [],status, ...rest } = params
   const res = await request('/auth/java-admin/order/agent/report/statistics', {
       method: 'POST',
-      data: params,
+      data: {
+        startTime:payTime&&moment(payTime[0]).valueOf(),
+        endTime:payTime&&moment(payTime[1]).valueOf(),
+        provinceId: area[0]?.value,
+        cityId: area[1]?.value,
+        districtId: area[2]?.value,
+        status:status&&parseInt(status),
+        ...rest
+      },
       ...options
   })
   return {

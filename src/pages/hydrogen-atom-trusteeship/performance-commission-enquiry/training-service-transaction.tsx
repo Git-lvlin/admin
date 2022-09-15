@@ -11,16 +11,20 @@ import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment'
 
 export default () => {
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const formRef = useRef<FormInstance>()
   const [visit, setVisit] = useState<boolean>(false)
   const getFieldValue = () => {
-    const { payTime, ...rest } = formRef.current?.getFieldsValue()
+    const { payTime,area=[], ...rest } = formRef.current?.getFieldsValue()
     return {
-      payTimeStart: payTime && moment(payTime?.[0]).unix(),
-      payTimeEnd: payTime && moment(payTime?.[1]).unix(),
+      payTimeStart: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      payTimeEnd: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
       ...rest
     }
   }

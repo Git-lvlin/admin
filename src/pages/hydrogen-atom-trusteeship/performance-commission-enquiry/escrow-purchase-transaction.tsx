@@ -20,23 +20,28 @@ const StayPut: FC = () => {
   const formRef = useRef<FormInstance>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [visit, setVisit] = useState<boolean>(false)
-  const getFieldsValue = () => {
-    const { hostingPayTime, ...rest } = formRef.current?.getFieldsValue()
+  const [time,setTime]=useState({})
+  const getFieldValue = () => {
+    const { payTime,area, ...rest } = formRef.current?.getFieldsValue()
     return {
-      hostingPayStartTime: hostingPayTime && moment(hostingPayTime?.[0]).unix(),
-      hostingPayEndTime: hostingPayTime && moment(hostingPayTime?.[1]).unix(),
+      startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      districtId: area[2]?.value,
       ...rest
     }
   }
 
   useEffect(() => {
-    reportStatistics({}).then(res=>{
+    console.log('time',time)
+    reportStatistics(time).then(res=>{
       if(res.code==0){
         setDetailList(res.data)
       }
     })
 
-  }, [])
+  }, [time])
 
   const columns: ProColumns<TransactionProps>[] = [
     {
@@ -59,7 +64,7 @@ const StayPut: FC = () => {
       dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => moment(r?.payTime * 1000).format('YYYY-MM-DD HH:mm:ss')
+      render: (_, r) => r?.payTime&&moment(parseInt(r?.payTime)).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '支付时间',
@@ -108,27 +113,25 @@ const StayPut: FC = () => {
     },
     {
       title: '推荐人店铺编号',
-      dataIndex: 'inviterStoreNo',
+      dataIndex: 'storeNo',
       align: 'center',
       fieldProps: {
         placeholder:'请输入社区店编号'
       },
+      hideInTable: true,
       order: 4
+    },
+    {
+      title: '推荐人店铺编号',
+      dataIndex: 'inviterStoreNo',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '推荐人店铺所在区域',
       dataIndex: 'inviterAreaInfo',
       align: 'center',
       hideInSearch: true,
-      render: (_)=>{
-        var str=''
-        // console.log('JSON.parse(_)',JSON.parse(_))
-        for( var i in JSON.parse(JSON.stringify(_)) ){
-          str+=JSON.parse(JSON.stringify(_))[i]
-        }
-        console.log('str',str)
-        return str
-      }
     },
     {
       title: '推荐人的店铺省市区',
@@ -172,6 +175,9 @@ const StayPut: FC = () => {
         pagination={{
           showQuickJumper: true,
           pageSize: 10
+        }}
+        onSubmit={(val)=>{
+          setTime(val)
         }}
         request={reportPage}
         options={false}
