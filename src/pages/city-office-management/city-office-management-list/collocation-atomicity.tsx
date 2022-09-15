@@ -9,6 +9,7 @@ import type { ProColumns } from "@ant-design/pro-table"
 import type { HostingDeviceListItem } from "./data"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -38,6 +39,9 @@ export default (props) => {
       dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+      }
     },
     {
       title: '下单用户',
@@ -56,7 +60,7 @@ export default (props) => {
       hideInSearch: true,
     },
     {
-      title: '推荐人店铺店铺',
+      title: '推荐人店铺地址',
       dataIndex: 'recomStoreAddress',
       align: 'center',
       hideInSearch: true,
