@@ -75,7 +75,6 @@ const CumulativePerformance=(props) => {
       title: '店铺编号',
       dataIndex: 'shopMemberAccount',
       align: 'center',
-      hideInSearch: true
     }
   ]
   useEffect(()=>{
