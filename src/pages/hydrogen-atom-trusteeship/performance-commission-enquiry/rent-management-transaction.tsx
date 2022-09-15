@@ -111,14 +111,14 @@ export default () => {
     },
     {
       title: '套餐类型',
-      dataIndex: 'leaseTitle',
+      dataIndex: 'leasePackageId',
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '三个月套餐',
-        2: '六个月套餐',
-        3: '十二个月套餐',
-        4: '自定义套餐'
+        1001: '三个月套餐',
+        1002: '六个月套餐',
+        1003: '十二个月套餐',
+        999: '自定义套餐'
       },
       order: 3
     },
