@@ -38,6 +38,9 @@ export default (props) => {
       dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+      }
     },
     {
       title: '下单用户',
