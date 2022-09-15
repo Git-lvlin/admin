@@ -9,6 +9,7 @@ import type { ProColumns } from "@ant-design/pro-table"
 import type { AgencySalesListItem } from "./data"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -39,7 +40,7 @@ export default (props) => {
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
-        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+        return moment(parseInt(_)*1000).format('YYYY-MM-DD HH:mm:ss')
       }
     },
     {
