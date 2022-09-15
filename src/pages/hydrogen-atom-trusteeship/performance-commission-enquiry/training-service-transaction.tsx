@@ -149,7 +149,7 @@ export default () => {
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
             <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.deviceTotalPay,'/')} 元</Descriptions.Item>
             <Descriptions.Item  label="总下单店铺数量">{detailList?.memberIdCount} 家</Descriptions.Item>
-            <Descriptions.Item  label="总交易资质数量">{detailList?.deviceTotal} 台</Descriptions.Item>
+            <Descriptions.Item  label="总交易资质数量">{detailList?.deviceTotal} 个</Descriptions.Item>
           </Descriptions>
         )}
       />
