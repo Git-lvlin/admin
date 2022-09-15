@@ -40,7 +40,7 @@ export default (props) => {
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
-        return moment(parseInt(_)*1000).format('YYYY-MM-DD HH:mm:ss')
+        return moment(parseInt(_)).format('YYYY-MM-DD HH:mm:ss')
       }
     },
     {
