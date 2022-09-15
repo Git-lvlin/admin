@@ -14,8 +14,7 @@ const TabList =({done})=> {
     {
       title: '售后编号',
       dataIndex: 'orderSn',
-      align: 'center',
-      
+      align: 'center'
     },
     {
       title: '订单编号',
@@ -112,7 +111,7 @@ const TabList =({done})=> {
   return (
     <>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
         headerTitle="数据列表"
         options={false}x
