@@ -159,7 +159,7 @@ const cancelTaskCanbak=(id: number)=>{
         visible={show}
         forceRender={true}
         destroyOnClose={true}
-        zIndex={99999}
+        zIndex={1001}
       >
         <ProForm<FormInstance>
           layout="inline"
