@@ -35,7 +35,7 @@ const StayPut: FC = () => {
 
   useEffect(() => {
     console.log('time',time)
-    reportStatistics(time).then(res=>{
+    reportStatistics({status:1,...time}).then(res=>{
       if(res.code==0){
         setDetailList(res.data)
       }
@@ -91,6 +91,7 @@ const StayPut: FC = () => {
         4: '所有已完成'
       },
       hideInTable: true,
+      initialValue:'1',
       order: 3
     },
     {
