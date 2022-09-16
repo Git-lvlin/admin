@@ -410,6 +410,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
           <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
+      className={styles.drawer}
     >
       <ProDescriptions
         loading={loading}
