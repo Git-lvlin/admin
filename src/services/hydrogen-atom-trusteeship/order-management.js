@@ -50,3 +50,12 @@ export const expressInfo = async (params={}, options={}) => {
     ...options
   })
 }
+
+// 获取托管供应商
+export const deviceSupplier = async (params={}, options={}) => {
+  return await request('/auth/healthy/deviceManage/deviceSupplier', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
