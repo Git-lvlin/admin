@@ -187,18 +187,18 @@ const StayPut: FC = () => {
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Export
-              change={(e)=> {setVisit(e)}}
-              key="export" 
-              type="store-export-membershopoperator-paypage"
-              conditions={()=>{return getFieldValue()}}
-            />,
-            <ExportHistory 
-              key="export-history" 
-              show={visit}
-              setShow={setVisit}
-              type="store-export-membershopoperator-paypage"
-            />
+            // <Export
+            //   change={(e)=> {setVisit(e)}}
+            //   key="export" 
+            //   type="store-export-membershopoperator-paypage"
+            //   conditions={()=>{return getFieldValue()}}
+            // />,
+            // <ExportHistory 
+            //   key="export-history" 
+            //   show={visit}
+            //   setShow={setVisit}
+            //   type="store-export-membershopoperator-paypage"
+            // />
           ]
         }}
         className={styles.escrow_purchase_transaction}
