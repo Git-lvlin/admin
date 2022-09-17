@@ -145,7 +145,10 @@ const StayPut: FC = () => {
       title: '推荐人店铺地址',
       dataIndex: 'inviterAddress',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,record) =>{
+        return <span>{record?.inviterAreaInfo}{record?.inviterAddress}</span>
+      }
     },
     {
       title: '省代名称',
