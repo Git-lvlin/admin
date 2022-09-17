@@ -98,3 +98,18 @@ export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
     code: res.code
   }
 }
+
+
+export const cityTotalTradeItemSum = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/financial/cityBusinessDept/cityTotalTradeItemSum', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}
