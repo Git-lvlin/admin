@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityTotalTradeItemListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { cityTotalTradeItemListPage,cityTotalTradeItemSum } from "@/services/city-office-management/city-office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -85,7 +85,7 @@ const CumulativePerformance=(props:DevicesProps) => {
       begin:time?.dateRange?.[0],
       end:time?.dateRange?.[1]
     }
-    cityItemOrderSum(params).then(res=>{
+    cityTotalTradeItemSum(params).then(res=>{
       if(res.code==0){
         setOrderSum(res?.data?.total)
       }
