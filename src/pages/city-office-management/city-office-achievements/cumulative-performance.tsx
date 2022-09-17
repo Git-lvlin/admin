@@ -1,12 +1,12 @@
 import { useRef,useEffect, useState } from "react"
-import { Form,List,Divider } from 'antd';
+import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
 import { cityTotalTradeItemListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem } from "./data"
+import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
@@ -26,7 +26,7 @@ const formItemLayout = {
     }
   };
 
-const CumulativePerformance=(props) => {
+const CumulativePerformance=(props:DevicesProps) => {
   const { type,msgDetail } = props
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState({})
@@ -82,8 +82,8 @@ const CumulativePerformance=(props) => {
       cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
       orderType:type,
       orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0]||msgDetail?.begin,
-      end:time?.dateRange?.[1]||msgDetail?.end
+      begin:time?.dateRange?.[0],
+      end:time?.dateRange?.[1]
     }
     cityItemOrderSum(params).then(res=>{
       if(res.code==0){
@@ -145,7 +145,7 @@ const CumulativePerformance=(props) => {
 };
 
 
-export default (props)=>{
+export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   const [activeKey, setActiveKey] = useState<string>('hydrogenAgent')
@@ -188,9 +188,9 @@ export default (props)=>{
             activeKey=='operatorEquipment'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenRent" tab="缴纳租赁管理费">
+        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳租赁管理费">
           {
-            activeKey=='hydrogenRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+            activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="hydrogen" tab="全款购买订单">

@@ -77,7 +77,7 @@ export default (props) => {
         'hydrogen': '氢原子销售',
         'hydrogenAgent': '氢原子托管',
         'operatorEquipment': '运营设备服务费',
-        'hydrogenRent': '氢原子租金'
+        'hydrogenAgentRent': '氢原子租金'
       },
       hideInTable: true
     },
@@ -90,7 +90,7 @@ export default (props) => {
         'hydrogen': '氢原子销售',
         'hydrogenAgent': '氢原子托管',
         'operatorEquipment': '运营设备服务费',
-        'hydrogenRent': '氢原子租金'
+        'hydrogenAgentRent': '氢原子租金'
       },
       hideInSearch: true
     },

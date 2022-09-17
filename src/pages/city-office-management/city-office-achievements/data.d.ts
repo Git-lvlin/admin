@@ -27,3 +27,22 @@ export type GithubIssueItem = {
   orderAmount: string;
   buyerMobile: string
 };
+
+
+export type DevicesProps = {
+  msgDetail: {
+    cityBusinessDeptId: String;
+  }
+  type: string;
+}
+
+export type CumulativeProps = {
+  msgDetail: {
+    cityBusinessDeptId: String;
+    cityBusinessDeptName: string;
+  }
+  type: string;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: function;
+}
