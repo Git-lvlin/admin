@@ -4,8 +4,9 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Space, Select } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import { goodsSortList, goodsSortTop, goodsSortTopCancel, goodsSortReset, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/member/member';
+import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/fresh-goods-sort';
 import Edit from './form';
+import { amountTransform } from '@/utils/utils'
 
 const BannerAdmin = () => {
   const actionRef = useRef();
@@ -32,19 +33,19 @@ const BannerAdmin = () => {
   }
 
   const push = (selectedRows) => {
-    if (!selectedRows||!selectedRows.length) {
-      message.error('请先勾选')
-      return
-    }
-    const param = {
-      wsSkuIds: selectedRows.toString(),
-      wscId: itemClass,
-    }
-    pushClass(param).then((res) => {
-      console.log('push-res', res)
-      message.success('添加成功')
-      actionRef.current.reload();
-    })
+    // if (!selectedRows||!selectedRows.length) {
+    //   message.error('请先勾选')
+    //   return
+    // }
+    // const param = {
+    //   wsSkuIds: selectedRows.toString(),
+    //   wscId: itemClass,
+    // }
+    // pushClass(param).then((res) => {
+    //   console.log('push-res', res)
+    //   message.success('添加成功')
+    //   actionRef.current.reload();
+    // })
   }
 
   const moveSort = (record, moveUp) => {
@@ -77,16 +78,21 @@ const BannerAdmin = () => {
     setItemClass(v)
   }
 
-  const sortReset = () => {
-    const param = {
-      isHot: 0,
-    }
-    goodsSortReset(param).then((res) => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
+
+  const putaway = (record) =>{
+    
   }
+
+  // const sortReset = () => {
+  //   const param = {
+  //     isHot: 0,
+  //   }
+  //   goodsSortReset(param).then((res) => {
+  //     if (res.code === 0) {
+  //       actionRef.current.reload();
+  //     }
+  //   })
+  // }
 
   const editSort = (record, type) => {
     const data = {
@@ -130,15 +136,15 @@ const BannerAdmin = () => {
     },
     {
       title: '店主新集约价',
-      dataIndex: 'salePrice',
+      dataIndex: 'distributePriceStr',
       search: false,
       render: (_) => {
-        return <>{_/100}</>
+        return amountTransform(_,'/')
       }
     },
     {
       title: '起订量',
-      dataIndex: 'buyMinNum',
+      dataIndex: 'defaultBuyNumStr',
       search: false,
     },
     {
@@ -147,7 +153,7 @@ const BannerAdmin = () => {
     },
     {
       title: '上架状态',
-      dataIndex: 'status',
+      dataIndex: 'goodsState',
       valueEnum:{
         1:'已上架',
         0:'已下架',
@@ -167,6 +173,7 @@ const BannerAdmin = () => {
           {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
           <a onClick={() => { top(record, 1) }}>置顶</a>&nbsp;
           {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
+          <a onClick={() => { putaway(record) }}>上架</a>&nbsp;
         </>
       }
     }
@@ -178,7 +185,7 @@ const BannerAdmin = () => {
         rowKey="wsSkuId"
         columns={columns}
         actionRef={actionRef}
-        request={goodsSortList}
+        request={getSpuList}
         search={{
           labelWidth: 'auto',
         }}
@@ -230,13 +237,13 @@ const BannerAdmin = () => {
           </Space>
         )}}
         dateFormatter="string"
-        toolBarRender={(_) => {
-          return [
-            <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
-              按集约价升序排列采购列表
-            </Button>
-          ]
-        }}
+        // toolBarRender={(_) => {
+        //   return [
+        //     <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
+        //       按集约价升序排列采购列表
+        //     </Button>
+        //   ]
+        // }}
       />
       {selected&&<Space size={24} style={{position: 'absolute',top: 290, left: 60}}>
         <span>
