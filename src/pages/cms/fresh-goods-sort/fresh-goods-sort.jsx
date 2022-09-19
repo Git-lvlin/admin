@@ -175,10 +175,10 @@ const BannerAdmin = () => {
       render: (_, record) => {
         return <>
           <a onClick={() => { editSort(record) }}>设置序号</a>&nbsp;
-          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0 ) }}></Button>
+          <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0 ) }}></Button>&nbsp;
           {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
-          <a onClick={() => { top(record, 1) }}>置顶</a>&nbsp;
-          {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
+          {record.sortIsTop==0&&<a onClick={() => { top(record, 1) }}>置顶</a>}&nbsp;
+          {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}&nbsp;
           {record.goodsState==1&&<a onClick={() => { setVisible(true);setSelectedRows([record?.spuId]) }}>下架</a>}
         </>
       }
