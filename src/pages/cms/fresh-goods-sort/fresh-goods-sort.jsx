@@ -50,6 +50,7 @@ const BannerAdmin = () => {
         message.success('添加成功')
         actionRef.current.reload();
         setSelectedRowKeys([])
+        setItemClass(null)
       }
     })
   }
