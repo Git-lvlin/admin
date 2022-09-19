@@ -176,7 +176,7 @@ export default (props) => {
         actionRef={ref}
         params={{
           type:type,
-          businessDeptId:msgDetail?.businessDeptId,
+          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
         }}
         pagination={{
           pageSize: 10,
