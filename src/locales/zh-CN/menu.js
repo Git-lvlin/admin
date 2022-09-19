@@ -214,6 +214,8 @@ export default {
   'menu.cms.popup.home-popup': 'APP首页弹窗管理',
   'menu.cms.popup.start-up': 'APP启动广告配置',
   'menu.cms.popup.popup-template': 'APP内弹窗模板',
+  'menu.cms.fresh-goods-sort': '新集约商品管理',
+  'menu.cms.fresh-goods-class': '新集约类目管理',
   'menu.cms.goods-sort': '集约商品展示配置',
   'menu.cms.goods-class': '集约商品运营类目',
   'menu.cms.story': '店主故事',

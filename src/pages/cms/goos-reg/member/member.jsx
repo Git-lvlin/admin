@@ -151,6 +151,10 @@ const Member = () => {
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={spaceInfoList}
+        pagination={{
+          pageSize: 5,
+          showQuickJumper: true,
+        }}
         rowSelection={{}}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => (
           <Space size={24}>

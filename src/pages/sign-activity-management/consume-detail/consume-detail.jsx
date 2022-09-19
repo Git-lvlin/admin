@@ -130,6 +130,10 @@ export default () => {
           options={false}
           request={queryConsumeList}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
           search={{
             defaultCollapsed: true,
             labelWidth: 100,

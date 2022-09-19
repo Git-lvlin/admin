@@ -93,7 +93,8 @@ export default function TransactionData () {
         columnEmptyText={false}
         actionRef={ref}
         pagination={{
-          pageSize: 10
+          pageSize: 10,
+          showQuickJumper: true,
         }}
         options={false}
         search={{

@@ -177,6 +177,7 @@ const HomeClassification = () => {
       }}
       pagination={{
         pageSize: 5,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle="首页分类配置"

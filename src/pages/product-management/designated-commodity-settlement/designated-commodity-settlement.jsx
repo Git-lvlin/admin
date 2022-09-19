@@ -194,7 +194,8 @@ export default () => {
         columns={columns}
         actionRef={actionRef}
         pagination={{
-          pageSize:10
+          pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {formVisible && <Form

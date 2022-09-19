@@ -1,8 +1,9 @@
 import React from "react"
 
 export type RangeInputProps = {
-  firstPlaceholder: string
-  lastPlaceholder: string
+  firstPlaceholder?: string
+  lastPlaceholder?: string
+  onChange?: (v:{ min?: number, max?: number }) => void
 }
 
 export type DevicesProps = {

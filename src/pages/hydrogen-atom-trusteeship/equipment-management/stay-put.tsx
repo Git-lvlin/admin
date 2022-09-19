@@ -118,7 +118,7 @@ const StayPut: FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, r)=> {
-        if(r.status === "失败") {
+        if(r.statusVal === 1) {
           return (
             <a onClick={()=> {
                 setVisible(true)

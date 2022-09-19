@@ -152,7 +152,7 @@ const afterSalesOrder = () => {
         columns={columns}
         pagination={{
           showQuickJumper: true,
-          hideOnSinglePage: true,
+          // hideOnSinglePage: true,
           pageSize: 10
         }}
       />

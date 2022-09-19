@@ -131,6 +131,18 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'fresh-goods-sort',
+      path: '/cms/fresh-goods-sort',
+      component: './cms/fresh-goods-sort',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'fresh-goods-class',
+      path: '/cms/fresh-goods-class',
+      component: './cms/fresh-goods-class',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'goods-sort',
       path: '/cms/goods-sort',
       component: './cms/goods-sort',

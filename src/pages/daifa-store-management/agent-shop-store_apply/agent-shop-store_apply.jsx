@@ -129,8 +129,9 @@ const filterData=(res)=>{
       <ProTable
         rowKey="id"
         options={false}
-        params={{
-          pageSize:15
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
         }}
         postData={filterData}
         request={storeApplyList}

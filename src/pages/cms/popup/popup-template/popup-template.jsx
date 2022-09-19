@@ -131,6 +131,7 @@ const PopupTemplate = () => {
         pageSize={pageSize}
         current={page}
         onChange={pageChange}
+        showQuickJumper
       />
       {
         formVisible &&

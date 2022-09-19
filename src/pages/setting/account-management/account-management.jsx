@@ -131,6 +131,10 @@ const TableList = () => {
         search={{
           defaultCollapsed: true,
         }}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
         columns={columns}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />

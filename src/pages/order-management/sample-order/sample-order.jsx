@@ -464,6 +464,7 @@ const TableList = () => {
           pageSize={pageSize}
           current={page}
           onChange={pageChange}
+          showQuickJumper
         />
       </div>
     </PageContainer>

@@ -158,6 +158,7 @@ const TableList = () => {
         actionRef={actionRef}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       />

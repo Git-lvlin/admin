@@ -224,6 +224,7 @@ const BannerAdmin = () => {
       }}
       pagination={{
         pageSize: 5,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle="banner管理"

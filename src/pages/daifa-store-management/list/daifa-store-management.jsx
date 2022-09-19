@@ -164,6 +164,10 @@ const TableList = () => {
             />
           ]
         }}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
         columns={columns}
         actionRef={actionRef}
       />

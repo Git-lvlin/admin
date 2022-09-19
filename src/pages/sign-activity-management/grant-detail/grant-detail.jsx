@@ -102,6 +102,10 @@ export default () => {
           options={false}
           request={queryIssuanceList}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
           search={{
             defaultCollapsed: true,
             labelWidth: 100,

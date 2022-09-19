@@ -127,6 +127,7 @@ const HomeSuspension = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle="首页悬浮窗"
