@@ -1,16 +1,38 @@
 import React, { useState} from 'react';
-import { ModalForm} from '@ant-design/pro-form';
+import { ModalForm, ProFormTextArea } from '@ant-design/pro-form';
 import { Button, message } from 'antd';
-import { changeStatus } from '@/services/intensive-activity-management/penny-activity';
+import { modifySpuState } from '@/services/cms/fresh-goods-sort';
 import { history,connect } from 'umi';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
+
+const formItemLayout = {
+  labelCol: { span:5 },
+  wrapperCol: { span: 14 },
+  layout: {
+    labelCol: {
+      span: 10,
+    },
+    wrapperCol: {
+      span: 14,
+    },
+  }
+};
+
 export default props=>{
     const {selectedRows,visible,setVisible,callback,onClose}=props
-
+    const checkConfirm = (rule, value, callback) => {
+      return new Promise(async (resolve, reject) => {
+        if (value&&/[%&'=?$\x22]/.test(value)) {
+          await reject('不可以含')
+        } else {
+          await resolve()
+        }
+      })
+    }
     return (
         <ModalForm
-          title={<p><ExclamationCircleFilled style={{color:"#FAAD14"}}/> {selectedRows?.length}款商品上架确认</p>}
+          title='下架'
           onVisibleChange={setVisible}
           visible={visible}
           modalProps={{
@@ -21,21 +43,15 @@ export default props=>{
             }
           }}
           submitter={{
-          render: (props, defaultDoms) => {
-              return [
-              <Button  key="cacnl" onClick={() =>{setVisible(false);onClose()}}>
-                  暂时不上架
-              </Button>,
-              <Button  type="primary" key="submit" onClick={() => {
-                  props.form?.submit?.()
-                }}>
-                  确认上架
-              </Button>
-              ];
-          },
+            render: (props, defaultDoms) => {
+                return [
+                ...defaultDoms
+                ];
+            },
           }}
           onFinish={async (values) => {
-            changeStatus({id:pennyId,actCode:'wsCentActiveCode',status:0}).then(res=>{
+            console.log('selectedRows',selectedRows)
+            modifySpuState({spuIds:selectedRows.toString(),...values}).then(res=>{
             if(res.code==0){
               setVisible(false) 
               callback(true) 
@@ -43,10 +59,23 @@ export default props=>{
               return true;
             }
           })
-        
           }}
+          {...formItemLayout}
       >
-        <p><span style={{color:"red"}}>上架后即可对外销售</span>，你还要继续吗？</p>
+        <ProFormTextArea
+          label='下架理由'
+          name="remark"
+          style={{ minHeight: 32, marginTop: 15 }}
+          placeholder='请输入下架理由！'
+          rules={[
+            { required: true, message: '请输入下架理由' },
+            // { validator: checkConfirm }
+          ]}
+          rows={4}
+          fieldProps={{
+              maxLength:200
+          }}
+      />
       </ModalForm>
     )
 }

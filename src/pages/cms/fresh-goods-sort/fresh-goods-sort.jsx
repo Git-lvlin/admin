@@ -4,7 +4,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Space, Select } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/fresh-goods-sort';
+import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuCategory, goodsClassList } from '@/services/cms/fresh-goods-sort';
 import Edit from './form';
 import { amountTransform } from '@/utils/utils'
 import Putaway from './putaway'
@@ -18,6 +18,7 @@ const BannerAdmin = () => {
   const [itemClass, setItemClass] = useState(null);
   const [selected, setSelected] = useState(true);
   const [selectedRows,setSelectedRows] = useState([])
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -40,21 +41,23 @@ const BannerAdmin = () => {
       message.error('请先勾选商品！')
       return
     }
-    // const param = {
-    //   wsSkuIds: selectedRows.toString(),
-    //   wscId: itemClass,
-    // }
-    // pushClass(param).then((res) => {
-    //   console.log('push-res', res)
-    //   message.success('添加成功')
-    //   actionRef.current.reload();
-    // })
+    const param = {
+      spuIds: selectedRows.toString(),
+      wscId: itemClass,
+    }
+    modifySpuCategory(param).then((res) => {
+      if(res.code==0){
+        message.success('添加成功')
+        actionRef.current.reload();
+        setSelectedRowKeys([])
+      }
+    })
   }
 
   const moveSort = (record, moveUp) => {
-    const { wsSkuId } = record;
+    const { spuId } = record;
     const param = {
-      wsSkuId,
+      spuId,
       moveUp,
     }
     goodsMoveSort(param).then((res) => {
@@ -65,10 +68,10 @@ const BannerAdmin = () => {
   }
 
   const top = (record, type) => {
-    const { wsSkuId } = record;
+    const { spuId } = record;
     let api = type?goodsSortTop:goodsSortTopCancel
     const param = {
-      wsSkuId,
+      spuId,
     }
     api(param).then((res) => {
       if (res.code === 0) {
@@ -79,11 +82,6 @@ const BannerAdmin = () => {
 
   const changeHandle = (v) => {
     setItemClass(v)
-  }
-
-
-  const putaway = (record) =>{
-    
   }
 
   // const sortReset = () => {
@@ -97,12 +95,8 @@ const BannerAdmin = () => {
   //   })
   // }
 
-  const editSort = (record, type) => {
-    const data = {
-      ...record,
-      type,
-    }
-    setDetailData(data)
+  const editSort = (record) => {
+    setDetailData(record)
     setFormVisible(true)
   }
 
@@ -180,12 +174,12 @@ const BannerAdmin = () => {
       hideInSearch: true,
       render: (_, record) => {
         return <>
-          <a onClick={() => { editSort(record, 1) }}>设置序号</a>&nbsp;
+          <a onClick={() => { editSort(record) }}>设置序号</a>&nbsp;
           <Button icon={<ArrowDownOutlined />} onClick={() => { moveSort(record, 0 ) }}></Button>
           {record.sort!==1&&<Button icon={<ArrowUpOutlined />} onClick={() => { moveSort(record, 1) }}></Button>}&nbsp;
           <a onClick={() => { top(record, 1) }}>置顶</a>&nbsp;
           {record.sortIsTop==1&&<a onClick={() => { top(record, 0) }}>取消置顶</a>}
-          <a onClick={() => { putaway(record) }}>上架</a>&nbsp;
+          {record.goodsState==1&&<a onClick={() => { setVisible(true);setSelectedRows([record?.spuId]) }}>下架</a>}
         </>
       }
     }
@@ -194,7 +188,7 @@ const BannerAdmin = () => {
   return (
     <PageContainer>
       <ProTable
-        rowKey="id"
+        rowKey="spuId"
         columns={columns}
         actionRef={actionRef}
         request={getSpuList}
@@ -207,9 +201,11 @@ const BannerAdmin = () => {
           showQuickJumper: true,
         }}
         rowSelection={{
-          // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
-          // 注释该行则默认不显示下拉选项
-          // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+          selectedRowKeys,
+          preserveSelectedRowKeys: true,
+          onChange: (_, val) => {
+            setSelectedRowKeys(_);
+          }
         }}
         alwaysShowAlert={true}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
@@ -234,9 +230,6 @@ const BannerAdmin = () => {
                 确定
               </a>
               <a style={{ marginLeft: 8 }} onClick={() => {setVisible(true);setSelectedRows(selectedRowKeys)}}>
-                批量上架
-              </a>
-              <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
                 批量下架
               </a>
             </span>
@@ -257,9 +250,6 @@ const BannerAdmin = () => {
           />
           <a style={{ marginLeft: 8 }} onClick={() => {push()}}>
             确定
-          </a>
-          <a style={{ marginLeft: 8 }} onClick={() => {message.error('请先勾线商品！')}}>
-            批量上架
           </a>
           <a style={{ marginLeft: 8 }} onClick={() => {message.error('请先勾线商品！')}}>
             批量下架

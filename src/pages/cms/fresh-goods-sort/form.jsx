@@ -11,11 +11,9 @@ export default (props) => {
   const formRef = useRef();
   const [form] = Form.useForm();
   const waitTime = (values) => {
-    const { sort, wsSkuId } = values;
-    const { type } = detailData;
+    const { sort, spuId } = values;
     const param = {
-      wsSkuId: wsSkuId,
-      type: type,
+      spuId: spuId,
       sort: sort,
     }
     return new Promise((resolve, reject) => {
@@ -68,8 +66,7 @@ export default (props) => {
         />
       </ProForm.Group>
       <ProFormText
-        name="wsSkuId"
-        label="wsSkuId"
+        name="spuId"
         hidden
       />
     </ModalForm>
