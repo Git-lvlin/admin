@@ -207,7 +207,7 @@ const BannerAdmin = () => {
             setSelected(true)
           }
           return(
-          <Space size={24}>
+          <>
             <span>
               已选 {selectedRowKeys.length} 项
               <span>添加到</span>
@@ -234,7 +234,7 @@ const BannerAdmin = () => {
               (pre, item) => item.state && pre + 1,
               0,
             )} 个`}</span> */}
-          </Space>
+          </>
         )}}
         dateFormatter="string"
         // toolBarRender={(_) => {

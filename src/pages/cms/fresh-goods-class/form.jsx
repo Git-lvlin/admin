@@ -6,7 +6,7 @@ import ProForm, {
   ProFormDigit,
   ProFormRadio,
 } from '@ant-design/pro-form';
-import { goodsClassAdd, hideItem } from '@/services/cms/member/member';
+import { goodsClassAdd, categoryEdit } from '@/services/cms/fresh-goods-class';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, callback } = props;
@@ -29,7 +29,7 @@ export default (props) => {
   const waitTime = (values) => {
     const { id } = detailData;
     const { categoryName, sort, isShow } = values;
-    let api = id?hideItem:goodsClassAdd;
+    let api = id?categoryEdit:goodsClassAdd;
     const param = {
       id: id,
       categoryName: categoryName,

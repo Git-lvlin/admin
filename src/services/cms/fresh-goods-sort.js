@@ -70,3 +70,11 @@ export const getSpuList = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+  export const goodsModifySort = (params = {}, options = {}) => {
+    return request('/auth/wholesale/SpuConfig/modifySort', {
+      method: 'POST',
+      data: params,
+      ...options
+    });
+  }

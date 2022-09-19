@@ -6,7 +6,7 @@ import ProForm, { ProFormSwitch, ProFormRadio, } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import { goodsClassList, openSwitch, hideItem } from '@/services/cms/member/member';
+import { goodsClassList, openSwitch } from '@/services/cms/fresh-goods-class';
 import Edit from './form';
 
 const BannerAdmin = () => {
@@ -60,11 +60,11 @@ const BannerAdmin = () => {
       isShow: 0,
       id: id
     }
-    hideItem(param).then((res) => {
-      if (res.code === 0) {
-        actionRef.current.reload();
-      }
-    })
+    // hideItem(param).then((res) => {
+    //   if (res.code === 0) {
+    //     actionRef.current.reload();
+    //   }
+    // })
   }
 
   const columns = [
