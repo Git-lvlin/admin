@@ -11,7 +11,7 @@ export const goodsClassList = async (params = {}, options = {}) => {
       ...rest
     }
   
-    const res = await request('/auth/wholesale/SkuCategory/categoryAll', {
+    const res = await request('/auth/wholesale/SpuCategory/categoryAll', {
       method: 'POST',
       data,
       ...options
