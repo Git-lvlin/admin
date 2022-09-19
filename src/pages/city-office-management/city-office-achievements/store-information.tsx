@@ -11,6 +11,7 @@ import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -127,8 +128,8 @@ export default (props) => {
       cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
       orderType:time?.orderType,
       orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0]||msgDetail?.begin,
-      end:time?.dateRange?.[1]||msgDetail?.end
+      begin:time?.dateRange?.[0],
+      end:time?.dateRange?.[1]
     }
     cityItemOrderSum(params).then(res=>{
       if(res.code==0){
@@ -138,8 +139,12 @@ export default (props) => {
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
+      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+      type:type,
+      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
@@ -192,10 +197,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'financial-businessDept-commission-page'}
+              type={'exportCityItemOrderList'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
           ],
         }}
         tableRender={(_, dom) => {

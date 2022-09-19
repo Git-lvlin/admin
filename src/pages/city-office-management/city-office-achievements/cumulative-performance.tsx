@@ -12,6 +12,7 @@ import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ProCard from "@ant-design/pro-card"
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -93,8 +94,12 @@ const CumulativePerformance=(props:DevicesProps) => {
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
+      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+      orderType:type,
+      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
@@ -123,10 +128,10 @@ const CumulativePerformance=(props:DevicesProps) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'financial-businessDept-commission-page'}
+              type={'exportCityTotalTradeItemList'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'financial-businessDept-commission-page'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityTotalTradeItemList'}/>
           ],
         }}
         tableRender={(_, dom) => {
