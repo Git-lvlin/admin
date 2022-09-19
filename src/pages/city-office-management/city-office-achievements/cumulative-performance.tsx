@@ -88,7 +88,7 @@ const CumulativePerformance=(props:DevicesProps) => {
     }
     cityTotalTradeItemSum(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        setOrderSum(res?.data?.totalAmount)
       }
     })
   },[time])
