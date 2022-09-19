@@ -108,13 +108,13 @@ export default (props) => {
         search={{
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-          //   <Export
-          //   key='export'
-          //   change={(e) => { setVisit(e) }}
-          //   type={'day-red-detail-export'}
-          //   conditions={()=>{return getFieldValue(searchConfig)}}
-          // />,
-          // <ExportHistory key='task' show={visit} setShow={setVisit} type='day-red-detail-export'/>,
+            <Export
+            key='export'
+            change={(e) => { setVisit(e) }}
+            type={'exportMemberPromotionItemList'}
+            conditions={()=>{return getFieldValue(searchConfig)}}
+          />,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportMemberPromotionItemList'}/>
           ]
         }}
       />
