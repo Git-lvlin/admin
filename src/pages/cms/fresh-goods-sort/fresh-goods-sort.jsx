@@ -33,10 +33,10 @@ const BannerAdmin = () => {
   }
 
   const push = (selectedRows) => {
-    // if (!selectedRows||!selectedRows.length) {
-    //   message.error('请先勾选')
-    //   return
-    // }
+    if (!selectedRows||!selectedRows.length) {
+      message.error('请先勾选商品！')
+      return
+    }
     // const param = {
     //   wsSkuIds: selectedRows.toString(),
     //   wscId: itemClass,
@@ -114,10 +114,6 @@ const BannerAdmin = () => {
       dataIndex: 'spuId',
     },
     {
-      title: 'skuID',
-      dataIndex: 'skuId',
-    },
-    {
       title: '运营分类',
       hideInTable: true,
       dataIndex: 'wscId',
@@ -182,7 +178,7 @@ const BannerAdmin = () => {
   return (
     <PageContainer>
       <ProTable
-        rowKey="wsSkuId"
+        rowKey="id"
         columns={columns}
         actionRef={actionRef}
         request={getSpuList}
@@ -221,31 +217,19 @@ const BannerAdmin = () => {
               <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
                 确定
               </a>
+              <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
+                批量上架
+              </a>
+              <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
+                批量下架
+              </a>
             </span>
-            {/* <span>{`待发布: ${selectedRows?.reduce(
-              (pre, item) => {
-                item.state === 0
-                if (item.state === 0) {
-                  return pre += 1
-                }
-                return pre
-              },0,)} 个`}</span>
-            <span>{`已发布: ${selectedRows?.reduce(
-              (pre, item) => item.state && pre + 1,
-              0,
-            )} 个`}</span> */}
+            
           </>
         )}}
         dateFormatter="string"
-        // toolBarRender={(_) => {
-        //   return [
-        //     <Button key="button" type="primary" onClick={() => { sortReset(1) }}>
-        //       按集约价升序排列采购列表
-        //     </Button>
-        //   ]
-        // }}
       />
-      {selected&&<Space size={24} style={{position: 'absolute',top: 290, left: 60}}>
+      {selected&&<Space size={24} style={{position: 'absolute',top: 190, left: 60,zIndex:999}}>
         <span>
           <span style={{marginRight: 20}}>添加到 </span>
           <Select
@@ -258,19 +242,13 @@ const BannerAdmin = () => {
           <a style={{ marginLeft: 8 }} onClick={() => {push()}}>
             确定
           </a>
+          <a style={{ marginLeft: 8 }} onClick={() => {message.error('请先勾线商品！')}}>
+            批量上架
+          </a>
+          <a style={{ marginLeft: 8 }} onClick={() => {message.error('请先勾线商品！')}}>
+            批量下架
+          </a>
         </span>
-        {/* <span>{`待发布: ${selectedRows?.reduce(
-          (pre, item) => {
-            item.state === 0
-            if (item.state === 0) {
-              return pre += 1
-            }
-            return pre
-          },0,)} 个`}</span>
-        <span>{`已发布: ${selectedRows?.reduce(
-          (pre, item) => item.state && pre + 1,
-          0,
-        )} 个`}</span> */}
       </Space>}
       {formVisible && <Edit
         visible={formVisible}
