@@ -7,14 +7,17 @@ import { PageContainer } from '@/components/PageContainer';
 import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, pushClass, goodsClassList } from '@/services/cms/fresh-goods-sort';
 import Edit from './form';
 import { amountTransform } from '@/utils/utils'
+import Putaway from './putaway'
 
 const BannerAdmin = () => {
   const actionRef = useRef();
+  const [visible, setVisible] = useState(false);
   const [formVisible, setFormVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [goodsClass, setGoodsClass] = useState(null);
   const [itemClass, setItemClass] = useState(null);
   const [selected, setSelected] = useState(true);
+  const [selectedRows,setSelectedRows] = useState([])
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -156,7 +159,20 @@ const BannerAdmin = () => {
       },
       fieldProps: {
         placeholder: '请选择上架状态'
+      },
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请选择上架状态'
       }
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'goodsState',
+      valueEnum:{
+        1:'已上架',
+        0:'已下架',
+      },
+      hideInSearch: true
     },
     {
       title: '采购列表序号',
@@ -206,7 +222,7 @@ const BannerAdmin = () => {
           <>
             <span>
               已选 {selectedRowKeys.length} 项
-              <span>添加到</span>
+              <span>添加到</span>&nbsp;
               <Select
                 placeholder="请选择运营类目"
                 options={goodsClass}
@@ -217,7 +233,7 @@ const BannerAdmin = () => {
               <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
                 确定
               </a>
-              <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
+              <a style={{ marginLeft: 8 }} onClick={() => {setVisible(true);setSelectedRows(selectedRowKeys)}}>
                 批量上架
               </a>
               <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
@@ -256,6 +272,13 @@ const BannerAdmin = () => {
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      />}
+      {visible && <Putaway
+        visible={visible}
+        setVisible={setVisible}
+        selectedRows={selectedRows}
+        callback={() => { actionRef.current.reload(); setSelectedRows(null) }}
+        onClose={() => { actionRef.current.reload(); setSelectedRows(null) }}
       />}
     </PageContainer>
   );
