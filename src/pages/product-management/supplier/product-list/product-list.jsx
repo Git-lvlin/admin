@@ -34,6 +34,7 @@ const SubTable = (props) => {
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
     { title: '商品价格', dataIndex: 'salePriceDisplay' },
+    { title: '新集约价', dataIndex: 'distributePrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '可用库存', dataIndex: 'stockNum' },
     // { title: '活动库存', dataIndex: 'activityStockNum' },
   ];
@@ -354,6 +355,21 @@ const TableList = () => {
         }
 
         return `${amountTransform(goodsSaleMinPrice, '/')}~${amountTransform(goodsSaleMaxPrice, '/')}`
+      }
+    },
+    {
+      title: '新集约价',
+      dataIndex: 'name',
+      valueType: 'text',
+      hideInSearch: true,
+      width: 80,
+      render: (_, data) => {
+        const { distributeMinPrice, distributeMaxPrice } = data;
+        if (distributeMinPrice === distributeMaxPrice) {
+          return amountTransform(distributeMinPrice, '/');
+        }
+
+        return `${amountTransform(distributeMinPrice, '/')}~${amountTransform(distributeMaxPrice, '/')}`
       }
     },
     {

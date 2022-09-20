@@ -127,6 +127,7 @@ export default (props) => {
       sampleSupplyPrice,
       operateType,
       profit,
+      distributePrice,
       goodsName,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
@@ -165,6 +166,7 @@ export default (props) => {
         isFreeFreight: isFreeFreights,
         freightTemplateId: freightTemplateIds,
         sampleFreightId: sampleFreightIds,
+        distributePrice: distributePrices,
         ...rests
       } = item;
       const obj = {};
@@ -178,6 +180,7 @@ export default (props) => {
 
       if (goods.goodsSaleType !== 2) {
         obj.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrices)
+        obj.distributePrice = amountTransform(distributePrices)
       }
 
       if (operateType === 2) {
@@ -273,6 +276,7 @@ export default (props) => {
       if (goods.goodsSaleType !== 2) {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
+        obj.goods.distributePrice = amountTransform(distributePrice)
       }
 
       if (sampleFreightId) {
@@ -764,6 +768,7 @@ export default (props) => {
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             sampleSupplyPrice: amountTransform(item[1].sampleSupplyPrice, '/'),
             sampleSalePrice: amountTransform(item[1].sampleSalePrice, '/'),
+            distributePrice: amountTransform(item[1].distributePrice, '/'),
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
             // wholesalePrice: amountTransform(item[1].wholesalePrice, '/'),
             salePrice: amountTransform((settleType === 1 || settleType === 0) ? item[1].retailSupplyPrice : item[1].salePrice, '/'),
@@ -806,6 +811,7 @@ export default (props) => {
           salePrice: amountTransform((settleType === 1 || settleType === 0) ? goods.retailSupplyPrice : goods.salePrice, '/'),
           marketPrice: amountTransform(goods.marketPrice, '/'),
           wholesaleSupplyPrice: amountTransform(goods.wholesaleSupplyPrice, '/'),
+          distributePrice: amountTransform(goods.distributePrice, '/'),
           wholesaleMinNum: goods.wholesaleMinNum,
           salePriceFloat: amountTransform(goods.salePriceFloat),
           sampleMinNum: goods.sampleMinNum,
@@ -1593,6 +1599,48 @@ export default (props) => {
                   >
                     {preferential / 100}
                   </Form.Item>}
+                </>
+              }
+              {
+                goods.goodsSaleType !== 2 &&
+                <>
+                  <ProFormText
+                    name="distributePrice"
+                    label="店主新集约价"
+                    placeholder="请输入店主新集约价"
+                    validateFirst
+                    rules={[
+                      { required: true, message: '请输入店主新集约价' },
+                      () => ({
+                        validator(_, value) {
+                          if (!/^\d+\.?\d*$/g.test(value) || value <= 0) {
+                            return Promise.reject(new Error('请输入大于零的数字'));
+                          }
+                          return Promise.resolve();
+                        },
+                      })
+                    ]}
+                    extra={<span style={{ color: 'red' }}>供应商直发到社区店</span>}
+                    fieldProps={{
+                      addonAfter: `元/${goods.unit}`
+                    }}
+                  />
+                  <ProFormDependency name={['distributePrice']}>
+                    {({ distributePrice }) => {
+                      if (goods.retailSupplyPrice) {
+                        const x = +new Big(goods.retailSupplyPrice / 100).times(1.1).toFixed(2)
+                        return (
+                          <Form.Item
+                            label={`店主新集约价盈亏`}
+                          >
+                            {distributePrice > 0 ? `${+new Big(distributePrice).minus(x).toFixed(2)}元/${goods.unit}` : ''}
+                          </Form.Item>
+                        )
+                      }
+                      return null
+
+                    }}
+                  </ProFormDependency>
                 </>
               }
 
