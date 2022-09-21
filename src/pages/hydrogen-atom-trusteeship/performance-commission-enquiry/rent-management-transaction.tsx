@@ -20,10 +20,13 @@ export default () => {
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [visit, setVisit] = useState<boolean>(false)
   const getFieldValue = () => {
-    const { payTime, ...rest } = formRef.current?.getFieldsValue()
+    const { payTime,area=[], ...rest } = formRef.current?.getFieldsValue()
     return {
-      payTimeStart: payTime && moment(payTime?.[0]).unix(),
-      payTimeEnd: payTime && moment(payTime?.[1]).unix(),
+      payTimeStart: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      payTimeEnd: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      regionId: area[2]?.value,
       ...rest
     }
   }
@@ -39,7 +42,7 @@ export default () => {
     },
     {
       title: '订单编号',
-      dataIndex: 'payOrderSn',
+      dataIndex: 'subOrderSn',
       align: 'center',
       fieldProps: {
         placeholder: '请输入订单编号'
@@ -68,7 +71,7 @@ export default () => {
     },
     {
       title: '下单人店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'shopMemberAccount',
       align: 'center',
       fieldProps: {
         placeholder:'请输入社区店编号'
@@ -111,14 +114,14 @@ export default () => {
     },
     {
       title: '套餐类型',
-      dataIndex: 'leaseTitle',
+      dataIndex: 'leasePackageId',
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '三个月套餐',
-        2: '六个月套餐',
-        3: '十二个月套餐',
-        4: '自定义套餐'
+        1001: '三个月套餐',
+        1002: '六个月套餐',
+        1003: '十二个月套餐',
+        999: '自定义套餐'
       },
       order: 3
     },
@@ -155,23 +158,23 @@ export default () => {
             <Export
             change={(e)=> {setVisit(e)}}
             key="export" 
-            type="membershop-servicefee-export"
+            type="store-export-hostinbglease-paypage"
             conditions={()=>{return getFieldValue()}}
             />,
             <ExportHistory 
               key="export-history" 
               show={visit}
               setShow={setVisit}
-              type="membershop-servicefee-export"
+              type="store-export-hostinbglease-paypage"
             />
           ]
         }}
         className={styles.escrow_purchase_transaction}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={3} bordered>
-            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.deviceTotalPay,'/')} 元</Descriptions.Item>
+            <Descriptions.Item  label="总业绩金额">{amountTransform(detailList?.paidRental,'/')} 元</Descriptions.Item>
             <Descriptions.Item  label="总下单店铺数量">{detailList?.memberIdCount} 家</Descriptions.Item>
-            <Descriptions.Item  label="总套餐销售笔数">{detailList?.leaseCount} 台</Descriptions.Item>
+            <Descriptions.Item  label="总套餐销售笔数">{detailList?.leaseCount} 笔</Descriptions.Item>
           </Descriptions>
         )}
       />
