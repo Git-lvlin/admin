@@ -3,7 +3,8 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { Button, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { postageList, postageDetail } from '@/services/product-management/freight-template';
+import { getCommissionLog } from '@/services/product-management/designated-commodity-settlement';
+import { amountTransform } from '@/utils/utils'
 
 export default () => {
   const actionRef = useRef();
@@ -17,125 +18,180 @@ export default () => {
     },
     {
       title: '操作类型',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
     },
      {
       title: '操作时间',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'updateTime',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      dataIndex: 'spuId',
+      align: 'center',
+      hideInTable: true,
+      fieldProps:{
+        placeholder:'请输入spuID查询'
+      },
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: 'skuID',
-      dataIndex: 'storeCancelNumNotAudit',
-      align: 'center',
-      hideInTable: true,
-      fieldProps: {
-        placeholder: '请输入spuID或商品名称',
-      },
-    },
-    {
-      title: 'skuID',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'skuId',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '售价',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'salePrice',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '商品名称',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'goodsName',
       align: 'center',
       hideInSearch: true,
     },
     {
-      title: '供应商-货款',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '供应商（货款）',
+      dataIndex: 'retailSupplyPrice',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
+    // {
+    //   title: '省办事处',
+    //   dataIndex: 'provinceManageFee',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
-      title: '省办事处',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '市办事处',
+      dataIndex: 'cityManageFee',
       align: 'center',
-      hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: 'VIP店主-直推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shoppervipChargeFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: 'VIP店主-间推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shoppervipManageFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '普通店主-直推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperChargeFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '普通店主-间推',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'shopperManageFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
-      title: '用户-直推',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '用户直推',
+      dataIndex: 'userChargeFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
 
     {
-      title: '用户-间推',
-      dataIndex: 'storeCancelNumNotAudit',
+      title: '用户间推',
+      dataIndex: 'userManageFee',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
-    {
-      title: '运营中心',
-      dataIndex: 'storeCancelNumNotAudit',
-      align: 'center',
-      hideInSearch: true,
-    },
+    // {
+    //   title: '运营中心',
+    //   dataIndex: 'companyAgent',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_)=>{
+    //     return amountTransform(_,'/').toFixed(2)
+    //   }
+    // },
     {
       title: '省代',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'provinceAgent',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '市代',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'cityAgent',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '全国分红奖',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'dividends',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '汇能科技',
-      dataIndex: 'storeCancelNumNotAudit',
+      dataIndex: 'company',
       align: 'center',
       hideInSearch: true,
+      render: (_)=>{
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '操作人',
-      dataIndex: 'name',
+      dataIndex: 'lastEditor',
       hideInSearch: true,
     },
   ];
@@ -146,11 +202,19 @@ export default () => {
         rowKey="id"
         bordered
         options={false}
-        request={postageList}
+        request={getCommissionLog}
         columns={columns}
         actionRef={actionRef}
         pagination={{
-            pageSize:10
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+             ...dom.reverse(),
+          ],
         }}
       />
     </PageContainer>

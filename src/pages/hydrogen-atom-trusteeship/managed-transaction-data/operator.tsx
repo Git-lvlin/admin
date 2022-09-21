@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table'
 import type { ProColumns } from '@ant-design/pro-table'
 
 import { MemberShopOperatorPage } from '@/services/hydrogen-atom-trusteeship/managed-transaction-data'
-import { amountTransform } from "@/utils/utils"
+import { amountTransform, getPageQuery } from "@/utils/utils"
 import DevicesDetail from "../components/devices-detail"
 
 
@@ -18,12 +18,15 @@ const Operator = () => {
   const [deductible, setDeductible] = useState<string>()
   const [amount, setAmount] = useState<number>()
 
+  const paramsData = getPageQuery()
+
   const columns: ProColumns[] = [
     {
       dataIndex: 'keyword',
       fieldProps: {
         placeholder: '请输入手机号或店铺编号'
       },
+      initialValue: paramsData.searchVal ?? paramsData.searchVal,
       hideInTable: true
     },
     {
@@ -43,6 +46,32 @@ const Operator = () => {
       align: 'center',
       hideInSearch: true
     },
+    {
+      title: '合同状态',
+      dataIndex: 'contractStatusStr',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '合同数量',
+      dataIndex: 'contractCount',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => (
+        <>
+          <div>共 {_} 份</div>
+          <div>
+            已签
+            {
+              r.contractCountSigned > 0 ?
+              <a href={`/setting/contract-management?type=4&memberPhone=${r.memberPhone}`}>{r.contractCountSigned}</a>:
+              <span>{r.contractCountSigned}</span>
+            }
+            份+待签{r.contractCountAwaiting}份
+          </div>
+        </>
+      )
+    }, 
     {
       title: '可运营资质数',
       dataIndex: 'availableTotal',

@@ -214,6 +214,7 @@ const ArticleList = (props) => {
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       request={findAdminArticleList}
       dateFormatter="string"

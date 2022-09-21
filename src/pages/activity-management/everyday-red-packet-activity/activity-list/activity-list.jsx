@@ -79,6 +79,10 @@ export default () => {
         ]}
           search={false}
           columns={columns}
+          pagination={{
+            pageSize: 10,
+            showQuickJumper: true,
+          }}
         />
         {
           visible&&<EverydayRule

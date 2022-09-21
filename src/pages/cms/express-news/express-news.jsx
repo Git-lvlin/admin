@@ -172,6 +172,7 @@ const ExpressNews = () => {
       }}
       pagination={{
         pageSize: 10,
+        showQuickJumper: true,
       }}
       dateFormatter="string"
       headerTitle="约购快报"

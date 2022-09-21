@@ -176,7 +176,7 @@ export default (props) => {
 
   return (
     <DrawerForm
-      title={`${detailData ? '编辑' : '新建'}运营商`}
+      title={`${detailData ? '编辑' : '新建'}运营中心`}
       onVisibleChange={setVisible}
       drawerProps={{
         forceRender: true,
@@ -202,18 +202,18 @@ export default (props) => {
       <Divider />
       <ProFormText
         name="companyName"
-        label="运营商名称"
-        placeholder="请输入运营商名称"
-        rules={[{ required: true, message: '请输入运营商名称' }]}
+        label="运营中心名称"
+        placeholder="请输入运营中心名称"
+        rules={[{ required: true, message: '请输入运营中心名称' }]}
         fieldProps={{
           maxLength: 30,
         }}
       />
       <ProFormText
         name="accountName"
-        label="运营商登录账号"
-        placeholder="请输入运营商登录账号"
-        rules={[{ required: true, message: '请输入运营商登录账号' }]}
+        label="运营中心登录账号"
+        placeholder="请输入运营中心登录账号"
+        rules={[{ required: true, message: '请输入运营中心登录账号' }]}
         fieldProps={{
           maxLength: 18,
         }}
@@ -221,11 +221,11 @@ export default (props) => {
       />
       <ProFormText.Password
         name="password"
-        label="运营商登录密码"
-        placeholder="请输入运营商登录密码"
+        label="运营中心登录密码"
+        placeholder="请输入运营中心登录密码"
         validateFirst
         rules={[
-          { required: !detailData, message: '请输入运营商登录密码' },
+          { required: !detailData, message: '请输入运营中心登录密码' },
           { required: !detailData, message: '密码应不少于6个字符，不超过18个字符', min: 6, max: 18 }
         ]}
         fieldProps={{
@@ -236,9 +236,9 @@ export default (props) => {
       />
       <ProFormText
         name="companyUserName"
-        label="运营商联系人"
-        placeholder="请输入运营商联系人"
-        rules={[{ required: true, message: '请输入运营商联系人' }]}
+        label="运营中心联系人"
+        placeholder="请输入运营中心联系人"
+        rules={[{ required: true, message: '请输入运营中心联系人' }]}
         fieldProps={{
           maxLength: 10,
         }}
@@ -253,8 +253,8 @@ export default (props) => {
         }}
       />
       <Form.Item
-        label="运营商所管辖区域"
-        rules={[{ required: true, message: '请选择运营商所管辖区域' }]}
+        label="运营中心所管辖区域"
+        rules={[{ required: true, message: '请选择运营中心所管辖区域' }]}
         name="address"
       >
         <AddressCascader changeOnSelect />

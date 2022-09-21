@@ -30,12 +30,12 @@ function PerformanceReport () {
 
   const columns: ProColumns<TableProps>[] = [
     {
-      title: '运营商ID',
+      title: '运营中心ID',
       dataIndex: 'operationId',
       align: 'center'
     },
     {
-      title: '运营商名称',
+      title: '运营中心名称',
       dataIndex: 'operationName',
       align: 'center'
     },
@@ -94,6 +94,7 @@ function PerformanceReport () {
         formRef={form}
         options={false}
         search={{
+          labelWidth: 120,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
             <Export 

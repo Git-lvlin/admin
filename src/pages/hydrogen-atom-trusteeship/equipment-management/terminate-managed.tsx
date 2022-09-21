@@ -182,7 +182,7 @@ const TerminateManaged: FC<TerminateManagedProps> = (props) => {
       <div className={styles.stopOption}>
         <ExclamationCircleOutlined />
         <div>
-          <div className={styles.marginTop}>终止托管后，投资人将不能继续获得消费分成，设备将立即停用，并与运营商解绑，消费者无法继续使用健康卡在此设备消费。请及时在线下将设备收回！</div>
+          <div className={styles.marginTop}>终止托管后，投资人将不能继续获得分成，设备将立即停用，并与运营商解绑。请及时在线下将设备从运营商收回！</div>
           <div className={styles.red}>请与投资人核实确认，谨慎操作！</div>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
-import { Image } from 'antd'
 
 import type { FC } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
@@ -10,8 +9,9 @@ import { deviceTransList } from '@/services/hydrogen-atom-trusteeship/managed-tr
 import { amountTransform } from '@/utils/utils'
 import DevicesDetail from '../components/devices-detail'
 import Export from "@/components/export"
+import RangeInput from "../components/range-input"
 
-const ManagedBuy:FC = () => {
+const ManagedBuy: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [type, setType] = useState<number>(0)
   const [storeNo, setStoreNo] = useState<string>()
@@ -21,13 +21,6 @@ const ManagedBuy:FC = () => {
   const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
-    {
-      dataIndex: 'searchVal',
-      fieldProps: {
-        placeholder: '请输入手机号或店铺编号'
-      },
-      hideInTable: true
-    },
     {
       dataIndex: 'orderId',
       hideInTable: true,
@@ -40,25 +33,61 @@ const ManagedBuy:FC = () => {
       hideInSearch: true
     },
     {
-      title: '头像',
-      dataIndex: 'headImg',
+      title: '姓名',
+      dataIndex: 'nickname',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '投资方姓名',
+      dataIndex: 'nickname',
+      align: 'center',
+      hideInTable: true
+    },
+    {
+      title: '合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '托管合同签订状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1: '全部签订',
+        2:' 部分签订',
+        3: '没有签订'
+      },
+      hideInTable: true
+    },
+    {
+      title: '合同数量',
+      dataIndex: 'contractTotalNums',
       align: 'center',
       render: (_, r) => (
-        <Image
-          width={50} 
-          height={50} 
-          src={r.headImg}
-          preview={false}
-          style={{borderRadius: '50%'}}
-        />
+        <>
+          <div>共 {_} 份</div>
+          <div>
+            已签
+            {
+              r.contractSignedNums > 0 ?
+              <a href={`/setting/contract-management?type=3&memberPhone=${r.hostingMemberPhone}`}>{r.contractSignedNums}</a>:
+              <span>{r.contractSignedNums}</span>
+            }
+            份+待签{r.contractPendSignNums}份
+          </div>
+        </>
       ),
       hideInSearch: true
     },
     {
-      title: '昵称',
-      dataIndex: 'nickname',
+      title: '设备合同数量',
+      dataIndex: 'contractTotalNums',
       align: 'center',
-      hideInSearch: true
+      renderFormItem: ()=> <RangeInput />,
+      hideInTable: true
     },
     {
       title: '是否为VIP店主',
@@ -82,6 +111,12 @@ const ManagedBuy:FC = () => {
       dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '投资方店铺名称',
+      dataIndex: 'storeName',
+      align: 'center',
+      hideInTable: true
     },
     {
       title: '托管购买设备数',
@@ -235,6 +270,13 @@ const ManagedBuy:FC = () => {
         }
       }
     },
+    {
+      dataIndex: 'searchVal',
+      fieldProps: {
+        placeholder: '请输入手机号或店铺编号'
+      },
+      hideInTable: true
+    }
   ]
 
   return (
@@ -251,6 +293,7 @@ const ManagedBuy:FC = () => {
         formRef={form}
         options={false}
         search={{
+          labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
             <Export 

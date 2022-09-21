@@ -255,6 +255,7 @@ const TableList = () => {
         expandable={{ expandedRowRender: (_) => <SubTable data={_} /> }}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
         search={{
           labelWidth: 140,

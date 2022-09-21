@@ -81,6 +81,7 @@ const HotGoos = () => {
         options={false}
         pagination={{
           pageSize: 10,
+          showQuickJumper: true,
         }}
       />
       {modifyFormVisible && <Modify

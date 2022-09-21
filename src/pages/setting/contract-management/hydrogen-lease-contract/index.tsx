@@ -6,6 +6,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { TableProps, LeaseContractProps } from "../data"
 
 import { deviceContract } from "@/services/setting/contract-management"
+import { getPageQuery } from '@/utils/utils'
 
 const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps) => {
   const { type } = props
@@ -28,7 +29,8 @@ const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps
     {
       title: '店主手机',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      initialValue: getPageQuery().memberPhone
     },
     {
       title: '社区店ID',

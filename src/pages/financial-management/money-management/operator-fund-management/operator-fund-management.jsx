@@ -207,6 +207,7 @@ const OperatorFundManagement = () => {
         actionRef={actionRef}
         formRef={formRef}
         pagination={{
+          showQuickJumper: true,
           pageSize: 10,
           onChange: (e) => {
             setPage(e)

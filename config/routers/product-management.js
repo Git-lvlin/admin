@@ -57,6 +57,12 @@ export default {
           component: './product-management/supplier/product-log',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'stock-warn-product',
+          path: '/product-management/supplier/stock-warn-product',
+          component: './product-management/supplier/stock-warn-product',
+          wrappers: [RouteWatcher],
+        },
       ]
     },
     {

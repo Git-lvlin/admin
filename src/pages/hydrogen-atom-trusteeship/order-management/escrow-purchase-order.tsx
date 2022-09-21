@@ -130,7 +130,7 @@ const EscrowPurchaseOrder = () => {
           <div>{_}</div>
           {
             r.statusTips&&
-            <div>{r.statusTips}</div>
+            <div style={{color: '#f00'}}>{r.statusTips}</div>
           }
         </>
       )

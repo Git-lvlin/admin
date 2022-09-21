@@ -58,18 +58,20 @@ export const hostingLease = async (data, options = {}) => {
     data: res.data.records,
     total: res.data.total,
     success: res.success,
-    monthSum: res.monthSum
+    monthSum: res.data.monthSum
   }
 }
 
 // 托管购买列表
 export const deviceTransList = async (params, options = {}) => {
-  const { current = 1, pageSize = 10, ...rest } = params
+  const { current = 1, pageSize = 10, contractTotalNums, ...rest } = params
   const res = await request('/auth/healthy/deviceManage/deviceTransList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      contractStartNums: contractTotalNums && contractTotalNums.min,
+      contractEndNums: contractTotalNums && contractTotalNums.max,
       ...rest
     },
     ...options

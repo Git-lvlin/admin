@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import moment from 'moment';
 
-// 运营商氢原子业绩
+// 运营中心氢原子业绩
 export const operationsCommissionPage = async (params = {}, options = {}) => {
   const { current = 1, pageSize = 10, time, ...rest } = params
   const res = await request('/auth/java-admin/financial/hydrogenDivide/operationsCommissionPage', {
@@ -22,7 +22,7 @@ export const operationsCommissionPage = async (params = {}, options = {}) => {
   }
 }
 
-// 运营商氢原子业绩明细
+// 运营中心氢原子业绩明细
 export const operationsCommissionItemPage = async (params = {}, options = {}) => {
   const { current = 1, pageSize = 10, ...rest } = params
   const res = await request('/auth/java-admin/financial/hydrogenDivide/operationsCommissionItemPage', {

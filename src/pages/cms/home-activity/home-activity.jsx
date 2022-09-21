@@ -154,6 +154,7 @@ const HomeActivity = () => {
       }}
       pagination={{
         pageSize: 5,
+        showQuickJumper: true,
       }}
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
       dateFormatter="string"

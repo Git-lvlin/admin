@@ -101,7 +101,7 @@ const SubsidySummary = ()=> {
         columns={columns}
         pagination={{
           pageSize: 10,
-          hideOnSinglePage: true
+          showQuickJumper: true
         }}
         rowKey='sn'
         toolBarRender={false}

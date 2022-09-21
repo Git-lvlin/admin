@@ -265,7 +265,8 @@ export default function EditTable() {
         }
       }}
       pagination={{
-        pageSize: 5
+        pageSize: 10,
+        showQuickJumper: true,
       }}
       // rowSelection={{
       //   onChange: (_, val) => {
