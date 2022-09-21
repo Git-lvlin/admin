@@ -83,7 +83,8 @@ const WithdrawalAuditManagement = () => {
     },
     {
       title: '资金流水号',
-      dataIndex: 'voucher'
+      dataIndex: 'voucher',
+      width: '20%'
     },
     {
       title: '提现单号',

@@ -20,6 +20,15 @@ const ManagedBuy: FC = () => {
   const [amount, setAmount] = useState<number>()
   const form = useRef<FormInstance>()
 
+  const getFieldsValue = () =>{
+    const { contractTotalNums, ...rest } = form.current?.getFieldsValue()
+    return {
+      contractStartNums: contractTotalNums && contractTotalNums?.min,
+      contractEndNums: contractTotalNums && contractTotalNums?.max,
+      ...rest
+    }
+  }
+
   const columns: ProColumns[] = [
     {
       dataIndex: 'orderId',
@@ -29,8 +38,7 @@ const ManagedBuy: FC = () => {
     {
       title: '手机号码',
       dataIndex: 'hostingMemberPhone',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '姓名',
@@ -73,7 +81,7 @@ const ManagedBuy: FC = () => {
             已签
             {
               r.contractSignedNums > 0 ?
-              <a href={`/setting/contract-management?type=3&memberPhone=${r.hostingMemberPhone}`}>{r.contractSignedNums}</a>:
+              <a href={`/setting/contract-management`} onClick={()=> {window.localStorage.setItem('managed', JSON.stringify({"type": 3, "memberPhone": r.hostingMemberPhone}))}}>{r.contractSignedNums}</a>:
               <span>{r.contractSignedNums}</span>
             }
             份+待签{r.contractPendSignNums}份
@@ -103,8 +111,7 @@ const ManagedBuy: FC = () => {
     {
       title: '店铺编号',
       dataIndex: 'houseNumber',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '店铺名称',
@@ -269,13 +276,6 @@ const ManagedBuy: FC = () => {
           return <span>{amountTransform(_, '/')}</span>
         }
       }
-    },
-    {
-      dataIndex: 'searchVal',
-      fieldProps: {
-        placeholder: '请输入手机号或店铺编号'
-      },
-      hideInTable: true
     }
   ]
 
@@ -299,10 +299,19 @@ const ManagedBuy: FC = () => {
             <Export 
               key='exprot'
               type='healthyDeviceTransList'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={getFieldsValue}
             />
           ]
         }}
+        tableRender={(_, dom)=> (
+          <>
+            { dom }
+            <span style={{}}>
+              对未提交开户资料下单人，请提醒下单人尽快提交<b>开户资料</b>，并尽快进行
+              <a target='_blank' referrerPolicy='no-referrer' href="/intensive-store-management/store-review">店铺审核</a>
+            </span>
+          </>
+        )}
       />
       {
         visible&&

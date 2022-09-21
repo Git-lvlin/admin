@@ -4,7 +4,8 @@ import {
   AutoComplete, 
   Descriptions,
   message,
-  Typography
+  Typography,
+  Empty
 } from "antd"
 import { debounce } from 'lodash'
 
@@ -58,7 +59,8 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         if (res.code === 0) {
           setResult(res.data.records.map((item: ListProps)=>({
             ...item,
-            id: item.storeNo,
+            id: item.id,
+            storeNo: item.storeNo,
             realname: item.realname,
             memberPhone: item.memberPhone,
             fullAddress: item.fullAddress
@@ -70,10 +72,10 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
   }, [])
 
   const checkedValue = (e: string) => {
-    const arr = result.filter(item=> item.storeNo === e)
+    const arr = result.filter(item=> item.id === parseInt(e))
     arr.forEach(item=>{
       formRef.current?.setFieldsValue({
-        storeNo: item.id,
+        storeNo: item.storeNo,
         storeName: `【${item.shopMemberAccount}】${item.storeName}`,
         realname: item.realname,
         memberPhone: item.memberPhone,
@@ -85,6 +87,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
 
 
   const submit = (e: ListProps) => {
+    delete e['store']
     return new Promise<void>((resolve, reject) => { 
       if(Object.keys(e).length) {
         api?.({...e, orderId}, {showSuccess: true}).then(res => {
@@ -143,6 +146,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           }}
           onSearch={debounceFetcher}
           onSelect={checkedValue}
+          notFoundContent={<Empty/>}
         >
           {result.map((value: ListProps) => (
             <Option key={value.id} disabled={value.statusCode === 1}>

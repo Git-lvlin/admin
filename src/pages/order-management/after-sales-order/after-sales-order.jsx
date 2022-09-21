@@ -6,7 +6,7 @@ import moment from 'moment'
 import { history } from 'umi'
 
 import { refundOrder } from '@/services/order-management/after-sales-order'
-import { amountTransform } from '@/utils/utils'
+import { amountTransform, getPageQuery } from '@/utils/utils'
 import DrawerDetail from './detail'
 
 
@@ -67,6 +67,7 @@ const afterSalesOrder = () => {
       align: 'center',
       order: -1,
       width: 100,
+      initialValue: getPageQuery()?.supplierId
     },
     {
       title: '申请时间',

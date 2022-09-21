@@ -4,19 +4,19 @@ import { amountTransform } from '@/utils/utils'
 
 export const fashionableType = (data, amount, fee, couponAmount, realAmount) =>{
   return (
-    <Space size={10}>
-      <span>{data}: ¥{amountTransform(amount, '/')}</span>
+    <div style={{marginBottom: '10px'}}>
+      <div>{data}: ¥{amountTransform(amount, '/')}</div>
       {
         (couponAmount !== '0' && couponAmount)&&
-        <span>优惠金额: ¥{amountTransform(couponAmount, '/')}</span>
+        <div>优惠金额: ¥{amountTransform(couponAmount, '/')}</div>
       }
-      <span>交易通道费: ¥{amountTransform(fee, '/')}</span>
+      <div>交易通道费: ¥{amountTransform(fee, '/')}</div>
       {
         (realAmount !== '0' && realAmount)&&
-        <span>到账金额: ¥{amountTransform(realAmount, '/')}</span>
+        <div>到账金额: ¥{amountTransform(realAmount, '/')}</div>
       }
       
-    </Space>
+    </div>
   )
 }
 
