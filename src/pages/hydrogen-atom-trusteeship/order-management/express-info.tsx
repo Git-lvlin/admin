@@ -19,7 +19,7 @@ const ExpressInfo: FC<ExpressInfoProps> = (props) => {
       shippingCode: data?.orderId,
       expressType: data?.companyNo,
       mobile: data?.storePhone,
-      deliveryTime: data?.receiptTimeDesc
+      deliveryTime: data?.deliveryTimeDesc
     }).then(res => {
       if(res.code === 0 ){
         setList(res.data?.deliveryList)

@@ -5,7 +5,7 @@ export type ExpressInfoProps = {
     orderId: string
     storePhone: string
     companyNo: string
-    receiptTimeDesc: string
+    deliveryTimeDesc: string
   }
 }
 
