@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import { useParams, history } from 'umi'
 import {
   Button,
@@ -13,24 +13,31 @@ import {
   ProFormTextArea,
   ProFormText
 } from '@ant-design/pro-form'
+import { LoadingOutlined } from "@ant-design/icons"
 
 import {
   withdrawPageDetail,
   audit,
   payment
 } from "@/services/financial-management/transaction-detail-management"
-import './styles.less'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 
-const PopModal = ({sn}) => {
+const PopModal = ({sn, form}) => {
   const [type,setType] = useState('online')
-  const submit = (val) => {
-    payment({ ...val, sn }).then(res => {
-      if (res?.success) {
-        form.current.reload()
-        message.success('提交成功')
-      } 
+
+  const submit = async (val) => {
+    return new Promise((resolve, reject) => {
+      payment({ ...val, sn }).then(res => {
+        if (res.code === 0) {
+          form.current.reload()
+          setType('online')
+          message.success('提交成功')
+          resolve()
+        } else {
+          reject()
+        }
+      })
     })
   }
   return (
@@ -47,7 +54,6 @@ const PopModal = ({sn}) => {
       }}
       onFinish={async (values) => {
         await submit(values)
-        setType('online')
         return true
       }}
     >
@@ -81,19 +87,24 @@ const PopModal = ({sn}) => {
   )
 }
 
-const PopModalForm = ({sn}) => {
-  const [choosed, setChoosed] = useState('')
+const PopModalForm = ({sn, form}) => {
+  const [choosed, setChoosed] = useState('1')
 
   const choose =(value)=> {
     setChoosed(value)
   }
   
   const check = (val) => {
-    audit({ ...val, sn }).then(res => {
-      if (res?.success) {
-        form.current.reload()
-        message.success('提交成功')
-      }
+    return new Promise((resolve, reject) => {
+      audit({ ...val, sn }).then(res => {
+        if (res.code === 0) {
+          form.current.reload()
+          message.success('提交成功')
+          resolve()
+        } else {
+          reject()
+        }
+      })
     })
   }
   return (
@@ -102,7 +113,8 @@ const PopModalForm = ({sn}) => {
       title='审核'
       width={600}
       modalProps={{
-        destroyOnClose: true
+        destroyOnClose: true,
+        onCancel: () => setChoosed('1')
       }}
       trigger={<Button>审核</Button>}
       onFinish={async (values) => {
@@ -150,16 +162,17 @@ const Detail = () => {
     const { status, sn } = type
     switch (status) {
       case 'auditing':
-        return <PopModalForm sn={sn}/>
+        return <PopModalForm sn={sn} form={form}/>
       case 'waitPay':
-      case 'failure':
-        return <PopModal sn={sn}/>
+        return <PopModal sn={sn} form={form}/>
       case 'arrived':
         return '已到账'
       case 'unPass':  
-        return '审核拒绝'
+        return '审核不通过'
       case 'paid':
-        return '已执行'
+        return '已打款'
+      case 'failure':
+        return <Space size={10}>提现失败 <PopModal sn={sn} form={form}/></Space>
       default:
         return '状态错误'
     }

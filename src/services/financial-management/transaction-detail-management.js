@@ -37,29 +37,19 @@ export const withdrawPageDetail = async (params, options = {}) => {
 
 // 提现审核
 export const audit = async (params= {}, options= {}) => {
-  const res = await request('/auth/java-admin/financial/withdraw/audit', {
+  return await request('/auth/java-admin/financial/withdraw/audit', {
     method: 'POST',
     data: params,
     ...options
   })
-
-  return {
-    data: res?.data,
-    success: res?.success
-  }
 }
 // 提现执行
 export const payment = async (params= {}, options= {}) => {
-  const res = await request('/auth/java-admin/financial/withdraw/payment', {
+  return await request('/auth/java-admin/financial/withdraw/payment', {
     method: 'POST',
     data: params,
     ...options
   })
-
-  return {
-    data: res?.data,
-    success: res?.success
-  }
 }
 
 // 订单支付明细管理
