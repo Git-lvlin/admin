@@ -168,7 +168,7 @@ const Detail = () => {
       case 'arrived':
         return '已到账'
       case 'unPass':  
-        return '审核拒绝'
+        return '审核不通过'
       case 'paid':
         return '已打款'
       case 'failure':
