@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import { useParams, history } from 'umi'
 import {
   Button,
@@ -13,6 +13,7 @@ import {
   ProFormTextArea,
   ProFormText
 } from '@ant-design/pro-form'
+import { LoadingOutlined } from "@ant-design/icons"
 
 import {
   withdrawPageDetail,
@@ -34,7 +35,6 @@ const PopModal = ({sn, form}) => {
           message.success('提交成功')
           resolve()
         } else {
-          message.error('提交失败')
           reject()
         }
       })
@@ -102,7 +102,6 @@ const PopModalForm = ({sn, form}) => {
           message.success('提交成功')
           resolve()
         } else {
-          message.error('提交失败')
           reject()
         }
       })
@@ -165,14 +164,15 @@ const Detail = () => {
       case 'auditing':
         return <PopModalForm sn={sn} form={form}/>
       case 'waitPay':
-      case 'failure':
         return <PopModal sn={sn} form={form}/>
       case 'arrived':
         return '已到账'
       case 'unPass':  
         return '审核拒绝'
       case 'paid':
-        return '已执行'
+        return '已打款'
+      case 'failure':
+        return '提现失败'
       default:
         return '状态错误'
     }
