@@ -306,7 +306,7 @@ const ManagedBuy: FC = () => {
         tableRender={(_, dom)=> (
           <>
             { dom }
-            <span style={{}}>
+            <span>
               对未提交开户资料下单人，请提醒下单人尽快提交<b>开户资料</b>，并尽快进行
               <a target='_blank' referrerPolicy='no-referrer' href="/intensive-store-management/store-review">店铺审核</a>
             </span>
