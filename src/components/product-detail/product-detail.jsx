@@ -74,6 +74,7 @@ export default (props) => {
             wholesaleMinNum: item[1].wholesaleMinNum,
             sampleSupplyPrice: item[1].sampleSupplyPrice / 100,
             sampleSalePrice: item[1].sampleSalePrice / 100,
+            distributePrice: item[1].distributePrice / 100,
             salePriceFloat: amountTransform(item[1].salePriceFloat),
             salePriceProfitLoss: amountTransform(item[1].salePriceProfitLoss, '/'),
             // suggestedRetailPrice: amountTransform(item[1].suggestedRetailPrice, '/'),
@@ -378,6 +379,21 @@ export default (props) => {
                         render: () => '100%'
                       }]}
                   />
+                </Form.Item>
+              </>
+            }
+            {
+              goods.goodsSaleType !==2&&
+              <>
+                <Form.Item
+                  label="店主新集约价"
+                >
+                  {amountTransform(goods.distributePrice, '/')}元/{goods.unit}
+                </Form.Item>
+                <Form.Item
+                  label="店主新集约价盈亏"
+                >
+                  {goods.distributePrice > 0 ? `${+new Big(goods.distributePrice/100).minus(goods.wholesaleFreight / 100).times(0.95).minus(goods.retailSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
                 </Form.Item>
               </>
             }
