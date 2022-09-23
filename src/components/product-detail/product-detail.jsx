@@ -4,7 +4,9 @@ import { amountTransform } from '@/utils/utils'
 import EditTable from './table';
 import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
+import Big from 'big.js';
 
+Big.RM = 2;
 export default (props) => {
   const { detailData, review } = props;
   const [tableHead, setTableHead] = useState([]);
@@ -203,7 +205,7 @@ export default (props) => {
                 ladderSwitch={detailData.ladderSwitch}
                 review={review}
                 operateType={goods?.operateType}
-                wholesaleFreight={goods?.wholesaleFreight}
+                wholeSaleCheckPrice={+detailData?.wholeSaleCheckPrice}
               />
             }
             <Form.Item
@@ -394,7 +396,7 @@ export default (props) => {
                 <Form.Item
                   label="店主新集约价盈亏"
                 >
-                  {goods.distributePrice > 0 ? `${+new Big(goods.distributePrice / 100).minus(goods.wholesaleFreight / 100).times(0.95).minus(goods.wholesaleSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
+                  {goods.distributePrice > 0 ? `${+new Big(goods.distributePrice / 100).minus(goods.wholesaleFreight / 100).times(+detailData.wholeSaleCheckPrice).minus(goods.wholesaleSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
                 </Form.Item>
               </>
             }
