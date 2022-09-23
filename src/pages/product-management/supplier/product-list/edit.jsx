@@ -1322,6 +1322,7 @@ export default (props) => {
                           unit={goods.unit}
                           wsUnit={goods.wsUnit}
                           ladderSwitch={detailData?.ladderSwitch}
+                          wholesaleFreight={goods.wholesaleFreight}
                         />}
                     </>
                   )
