@@ -138,7 +138,7 @@ export default function EditTable(props) {
         editable: false,
         hideInTable: goodsSaleType === 2,
         render: (_, record) => {
-          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(wholesaleFreight).times(0.95).minus(record.retailSupplyPrice).toFixed(2)}元/${unit}` : '-'
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(wholesaleFreight).times(0.95).minus(record.wholesaleSupplyPrice).toFixed(2)}元/${unit}` : '-'
         }
       },
       {

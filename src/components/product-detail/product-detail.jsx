@@ -394,7 +394,7 @@ export default (props) => {
                 <Form.Item
                   label="店主新集约价盈亏"
                 >
-                  {goods.distributePrice > 0 ? `${+new Big(goods.distributePrice/100).minus(goods.wholesaleFreight / 100).times(0.95).minus(goods.retailSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
+                  {goods.distributePrice > 0 ? `${+new Big(goods.distributePrice / 100).minus(goods.wholesaleFreight / 100).times(0.95).minus(goods.wholesaleSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
                 </Form.Item>
               </>
             }
