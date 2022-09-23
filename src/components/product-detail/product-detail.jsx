@@ -203,6 +203,7 @@ export default (props) => {
                 ladderSwitch={detailData.ladderSwitch}
                 review={review}
                 operateType={goods?.operateType}
+                wholesaleFreight={goods?.wholesaleFreight}
               />
             }
             <Form.Item
