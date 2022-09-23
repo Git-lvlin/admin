@@ -125,6 +125,23 @@ export default function EditTable(props) {
         render: _ => `${_}元/${unit}`
       },
       {
+        title: `店主新集约价`,
+        dataIndex: 'distributePrice',
+        hideInTable: goodsSaleType === 2,
+        fieldProps: {
+          addonAfter: `元/${unit}`
+        }
+      },
+      {
+        title: `店主新集约价盈亏`,
+        dataIndex: 'aaff',
+        editable: false,
+        hideInTable: goodsSaleType === 2,
+        render: (_, record) => {
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight / 100).times(0.95).minus(record.retailSupplyPrice / 100).toFixed(2)}元/${unit}` : '-'
+        }
+      },
+      {
         title: `分享补贴价平台毛利`,
         dataIndex: 'tPlatformGain',
         editable: false,

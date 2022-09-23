@@ -1628,12 +1628,11 @@ export default (props) => {
                   <ProFormDependency name={['distributePrice']}>
                     {({ distributePrice }) => {
                       if (goods.retailSupplyPrice) {
-                        const x = +new Big(goods.retailSupplyPrice / 100).times(1.1).toFixed(2)
                         return (
                           <Form.Item
                             label={`店主新集约价盈亏`}
                           >
-                            {distributePrice > 0 ? `${+new Big(distributePrice).minus(x).toFixed(2)}元/${goods.unit}` : ''}
+                            {distributePrice > 0 ? `${+new Big(distributePrice).minus(goods.wholesaleFreight / 100).times(0.95).minus(goods.retailSupplyPrice / 100).toFixed(2)}元/${goods.unit}` : ''}
                           </Form.Item>
                         )
                       }

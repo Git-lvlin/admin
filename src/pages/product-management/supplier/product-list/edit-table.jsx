@@ -153,8 +153,7 @@ export default function EditTable(props) {
         editable: false,
         hideInTable: goodsSaleType === 2,
         render: (_,record) => {
-          const x = +new Big(record.retailSupplyPrice / 100).times(1.1).toFixed(2)
-          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(x).toFixed(2)}元/${unit}` : ''
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight / 100).times(0.95).minus(record.retailSupplyPrice / 100).toFixed(2) }元/${unit}` : '-'
         }
       },
       {
