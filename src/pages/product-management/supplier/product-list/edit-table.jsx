@@ -6,10 +6,10 @@ import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
 
-Big.RM = 2;
+Big.RM = 0;
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -138,6 +138,25 @@ export default function EditTable(props) {
         editable: false,
         hideInTable: goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `店主新集约价`,
+        dataIndex: 'distributePrice',
+        hideInTable: goodsSaleType === 2,
+        fieldProps: {
+          addonAfter: `元/${unit}`
+        }
+      },
+      {
+        title: `店主新集约价盈亏`,
+        dataIndex: 'aaff',
+        editable: false,
+        hideInTable: goodsSaleType === 2,
+        render: (_,record) => {
+          console.log('record', record)
+          console.log('wholeSaleCheckPrice', wholeSaleCheckPrice)
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(wholeSaleCheckPrice).minus(record.wholesaleSupplyPrice).toFixed(2) }元/${unit}` : '-'
+        }
       },
       {
         title: `分享补贴价平台毛利`,

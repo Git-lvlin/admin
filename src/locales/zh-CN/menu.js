@@ -324,7 +324,7 @@ export default {
   'menu.financial-management.transaction-detail-management.royalty-details':'明细详情',
   'menu.financial-management.transaction-detail-management.after-sales-order-details':'售后订单明细管理',
   'menu.financial-management.transaction-detail-management.after-order-details':'售后订单详情',
-  'menu.financial-management.transaction-detail-management.operator-revenue-management':'运营商收益明细管理',
+  'menu.financial-management.transaction-detail-management.operator-revenue-management':'运营中心收益明细管理',
   'menu.financial-management.transaction-allocation-management':'交易配置管理',
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '优惠补贴',
