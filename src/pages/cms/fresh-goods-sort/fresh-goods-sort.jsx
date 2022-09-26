@@ -104,7 +104,7 @@ const BannerAdmin = () => {
   const columns = [
     {
       title: '序号',
-      valueType: 'indexBorder',
+      dataIndex: 'sort',
       search: false,
     },
     {
@@ -168,7 +168,6 @@ const BannerAdmin = () => {
     },
     {
       title: '采购列表序号',
-      dataIndex: 'sort',
       hideInSearch: true,
       render: (_, record) => {
         return <>
