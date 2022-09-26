@@ -73,6 +73,7 @@ export default (props) => {
       dataIndex: 'spuId',
       valueType: 'text',
       editable:false,
+      hideInSearch: true
     },
     {
       title: 'skuid',
@@ -85,6 +86,7 @@ export default (props) => {
       dataIndex: 'imageUrl',
       valueType: 'image',
       editable:false,
+      hideInSearch: true
     },
     {
       title: '商品名称',
@@ -99,7 +101,8 @@ export default (props) => {
       editable:false,
       render:(_)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '销售价',
@@ -108,7 +111,8 @@ export default (props) => {
       editable:false,
       render:(_)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '活动价',
@@ -117,6 +121,7 @@ export default (props) => {
       renderFormItem: (_, { record }) => {
         return  <Input onBlur={() => { debounceFetcher({ record, recordList: dataSource })}} />
       },
+      hideInSearch: true
     },
     {
       title: '发票税率',
@@ -127,6 +132,7 @@ export default (props) => {
       render:(_)=>{
         return _
       },
+      hideInSearch: true
     },
     {
       title: '平台亏盈',
@@ -135,7 +141,8 @@ export default (props) => {
       editable:false,
       render:(_,data)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '商品状态',
@@ -145,18 +152,21 @@ export default (props) => {
       valueEnum:{
         1: '上架中',
         0: '已下架'
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
       valueType: 'text',
       editable:false,
+      hideInSearch: true
     }, 
     {
       title: '排序',
       dataIndex: 'sort',
       valueType: 'text',
+      hideInSearch: true
     },   
     {
       title: '操作',
@@ -164,7 +174,8 @@ export default (props) => {
       editable:false,
       render:(text, record, _, action)=>[
         <a key='detele' onClick={()=>{delGoods(record.id)}}>删除</a>
-    ],
+      ],
+      hideInSearch: true
     },  
   ];
   // 删除商品
@@ -184,7 +195,6 @@ export default (props) => {
           options={false}
           value={dataSource}
           recordCreatorProps={false}
-          search={false}
           columns={columns}
           editable={{
             type: 'multiple',

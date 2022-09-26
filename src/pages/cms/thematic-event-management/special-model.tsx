@@ -182,7 +182,7 @@ export default (props:PropsItem) => {
       {...formItemLayout}
     >
       <div className={styles?.three_column_layout}>
-        <div className={styles?.border_box}>
+        <div className={styles?.border_box2}>
           <Title style={{ marginBottom: 10 }} level={5}>基础设置</Title>
           <ProFormRadio.Group
               name="status"
@@ -227,8 +227,9 @@ export default (props:PropsItem) => {
               }),
             ]}
           />
+          <iframe style={{width:'375px',height:'667px'}}></iframe>
         </div>
-        <div className={styles?.border_box}>
+        {/* <div className={styles?.border_box}>
           <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
           <div className={styles?.topic_page}>
             <header className={styles?.header} onClick={() => { setPicture(1) }}>
@@ -258,29 +259,30 @@ export default (props:PropsItem) => {
               </article>
             </aside>
           </div>
-        </div>
+        </div> */}
         <div className={styles?.border_box}>
-          <Title style={{ marginBottom: 10 }} level={5}>{{ 1: '头图', 2: '倒计时控件', 3: '副标题', 4: '价格标签1', 5: '商品卡片' }[picture]}</Title>
+        <div className={styles?.interval}>
           <Form.Item
-            label="选择图片"
+            label="页面主图"
             name="bannerImgUrl"
-            style={{ display: picture == 1 ? 'block' : 'none' }}
+            rules={[{ required: true, message: '请上传页面主图' }]}
           >
             <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height:'*'}} maxCount={1} accept="image/png" />}
+              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height: 500}} maxCount={1} accept="image/png" />}
               right={(value) => {
                 return (
                   <dl>
-                    <dd>支持jpg/png，2M以内，宽度750</dd>
+                    <dd>支持jpg/png，2M以内，宽度750px，高度500px</dd>
                   </dl>
                 )
               }}
             />
           </Form.Item>
-          <div style={{ display: picture == 2 ? 'block' : 'none' }}>
-            <ProFormSwitch name="switch1" label="开关控制" />
+          </div>
+          <div className={styles?.interval}>
+            <ProFormSwitch name="switch1" label="活动倒计时显示" />
             <ProFormText
-              label="控件位置"
+              label="倒计时控件位置"
               readonly
               fieldProps={{
                 value: <>
@@ -289,7 +291,16 @@ export default (props:PropsItem) => {
                     label="X轴"
                     options={[
                       {
-                        label: '左',
+                        label: <div className={styles.measure}>
+                          
+                        <Form.Item
+                          name="l"
+                          label={<span>左 左边距</span>}
+                        >
+                          <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                        </Form.Item>
+                        <span>px</span>
+                      </div>,
                         value: 'L',
                       },
                       {
@@ -322,6 +333,7 @@ export default (props:PropsItem) => {
                   />
                 </>
               }}
+              extra='画布宽度基于375px'
             />
             <ProFormText
               label="边距"
@@ -363,14 +375,14 @@ export default (props:PropsItem) => {
                 </Space>
               }}
             />
-            <Form.Item label='透明遮罩' name='alphaMasked'>
+            <Form.Item label='倒计时控件背景颜色' name='alphaMasked'>
               <ReactColor/>
             </Form.Item>
           </div>
-          <div style={{ display: picture == 3 ? 'block' : 'none' }}>
-            <ProFormSwitch name="switch2" label="开关控制" />
+          <div className={styles?.interval}>
+            <ProFormSwitch name="switch2" label="显示副标题" />
             <Form.Item
-              label="选择图片"
+              label="副标题图片"
               name="imgUrl1"
             >
               <FromWrap
@@ -385,43 +397,19 @@ export default (props:PropsItem) => {
               />
             </Form.Item>
           </div>
-          <div style={{ display: picture == 4 ? 'block' : 'none' }}>
-            <ProFormRadio.Group
-              name="priceStyle"
-              layout="vertical"
-              label="标签样式"
-              options={[
-                {
-                  label: '风格1：明黄箭头',
-                  value: 1,
-                },
-                {
-                  label: '风格2：大红',
-                  value: 2,
-                },
-                {
-                  label: '风格3：3C电子风',
-                  value: 3,
-                },
-                {
-                  label: '风格4：黄色圆角',
-                  value: 4,
-                },
-              ]}
-            />
-          </div>
-          <div style={{ display: picture == 5 ? 'block' : 'none' }}>
+          <div className={styles?.interval}>
+            <Title style={{ marginLeft: 100 }} level={5}>商品列表设置：</Title>
             <ProFormRadio.Group
               name="showType"
               layout="horizontal"
               label="展示形式"
               options={[
                 {
-                  label: '一行一个',
+                  label: '单排',
                   value: 1,
                 },
                 {
-                  label: '一行两个',
+                  label: '双排',
                   value: 2,
                 }
               ]}
