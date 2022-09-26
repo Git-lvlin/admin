@@ -133,7 +133,12 @@ const BannerAdmin = () => {
       dataIndex: 'distributePriceStr',
       search: false,
       render: (_) => {
-        return amountTransform(_,'/')
+        if(!isNaN(_)){
+          return amountTransform(_,'/')
+        }else{
+          return _
+        }
+
       }
     },
     {
