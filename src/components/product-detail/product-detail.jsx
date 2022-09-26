@@ -6,7 +6,7 @@ import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 import Big from 'big.js';
 
-Big.RM = 2;
+Big.RM = 0;
 export default (props) => {
   const { detailData, review } = props;
   const [tableHead, setTableHead] = useState([]);

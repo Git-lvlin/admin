@@ -6,10 +6,10 @@ import * as api from '@/services/product-management/product-list';
 import { amountTransform } from '@/utils/utils'
 import Big from 'big.js';
 
-Big.RM = 2;
+Big.RM = 0;
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholesaleFreight } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -153,7 +153,9 @@ export default function EditTable(props) {
         editable: false,
         hideInTable: goodsSaleType === 2,
         render: (_,record) => {
-          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(0.95).minus(record.wholesaleSupplyPrice).toFixed(2) }元/${unit}` : '-'
+          console.log('record', record)
+          console.log('wholeSaleCheckPrice', wholeSaleCheckPrice)
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(wholeSaleCheckPrice).minus(record.wholesaleSupplyPrice).toFixed(2) }元/${unit}` : '-'
         }
       },
       {

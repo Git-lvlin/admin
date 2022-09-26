@@ -29,7 +29,7 @@ import Big from 'big.js';
 import Overrule from '../product-review/overrule';
 
 
-Big.RM = 2;
+Big.RM = 0;
 
 
 const { confirm } = Modal

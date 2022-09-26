@@ -3,7 +3,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import Big from 'big.js';
 import { Image } from 'antd'
 
-Big.RM = 2;
+Big.RM = 0;
 export default function EditTable(props) {
   const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
   const [columns, setColumns] = useState([])
