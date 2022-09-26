@@ -132,14 +132,6 @@ const BannerAdmin = () => {
       title: '店主新集约价',
       dataIndex: 'distributePriceStr',
       search: false,
-      render: (_) => {
-        if(!isNaN(_)){
-          return amountTransform(_,'/')
-        }else{
-          return _
-        }
-
-      }
     },
     {
       title: '起订量',
