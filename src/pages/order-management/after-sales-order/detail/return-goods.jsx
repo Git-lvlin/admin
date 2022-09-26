@@ -25,7 +25,7 @@ const tableRow = props => {
   }
   return (
     <ProTable.Summary.Row>
-      <ProTable.Summary.Cell colSpan={8}>
+      <ProTable.Summary.Cell colSpan={10}>
         <div className={styles.summary}>
           <div className={styles.summaryItem}>
             售后原因：
@@ -79,10 +79,26 @@ const ReturnGoods = ({data}) => {
 
   const columns = [
     {
+      title: '商品编号',
+      dataIndex: 'supplierSpuId',
+      align: 'center'
+    },
+    {
+      title: '平台ID',
+      dataIndex: 'skuId',
+      align: 'center',
+      render: (_, r) => (
+        <>
+          <div>skuid：{r.skuId}</div>
+          <div>spuid：{r.spuId}</div>
+        </>
+      )
+    },
+    {
       title: '商品信息',
       dataIndex: 'goodsInfo',
       align: 'center',
-      width: 450,
+      width: '30%',
       render: (_, records) => (
         <div className={styles.goodsInfo}>
           <Image
