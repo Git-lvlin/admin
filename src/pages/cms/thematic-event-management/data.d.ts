@@ -18,7 +18,7 @@ export type DetailListItem={
 export type PropsItem={
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
-  id: string;
+  record: DetailListItem;
   callback: function;
   onClose: function
 }

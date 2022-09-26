@@ -39,7 +39,7 @@ const formItemLayout = {
 };
 
 export default (props:PropsItem) => {
-  const { visible, setVisible, callback, id, onClose,copy } = props;
+  const { visible, setVisible, callback, record, onClose,copy } = props;
   const [form] = Form.useForm();
   const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
@@ -102,7 +102,7 @@ export default (props:PropsItem) => {
       if(res.code==0){
         setVisible(false)
         callback()
-        if(id&&!copy){
+        if(record?.id&&!copy){
           message.success('编辑成功')
         }else if(copy){
           message.success('复制成功')
@@ -113,8 +113,8 @@ export default (props:PropsItem) => {
     })
   }
   useEffect(()=>{
-    if(id){
-      getActiveConfigById({id}).then(res=>{
+    if(record?.id){
+      getActiveConfigById({id:record?.id}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.content?.goods.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')})))
           form.setFieldsValue({
@@ -147,7 +147,7 @@ export default (props:PropsItem) => {
         }
       })
     }
-  },[id])
+  },[record?.id])
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
   }
@@ -157,7 +157,7 @@ export default (props:PropsItem) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
-      title={!id?'新建活动':copy?'复制活动':'活动详情'}
+      title={!record?.id?'新建活动':copy?'复制活动':'活动详情'}
       visible={visible}
       width={1500}
       form={form}
@@ -199,7 +199,7 @@ export default (props:PropsItem) => {
               ]}
             />
           {
-            id&&!copy&&<ProFormText
+            record?.id&&!copy&&<ProFormText
             name="id"
             hidden
           />
@@ -227,7 +227,7 @@ export default (props:PropsItem) => {
               }),
             ]}
           />
-          <iframe style={{width:'375px',height:'667px'}}></iframe>
+          <iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
         </div>
         {/* <div className={styles?.border_box}>
           <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
@@ -500,7 +500,7 @@ export default (props:PropsItem) => {
           </div>
         </div>
       </div>
-      <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
+      <Associated0Goods detailList={detailList} id={record?.id} callback={(data)=>{
         setDetailList(data)
       }}/>
     </DrawerForm>
