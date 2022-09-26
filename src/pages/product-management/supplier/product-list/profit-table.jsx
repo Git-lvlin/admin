@@ -3,7 +3,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import debounce from 'lodash/debounce';
 import Big from 'big.js';
 
-Big.RM = 2;
+Big.RM = 0;
 
 const ProfitTable = ({ value, form, callback }) => {
 
