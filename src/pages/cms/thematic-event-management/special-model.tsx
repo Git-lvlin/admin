@@ -292,15 +292,14 @@ export default (props:PropsItem) => {
                     options={[
                       {
                         label: <div className={styles.measure}>
-                          
-                        <Form.Item
-                          name="l"
-                          label={<span>左 左边距</span>}
-                        >
-                          <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                        </Form.Item>
-                        <span>px</span>
-                      </div>,
+                                <Form.Item
+                                  name="l"
+                                  label={<span>左 左边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'L',
                       },
                       {
@@ -308,7 +307,15 @@ export default (props:PropsItem) => {
                         value: 'M',
                       },
                       {
-                        label: '右',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="r"
+                                  label={<span>右 右边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'R',
                       }
                     ]}
@@ -318,7 +325,15 @@ export default (props:PropsItem) => {
                     label="Y轴"
                     options={[
                       {
-                        label: '上',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="t"
+                                  label={<span>上 顶边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'T',
                       },
                       {
@@ -326,7 +341,15 @@ export default (props:PropsItem) => {
                         value: 'M',
                       },
                       {
-                        label: '下',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="b"
+                                  label={<span>下 底边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'B',
                       }
                     ]}
@@ -334,46 +357,6 @@ export default (props:PropsItem) => {
                 </>
               }}
               extra='画布宽度基于375px'
-            />
-            <ProFormText
-              label="边距"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="l"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>左侧</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="t"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>顶部</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="r"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>右侧</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="b"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>底部</p>
-                  </div>
-                </Space>
-              }}
             />
             <Form.Item label='倒计时控件背景颜色' name='alphaMasked'>
               <ReactColor/>
