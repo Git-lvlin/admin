@@ -194,7 +194,7 @@ const BannerAdmin = () => {
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           showQuickJumper: true,
         }}
         rowSelection={{
