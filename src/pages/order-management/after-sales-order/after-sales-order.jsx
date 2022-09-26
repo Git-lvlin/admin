@@ -100,7 +100,7 @@ const afterSalesOrder = () => {
     },
     {
       title: '规格',
-      dataIndex: 'skuSpec',
+      dataIndex: 'goodsSpec',
       align: 'center',
       width: '5%',
       hideInSearch: true
