@@ -345,7 +345,9 @@ const TableList = () => {
           {
             data.map(item => (
               <div className={styles.list} key={item.id}>
-               <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>{item?.subType === 1 ? '精装生鲜' : '普适品'}</Tag>
+                {
+                  item.subType === 151 ? <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>新集约商品</Tag> : <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 12 }} color='#58B138'>{item?.subType === 1 ? '精装生鲜' : '普适品'}</Tag>
+                }
                 <div className={styles.store_name}>所属商家：{item.storeName}</div>
                 <div className={styles.second}>
                   <Space size="large">
@@ -353,7 +355,7 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerName}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
-                    <span>商品归属集约活动ID：{item.orderItemList[0].wsId}</span>
+                    {!!+item.orderItemList[0].wsId &&<span>商品归属集约活动ID：{item.orderItemList[0].wsId}</span>}
                   </Space>
                 </div>
 
