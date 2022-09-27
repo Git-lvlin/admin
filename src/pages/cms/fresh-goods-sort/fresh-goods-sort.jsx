@@ -104,7 +104,7 @@ const BannerAdmin = () => {
   const columns = [
     {
       title: '序号',
-      valueType: 'indexBorder',
+      dataIndex: 'sort',
       search: false,
     },
     {
@@ -132,9 +132,6 @@ const BannerAdmin = () => {
       title: '店主新集约价',
       dataIndex: 'distributePriceStr',
       search: false,
-      render: (_) => {
-        return amountTransform(_,'/')
-      }
     },
     {
       title: '起订量',
@@ -171,7 +168,6 @@ const BannerAdmin = () => {
     },
     {
       title: '采购列表序号',
-      dataIndex: 'sort',
       hideInSearch: true,
       render: (_, record) => {
         return <>
@@ -198,7 +194,7 @@ const BannerAdmin = () => {
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           showQuickJumper: true,
         }}
         rowSelection={{
