@@ -226,7 +226,7 @@ const TableList = () => {
             }
           }}
         />}
-        <ProFormSelect
+        {/* <ProFormSelect
           label="尾款类型"
           name="isMerge"
           options={[
@@ -245,7 +245,7 @@ const TableList = () => {
               width: 180,
             }
           }}
-        />
+        /> */}
         <ProFormDateTimeRangePicker
           name="time"
           label="下单时间"
@@ -432,7 +432,7 @@ const TableList = () => {
           <div className={styles.list_header}>
             <div>商品信息</div>
             <div>支付金额</div>
-            {/* <div>尾款</div> */}
+            <div>商品ID</div>
             {/* <div>合计实收</div> */}
             <div>订单状态</div>
             <div>操作</div>
@@ -454,13 +454,23 @@ const TableList = () => {
                     <span>下单用户：{item.store.linkman}</span>
                     <span>用户手机号：{item.store.phone}</span>
                     <span>下单店主ID：{item.storeNo}</span>
-                    <span>商品归属集约活动ID：{item.wsId}</span>
+                    {!!item.wsId &&<span>商品归属集约活动ID：{item.wsId}</span>}
                     <span>总金额：{amountTransform(item.totalFee, '/')}元</span>
                   </Space>
                 </div>
-                <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
-                {item.businessType === 30 ? <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>新集约商品</Tag> :<Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: item.wholesaleFlowType === 1 ? 80 : 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜') : '普适品'}</Tag>}
-                
+                {item.businessType === 30
+                  ?
+                  <>
+                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">直发到店</Tag>
+                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 80, marginTop: 10 }} color='#58B138'>新集约商品</Tag>
+                  </>
+                  :
+                  <>
+                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
+                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 80, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜') : '普适品'}</Tag>
+                  </>
+                }
+
                 {
                   item.isRefund && <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 185, marginTop: 10 }} color="#7FA1FD">{item.isRefund}</Tag>
                 }
@@ -500,7 +510,18 @@ const TableList = () => {
                       ))
                     }
                   </div>
-                  {/* <div style={{ textAlign: 'center' }}>{amountTransform(item.actualAmount, '/')}元</div> */}
+                  <div className={styles.cell} style={{ textAlign: 'center' }}>
+                    {
+                      item.sku.map(it => (
+                        <div>
+                          <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
+                            <Descriptions.Item label="skuId">{it.skuId}</Descriptions.Item>
+                            <Descriptions.Item label="spuId">{it.spuId}</Descriptions.Item>
+                          </Descriptions>
+                        </div>
+                      ))
+                    }
+                  </div>
                   <div style={{ textAlign: 'center' }}>
                     {item.statusDesc}
                     {item.refundAllRetailStatus === 1 && <div style={{ color: 'red' }}>已启动C端退款</div>}
@@ -508,7 +529,7 @@ const TableList = () => {
                   <div className={styles.cell}>
                     {
                       item.sku.map(it => (
-                        <div style={{flexDirection: 'column'}}>
+                        <div style={{ flexDirection: 'column' }}>
                           {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                           {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                           <a onClick={() => { setSelectItem(it); setDetailVisible(true); }}>详情</a>
