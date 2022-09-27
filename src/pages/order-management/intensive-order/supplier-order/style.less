@@ -46,6 +46,23 @@
       border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     }
   }
+  .cell {
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+
+    >div {
+      flex: 1;
+      display: flex;
+      padding: 12px;
+
+      &:not(:last-of-type) {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      }
+
+      
+    }
+  }
 
   .goods_info {
     padding: 0 !important;
