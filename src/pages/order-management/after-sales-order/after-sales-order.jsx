@@ -78,7 +78,8 @@ const afterSalesOrder = () => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      hideInTable: true
+      width: '7%',
+      align: 'center'
     },
     {
       title: '平台ID',
