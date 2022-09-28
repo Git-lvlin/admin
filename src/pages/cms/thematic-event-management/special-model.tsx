@@ -1,8 +1,8 @@
 import { useState,useEffect } from 'react'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography,Skeleton, Form, InputNumber,message } from 'antd'
-import ProForm, {
+import { Button, Space, Typography, Form, InputNumber,message } from 'antd'
+import {
   DrawerForm,
   ProFormText,
   ProFormDateTimeRangePicker,
@@ -41,8 +41,8 @@ const formItemLayout = {
 export default (props:PropsItem) => {
   const { visible, setVisible, callback, record, onClose,copy } = props;
   const [form] = Form.useForm();
-  const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
+  const [savePrevie,setSavePrevie]=useState<number>(0)
   const onSubmit = (values) => {
     if(detailList?.length==0) return message.error('请选择商品')
     const params={
@@ -98,19 +98,35 @@ export default (props:PropsItem) => {
         id:ele.id==ele.skuId||copy?0:ele.id
       }))
     }
-    saveSubjectActiveConfig(params).then(res=>{
-      if(res.code==0){
-        setVisible(false)
-        callback()
-        if(record?.id&&!copy){
-          message.success('编辑成功')
-        }else if(copy){
-          message.success('复制成功')
-        }else{
-          message.success('新增成功')
+    if(savePrevie){
+      saveSubjectActiveConfig(params).then(res=>{
+        if(res.code==0){
+          // callback()
+          if(record?.id&&!copy){
+            message.success('编辑成功')
+          }else if(copy){
+            message.success('复制成功')
+          }else{
+            message.success('新增成功')
+          }
         }
-      }
-    })
+      })
+    }else{
+      saveSubjectActiveConfig(params).then(res=>{
+        if(res.code==0){
+          setVisible(false)
+          callback()
+          if(record?.id&&!copy){
+            message.success('编辑成功')
+          }else if(copy){
+            message.success('复制成功')
+          }else{
+            message.success('新增成功')
+          }
+        }
+      })
+    }
+ 
   }
   useEffect(()=>{
     if(record?.id){
@@ -147,7 +163,8 @@ export default (props:PropsItem) => {
         }
       })
     }
-  },[record?.id])
+  },[record?.id,savePrevie])
+
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
   }
@@ -157,7 +174,7 @@ export default (props:PropsItem) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
-      title={!record?.id?'新建活动':copy?'复制活动':'活动详情'}
+      // title={!record?.id?'新建活动':copy?'复制活动':'活动详情'}
       visible={visible}
       width={1500}
       form={form}
@@ -171,6 +188,7 @@ export default (props:PropsItem) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
+            <Button type='primary' key='savePrevie' onClick={()=>{ props.form?.submit?.();setSavePrevie(savePrevie+1) }}>保存并预览</Button>,
             ...defaultDoms
           ];
         },
@@ -183,7 +201,7 @@ export default (props:PropsItem) => {
     >
       <div className={styles?.three_column_layout}>
         <div className={styles?.border_box2}>
-          <Title style={{ marginBottom: 10 }} level={5}>基础设置</Title>
+          <Title style={{ marginBottom: 10 }} level={5}>页面DIY设置</Title>
           <ProFormRadio.Group
               name="status"
               hidden
@@ -227,60 +245,35 @@ export default (props:PropsItem) => {
               }),
             ]}
           />
-          <iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+          <Title style={{ marginBottom: 10 }} level={5}>页面预览</Title>
+          {
+            !savePrevie&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+          }
+          {
+            savePrevie&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+          }
         </div>
-        {/* <div className={styles?.border_box}>
-          <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
-          <div className={styles?.topic_page}>
-            <header className={styles?.header} onClick={() => { setPicture(1) }}>
-              <p>点击配置图片</p>
-              <Button onClick={(e) => { setPicture(2); e.stopPropagation() }}>倒计时控件</Button>
-            </header>
-            <figure className={styles?.figure} onClick={() => { setPicture(3) }}>
-              副标题图
-            </figure>
-            <aside className={styles?.aside} onClick={() => { setPicture(5) }}>
-              <section className={styles?.section}>
-                <Skeleton.Image />
-                <div className={styles?.section_goos}>
-                  <p>商品名称商品名称<br />商品名称</p>
-                  <figure className={styles?.figure} onClick={(e) => { setPicture(4); e.stopPropagation() }}> 价格标签 </figure>
-                </div>
-              </section>
-              <article className={styles?.article}>
-                <div className={styles?.article_goos}>
-                  <Skeleton.Image />
-                  <p>商品名称商品名称<br />商品名称</p>
-                  <Button onClick={(e) => { setPicture(4); e.stopPropagation() }}> 价格标签 </Button></div>
-                <div className={styles?.article_goos}>
-                  <Skeleton.Image />
-                  <p>商品名称商品名称<br />商品名称...</p>
-                </div>
-              </article>
-            </aside>
-          </div>
-        </div> */}
         <div className={styles?.border_box}>
-        <div className={styles?.interval}>
-          <Form.Item
-            label="页面主图"
-            name="bannerImgUrl"
-            rules={[{ required: true, message: '请上传页面主图' }]}
-          >
-            <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height: 500}} maxCount={1} accept="image/png" />}
-              right={(value) => {
-                return (
-                  <dl>
-                    <dd>支持jpg/png，2M以内，宽度750px，高度500px</dd>
-                  </dl>
-                )
-              }}
-            />
-          </Form.Item>
+          <div className={styles?.interval}>
+            <Form.Item
+              label="页面主图"
+              name="bannerImgUrl"
+              rules={[{ required: true, message: '请上传页面主图' }]}
+            >
+              <FromWrap
+                content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height: 500}} maxCount={1} accept="image/png" />}
+                right={(value) => {
+                  return (
+                    <dl>
+                      <dd>支持jpg/png，2M以内，宽度750px，高度500px</dd>
+                    </dl>
+                  )
+                }}
+              />
+            </Form.Item>
           </div>
           <div className={styles?.interval}>
-            <ProFormSwitch name="switch1" label="活动倒计时显示" />
+            <ProFormSwitch name="switch1" label={<span style={{fontWeight:'bolder'}}>活动倒计时显示</span>}/>
             <ProFormText
               label="倒计时控件位置"
               readonly
@@ -363,24 +356,24 @@ export default (props:PropsItem) => {
             </Form.Item>
           </div>
           <div className={styles?.interval}>
-            <ProFormSwitch name="switch2" label="显示副标题" />
+            <ProFormSwitch name="switch2" label={<span style={{fontWeight:'bolder'}}>显示副标题</span>}/>
             <Form.Item
               label="副标题图片"
               name="imgUrl1"
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
-                      <dd>支持jpg/png，2M以内</dd>
+                      <dd>支持jpg/png，2M以内，宽度750</dd>
                     </dl>
                   )
                 }}
               />
             </Form.Item>
           </div>
-          <div className={styles?.interval}>
+          <div style={{ paddingTop:'10px' }}>
             <Title style={{ marginLeft: 100 }} level={5}>商品列表设置：</Title>
             <ProFormRadio.Group
               name="showType"
@@ -397,105 +390,64 @@ export default (props:PropsItem) => {
                 }
               ]}
             />
-            <ProFormText
-              label="卡片边框"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color1'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="lineWidth1"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>线宽</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <ProFormText
-              label="卡片背景"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color2'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="imgUrl2"
-                    >
-                      <Upload multiple  size={2 * 1024} maxCount={1} accept="image/png" />
-                    </Form.Item>
-                    {/* <p>图片</p> */}
-                  </div>
-                </Space>
-              }}
-            />
-            <Form.Item
-              name="radius"
-              label='卡片圆角'
-            >
-              <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-            </Form.Item>
-            <ProFormText
-              label="文字样式"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color3'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="fontSize"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>字号</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <ProFormText
-              label="商品边框"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color4'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="lineWidth2"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>线宽</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <Form.Item
-              name="goodsRadius"
-              label='商品圆角'
-            >
-              <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+            <Space style={{marginLeft:'110px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color1' label="卡片边框颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="lineWidth1" label="卡片边框线宽">
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="radius" label='卡片圆角'>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+            </Space>
+            <div className={styles.measure} style={{marginLeft:'110px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color2' label="卡片背景颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item
+                name="imgUrl2"
+                style={{marginLeft:'50px'}}
+              >
+                <FromWrap
+                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
+                  right={(value) => {
+                    return (
+                      <dl>
+                        <dd>支持jpg/png，2M以内，宽度750</dd>
+                      </dl>
+                    )
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <Space style={{marginLeft:'140px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color3' label="文字颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="fontSize" label="文字大小" style={{marginLeft:'10px'}}>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+            </Space>
+            <Space style={{marginLeft:'140px'}}>
+              <Form.Item name="goodsRadius" label='商品圆角' labelCol={3} wrapperCol={10}>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+              <Form.Item name="lineWidth2" label='边框'>
+                  <FromWrap
+                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
+                    right={(value) => {
+                      return (
+                        <dl>
+                          <dd>支持jpg/png，2M以内，宽度750</dd>
+                        </dl>
+                      )
+                    }}
+                  />
+              </Form.Item>
+            </Space>
+            <Form.Item name='color4' label='页面背景颜色'>
+              <ReactColor/>
             </Form.Item>
           </div>
         </div>

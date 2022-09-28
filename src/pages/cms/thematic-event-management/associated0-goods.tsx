@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
-import { Button,InputNumber,message,Input} from 'antd';
+import { Button,Input} from 'antd';
 import debounce from 'lodash/debounce';
 
 
@@ -80,6 +80,9 @@ export default (props) => {
       dataIndex: 'skuId',
       valueType: 'text',
       editable:false,
+      fieldProps:{
+        placeholder:'请输入skuID'
+      }
     },
     {
       title: '商品图片',
@@ -93,6 +96,9 @@ export default (props) => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable:false,
+      fieldProps:{
+        placeholder:'请输入商品名称'
+      }
     },
     {
       title: '市场价',
@@ -206,12 +212,37 @@ export default (props) => {
               callback(recordList)
             },
           }}
-          toolBarRender={()=>[
-            <Button onClick={()=>{setVisible(true)}}>选择商品</Button>
-          ]}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,
+          }}
+          search={{
+            defaultCollapsed: true,
+            labelWidth: 100,
+            optionRender: (searchConfig, formProps, dom) => [
+              <Button 
+                key="rest" 
+                onClick={() => { 
+                  searchConfig?.form?.resetFields()
+                  setDataSource(detailList)
+                }}> 
+                重置 
+              </Button>,
+              <Button 
+                key="search" 
+                type="primary" 
+                onClick={() => { 
+                  searchConfig?.form?.submit()
+                  const { skuId,goodsName } = searchConfig?.form?.getFieldsValue()
+                  const arr=dataSource.filter(ele=>(
+                        ele?.skuId==skuId || ele?.goodsName==goodsName
+                  ))
+                  setDataSource(arr) 
+                }}> 
+                搜索 
+              </Button>,
+              <Button onClick={()=>{setVisible(true)}}>选择商品</Button>
+            ],
           }}
         />
         {
