@@ -70,10 +70,55 @@ const afterSalesOrder = () => {
       initialValue: getPageQuery()?.supplierId
     },
     {
+      title: '商品编号',
+      dataIndex: 'supplierSpuId',
+      align: 'center',
+      width: '5%'
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      width: '7%',
+      align: 'center'
+    },
+    {
+      title: '平台ID',
+      dataIndex: 'skuId',
+      align: 'center',
+      width: '7%',
+      hideInSearch: true,
+      render: (_, r) => (
+        <>
+          <div>skuid：{_}</div>
+          <div>spuid：{r.spuId}</div>
+        </>
+      )
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      hideInTable: true
+    },
+    {
+      title: '规格',
+      dataIndex: 'goodsSpec',
+      align: 'center',
+      width: '5%',
+      hideInSearch: true
+    },
+    {
+      title: '数量',
+      dataIndex: 'returnNum',
+      align: 'center',
+      width: '5%',
+      hideInSearch: true
+    },
+    {
       title: '申请时间',
       dataIndex: 'applyTime',
       valueType: 'dateTimeRange',
       align: 'center',
+      width: '7%',
       order: 5,
       render: (_, recodes) => moment(recodes?.applyTime).format('YYYY-MM-DD HH:mm:ss')
     },
@@ -81,7 +126,7 @@ const afterSalesOrder = () => {
       title: '买家昵称',
       dataIndex: 'buyerNickname',
       align: 'center',
-      width: "12%",
+      width: '5%',
       order: 4
     },
     {
@@ -94,6 +139,7 @@ const afterSalesOrder = () => {
       title: '商家名称',
       dataIndex: 'storeName',
       align: 'center',
+      width: '5%',
       order: 2,
     },
     {
@@ -136,6 +182,7 @@ const afterSalesOrder = () => {
       dataIndex: 'operation',
       valueType: 'option',
       align: 'center',
+      width: '5%',
       render: (_, record) => <a onClick={ ()=> {setVisible(true); setId(record.id)} }>查看详情</a>
     }
   ]
