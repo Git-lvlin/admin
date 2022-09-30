@@ -4,7 +4,8 @@ import {
   AutoComplete, 
   Descriptions,
   message,
-  Typography
+  Typography,
+  Empty
 } from "antd"
 import { debounce } from 'lodash'
 
@@ -58,7 +59,8 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
         if (res.code === 0) {
           setResult(res.data.records.map((item: ListProps)=>({
             ...item,
-            id: item.storeNo,
+            id: item.id,
+            storeNo: item.storeNo,
             realname: item.realname,
             memberPhone: item.memberPhone,
             fullAddress: item.fullAddress
@@ -70,10 +72,10 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
   }, [])
 
   const checkedValue = (e: string) => {
-    const arr = result.filter(item=> item.storeNo === e)
+    const arr = result.filter(item=> item.id === parseInt(e))
     arr.forEach(item=>{
       formRef.current?.setFieldsValue({
-        storeNo: item.id,
+        storeNo: item.storeNo,
         storeName: `【${item.shopMemberAccount}】${item.storeName}`,
         realname: item.realname,
         memberPhone: item.memberPhone,
@@ -85,6 +87,7 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
 
 
   const submit = (e: ListProps) => {
+    delete e['store']
     return new Promise<void>((resolve, reject) => { 
       if(Object.keys(e).length) {
         api?.({...e, orderId}, {showSuccess: true}).then(res => {
@@ -126,6 +129,12 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
       wrapperCol={{span: 14}}
       labelCol={{span: 8}}
     >
+      <>
+        <div style={{color: '#E5670B'}}>收货店铺需满足：</div>
+        <div style={{color: '#E5670B'}}>
+          1.有可用待运营资质；2.缴纳租金管理费；3.已开通VIP社区店；4.已签订代运营合同。
+        </div>
+      </>
       <ProForm.Item
         label='选择约购店'
         name='store'
@@ -137,14 +146,15 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
           }}
           onSearch={debounceFetcher}
           onSelect={checkedValue}
+          notFoundContent={<Empty/>}
         >
           {result.map((value: ListProps) => (
-            <Option key={value.id}>
+            <Option key={value.id} disabled={value.statusCode === 1}>
               <Descriptions
                 bordered
                 column={1}
                 labelStyle={{
-                  width: 20
+                  width: 16
                 }}
               >
                 <Descriptions.Item label="店铺">
@@ -157,6 +167,17 @@ const LaunchEquipment: FC<LaunchEquipmentProps> = (props: LaunchEquipmentProps) 
                 <Descriptions.Item label="地址">
                   <div className={styles.address}>{value.provinceName}{value.cityName}{value.regionName}</div>
                   <div className={styles.address}>{value.address}{value.houseNumber}</div>
+                </Descriptions.Item>
+                <Descriptions.Item label="状态">
+                  <div className={styles.status}>
+                    <span>{value.statusStr}</span>
+                    <a
+                      href={`/hydrogen-atom-trusteeship/managed-transaction-data?type=2&searchVal=${value.memberPhone}`}
+                      onClick={(e)=> e.stopPropagation()}
+                    >
+                      查看
+                    </a>
+                  </div>
                 </Descriptions.Item>
               </Descriptions>
             </Option>

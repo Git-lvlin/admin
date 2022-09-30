@@ -45,6 +45,7 @@ export default {
       name: 'contract-management',
       path: '/setting/contract-management',
       component: './setting/contract-management',
+      wrappers: [RouteWatcher],
     },
     {
       name: 'cancel-reason',

@@ -1,11 +1,21 @@
+import { useState, useEffect } from "react"
 import ProTable from "@ant-design/pro-table"
 
 import type { ProColumns } from "@ant-design/pro-table"
 
-import { agentOrderPage } from "@/services/hydrogen-atom-trusteeship/order-management"
+import { agentOrderPage, deviceSupplier } from "@/services/hydrogen-atom-trusteeship/order-management"
 import { amountTransform } from "@/utils/utils"
 
 const EscrowPurchaseOrder = () => {
+  const [supplierId, setSupplierId] = useState<string>()
+
+  useEffect(()=> {
+    deviceSupplier({}).then(res=> {
+      if(res.code === 0) {
+        setSupplierId(res.data.supplierId)
+      }
+    })
+  }, [])
 
   const columns: ProColumns[] = [
     {
@@ -130,7 +140,7 @@ const EscrowPurchaseOrder = () => {
           <div>{_}</div>
           {
             r.statusTips&&
-            <div>{r.statusTips}</div>
+            <div style={{color: '#f00'}}>{r.statusTips}</div>
           }
         </>
       )
@@ -154,6 +164,12 @@ const EscrowPurchaseOrder = () => {
       }}
       params={{}}
       request={agentOrderPage}
+      tableRender={(_, dom) =>  (
+        <>
+          { dom }
+          <a referrerPolicy="no-referrer" target='_blank' href={`/order-management/after-sales-order?supplierId=${supplierId}`}>已退款托管购买订单</a>
+        </>
+      )}
     />
   )
 }

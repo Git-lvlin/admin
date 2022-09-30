@@ -7,6 +7,7 @@ export type LaunchEquipmentProps= {
 }
 
 export type ListProps = {
+  store?: string
   realname: string
   memberPhone: string
   id: number
@@ -19,6 +20,8 @@ export type ListProps = {
   regionName: string
   address: string
   houseNumber: string
+  statusStr: string
+  statusCode: number
 }
 
 export interface StayPutProps {
@@ -29,6 +32,7 @@ export interface StayPutProps {
   hostingHouseNumber: string
   hostingPayTime: number
   status: string
+  statusVal: number
   reason: string
   storePhone: string
   storeArea: string

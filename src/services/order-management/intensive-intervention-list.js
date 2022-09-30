@@ -2,12 +2,12 @@ import request from '@/utils/request';
 
 // 介入列表
 export const interventionList = async (params = {}, options = {}) => {
-  const { page=1, size=10, applyTime, ...rest } = params;
+  const { current = 1, pageSize=10, applyTime, ...rest } = params;
   const res = await request('/auth/wholesale/orderReturn/arbitrationList', {
     method: 'POST',
     data: {
-      page,
-      size,
+      page: current,
+      size: pageSize,
       beginTime: applyTime&& applyTime[0],
       endTime: applyTime&& applyTime[1],
       ...rest

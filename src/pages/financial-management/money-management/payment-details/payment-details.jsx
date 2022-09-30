@@ -132,6 +132,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       visible={visible}
       onClose={()=>{setVisible(false)}}
       width={1200}
+      title={`供应商资金管理-收支明细（供应商id：${query.accountId}）`}
     >
       <ProTable
         rowKey='id'
