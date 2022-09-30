@@ -1,13 +1,19 @@
+import { useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from "antd"
 import type { TableProps } from "../data"
 
 import { contractPage } from "@/services/setting/contract-management"
-import { getPageQuery } from '@/utils/utils'
 
 const HydrogenThirdpartnarContract: FC = () => {
+  const [memberPhone, setMemberPhone] = useState(JSON.parse(window.localStorage.getItem('managed') as string)?.memberPhone)
+  const form = useRef<FormInstance>()
+
+  // const memberPhone = JSON.parse(window.localStorage.getItem('managed') as string).memberPhone
+  window.localStorage.removeItem('managed')
 
   const columns: ProColumns<TableProps>[] = [
     {
@@ -23,7 +29,7 @@ const HydrogenThirdpartnarContract: FC = () => {
       title: '店主手机',
       dataIndex: 'memberPhone',
       align: 'center',
-      initialValue: getPageQuery().memberPhone
+      initialValue: memberPhone
     },
     {
       title: '社区店ID',
@@ -71,12 +77,20 @@ const HydrogenThirdpartnarContract: FC = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        formRef={form}
         options={false}
         search={{
           labelWidth: 120,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse()
           ]
+        }}
+        onReset={()=>{
+          setTimeout(()=> {
+            setMemberPhone(undefined)
+            form.current?.resetFields()
+            form.current?.submit()
+          }, 0)
         }}
       />
     </>

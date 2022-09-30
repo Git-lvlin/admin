@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import { useParams, history } from 'umi'
 import {
   Button,
@@ -13,147 +13,166 @@ import {
   ProFormTextArea,
   ProFormText
 } from '@ant-design/pro-form'
+import { LoadingOutlined } from "@ant-design/icons"
 
 import {
   withdrawPageDetail,
   audit,
   payment
 } from "@/services/financial-management/transaction-detail-management"
-import './styles.less'
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
+
+const PopModal = ({sn, form}) => {
+  const [type,setType] = useState('online')
+
+  const submit = async (val) => {
+    return new Promise((resolve, reject) => {
+      payment({ ...val, sn }).then(res => {
+        if (res.code === 0) {
+          form.current.reload()
+          setType('online')
+          message.success('提交成功')
+          resolve()
+        } else {
+          reject()
+        }
+      })
+    })
+  }
+  return (
+    <ModalForm
+      layout='inline'
+      title='执行'
+      width={500}
+      trigger={<Button>执行</Button>}
+      modalProps={{
+        destroyOnClose: true,
+        onCancel: ()=>{
+          setType('online')
+        }
+      }}
+      onFinish={async (values) => {
+        await submit(values)
+        return true
+      }}
+    >
+      <div className={styles.opinion}>
+        <ProFormSelect
+          width='md'
+          name="paymentType"
+          label="提现类型"
+          rules={[{required: true, message: '请选择提现类型'}]}
+          fieldProps={{
+            onChange:(e)=> {
+              setType(e)
+            }
+          }}
+          valueEnum={{
+            'online': '线上转帐',
+            'offline': '线下转账'
+          }}
+        />
+      </div>
+      {
+        type==='offline'&&
+        <ProFormText 
+          label="付款凭证"
+          width="md"
+          name='voucher'
+          rules={[{required: true, message: '请输入付款凭证'}]}
+        />
+      }
+    </ModalForm>
+  )
+}
+
+const PopModalForm = ({sn, form}) => {
+  const [choosed, setChoosed] = useState('1')
+
+  const choose =(value)=> {
+    setChoosed(value)
+  }
+  
+  const check = (val) => {
+    return new Promise((resolve, reject) => {
+      audit({ ...val, sn }).then(res => {
+        if (res.code === 0) {
+          form.current.reload()
+          message.success('提交成功')
+          resolve()
+        } else {
+          reject()
+        }
+      })
+    })
+  }
+  return (
+    <ModalForm
+      layout='inline'
+      title='审核'
+      width={600}
+      modalProps={{
+        destroyOnClose: true,
+        onCancel: () => setChoosed('1')
+      }}
+      trigger={<Button>审核</Button>}
+      onFinish={async (values) => {
+        await check(values)
+        return true
+      }}
+    >
+      <div className={styles.opinion}>
+        <ProFormSelect
+          width='md'
+          name="isSuccess"
+          label="选择"
+          rules={[{ required: true, message: '请选择' }]}
+          fieldProps={{
+            onChange: (v)=> choose(v)
+          }}
+          valueEnum={{
+            0: '审核不通过',
+            1: '审核通过'
+          }}
+        />
+      </div>
+      {
+        choosed === '0' &&
+        <ProFormTextArea
+          name='reason'
+          label='备注'
+          width='lg'
+          rules={[{ required: true, message: '请输入备注' }]}
+          fieldProps={{
+            showCount: true,
+            maxLength: 30
+          }}
+        />
+      }
+    </ModalForm>
+  )
+}
 
 const Detail = () => {
   const {id} = useParams()
   const form = useRef()
 
-  const PopModalForm = ({sn}) => {
-    const [choosed, setChoosed] = useState('')
-
-    const choose =(value)=> {
-      setChoosed(value)
-    }
-    
-    const check = (val) => {
-      audit({ ...val, sn }).then(res => {
-        if (res?.success) {
-          form.current.reload()
-          message.success('提交成功')
-        }
-      })
-    }
-    return (
-      <ModalForm
-        layout='inline'
-        title='审核'
-        width={600}
-        modalProps={{
-          destroyOnClose: true
-        }}
-        trigger={<Button>审核</Button>}
-        onFinish={async (values) => {
-          await check(values)
-          return true
-        }}
-      >
-        <div className={styles.opinion}>
-          <ProFormSelect
-            width='md'
-            name="isSuccess"
-            label="选择"
-            rules={[{ required: true, message: '请选择' }]}
-            fieldProps={{
-              onChange: (v)=> choose(v)
-            }}
-            valueEnum={{
-              0: '审核不通过',
-              1: '审核通过'
-            }}
-          />
-        </div>
-        {
-          choosed === '0' &&
-          <ProFormTextArea
-            name='reason'
-            label='备注'
-            width='lg'
-            rules={[{ required: true, message: '请输入备注' }]}
-            fieldProps={{
-              showCount: true,
-              maxLength: 30
-            }}
-          />
-        }
-      </ModalForm>
-    )
-  }
-  const PopModal = ({sn}) => {
-    const [type,setType] = useState('online')
-    const submit = (val) => {
-      payment({ ...val, sn }).then(res => {
-        if (res?.success) {
-          form.current.reload()
-          message.success('提交成功')
-        } 
-      })
-    }
-    return (
-      <ModalForm
-        layout='inline'
-        title='执行'
-        width={500}
-        trigger={<Button>执行</Button>}
-        modalProps={{
-          destroyOnClose: true
-        }}
-        onFinish={async (values) => {
-          await submit(values)
-          return true
-        }}
-      >
-        <div className={styles.opinion}>
-          <ProFormSelect
-            width='md'
-            name="paymentType"
-            label="提现类型"
-            rules={[{required: true, message: '请选择提现类型'}]}
-            fieldProps={{
-              onChange:(e)=> {
-                setType(e)
-              }
-            }}
-            valueEnum={{
-              'online': '线上转帐',
-              'offline': '线下转账'
-            }}
-          />
-        </div>
-        {
-          type==='offline'&&
-          <ProFormText 
-            label="付款凭证"
-            width="md"
-            name='voucher'
-            rules={[{required: true, message: '请输入付款凭证'}]}
-          />
-        }
-      </ModalForm>
-    )
-  }
   const SwitchStatus = ({ type }) => {
     const { status, sn } = type
     switch (status) {
       case 'auditing':
-        return <PopModalForm sn={sn}/>
+        return <PopModalForm sn={sn} form={form}/>
       case 'waitPay':
-      case 'failure':
-        return <PopModal sn={sn}/>
+        return <PopModal sn={sn} form={form}/>
       case 'arrived':
         return '已到账'
       case 'unPass':  
-        return '审核拒绝'
+        return '审核不通过'
       case 'paid':
-        return '已执行'
+        return '已打款'
+      case 'failure':
+        return <Space size={10}>提现失败 <PopModal sn={sn} form={form}/></Space>
       default:
         return '状态错误'
     }

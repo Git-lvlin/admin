@@ -10,6 +10,7 @@ import { queryMemberPromotionPage } from "@/services/hydrogen-atom-trusteeship/h
 import Detail from './detail';
 import { amountTransform } from "@/utils/utils"
 
+
 export default function TransactionData () {
   const [detailVisible, setDetailVisible] = useState<boolean>(false);
   const [phoneId, setPhoneId] = useState<string>()
@@ -98,7 +99,7 @@ export default function TransactionData () {
         options={false}
         search={{
           optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
+            ...dom.reverse(),
           ]
         }}
       />

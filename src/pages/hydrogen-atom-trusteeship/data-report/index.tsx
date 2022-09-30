@@ -86,10 +86,12 @@ const DataReport: FC = () => {
     {
       title: '运营产品占比',
       dataIndex: 'opereateRatio',
+      render: (_) => `${_}%`
     },
     {
       title: '运营商用户占比',
       dataIndex: 'operateUserRatio',
+      render: (_) => `${_}%`
     },
     {
       title: '产品总启用次数',

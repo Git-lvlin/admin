@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import ProTable from "@ant-design/pro-table"
 import moment from "moment"
 
@@ -7,9 +7,12 @@ import type { FormInstance } from "antd"
 
 import { adminOrderList } from "@/services/hydrogen-atom-trusteeship/order-management"
 import Export from "@/components/export"
-
+import { amountTransform } from "@/utils/utils"
+import ExpressInfo from "./express-info"
 
 const AgentOperatingOrder = () => {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [data, setData] = useState()
   const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
@@ -17,6 +20,24 @@ const AgentOperatingOrder = () => {
       title: '运营订单号',
       dataIndex: 'orderId',
       align: 'center'
+    },
+    {
+      title: '关联托管单号',
+      dataIndex: 'hostingOrderId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '投资人手机',
+      dataIndex: 'hostingMemberPhone',
+      align: 'center'
+    },
+    {
+      title: '关联托管单金额',
+      dataIndex: 'hostingPayAmount',
+      align: 'center',
+      hideInSearch: true,
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '订单状态',
@@ -58,11 +79,43 @@ const AgentOperatingOrder = () => {
     {
       title: '运营商社区店ID',
       dataIndex: 'storeHouseNumber',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '运营商店ID',
+      dataIndex: 'storeHouseNumber',
+      align: 'center',
+      hideInTable: true
+    },
+    {
+      title: '收货人',
+      dataIndex: 'receiver',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '收货地址',
+      dataIndex: 'shippingAddress',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '快递公司',
+      dataIndex: 'expressName',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '物流单号',
       dataIndex: 'expressNo',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> <a onClick={()=> { setVisible(true); setData(r) }}>{_}</a>
+    },
+    {
+      title: '关联托管单下单时间',
+      dataIndex: 'hostingPayTime',
       align: 'center',
       hideInSearch: true
     },
@@ -95,29 +148,39 @@ const AgentOperatingOrder = () => {
   ]
 
   return (
-    <ProTable
-      rowKey='orderId'
-      columns={columns}
-      options={false}
-      formRef={form}
-      search={{
-        labelWidth: 120,
-        optionRender: (searchConfig, props, dom) => [
-          ...dom.reverse(),
-          <Export
-            key='1'
-            type='healthyAdminOperate'
-            conditions={{...form.current?.getFieldsValue()}}
-          />
-        ]
-      }}
-      pagination={{
-        showQuickJumper: true,
-        pageSize: 10
-      }}
-      params={{}}
-      request={adminOrderList}
-    />
+    <>
+      <ProTable
+        rowKey='orderId'
+        columns={columns}
+        options={false}
+        formRef={form}
+        search={{
+          labelWidth: 120,
+          optionRender: (searchConfig, props, dom) => [
+            ...dom.reverse(),
+            <Export
+              key='1'
+              type='healthyAdminOperate'
+              conditions={{...form.current?.getFieldsValue()}}
+            />
+          ]
+        }}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        params={{}}
+        request={adminOrderList}
+      />
+      {
+        visible &&
+        <ExpressInfo
+          visible={visible}
+          setVisible={setVisible}
+          data={data}
+        />
+      }
+    </>
   )
 }
 
