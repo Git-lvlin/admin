@@ -22,7 +22,7 @@ const payType = {
 }
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id } = props;
+  const { visible, setVisible, isPurchase, id, skuId } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +30,8 @@ const Detail = (props) => {
     setLoading(true);
     const apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
     apiMethod({
-      orderId: id
+      orderId: id,
+      skuId,
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -95,18 +96,18 @@ const Detail = (props) => {
                   <div>{detailData?.store?.phone}</div>
                 </div>
                 <div className={styles.box}>
-                  <div>定金支付时间</div>
+                  <div>支付时间</div>
                   <div>{dateFormat(detailData?.payAdvance?.payTime * 1000)}</div>
                 </div>
                 <div className={styles.box}>
-                  <div>定金支付方式</div>
+                  <div>支付方式</div>
                   <div>{payType[detailData?.payAdvance?.payType]}</div>
                 </div>
                 <div className={styles.box}>
-                  <div>定金支付流水号</div>
+                  <div>支付流水号</div>
                   <div>{detailData?.payAdvance?.thirdTransactionId}</div>
                 </div>
-                <div className={styles.box}>
+                {/* <div className={styles.box}>
                   <div>尾款支付类型</div>
                   <div>{detailData?.payFinal?.isPartialPay === 1 && '拼约尾款'}</div>
                 </div>
@@ -121,7 +122,7 @@ const Detail = (props) => {
                 <div className={styles.box}>
                   <div>尾款支付流水号</div>
                   <div>{detailData?.payFinal?.thirdTransactionId}</div>
-                </div>
+                </div> */}
                 <div className={styles.box}>
                   <div>收货信息</div>
                   <div className={styles.block}>
@@ -136,39 +137,34 @@ const Detail = (props) => {
                   订单金额
                 </div>
                 <div className={styles.box}>
-                  <div>定金</div>
-                  <div className={styles.box_wrap}>
-                    <div className={styles.box}>
-                      <div>应付金额</div>
-                      <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>红包</div>
-                      <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>用户实付</div>
-                      <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
-                    </div>
-                  </div>
+                  <div>应付金额</div>
+                  <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
+                  <div>红包</div>
+                  <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
+                </div>
+                <div className={styles.box}>
+                  <div>用户实付</div>
+                  <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
+                </div>
+                {/* <div className={styles.box}>
                   <div>尾款</div>
                   <div className={styles.box_wrap}>
                     <div className={styles.box}>
                       <div>应付金额</div>
                       <div>{amountTransform(detailData?.final?.amount, '/')}元（含运费）</div>
                     </div>
-                    {/* <div className={styles.box}>
+                    <div className={styles.box}>
                       <div>运费</div>
                       <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
-                    </div> */}
+                    </div>
                     <div className={styles.box}>
                       <div>用户实付</div>
                       <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* <div className={styles.box}>
                   <div>合计实收</div>
                   <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
@@ -233,7 +229,7 @@ const Detail = (props) => {
                       <div>{detailData?.sku?.skuName}</div>
                     </div>
                     <div className={styles.box}>
-                      <div>秒约价</div>
+                      <div>集约价</div>
                       <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/${detailData?.sku?.unit}）` : ''}</div>
                     </div>
                     <div className={styles.box}>

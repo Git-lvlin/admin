@@ -4,7 +4,7 @@ export const orderList = async (params = {}, options = {}) => {
   return request('/auth/wholesale/SupplierOrder/getSupplierOrderList', {
     method: 'POST',
     data: {
-      wholesaleType: 5,
+      // wholesaleType: 5,
       ...params
     },
     ...options
@@ -15,7 +15,7 @@ export const getPurchaseOrderList = async (params = {}, options = {}) => {
   return request('/auth/wholesale/SupplierOrder/getPurchaseOrderList', {
     method: 'POST',
     data: {
-      wholesaleType: 5,
+      // wholesaleType: 5,
       ...params
     },
     ...options

@@ -8,6 +8,7 @@ import { getDetail, getConfig } from '@/services/product-management/product-list
 import { amountTransform, typeTransform } from '@/utils/utils'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import ProductDetailDrawer from '@/components/product-detail-drawer'
+import Export from '@/components/export'
 
 
 const TableList = () => {
@@ -163,7 +164,25 @@ const TableList = () => {
       valueEnum: typeTransform(config.goodsState),
       hideInTable: true,
     },
+    {
+      title: '预警更新时间',
+      dataIndex: 'updateTime',
+      hideInSearch: true,
+    },
   ];
+
+  const getFieldValue = () => {
+    if (formRef?.current?.getFieldsValue) {
+      const { current, pageSize, gcId = [], ...rest } = formRef?.current?.getFieldsValue?.();
+      return {
+        selectType: 1,
+        gcId1: gcId[0],
+        gcId2: gcId[1],
+        ...rest
+      }
+    }
+    return {}
+  }
 
   useEffect(() => {
     getConfig()
@@ -203,6 +222,11 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
+            <Export
+              key='export'
+              type='goods-stock-alarm'
+              conditions={getFieldValue}
+            />
           ],
         }}
         columns={columns}
