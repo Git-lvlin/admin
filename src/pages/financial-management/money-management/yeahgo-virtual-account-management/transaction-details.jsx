@@ -42,9 +42,9 @@ const TransactionDetails = ({
     }
   }, [])
 
-  const skipToOrder = (id, type, orderType)=> {
+  const skipToOrder = (id, type, orderType, billNo)=> {
     if(orderType === 'newCommandSalesOrder') {
-      setId(id)
+      setId(billNo)
       setNewShopkeeperOrderVisible(true)
       setTypes(orderType)
     } else {
@@ -164,7 +164,7 @@ const TransactionDetails = ({
       width: '10%',
       render: (_, records) => (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
         <span>{_}</span>
       )
     },

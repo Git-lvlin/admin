@@ -29,7 +29,8 @@ const Detail = (props) => {
   const getDetailData = () => {
     setLoading(true);
     detailForVirtualVccount({
-      orderId: id
+      orderId: id,
+      orderType
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -42,6 +43,15 @@ const Detail = (props) => {
   useEffect(() => {
     getDetailData();
   }, [])
+
+  const orderTypes = {
+    1: '待付款',
+    2: '待发货',
+    3: '待收货',
+    4: '已收货',
+    5: '已完成',
+    6: '已关闭/已取消'
+  }
 
   return (
     <Drawer
@@ -60,7 +70,7 @@ const Detail = (props) => {
     >
       <Spin spinning={loading}>
         <div className={styles.order_detail}>
-          <Steps progressDot current={detailData.status}>
+          <Steps progressDot current={detailData?.orderStatus}>
             {
               detailData?.process?.map(item => (
                 <Step title={item.name} description={<><div>{item.time}</div></>} />
@@ -75,7 +85,7 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>订单状态</div>
-                  <div>{detailData.statusDesc}</div>
+                  <div>{orderTypes[detailData.orderStatus]}</div>
                 </div>
                 <div className={styles.box}>
                   <div>订单号</div>
@@ -87,23 +97,23 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>下单用户</div>
-                  <div>{detailData?.store?.linkman}</div>
+                  <div>{detailData?.memberNickname}</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户手机号</div>
-                  <div>{detailData?.store?.phone}</div>
+                  <div>{detailData?.memberPhone}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付时间</div>
-                  <div>{dateFormat(detailData?.payAdvance?.payTime * 1000)}</div>
+                  <div>{detailData?.payTime}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付方式</div>
-                  <div>{payType[detailData?.payAdvance?.payType]}</div>
+                  <div>{payType[detailData?.payType]}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付流水号</div>
-                  <div>{detailData?.payAdvance?.thirdTransactionId}</div>
+                  <div>{detailData?.payNo}</div>
                 </div>
                 {/* <div className={styles.box}>
                   <div>尾款支付类型</div>
@@ -124,9 +134,9 @@ const Detail = (props) => {
                 <div className={styles.box}>
                   <div>收货信息</div>
                   <div className={styles.block}>
-                    <p>收货人：{detailData?.receivingInfo?.receiptUser}</p>
-                    <p>收货手机号码：{detailData?.receivingInfo?.receiptPhone}</p>
-                    <p>收货地址：{detailData?.receivingInfo?.receiptAddress}</p>
+                    <p>收货人：{detailData?.receiptUser}</p>
+                    <p>收货手机号码：{detailData?.receiptPhone}</p>
+                    <p>收货地址：{detailData?.receiptAddress}</p>
                   </div>
                 </div>
               </div>
@@ -136,15 +146,15 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>应付金额</div>
-                  <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
+                  <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
                   <div>红包</div>
-                  <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
+                  <div>{amountTransform(detailData?.discountAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
                   <div>用户实付</div>
-                  <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
+                  <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
                 {/* <div className={styles.box}>
                   <div>尾款</div>
@@ -171,14 +181,14 @@ const Detail = (props) => {
                   detailData.status != 0 && detailData.status != 6 &&
                   <div className={styles.box}>
                     <div>备注</div>
-                    <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio * 100 + '%'} 金额,订单超过售后期可提现剩余金额。</div>
+                    <div>{detailData?.remark}</div>
                   </div>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
                 {
-                  detailData.express && detailData.express.map((ele, idx) => (
+                  detailData.expressDetail && detailData.expressDetail.map((ele, idx) => (
                     <ProDescriptions style={{ padding: '20px' }} column={2} title={"包裹" + parseInt(idx + 1)}>
                       <ProDescriptions.Item
                         label="快递公司"
@@ -218,7 +228,7 @@ const Detail = (props) => {
                 {
                   detailData?.skuList?.map((res, idx)=> (
                     <div className={styles.box}>
-                      <div>商品{idx}</div>
+                      <div>商品{idx + 1}</div>
                       <div className={styles.box_wrap}>
                         <div className={styles.box}>
                           <div>商品名称</div>
@@ -230,15 +240,11 @@ const Detail = (props) => {
                         </div>
                         <div className={styles.box}>
                           <div>单价</div>
-                          <div>{amountTransform(res?.price, '/')}元{res?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(res?.wholesaleFreight, '/')}/${res?.unit}）` : ''}</div>
+                          <div>{amountTransform(res?.skuSalePrice, '/')}元{detailData?.freight > 0 ? `（含平均运费¥${amountTransform(detailData?.freight, '/')}/${res?.unit}）` : ''}</div>
                         </div>
                         <div className={styles.box}>
-                          <div>预定数量</div>
-                          <div>{res?.totalNum}{res?.unit}</div>
-                        </div>
-                        <div className={styles.box}>
-                          <div>实发数量</div>
-                          <div>{res?.actualSendNum}{res?.unit}</div>
+                          <div>购买数量</div>
+                          <div>{res?.skuNum}{res?.unit}</div>
                         </div>
                       </div>
                     </div>
@@ -246,43 +252,11 @@ const Detail = (props) => {
                 }
                 <div className={styles.box}>
                   <div>买家留言</div>
-                  <div>{detailData?.receivingInfo?.remark}</div>
-                </div>
-              </div>
-              <div className={`${styles.box_wrap} ${styles.margin_top}`}>
-                <div className={`${styles.box} ${styles.box_header}`}>
-                  补贴信息
-                </div>
-                <div className={styles.box}>
-                  <div>配送补贴</div>
-                  <div className={styles.box_wrap}>
-                    <div className={styles.box}>
-                      <div>运营中心配送补贴</div>
-                      <div>{amountTransform(Number(detailData?.sku?.operationFixedPrice), '/')}元/{detailData?.sku?.unit}</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>社区店配送补贴</div>
-                      <div>{amountTransform(Number(detailData?.sku?.fixedPrice), '/')}元/{detailData?.sku?.unit}</div>
-                    </div>
-                  </div>
-                </div>
-                <div className={styles.box}>
-                  <div>额外奖励</div>
-                  <div className={styles.box_wrap}>
-                    <div className={styles.box}>
-                      <div>运营中心额外奖励</div>
-                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyOperationPrice), '/')}元/{detailData?.sku?.unit}</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>社区店额外奖励</div>
-                      <div>{amountTransform(Number(detailData?.sku?.ladderSubsidyStorePrice), '/')}元/{detailData?.sku?.unit}</div>
-                    </div>
-                  </div>
+                  <div>{detailData?.buyerRemark}</div>
                 </div>
               </div>
             </div>
           </div>
-
         </div>
       </Spin>
     </Drawer>
