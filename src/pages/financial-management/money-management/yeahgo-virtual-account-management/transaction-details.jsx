@@ -12,6 +12,7 @@ import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
+import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
 
 const TransactionDetails = ({
   visible,
@@ -22,15 +23,18 @@ const TransactionDetails = ({
   const [selectItem, setSelectItem] = useState({})
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [newShopkeeperOrderVisible, setNewShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
   const [visit, setVisit] = useState(false)
   const [orderType, setOrderType] = useState()
+  const [types, setTypes] = useState()
   const actionform = useRef()
 
   const isPurchase = useLocation().pathname.includes('purchase')
 
   useEffect(() => {
     orderTypes({}).then(res=>{
+      
       setOrderType(res.data)
     })
     return () => {
@@ -38,13 +42,19 @@ const TransactionDetails = ({
     }
   }, [])
 
-  const skipToOrder = (id, type)=> {
-    if(type) {
+  const skipToOrder = (id, type, orderType)=> {
+    if(orderType === 'newCommandSalesOrder') {
       setId(id)
-      setShopkeeperOrderVisible(true)
+      setNewShopkeeperOrderVisible(true)
+      setTypes(orderType)
     } else {
-      setId(id)
-      setNormalOrderVisible(true)
+      if(type) {
+        setId(id)
+        setShopkeeperOrderVisible(true)
+      } else {
+        setId(id)
+        setNormalOrderVisible(true)
+      }
     }
   }
 
@@ -154,7 +164,7 @@ const TransactionDetails = ({
       width: '10%',
       render: (_, records) => (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType)}>{_}</a>:
         <span>{_}</span>
       )
     },
@@ -300,6 +310,7 @@ const TransactionDetails = ({
           visible={normalOrderVisible}
           setVisible={setNormalOrderVisible}
           isPurchase={isPurchase}
+          orderType={types}
         />
       }
       {
@@ -308,6 +319,15 @@ const TransactionDetails = ({
           id={id}
           visible={shopkeeperOrderVisible}
           setVisible={setShopkeeperOrderVisible}
+        />
+      }
+      {
+        newShopkeeperOrderVisible &&
+        <NewShopkeeperOrderDetail
+          id={id}
+          orderType={types}
+          visible={newShopkeeperOrderVisible}
+          setVisible={setNewShopkeeperOrderVisible}
         />
       }
     </Drawer>

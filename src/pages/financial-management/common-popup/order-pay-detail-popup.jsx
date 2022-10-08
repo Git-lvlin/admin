@@ -7,7 +7,6 @@ import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
 import { createExportTask, findById } from "@/services/export-excel/export-template"
 import styles from './styles.less'
-import './styles.less'
 import { orderTypes } from '@/services/financial-management/common'
 import { fashionableType } from '../common-function'
 
@@ -410,6 +409,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
           <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
+      className={styles.drawer}
     >
       <ProDescriptions
         loading={loading}

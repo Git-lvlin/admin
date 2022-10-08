@@ -31,3 +31,11 @@ export const expressInfo = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const detailForVirtualVccount = async (params = {}, options = {}) => {
+  return request('/auth/store/purchaseOrder/detailForVirtualVccount', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}

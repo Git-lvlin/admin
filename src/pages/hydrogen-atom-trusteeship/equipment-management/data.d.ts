@@ -7,6 +7,7 @@ export type LaunchEquipmentProps= {
 }
 
 export type ListProps = {
+  store?: string
   realname: string
   memberPhone: string
   id: number

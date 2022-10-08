@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
@@ -9,11 +9,13 @@ import { amountTransform } from '@/utils/utils'
 import { tradeType } from '../../common-enum'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
+import Export from "@/components/export"
 
 const PaymentDetails = ({query, visible, setVisible}) => {
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
+  const form = useRef()
 
   const skipToOrder = (id, type)=> {
     if(type) {
@@ -25,7 +27,17 @@ const PaymentDetails = ({query, visible, setVisible}) => {
     }
   }
 
-  const columns = [
+  const getFieldsValue = () => {
+    const { createTime, ...rest } = form.current?.getFieldsValue()
+    return {
+      begin: createTime?.[0].format('YYYY-MM-DD HH:mm:ss'),
+      end: createTime?.[1].format('YYYY-MM-DD HH:mm:ss'),
+      ...query,
+      ...rest
+    }
+  }
+
+  const columns = [ 
     {
       title: '序号',
       dataIndex:'id',
@@ -132,6 +144,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       visible={visible}
       onClose={()=>{setVisible(false)}}
       width={1200}
+      title={`供应商资金管理-收支明细（供应商id：${query.accountId}）`}
     >
       <ProTable
         rowKey='id'
@@ -145,8 +158,17 @@ const PaymentDetails = ({query, visible, setVisible}) => {
         columns={columns}
         params={{...query}}
         request={logPage}
+        formRef={form}
         search={{
-          defaultCollapsed: false
+          defaultCollapsed: false,
+          optionRender: (search, props, dom)=> [
+            ...dom.reverse(),
+            <Export 
+              key='export' 
+              type="exportSupplierAccountLogList"
+              conditions={getFieldsValue}
+            />
+          ]
         }}
       />
       {
