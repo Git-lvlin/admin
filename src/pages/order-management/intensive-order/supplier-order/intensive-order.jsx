@@ -333,10 +333,10 @@ const TableList = () => {
                 value: orderStatusType
               }}
               options={[
-                {
-                  label: '已付尾款',
-                  value: 2
-                },
+                // {
+                //   label: '已付尾款',
+                //   value: 2
+                // },
                 {
                   label: '待收货',
                   value: 3
