@@ -52,6 +52,7 @@ export default {
   'menu.order-management.details': '详情',
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
+  'menu.order-management.intensive-purchase-setting': '新集约采购设置',
 
   'menu.product-management': '商品管理',
   'menu.product-management.supplier': '供应商商品',

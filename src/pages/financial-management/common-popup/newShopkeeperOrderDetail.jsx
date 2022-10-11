@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
-import { detailForVirtualVccount } from '@/services/order-management/supplier-order-detail';
+import React,{ useState, useEffect } from 'react'
+import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd'
+import { detailForVirtualVccount } from '@/services/order-management/supplier-order-detail'
 import { amountTransform, dateFormat } from '@/utils/utils'
-import ProDescriptions from '@ant-design/pro-descriptions';
+import ProDescriptions from '@ant-design/pro-descriptions'
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
-import styles from './styles.less';
+import styles from './styles.less'
 
-const { Step } = Steps;
+const { Step } = Steps
 
 const payType = {
   0: '模拟支付',
@@ -115,22 +115,6 @@ const Detail = (props) => {
                   <div>支付流水号</div>
                   <div>{detailData?.payNo}</div>
                 </div>
-                {/* <div className={styles.box}>
-                  <div>尾款支付类型</div>
-                  <div>{detailData?.payFinal?.isPartialPay === 1 && '拼约尾款'}</div>
-                </div>
-                <div className={styles.box}>
-                  <div>尾款支付时间</div>
-                  <div>{dateFormat(detailData?.payFinal?.payTime * 1000)}</div>
-                </div>
-                <div className={styles.box}>
-                  <div>尾款支付方式</div>
-                  <div>{payType[detailData?.payFinal?.payType]}</div>
-                </div>
-                <div className={styles.box}>
-                  <div>尾款支付流水号</div>
-                  <div>{detailData?.payFinal?.thirdTransactionId}</div>
-                </div> */}
                 <div className={styles.box}>
                   <div>收货信息</div>
                   <div className={styles.block}>
@@ -156,27 +140,6 @@ const Detail = (props) => {
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
-                {/* <div className={styles.box}>
-                  <div>尾款</div>
-                  <div className={styles.box_wrap}>
-                    <div className={styles.box}>
-                      <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.amount, '/')}元（含运费）</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>运费</div>
-                      <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
-                    </div>
-                    <div className={styles.box}>
-                      <div>用户实付</div>
-                      <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
-                    </div>
-                  </div>
-                </div> */}
-                {/* <div className={styles.box}>
-                  <div>合计实收</div>
-                  <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
-                </div> */}
                 {
                   detailData.status != 0 && detailData.status != 6 &&
                   <div className={styles.box}>
