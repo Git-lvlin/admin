@@ -1,20 +1,69 @@
+import { useState, useEffect, useRef } from "react"
 import ProForm, { ProFormDigit } from '@ant-design/pro-form'
 import { Row, Col, Button } from 'antd'
 
+import type { FormProps } from "./data"
+import type { FormInstance } from "antd"
+
 import PageContainer from '@/components/PageContainer'
+import { setConfigByCode, getConfigByCode } from "@/services/order-management/intensive-purchase-setting"
+import { amountTransform } from "@/utils/utils"
 
 const IntensivePurchaseSetting = () => {
+  const [data, setData] = useState<FormProps>()
+  const form = useRef<FormInstance>()
+
+  useEffect(()=> {
+    getConfigByCode({code: 'transPurchaseConf'}).then(res => {
+      if(res.code === 0) {
+        setData({
+          minBuyNum: res.data.minBuyNum,
+          minBuyMoney: amountTransform(res.data.minBuyMoney, '/')
+        })
+      }
+    })
+  }, [])
+
+  useEffect(()=> {
+    form.current?.setFieldsValue({
+      minBuyNum: data?.minBuyNum,
+      minBuyMoney: data?.minBuyMoney
+    })
+  }, [data])
+
+  
+
+  const submit = (v: FormProps) => {
+    return new Promise<void>((resolve, reject) => {
+      setConfigByCode({
+        code: 'transPurchaseConf',
+        content: {
+          ...v,
+          minBuyMoney: amountTransform(v.minBuyMoney, '*')
+        }
+      }, {
+        showSuccess: true
+      }).then(res => {
+        if(res.code === 0) {
+          resolve()
+        } else {
+          reject()
+        }
+      })
+    })
+  }
+
   return (
     <PageContainer>
-      <ProForm
-        onFinish={async(v)=>{
-          console.log(v);
-          
+      <ProForm<FormProps>
+        onFinish={async(v: FormProps)=>{
+          await submit(v)
         }}
         style={{
           background: '#FFF',
           padding: 20
         }}
+        formRef={form}
         submitter={{
           render: (props, doms) => (
             <Row>
@@ -39,7 +88,7 @@ const IntensivePurchaseSetting = () => {
       >
         <ProFormDigit
           label="最低采购量"
-          name="a"
+          name="minBuyNum"
           fieldProps={{
             addonAfter: '款',
             placeholder: '请输入最低采购量'
@@ -61,7 +110,7 @@ const IntensivePurchaseSetting = () => {
         />
         <ProFormDigit
           label="最低采购金额"
-          name="b"
+          name="minBuyMoney"
           width="md"
           fieldProps={{
             addonAfter: '元',
