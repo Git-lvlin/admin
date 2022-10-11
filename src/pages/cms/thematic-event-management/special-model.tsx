@@ -43,6 +43,7 @@ export default (props:PropsItem) => {
   const [form] = Form.useForm();
   const [detailList,setDetailList]=useState<DetailListItem>()
   const [savePrevie,setSavePrevie]=useState<number>(0)
+  const [savePrevie2,setSavePrevie2]=useState<boolean>(false)
   const onSubmit = (values) => {
     if(detailList?.length==0) return message.error('请选择商品')
     const params={
@@ -109,6 +110,7 @@ export default (props:PropsItem) => {
           }else{
             message.success('新增成功')
           }
+          setSavePrevie2(!savePrevie2)
         }
       })
     }else{
@@ -126,7 +128,7 @@ export default (props:PropsItem) => {
         }
       })
     }
- 
+    
   }
   useEffect(()=>{
     if(record?.id){
@@ -163,7 +165,7 @@ export default (props:PropsItem) => {
         }
       })
     }
-  },[record?.id,savePrevie])
+  },[record?.id,savePrevie2])
 
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
@@ -247,10 +249,10 @@ export default (props:PropsItem) => {
           />
           <Title style={{ marginBottom: 10 }} level={5}>页面预览</Title>
           {
-            !savePrevie&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+            !savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
           }
           {
-            savePrevie&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+            savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
           }
         </div>
         <div className={styles?.border_box}>
@@ -379,6 +381,7 @@ export default (props:PropsItem) => {
               name="showType"
               layout="horizontal"
               label="展示形式"
+              initialValue={1}
               options={[
                 {
                   label: '单排',
