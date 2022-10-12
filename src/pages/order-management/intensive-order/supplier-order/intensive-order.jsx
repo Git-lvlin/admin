@@ -467,7 +467,7 @@ const TableList = () => {
                   :
                   <>
                     <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 10, marginTop: 10 }} color="#f59a23">{item.wholesaleFlowType === 1 ? '直发到店' : '运营中心配送'}</Tag>
-                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 80, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜') : '普适品'}</Tag>
+                    <Tag style={{ borderRadius: 2, position: 'absolute', marginLeft: 110, marginTop: 10 }} color='#58B138'>{item?.businessType !== 1 ? (item?.businessType === 2 ? '精装生鲜' : '散装生鲜') : '普适品'}</Tag>
                   </>
                 }
 
@@ -533,7 +533,7 @@ const TableList = () => {
                           {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                           {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                           <a onClick={() => { setSelectItem(it); setDetailVisible(true); }}>详情</a>
-                          <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>
+                         {item.businessType !==30&&<div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>}
                           {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
                             <Popconfirm
                               title="确认操作?"
