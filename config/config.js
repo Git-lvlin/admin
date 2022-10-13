@@ -18,6 +18,7 @@ import messageManagement from './routers/message-management'
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 // import communityManagement from './routers/community-management'
+import ProductSharingManagement from './routers/product-sharing-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
 // import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
@@ -97,6 +98,7 @@ const config = {
             // communityManagement,
             DaifaStoreManagement,
             businessSchool,
+            ProductSharingManagement,
             financialManagement,
             dataBoard,
             dc,

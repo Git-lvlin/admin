@@ -8,10 +8,14 @@ import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { goodsClassList, openSwitch,categoryEdit } from '@/services/cms/fresh-goods-class';
 import Edit from './form';
-
+import Category from './category';
+import DetailCategory from './detail-category'
+ 
 const BannerAdmin = () => {
   const actionRef = useRef();
   const [formVisible, setFormVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [swc, setSwc] = useState(false);
 
@@ -93,13 +97,29 @@ const BannerAdmin = () => {
       search: false,
     },
     {
+      title: '二级类目数',
+      dataIndex: 'skuNum',
+      search: false,
+      render: (_,record)=>{
+        if(_){
+          return <a onClick={()=>{ setDetailData(record);setDetailVisible(true) }}>_</a>
+        }else{
+          return '-'
+        }
+      }
+    },
+    {
       title: '操作',
       valueType: 'option',
       dataIndex: 'option',
       search: false,
       render: (_, record) => {
         let node = renderRemoveUser(record)
-        return [<a onClick={() => { edit(record) }}>编辑</a>, record.isShow==1&&node]
+        return [
+        <a onClick={() => { edit(record) }}>编辑</a>, 
+        record.isShow==1&&node,
+        <a onClick={() => { setDetailData(record);setVisible(true)}}>编辑二级类目</a>
+      ]
       }
     },
   ];
@@ -149,6 +169,20 @@ const BannerAdmin = () => {
       {formVisible && <Edit
         visible={formVisible}
         setVisible={setFormVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      />}
+      {visible && <Category
+        visible={visible}
+        setVisible={setVisible}
+        detailData={detailData}
+        callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        onClose={() => { actionRef.current.reload(); setDetailData(null) }}
+      />}
+      {detailVisible && <DetailCategory
+        visible={detailVisible}
+        setVisible={setDetailVisible}
         detailData={detailData}
         callback={() => { actionRef.current.reload(); setDetailData(null) }}
         onClose={() => { actionRef.current.reload(); setDetailData(null) }}
