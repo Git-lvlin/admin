@@ -92,3 +92,8 @@ export type EditContractProps = {
 export type LeaseContractProps = {
   type: number
 }
+
+export type HealthyLivingPavilionProps = {
+  id: number
+  
+}
