@@ -6,6 +6,7 @@ import type { FC } from "react"
 import SupplierEntryContract from "./supplier-entry-contract"
 import HydrogenLeaseContract from "./hydrogen-lease-contract"
 import HydrogenThirdpartnarContract from "./hydrogen-thirdpartnar-contract"
+import HealthyLivingPavilionContract from "./healthy-living-pavilion-contract"
 
  const ContractManagement:FC = () => {
   const key = JSON.parse(window.localStorage.getItem('managed') as string)?.type
@@ -29,6 +30,9 @@ import HydrogenThirdpartnarContract from "./hydrogen-thirdpartnar-contract"
         </ProCard.TabPane>
         <ProCard.TabPane key="4" tab="氢原子代运营合同">
           <HydrogenThirdpartnarContract/> 
+        </ProCard.TabPane>
+        <ProCard.TabPane key="5" tab="健康生活馆加盟合同">
+          <HealthyLivingPavilionContract/> 
         </ProCard.TabPane>
       </ProCard>
     </PageContainer>

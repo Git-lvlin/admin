@@ -52,6 +52,7 @@ export default {
   'menu.order-management.details': '详情',
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
+  'menu.order-management.intensive-purchase-setting': '新集约采购设置',
 
   'menu.product-management': '商品管理',
   'menu.product-management.supplier': '供应商商品',
@@ -429,5 +430,8 @@ export default {
   'menu.city-office-management': '市办事处',
   'menu.city-office-management.city-office-management-list': '市办事处管理',
   'menu.city-office-management.city-office-achievements': '市办事处业绩',
+
+  'menu.product-performance-management': '产品业绩管理',
+  'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
 
 };
