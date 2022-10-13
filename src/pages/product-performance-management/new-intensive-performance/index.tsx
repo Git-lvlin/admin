@@ -18,22 +18,22 @@ const Aggregate: FC<any> = ({data}) => {
     {
       title: '总业绩金额',
       dataIndex: 'payAmount',
-      render: (_) => amountTransform(_, '/')
+      render: (_) => `${amountTransform(_, '/')}元`
     },
     {
       title: '总下单店铺数量',
       dataIndex: 'totalShopNum',
-      render: _ => _&&_
+      render: _ => `${_&&_}家`
     },
     {
       title: '总销售sku数',
       dataIndex: 'totalSkuNum',
-      render: _ => _&&_
+      render: _ => `${_&&_}款`
     },
     {
       title: '商品销量',
       dataIndex: 'saleNum',
-      render: _ => _&&_
+      render: _ => `${_&&_}件`
     }
   ]
 

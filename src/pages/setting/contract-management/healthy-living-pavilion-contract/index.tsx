@@ -1,13 +1,11 @@
-import { useState, useRef } from "react"
 import ProTable from "@ant-design/pro-table"
-import moment from "moment"
+import moment from 'moment'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
-import type { FormInstance } from "antd"
 import type { HealthyLivingPavilionProps } from "../data"
 
-import {  } from "@/services/setting/contract-management"
+import { MemberLifeHouse } from "@/services/setting/contract-management"
 
 const HealthyLivingPavilionContract: FC = () => {
 
@@ -17,57 +15,59 @@ const HealthyLivingPavilionContract: FC = () => {
       valueType: 'indexBorder'
     },
     {
-      dataIndex: 'id',
-      hideInTable: true,
-      hideInSearch: true
-    },
-    {
       title: '店主手机',
-      dataIndex: '',
+      dataIndex: 'memberPhone',
       align: 'center',
     },
     {
       title: '社区店ID',
-      dataIndex: '',
+      dataIndex: 'storeId',
       align: 'center',
     },
     {
       title: '签订时间',
-      dataIndex: '',
+      dataIndex: 'signTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => moment(r.signTime * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '开通生活馆缴费单号',
-      dataIndex: '',
+      dataIndex: 'businessId',
       align: 'center',
     },
     {
       title: '合同ID',
-      dataIndex: '',
+      dataIndex: 'contractId',
       align: 'center',
+      render: (_, r)=> {
+        if(r.contractUrl) {
+          return <a target="_blank" href={`${r.contractUrl}`}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     }
   ]
 
   return (
-    <>
-      <ProTable<HealthyLivingPavilionProps>
-        rowKey='id'
-        columns={columns}
-        params={{}}
-        // request={}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true
-        }}
-        options={false}
-        search={{
-          optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
-          ]
-        }}
-      />
-    </>
+    <ProTable<HealthyLivingPavilionProps>
+      rowKey='id'
+      columns={columns}
+      params={{}}
+      request={MemberLifeHouse}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true
+      }}
+      options={false}
+      search={{
+        labelWidth: 140,
+        optionRender: (searchConfig, props, dom)=> [
+          ...dom.reverse()
+        ]
+      }}
+    />
   )
 }
 
