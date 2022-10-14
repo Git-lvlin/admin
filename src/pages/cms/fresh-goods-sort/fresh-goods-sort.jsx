@@ -241,6 +241,9 @@ const BannerAdmin = () => {
         search={{
           labelWidth: 'auto',
         }}
+        // params={{
+        //   orderType: 30
+        // }}
         headerTitle={selected&&<Space size={24}>
         <span>
           <span style={{marginRight: 20}}>添加到 </span>

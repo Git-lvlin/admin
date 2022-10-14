@@ -29,93 +29,72 @@ const formItemLayout = {
   }
 };
 
+const FromWrap = ({ value, onChange, content, right,bottom }) => (
+  <div>
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1 }}>{right(value)}</div>
+    </div>
+    <div>{bottom(value)}</div>
+  </div>
+)
+
+
 const bloodData = [
   {
     id: 1,
     name: <>
           <div>直推人（必须是VIP店主）</div>
           <div>直推收益</div>
-          </>,
+          </>
   },
   {
     id: 2,
-    name: '店主（下单人）开店地址所属市办事处',
+    name: <>
+          <div>店主（下单人）开店地址所属市办事处</div>
+          <div>管理佣金</div>
+          </>
   },
    {
     id: 3,
-    name: '培训中心',
-    tip: '管理奖励',
+    name:<>
+        <div>培训中心</div>
+        <div>管理奖励</div>
+        </>
   },
   {
     id: 4,
-    name: '汇能科技',
-    tip: '积分/红包',
+    name: <>
+          <div>汇能科技</div>
+          <div>积分/红包</div>
+          </>
   },
   {
     id: 5,
-    name: '供应商-货款',
-    tip: '销售订单承担通道费',
+    name: <>
+          <div>供应商</div>
+          <div>货款</div>
+          </>,
   },
   {
     id: 6,
-    name: '运营中心',
-    tip: '服务费佣金',
+    name: <>
+          <div>运营中心</div>
+          <div>服务费佣金</div>
+          </>
   },
   {
     id: 7,
-    name: '汇能',
-    tip: '平台运营成本',
+    name:<>
+          <div>汇能</div>
+          <div>平台运营成本</div>
+          </>
   },
   {
     id: 8,
-    name: '汇能',
-    tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+    name:'汇能'
   },
 ]
-
-const CusAutoComplete = ({ value, onChange, onChange2,setUserList, userList, options, ...rest }) => {
-  const changeHandle = (e) => {
-    const findItem = userList?.find(item => item.skuId === e)
-    if (findItem) {
-      onChange(findItem.goodsName)
-      onChange2(findItem)
-      return
-    }
-    onChange(e);
-    onChange2(null)
-  }
-  const SearchHandle=(e)=>{
-    if (!isNaN(e)) {
-      productList({ skuId: e }).then(res => {
-        setUserList(res.data)
-      })
-    } else {
-      productList({ goodsName: e }).then(res => {
-        setUserList(res.data)
-      })
-    }
-  }
-  const selectHandle = (e) => {
-    const findItem = userList?.find(item => item.skuId === e)
-    if (findItem) {
-      onChange(findItem.goodsName)
-      onChange2(findItem)
-    }
-  }
-  return (
-    <AutoComplete
-      value={value}
-      options={options}
-      {...rest}
-      onChange={changeHandle}
-      onSelect={selectHandle}
-      filterOption={(inputValue, option) => {
-        return option?.label?.includes(inputValue)
-      }}
-      onSearch={SearchHandle}
-    />
-  )
-}
 
 
 export default (props) => {
@@ -123,20 +102,18 @@ export default (props) => {
   const [form] = Form.useForm();
   const [editableKeys, setEditableRowKeys] = useState(()=>bloodData?.map(item => item.id));
   const [dataSource, setDataSource] = useState(()=>bloodData);
-  const [roleVisible, setRoleVisible] = useState();
-  // const [sum, setSum] = useState(12)
   const [userList, setUserList] = useState([])
   const [recordList, setRecordList] = useState([])
-  const [recordId, setRecordId] = useState()
   const actionRef = useRef();
-  const [submitType,setSubmitType] = useState()
-  const [commissionType,setCommissionType] = useState(1)
+  const [commType,setCommType] = useState(2)
 
   useEffect(() => {
     if (detailData?.spuId) {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
-        const findItem=res.data.find(ele=>ele?.skuId==recordId?.skuId)||res.data.find(ele=>ele?.skuId==detailData?.skuId)
+        const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId):res.data[0]
         setRecordList(findItem)
+        console.log('findItem?.commissionType',findItem)
+        setCommType(findItem?.commissionType)
         form.setFieldsValue({
           name: findItem?.goodsName,
           commissionType: findItem?.commissionType
@@ -145,49 +122,62 @@ export default (props) => {
           const data = [
             {
               id: 1,
-              name: '直推人（必须是VIP店主）直推收益',
-              tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费',
+              name: <>
+                    <div>直推人（必须是VIP店主）</div>
+                    <div>直推收益</div>
+                    </>,
               price: amountTransform(findItem?.shoppervipChargeFee, '/')
             },
             {
               id: 2,
-              name: '店主（下单人）开店地址所属市办事处',
-              tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+              name: <>
+                    <div>店主（下单人）开店地址所属市办事处</div>
+                    <div>管理佣金</div>
+                    </>,
               price: amountTransform(findItem?.cityManageFee, '/')
             },
              {
               id: 3,
-              name: '培训中心',
-              tip: '管理奖励',
-              price: amountTransform(findItem?.shopperManageFee, '/')
+              name:<>
+                  <div>培训中心</div>
+                  <div>管理奖励</div>
+                  </>,
+              price: amountTransform(findItem?.trainCenterManageFee, '/')
             },
             {
               id: 4,
-              name: '汇能科技',
-              tip: '积分/红包',
-              price: amountTransform(findItem?.company, '/')
+              name: <>
+                    <div>汇能科技</div>
+                    <div>积分/红包</div>
+                    </>,
+              price: amountTransform(findItem?.serviceFee, '/')
             },
             {
               id: 5,
-              name: '供应商-货款',
-              tip: '销售订单承担通道费',
+              name: <>
+                    <div>供应商</div>
+                    <div>货款</div>
+                    </>,
             },
             {
               id: 6,
-              name: '运营中心',
-              tip: '服务费佣金',
-              price: amountTransform(findItem?.company, '/')
+              name: <>
+                    <div>运营中心</div>
+                    <div>服务费佣金</div>
+                    </>,
+              price: amountTransform(findItem?.companyAgent, '/')
             },
             {
               id: 7,
-              name: '汇能',
-              tip: '平台运营成本',
-              price: amountTransform(findItem?.company, '/')
+              name:<>
+                    <div>汇能</div>
+                    <div>平台运营成本</div>
+                    </>,
+              price: amountTransform(findItem?.platformOperateFee, '/')
             },
             {
               id: 8,
-              name: '汇能',
-              tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+              name:'汇能'
             },
           ]
           setEditableRowKeys(data?.map(item => item.id))
@@ -195,41 +185,47 @@ export default (props) => {
         }
       })
     }
-  }, [recordId])
+  }, [])
 
   const submit = (values) => {
     if(compute()<0){
       return message.error('平台金额为负！')
     }
-    const params = {
-      orderType: 30,
-      id: recordList?.id ? recordList?.id : 0,
-      spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
-      skuId: recordList?.id ? recordList?.skuId : recordId?.skuId,
-      cityManageFee: amountTransform(dataSource[0].price, '*'),
-      shoppervipChargeFee: amountTransform(dataSource[1].price, '*'),
-      provinceManageFee: 0,
-      shopperChargeFee: 0,
-      userChargeFee: 0,
-      shopperManageFee: 0,
-      userManageFee: 0,
-      shoppervipManageFee: 0,
-      companyAgent: 0,
-      provinceAgent: 0,
-      cityAgent: 0,
-      dividends: 0,
-      platformOperateFee: 0,
-      serviceFee: 0,
-      company: amountTransform(compute(), '*'),
-      ...values
-    }
-    saveCommissionConfig(params).then(res => {
-      if (res.code == 0) {
-        setVisible(false)
-        callback()
-        detailData?.id?message.success('修改成功！'):message.success('提交成功！')
+    try {
+      console.log('dataSource',dataSource)
+      const params = {
+        orderType: 30,
+        id: recordList?.id ? recordList?.id : 0,
+        spuId: recordList?.spuId,
+        skuId: recordList?.skuId,
+        cityManageFee: amountTransform(dataSource[0]?.price, '*'),
+        shoppervipChargeFee: amountTransform(dataSource[1]?.price, '*'),
+        provinceManageFee: 0,
+        shopperChargeFee: 0,
+        userChargeFee: 0,
+        shopperManageFee: 0,
+        userManageFee: 0,
+        shoppervipManageFee: 0,
+        trainCenterManageFee:amountTransform(dataSource[2]?.price, '*'),
+        serviceFee: amountTransform(dataSource[3]?.price, '*'),
+        companyAgent: amountTransform(dataSource[5]?.price, '*'),
+        platformOperateFee: amountTransform(dataSource[6]?.price, '*'),
+        provinceAgent: 0,
+        cityAgent: 0,
+        dividends: 0,
+        company: amountTransform(compute(), '*'),
+        ...values
       }
-    })
+      saveCommissionConfig(params).then(res => {
+        if (res.code == 0) {
+          setVisible(false)
+          callback()
+          detailData?.id?message.success('修改成功！'):message.success('提交成功！')
+        }
+      })
+    } catch (error) {
+      console.log('error',error)
+    }
   }
   useEffect(() => {
     productList({}).then(res => {
@@ -243,91 +239,110 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=recordId?amountTransform(recordId?.salePrice - amountTransform(sum, '*')-recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.salePrice - amountTransform(sum, '*')-recordList?.retailSupplyPrice, '/').toFixed(2)
+    const company=amountTransform(recordList?.salePrice - amountTransform(sum, '*')-recordList?.retailSupplyPrice, '/').toFixed(2)
     return company
+  }
+
+  const proportion = (_) =>{
+    if(commType==2){
+      const editPrice=amountTransform(recordList?.salePrice/amountTransform(_?.entry?.price,'*'),'*')
+    }
+    const editPrice=amountTransform(amountTransform(_?.entry?.price,'*')/recordList?.salePrice,'*')
+    return <span>{editPrice&&parseFloat(editPrice).toFixed(2)}{commType==1?'%':'元'}</span>
   }
 
   const columns = [
     {
-      title: '参与角色',
+      title: '序号',
+      dataIndex: 'id',
+      width: 50,
       align: 'center',
-      hideInSearch: true,
-      children: [
-        {
-          title: '序号',
-          dataIndex: 'id',
-          width: 50,
-          align: 'center',
-          editable: false,
-        },
-        {
-          title: '对象和对应结算项名称',
-          dataIndex: 'name',
-          align: 'center',
-          editable: false,
-          render: (_, data) => {
-            return <p>
-              {_}
-              <Tooltip placement="top" title={data?.tip}>
-                <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-              </Tooltip>
-            </p>
-          }
-        }
-      ]
+      editable: false,
     },
     {
-      title: '参与商品或费用和对应金额',
+      title: '分成对象&费用名称',
+      align: 'center',
+      dataIndex: 'name',
+      hideInSearch: true,
+      editable: false,
+    },
+    {
+      title: <>
+              <p>{recordList?.goodsName}</p>
+              <span>skuID:{recordList?.skuId}  新集约价:￥{amountTransform(recordList?.salePrice, '/')}</span>
+            </>,
       align: 'center',
       hideInSearch: true,
-      children: [
-        {
-          title: <ProForm
-          form={form}
-          submitter={false}
-         >
-            <Form.Item
-              name="name"
-            >
-              <CusAutoComplete
-                placeholder="输入商品名称或skuID搜索"
-                options={userList?.map(item => ({ label: `skuID：${item.skuId} ${item.goodsName} 售价： ${amountTransform(item.salePrice, '/').toFixed(2)}元`, value: item.skuId }))}
-                onChange2={(v) => {
-                  setRecordId(v)
-                  compute()
-                  setDataSource(bloodData.map(ele=>({...ele,price:null})))
-                }}
-                userList={userList}
-                setUserList={setUserList}
-              />
-            </Form.Item>
-          </ProForm>,
-          dataIndex: 'price',
-          renderFormItem: (_, r) => {
-            if (_?.entry?.id == 5) {
-              return <>
-                <p>{recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}{commissionType==1?'元':'%'}</p>
-                <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
-              </>
-            } else if (_?.entry?.id == 8) {
-              return <>
-                <p>{compute()}{commissionType==1?'元':'%'}</p>
-                <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
-              </>
-            }
-            return  <InputNumber  
-                      min="0"
-                      max={amountTransform(recordList?.salePrice,'/')||amountTransform(recordId?.salePrice,'/')}
-                      style={{ width: '450px' }} 
-                      precision='2'
-                      stringMode
-                      addonAfter={commissionType==1?'元':'%'} 
-                      placeholder='请输此行角色的结算金额，0.00至售价。总结算金额<售价' 
-                    />
-        
-          },
+      dataIndex: 'price',
+      renderFormItem: (_, r) => {
+        if (_?.entry?.id == 5) {
+          return <>
+            <p>{amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}{commType==1?'元':'%'}</p>
+            <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
+          </>
+        } else if (_?.entry?.id == 7) {
+          return <FromWrap
+                  content={(value, onChange) =>  <InputNumber  
+                    min="0"
+                    max={amountTransform(recordList?.salePrice,'/')}
+                    style={{ width: '450px' }} 
+                    precision='2'
+                    stringMode
+                    addonAfter={commType==1?'元':'%'} 
+                    placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
+                    value={value} 
+                    onChange={onChange}
+                  />}
+                  right={(value) => {
+                    return <span>= {proportion(_)} </span>
+                  }}
+                  bottom={(value)=>{
+                    if(commType==2){
+                      const editPrice=amountTransform(recordList?.salePrice/amountTransform(value,'*'),'*')
+                    }
+                    const editPrice=amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
+                        if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==7){
+                          return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
+                        }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
+                          return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
+                        }
+                  }}
+                />
+        } else if (_?.entry?.id == 8) {
+          return <>
+            <p>{compute()}{commType==1?'元':'%'}</p>
+            <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
+          </>
         }
-      ]
+        return  <FromWrap
+                  content={(value, onChange) =>   <InputNumber  
+                    min="0"
+                    max={amountTransform(recordList?.salePrice,'/')}
+                    style={{ width: '450px' }} 
+                    precision='2'
+                    stringMode
+                    addonAfter={commType==1?'元':'%'} 
+                    placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
+                    value={value} 
+                    onChange={onChange}
+                  />}
+                  right={(value) => {
+                    return <span>= {proportion(_)} </span>
+                  }}
+                  bottom={(value)=>{
+                    if(commType==2){
+                      const editPrice=amountTransform(recordList?.salePrice/amountTransform(value,'*'),'*')
+                    }
+                    const editPrice=amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
+                        if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=7){
+                          return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
+                        }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=7){
+                          return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
+                        }
+                  }}
+                />   
+    
+      }
     },
 
   ]
@@ -338,7 +353,7 @@ export default (props) => {
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
-        width: 1200,
+        width: 1300,
         onClose: () => {
           onClose();
         }
@@ -346,7 +361,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{detailData?.versionNo}</p>,
+                <p key='versionNo' style={{marginRight:'1000px'}}>当前分成版本：{recordList?.versionNo}</p>,
                 <Button  type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                 }}>
@@ -358,9 +373,11 @@ export default (props) => {
       onFinish={async (values) => {
         await submit(values);
       }}
+      form={form}
       visible={visible}
       {...formItemLayout}
     >
+      <p style={{paddingLeft:'20px'}}>[spuID:{detailData?.spuId}] {detailData?.goodsName}</p>
       <ProFormRadio.Group
         name="commissionType"
         label='结算分成类型'
@@ -376,10 +393,10 @@ export default (props) => {
         ]}
         fieldProps={{
           onChange:(_)=>{
-            setCommissionType(_.target.value)
+            setCommType(_.target.value)
           }
         }}
-        initialValue={1}
+        initialValue={2}
       />
       <EditableProTable
         rowKey="id"
@@ -407,20 +424,7 @@ export default (props) => {
         }}
         recordCreatorProps={false}
       />
-      {roleVisible &&
-        <AddRoleModal
-          visible={roleVisible}
-          setVisible={setRoleVisible}
-          callback={(val) => {
-            setDataSource([...dataSource, {
-              id: sum,
-              price: '',
-              ...val
-            }])
-            setEditableRowKeys([...dataSource?.map(item => item.id), sum])
-          }}
-        />
-      }
+      <p style={{ color: '#F88000',float:'right' }}>运营成本建议不低于商品新集约价5%，其他各输入项建议不得高于商品新集约价5%</p>
     </DrawerForm>
   );
 };

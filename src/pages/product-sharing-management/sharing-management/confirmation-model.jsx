@@ -7,28 +7,23 @@ export default (props)=>{
     const {detailData,visible,setVisible,callback}=props
     return (
         <ModalForm
-          title="确认提示"
+          title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/>&nbsp;建议分佣/奖励分成不高于5%</p>}
           onVisibleChange={setVisible}
           visible={visible}
           submitter={{
             searchConfig:{
-              resetText:'取消关闭',
+              resetText:'确认设置',
               submitText:'确定关闭'
             }
           }}
           onFinish={async (values) => {
-            deleteCommissionById({id:detailData.id,orderType:30}).then(res=>{
-            if(res.code==0){
-              setVisible(false) 
-              callback() 
-              message.success('操作成功')
-              return true;
-            }
-          })
-        
+            setVisible(false) 
+            callback() 
+            message.success('操作成功')
+            return true;
           }}
       >
-        <p><ExclamationCircleFilled style={{color:'#FBC550'}}/>&nbsp;<span style={{fontWeight:'bold'}}>是否确定关闭分成配置？</span><br/><span style={{color:'#999999'}}>关闭分成配置会导致此商品的后续交易将无法分成！</span></p>
+        <p><span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作，</span><br/><span style={{color:'#999999'}}>你还要继续吗？</span></p>
       </ModalForm>
     )
 }

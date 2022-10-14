@@ -11,11 +11,10 @@ import {
   ProFormDependency,
 } from '@ant-design/pro-form';
 import { getCommissionConfigBySpuId } from '@/services/product-management/designated-commodity-settlement';
+import { putOnSpu } from '@/services/cms/fresh-goods-sort';
 import { PlusOutlined } from '@ant-design/icons';
 import Edit from './edit'
 import { useLocation } from 'umi';
-import * as api1 from '@/services/product-management/product-list';
-import * as api2 from '@/services/product-management/product-list-purchase';
 import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
@@ -43,13 +42,12 @@ export default (props) => {
   const [rowKeys,setRowKeys]=useState()
   const actionRef = useRef();
   const isPurchase = useLocation().pathname.includes('purchase')
-  const api = isPurchase ? api2 : api1
   const submit = (values) => {
     const params={
       spuId: detailData?.spuId,
       configUser:configUser
     }
-    api.onShelf(params, { showSuccess: true }).then(res => {
+    putOnSpu(params, { showSuccess: true }).then(res => {
       if (res.code === 0) {
         setVisible(false)
         callback()
@@ -154,7 +152,7 @@ export default (props) => {
               }}
               key='direct'
             >
-            不应用，直接上架商品
+            保存分成配置，不上架
           </Button>,
           <Button
             type='primary'
@@ -164,7 +162,7 @@ export default (props) => {
             }}
             key='adhibition'
           >
-            应用结算配置，并上架商品
+            应用结算配置，并上架
           </Button>
           ]
         }
@@ -176,7 +174,6 @@ export default (props) => {
       visible={visible}
       {...formItemLayout}
     >
-     <p style={{paddingLeft:'20px'}}>[spuID:{detailData?.spuId}] {detailData?.goodsName}</p>
      <ProTable
         rowKey="id"
         dataSource={dataSource}

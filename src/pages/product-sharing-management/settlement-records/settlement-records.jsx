@@ -107,8 +107,8 @@ export default () => {
       }
     },
     {
-      title: '汇能科技',
-      dataIndex: 'company',
+      title: '汇能科技(积分/红包)',
+      dataIndex: 'serviceFee',
       align: 'center',
       hideInSearch: true,
       render: (_)=>{

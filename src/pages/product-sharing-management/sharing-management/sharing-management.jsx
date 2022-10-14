@@ -3,29 +3,11 @@ import ProTable from '@ant-design/pro-table';
 import { getCommissionList } from '@/services/product-management/designated-commodity-settlement';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Col, Row } from 'antd';
-// import type { ProColumns,ActionType } from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import Form from './form';
 import DeleteModel from './delete-model'
 import { amountTransform } from '@/utils/utils'
 import styles from './detail.less';
-
-type activityItem={
-  wholesaleStartTime:number;
-  spuid:number;
-  skuid:number;
-  goodsName:string;
-  typeName:string;
-  skuName:number;
-  unit:string;
-  portion:number;
-  totalNum:number;
-  wholesaleSupplyPrice:number;
-  price:number;
-  beforeProfit:number;
-  agentCompanyCommission:number;
-  profit:number;
-}
 
 const IntensiveGoods=() => {
     const [visible, setVisible] = useState(false);
@@ -75,7 +57,7 @@ const IntensiveGoods=() => {
       },
       {
         title: '直推人(vip店主)',
-        dataIndex: 'cityManageFee',
+        dataIndex: 'shoppervipChargeFee',
         align: 'center',
         render: (_)=>{
           return amountTransform(_,'/').toFixed(2)
@@ -84,7 +66,7 @@ const IntensiveGoods=() => {
       },
       {
         title: '下单店主开店地址所属办事处',
-        dataIndex: 'shopperChargeFee',
+        dataIndex: 'cityManageFee',
         align: 'center',
         render: (_)=>{
           return amountTransform(_,'/').toFixed(2)
@@ -93,7 +75,7 @@ const IntensiveGoods=() => {
       },
       {
         title: '培训中心',
-        dataIndex: 'userChargeFee',
+        dataIndex: 'trainCenterManageFee',
         align: 'center',
         render: (_)=>{
           return amountTransform(_,'/').toFixed(2)
@@ -101,8 +83,26 @@ const IntensiveGoods=() => {
         hideInSearch: true,
       },
       {
-        title: '汇能科技',
-        dataIndex: 'company',
+        title: '运营中心',
+        dataIndex: 'companyAgent',
+        align: 'center',
+        render: (_)=>{
+          return amountTransform(_,'/').toFixed(2)
+        },
+        hideInSearch: true,
+      },
+      {
+        title: '运营成本',
+        dataIndex: 'platformOperateFee',
+        align: 'center',
+        render: (_)=>{
+          return amountTransform(_,'/').toFixed(2)
+        },
+        hideInSearch: true,
+      },
+      {
+        title: '汇能科技积分/红包',
+        dataIndex: 'serviceFee',
         align: 'center',
         render: (_)=>{
           return amountTransform(_,'/').toFixed(2)
@@ -146,7 +146,8 @@ const IntensiveGoods=() => {
         valueType: 'select',
         valueEnum: {
           1: '生效中',
-          0: '已失效'
+          0: '已失效',
+          2: '已关闭'
         },
         hideInSearch: true
       },
@@ -156,7 +157,7 @@ const IntensiveGoods=() => {
         valueType: 'option',
         render: (_, record) => [
           <a key='edit' onClick={() => { setDetailData(record);setFormVisible(true) }}>修改</a>,
-          <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>关闭</a>
+          <a key='delete' style={{ display:record?.status==2?'none':'block' }} onClick={() => { setDetailData(record);setVisible(true) }}>关闭</a>
         ],
         fixed: 'right',
         hideInSearch: true,
@@ -236,7 +237,7 @@ const BrandAuthorization=() => {
   );
 };
   export default ()=>{
-    const [activeKey, setActiveKey] = useState<string>('1')
+    const [activeKey, setActiveKey] = useState('1')
     return (
       <PageContainer title=" ">
       <ProCard
