@@ -9,7 +9,7 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { wholesalePm } from "@/services/product-performance-management/new-intensive-performance"
+import { vipStoreHydrogenPm } from "@/services/product-performance-management/VIP-hydrogen"
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "./styles.less"
@@ -26,17 +26,12 @@ const Aggregate: FC<any> = ({data}) => {
     {
       title: '总下单店铺数量',
       dataIndex: 'totalShopNum',
-      render: _ => `${_&&_}家`
+      render: _ => `${_ ? _ : 0}家`
     },
     {
-      title: '总销售sku数',
+      title: '总销售数量',
       dataIndex: 'totalSkuNum',
-      render: _ => `${_&&_}款`
-    },
-    {
-      title: '商品销量',
-      dataIndex: 'saleNum',
-      render: _ => `${_&&_}件`
+      render: _ => `${_ ? _ : 0}台`
     }
   ]
 
@@ -50,7 +45,7 @@ const Aggregate: FC<any> = ({data}) => {
   )
 }
 
-const NewIntensivePerformance: FC = () => {
+const VIPHydrogen: FC = () => {
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
 
@@ -88,6 +83,7 @@ const NewIntensivePerformance: FC = () => {
       title: '支付时间',
       dataIndex: 'payTime',
       valueType: 'dateRange',
+      initialValue: ['2022-9-24 00:00:00', moment(+new Date()).format("YYYY-MM-DD HH:mm:ss")],
       hideInTable: true
     },
     {
@@ -108,26 +104,12 @@ const NewIntensivePerformance: FC = () => {
       dataIndex: 'orderStatus',
       valueType: 'select',
       valueEnum: {
-        2: '待发货',
-        3: '待收货',
-        5: '已完成（已确认收到货）'
+        1: '已完成（已过售后期）',
+        2: '售后中',
+        3: '已退款',
+        4: '所有已完成'
       },
       hideInTable: true
-    },
-    {
-      title: 'spuID',
-      dataIndex: 'spuId',
-      align: 'center'
-    },
-    {
-      title: 'skuID',
-      dataIndex: 'skuId',
-      align: 'center'
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      align: 'center'
     },
     {
       title: '推荐人手机号',
@@ -159,8 +141,20 @@ const NewIntensivePerformance: FC = () => {
       hideInSearch: true
     },
     {
+      title: '氢原子市代',
+      dataIndex: 'cityProxy',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '市办事处',
       dataIndex: 'cityAgencyName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '间推人手机号',
+      dataIndex: 'interPushMemberPhone',
       align: 'center',
       hideInSearch: true
     },
@@ -168,29 +162,30 @@ const NewIntensivePerformance: FC = () => {
 
   return (
     <PageContainer className={styles.desc}>
+      <div className={styles.title}>2022年9月24日至今 VIP店主购买氢原子交易业绩明细</div>
       <ProTable
         rowKey='orderSn'
         columns={columns}
         params={{}}
-        request={wholesalePm}
+        request={vipStoreHydrogenPm}
         postData={(v:any)=>{
           setData(v[0].total)
           return (v[0].res)
         }}
-        formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         headerTitle={<Aggregate data={data}/>}
         options={false}
         search={{
           labelWidth: 140,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
-            <Export 
+            <Export
               key='export'
-              type='wholesalePm'
+              type="vipStoreHydrogenPm"
               conditions={getFieldsValue}
             />
           ]
@@ -200,4 +195,4 @@ const NewIntensivePerformance: FC = () => {
   )
 }
 
-export default NewIntensivePerformance
+export default VIPHydrogen

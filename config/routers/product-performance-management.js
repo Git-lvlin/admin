@@ -9,6 +9,18 @@ export default {
       path: '/product-performance-management/new-intensive-performance',
       component: './product-performance-management/new-intensive-performance',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'VIP-hydrogen',
+      path: '/product-performance-management/VIP-hydrogen',
+      component: './product-performance-management/VIP-hydrogen',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'hydrogen-start-fee',
+      path: '/product-performance-management/hydrogen-start-fee',
+      component: './product-performance-management/hydrogen-start-fee',
+      wrappers: [RouteWatcher],
     }
   ]
 }

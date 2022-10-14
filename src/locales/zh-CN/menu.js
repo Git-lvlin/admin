@@ -433,5 +433,7 @@ export default {
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
+  'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',
+  'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
 
 };
