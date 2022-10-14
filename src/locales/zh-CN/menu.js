@@ -301,6 +301,10 @@ export default {
   'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
   'menu.daifa-store-management.store-apply-detail':'内部店认证',
 
+  'menu.product-sharing-management': '产品分成管理',
+  'menu.product-sharing-management.sharing-management': '分成管理',
+  'menu.product-sharing-management.settlement-records': '结算记录',
+
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
