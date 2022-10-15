@@ -12,7 +12,7 @@ import PageContainer from '@/components/PageContainer'
 import { hydrogenStartUpPm } from "@/services/product-performance-management/hydrogen-start-fee"
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
-import styles from "./styles.less"
+import styles from "../styles.less"
 import Export from '@/components/export'
 
 const Aggregate: FC<any> = ({data}) => {

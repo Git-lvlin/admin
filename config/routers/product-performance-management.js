@@ -21,6 +21,12 @@ export default {
       path: '/product-performance-management/hydrogen-start-fee',
       component: './product-performance-management/hydrogen-start-fee',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'brand-authorization-fee',
+      path: '/product-performance-management/brand-authorization-fee',
+      component: './product-performance-management/brand-authorization-fee',
+      wrappers: [RouteWatcher],
     }
   ]
 }
