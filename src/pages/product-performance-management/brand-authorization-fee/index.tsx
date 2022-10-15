@@ -130,8 +130,8 @@ const BrandAuthorizationFee: FC = () => {
       dataIndex: 'contractStatus',
       valueType: 'select',
       valueEnum: {
-        1: '已签写',
-        2: '未签写'
+        '1': '已签写',
+        '2': '未签写'
       },
       hideInTable: true
     },
@@ -148,7 +148,7 @@ const BrandAuthorizationFee: FC = () => {
       <ProTable
         rowKey='orderSn'
         columns={columns}
-        params={{contractStatus: 4}}
+        params={{contractStatus: '4'}}
         request={storeLifePm}
         postData={(v:any)=>{
           setData(v[0].total)

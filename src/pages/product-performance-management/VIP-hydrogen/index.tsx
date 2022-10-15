@@ -104,10 +104,10 @@ const VIPHydrogen: FC = () => {
       dataIndex: 'orderStatus',
       valueType: 'select',
       valueEnum: {
-        1: '已完成（已过售后期）',
-        2: '售后中',
-        3: '已退款',
-        4: '所有已完成'
+        '1': '已完成（已过售后期）',
+        '2': '售后中',
+        '3': '已退款',
+        '4': '所有已完成'
       },
       hideInTable: true
     },
@@ -166,7 +166,7 @@ const VIPHydrogen: FC = () => {
       <ProTable
         rowKey='orderSn'
         columns={columns}
-        params={{orderStatus: 4}}
+        params={{orderStatus: '4'}}
         request={vipStoreHydrogenPm}
         postData={(v:any)=>{
           setData(v[0].total)
