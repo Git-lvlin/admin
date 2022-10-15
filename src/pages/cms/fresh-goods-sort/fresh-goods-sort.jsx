@@ -239,12 +239,15 @@ const BannerAdmin = () => {
         columns={columns}
         actionRef={actionRef}
         request={getSpuList}
+        params={{
+          orderType:30
+        }}
         search={{
           labelWidth: 'auto',
         }}
-        // params={{
-        //   orderType: 30
-        // }}
+        params={{
+          orderType: 30
+        }}
         headerTitle={selected&&<Space size={24}>
         <span>
           <span style={{marginRight: 20}}>添加到 </span>
