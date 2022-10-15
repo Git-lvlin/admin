@@ -1,9 +1,9 @@
 import request from '@/utils/request';
 import moment from 'moment';
 
-export const wholesalePm = async (params, options = {}) => {
+export const storeLifePm = async (params, options = {}) => {
   const { pageSize, current, payTime, area, ...rest } = params
-  const res = await request('/auth/stats/performance/wholesalePm', {
+  const res = await request('/auth/stats/performance/storeLifePm', {
     method: 'POST',
     data: {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
@@ -17,7 +17,7 @@ export const wholesalePm = async (params, options = {}) => {
     },
     ...options
   })
-  const item = await request('/auth/java-admin/report/config/wholesalePmStats', {
+  const item = await request('/auth/java-admin/report/config/storeLifePmStats', {
     method: 'POST',
     data: {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
