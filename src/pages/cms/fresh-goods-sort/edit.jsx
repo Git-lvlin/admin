@@ -308,9 +308,9 @@ export default (props) => {
                     const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
                         if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==7){
-                          return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
+                          return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
                         }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
-                          return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
+                          return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
                 />
@@ -339,9 +339,9 @@ export default (props) => {
                     const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
                         if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=7){
-                          return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
+                          return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
                         }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=7){
-                          return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
+                          return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
                 />   
