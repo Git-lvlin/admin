@@ -234,7 +234,7 @@ export default (props) => {
   }, [])
   const compute = () => {
     let sum = 0
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < 8; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
