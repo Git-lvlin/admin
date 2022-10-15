@@ -6,6 +6,7 @@ import ProForm, {
   ProFormDigit,
   ProFormRadio,
 } from '@ant-design/pro-form';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { goodsClassAdd, categoryEdit } from '@/services/cms/fresh-goods-class';
 
 export default (props) => {
