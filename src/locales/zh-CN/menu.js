@@ -430,4 +430,10 @@ export default {
   'menu.city-office-management.city-office-management-list': '市办事处管理',
   'menu.city-office-management.city-office-achievements': '市办事处业绩',
 
+  'menu.product-performance-management': '产品业绩管理',
+  'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
+  'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',
+  'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
+  'menu.product-performance-management.brand-authorization-fee': ' 品牌授权费业绩',
+
 };
