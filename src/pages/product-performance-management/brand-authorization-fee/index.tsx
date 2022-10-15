@@ -148,7 +148,7 @@ const BrandAuthorizationFee: FC = () => {
       <ProTable
         rowKey='orderSn'
         columns={columns}
-        params={{}}
+        params={{contractStatus: 4}}
         request={storeLifePm}
         postData={(v:any)=>{
           setData(v[0].total)

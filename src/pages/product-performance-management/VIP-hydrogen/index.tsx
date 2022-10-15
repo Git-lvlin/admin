@@ -166,7 +166,7 @@ const VIPHydrogen: FC = () => {
       <ProTable
         rowKey='orderSn'
         columns={columns}
-        params={{}}
+        params={{orderStatus: 4}}
         request={vipStoreHydrogenPm}
         postData={(v:any)=>{
           setData(v[0].total)
