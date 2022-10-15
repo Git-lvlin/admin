@@ -94,10 +94,11 @@ const bloodData = [
 ]
 
 const CusAutoComplete = ({ value, onChange, onChange2,setUserList, userList, options, ...rest }) => {
+  console.log('value',value)
   const changeHandle = (e) => {
     const findItem = userList?.find(item => item.skuId === e)
     if (findItem) {
-      onChange(findItem.goodsName)
+      onChange(`skuID：${findItem.skuId} ${findItem.goodsName} 售价： ${amountTransform(findItem.salePrice, '/').toFixed(2)}元`)
       onChange2(findItem)
       return
     }
@@ -118,7 +119,7 @@ const CusAutoComplete = ({ value, onChange, onChange2,setUserList, userList, opt
   const selectHandle = (e) => {
     const findItem = userList?.find(item => item.skuId === e)
     if (findItem) {
-      onChange(findItem.goodsName)
+      onChange(`skuID：${findItem.skuId} ${findItem.goodsName} 售价： ${amountTransform(findItem.salePrice, '/').toFixed(2)}元`)
       onChange2(findItem)
     }
   }
@@ -349,7 +350,7 @@ export default (props) => {
           submitter={false}
          >
             <Form.Item
-              name="name"
+              name='name'
             >
               <CusAutoComplete
                 placeholder="输入商品名称或skuID搜索"
