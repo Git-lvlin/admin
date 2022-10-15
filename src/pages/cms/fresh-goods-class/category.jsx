@@ -94,7 +94,7 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('提交成功');
+        message.success('编辑成功');
         return true;
       }}
       {...formItemLayout}

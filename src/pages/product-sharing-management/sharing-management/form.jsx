@@ -54,7 +54,7 @@ const bloodData = [
   {
     id: 3,
     name: <>
-          <div>供应商</div>
+          <div>供应商-货款</div>
           <div>销售订单承担通道费</div>
           </>,
   },
@@ -180,8 +180,8 @@ export default (props) => {
             {
               id: 3,
               name: <>
-                    <div>供应商</div>
-                    <div>货款</div>
+                    <div>供应商-货款</div>
+                    <div>销售订单承担通道费</div>
                     </>,
             },
              {
@@ -285,14 +285,28 @@ export default (props) => {
   }
 
   const proportion = (_) =>{
-    if(commType==2){
-      const editPrice=amountTransform(recordList?.salePrice/amountTransform(_?.entry?.price,'*'),'*')
-      const price=amountTransform(recordId?.salePrice/amountTransform(_?.entry?.price,'*'),'*')
-    }
-    const editPrice=amountTransform(amountTransform(_?.entry?.price,'*')/recordList?.salePrice,'*')
-    const price=amountTransform(amountTransform(_?.entry?.price,'*')/recordId?.salePrice,'*')
-    return <span>{editPrice&&parseFloat(editPrice).toFixed(2)||parseFloat(price).toFixed(2)}{commType==1?'%':'元'}</span>
+      const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
+                                  amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.salePrice,'*')
+      const price=commType==2?amountTransform(recordId?.salePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
+                              amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordId?.salePrice,'*')
+    return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
   }
+
+  const proportion2 = (_) =>{
+      const editPrice=commType==2?amountTransform(amountTransform(recordList?.salePrice,'/')*amountTransform(recordList?.retailSupplyPrice,'/'),'/'):
+                                  amountTransform(recordList?.retailSupplyPrice/recordList?.salePrice,'*') 
+      const price=commType==2?amountTransform(amountTransform(recordId?.salePrice,'/')*amountTransform(recordId?.retailSupplyPrice,'/'),'/'):
+                              amountTransform(recordId?.retailSupplyPrice/recordId?.salePrice,'*')
+    return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
+  }
+
+  const proportion3 = (val) =>{
+    const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(val),'/'):
+                                amountTransform(amountTransform(parseInt(val),'*')/recordList?.salePrice,'*')
+    const price=commType==2?amountTransform(recordId?.salePrice,'/')*amountTransform(parseInt(val),'/'):
+                            amountTransform(amountTransform(parseInt(val),'*')/recordId?.salePrice,'*')
+  return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
+}
 
   const columns = [
     {
@@ -354,7 +368,11 @@ export default (props) => {
           renderFormItem: (_, r) => {
             if (_?.entry?.id == 3) {
               return <>
-                <p>{recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}{commType==1?'元':'%'}</p>
+                <p>
+                  {recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}
+                  {commType==1?'元':'%'}
+                  <span style={{marginLeft:'415px'}}>= {proportion2(_)} </span>
+                </p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价，非实物商品时固定为0）</p>
               </>
             } else if (_?.entry?.id == 7) {
@@ -374,22 +392,20 @@ export default (props) => {
                         return <span>= {proportion(_)} </span>
                       }}
                       bottom={(value)=>{
-                        if(commType==2){
-                          const editPrice=amountTransform(recordList?.salePrice/amountTransform(value,'*'),'*')
-                          const price=amountTransform(recordId?.salePrice/amountTransform(value,'*'),'*')
-                        }
-                        const editPrice=amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
-                        const price=amountTransform(amountTransform(value,'*')/recordId?.salePrice,'*')
-                            if(commType==1&&editPrice&&editPrice<5||price&&price<5&&_?.entry?.id==7){
+                          const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
+                                                      amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
+                          const price=commType==2?amountTransform(recordId?.salePrice/amountTransform(value,'*'),'*'):
+                                                  amountTransform(amountTransform(value,'*')/recordId?.salePrice,'*')
+                            if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
                               return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
-                            }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
+                            }else if(commType==1&&editPrice&&editPrice<5||commType==1&&price&&price<5&&_?.entry?.id==7){
                               return <p style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</p>
                             }
                       }}
                     />
             } else if (_?.entry?.id == 8) {
               return <>
-                <p>{compute()}{commType==1?'元':'%'}</p>
+                <p>{compute()}{commType==1?'元':'%'}  <span style={{marginLeft:'415px'}}>= {proportion3(compute())} </span></p>
                 <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
               </>
             }
@@ -409,15 +425,13 @@ export default (props) => {
                       return <span>= {proportion(_)} </span>
                     }}
                     bottom={(value)=>{
-                      if(commType==2){
-                        const editPrice=amountTransform(recordList?.salePrice/amountTransform(value,'*'),'*')
-                        const price=amountTransform(recordId?.salePrice/amountTransform(value,'*'),'*')
-                      }
-                      const editPrice=amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
-                      const price=amountTransform(amountTransform(value,'*')/recordId?.salePrice,'*')
-                          if(commType==1&&editPrice&&editPrice>5||price&&price>5&&_?.entry?.id!=7){
+                      const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
+                                  amountTransform(amountTransform(parseInt(value),'*')/recordList?.salePrice,'*')
+                      const price=commType==2?amountTransform(recordId?.salePrice,'/')*amountTransform(parseInt(value),'/'):
+                              amountTransform(amountTransform(parseInt(value),'*')/recordId?.salePrice,'*')
+                          if(commType==2&&parseFloat(value)&&parseFloat(value)>5&&_?.entry?.id!=7){
                             return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
-                          }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=7){
+                          }else if(commType==1&&editPrice&&editPrice>5||commType==1&&price&&price>5&&_?.entry?.id!=7){
                             return <p style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</p>
                           }
                     }}

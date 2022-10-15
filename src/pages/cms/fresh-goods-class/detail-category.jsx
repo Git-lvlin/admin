@@ -52,22 +52,8 @@ export default (props) => {
   }
 
   const waitTime = (values) => {
-    let api = saveCategory2
-    const { categoryName,items,...rest } = values
-    const param = {
-        ...rest,
-        items:items.map(ele=>({id:ele?.id,isShow:ele?.isShow,categoryName:ele?.categoryName,icon:ele?.icon}))
-    }
-    return new Promise((resolve, reject) => {
-      api(param).then((res) => {
-        if (res.code === 0) {
-          callback();
-          resolve(true);
-        } else {
-          reject(false);
-        }
-      })
-    });
+    callback();
+    setVisible(false)
   };
 
   useEffect(() => {
@@ -95,8 +81,6 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('提交成功');
-        return true;
       }}
       {...formItemLayout}
     >
