@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export const getWholesaleList = async (params = {}, options = {}) => {
-  const { current, pageSize, createTime = [], ...rest } = params;
+  const { current, pageSize, createTime = [], gcId = [], ...rest } = params;
   const res = await request('/auth/wholesale/index/getWholesaleList', {
     method: 'POST',
     data: {
@@ -9,6 +9,8 @@ export const getWholesaleList = async (params = {}, options = {}) => {
       size: pageSize,
       createTimeStart: createTime[0],
       createTimeEnd: createTime[1],
+      gcId1: gcId[0],
+      gcId2: gcId[1],
       ...rest
     },
     ...options
