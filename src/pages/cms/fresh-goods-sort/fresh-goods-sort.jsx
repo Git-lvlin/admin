@@ -4,7 +4,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Space, Select,Switch } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuCategory, goodsClassList } from '@/services/cms/fresh-goods-sort';
+import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuCategory, goodsClassList,modifyOrderLimit } from '@/services/cms/fresh-goods-sort';
 import Sort from './sort';
 import { amountTransform } from '@/utils/utils'
 import Putaway from './putaway'
@@ -18,7 +18,7 @@ const BannerAdmin = () => {
   const [sortVisible, setSortVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [goodsClass, setGoodsClass] = useState(null);
-  const [itemClass, setItemClass] = useState(null);
+  const [itemClass, setItemClass] = useState([]);
   const [selected, setSelected] = useState(true);
   const [selectedRows,setSelectedRows] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -39,7 +39,8 @@ const BannerAdmin = () => {
     }
     const param = {
       spuIds: selectedRowKeys.toString(),
-      wscId: itemClass,
+      wscId: itemClass[0],
+      wscId2: itemClass[1]
     }
     modifySpuCategory(param).then((res) => {
       if(res.code==0){
@@ -82,10 +83,10 @@ const BannerAdmin = () => {
   }
 
   const onFF=(bol,data)=>{
-    cardStatusSub({id:data.id,status:bol?1:0}).then(res=>{
+    modifyOrderLimit({spuIds:[data.spuId],limitType:bol?1:0}).then(res=>{
     if(res.code==0){
         message.success('设置成功');
-        ref?.current?.reload()
+        actionRef?.current?.reload()
     }
     })
   }

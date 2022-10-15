@@ -98,11 +98,11 @@ const BannerAdmin = () => {
     },
     {
       title: '二级类目数',
-      dataIndex: 'skuNum',
+      dataIndex: 'gc2Num',
       search: false,
       render: (_,record)=>{
         if(_){
-          return <a onClick={()=>{ setDetailData(record);setDetailVisible(true) }}>_</a>
+          return <a onClick={()=>{ setDetailData(record);setDetailVisible(true) }}>{_}</a>
         }else{
           return '-'
         }

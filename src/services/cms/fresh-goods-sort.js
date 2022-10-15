@@ -25,12 +25,14 @@ export const goodsClassList = async (params = {}, options = {}) => {
   }
 
 export const getSpuList = async (params = {}, options = {}) => {
-    const { current, pageSize,goodsState, ...rest } = params;
+    const { current, pageSize,goodsState,wscId, ...rest } = params;
   
     const data = {
       page: current,
       size: pageSize,
       goodsState: parseInt(goodsState),
+      wscId:wscId&&wscId[0],
+      wscId2:wscId&&wscId[1],
       ...rest
     }
   
@@ -97,6 +99,14 @@ export const getSpuList = async (params = {}, options = {}) => {
 
   export const putOnSpu = (params = {}, options = {}) => {
     return request('/auth/wholesale/SpuConfig/putOnSpu', {
+      method: 'POST',
+      data: params,
+      ...options
+    });
+  }
+
+  export const modifyOrderLimit = (params = {}, options = {}) => {
+    return request('/auth/wholesale/SpuConfig/modifyOrderLimit', {
       method: 'POST',
       data: params,
       ...options
