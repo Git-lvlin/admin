@@ -146,7 +146,7 @@ const HydrogenStartFee: FC = () => {
     <PageContainer className={styles.desc}>
       <div className={styles.title}>2022年9月24日至今 氢原子设备启动费业绩明细</div>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={hydrogenStartUpPm}

@@ -169,7 +169,7 @@ const NewIntensivePerformance: FC = () => {
   return (
     <PageContainer className={styles.desc}>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={wholesalePm}

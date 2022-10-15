@@ -146,7 +146,7 @@ const BrandAuthorizationFee: FC = () => {
   return (
     <PageContainer className={styles.desc}>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
         params={{contractStatus: '4'}}
         request={storeLifePm}
