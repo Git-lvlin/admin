@@ -2,12 +2,13 @@ import request from '@/utils/request';
 
 
 export const getCommissionList = async (params, options = {}) => {
-    const { current, pageSize, ...rest } = params;
+    const { current, pageSize,status, ...rest } = params;
     const res = await request('/auth/goods/product/getCommissionList', {
       method: 'POST',
       data: {
         page: current,
         size: pageSize,
+        status: parseInt(status),
         ...rest
       },
       ...options

@@ -8,7 +8,7 @@ import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuC
 import Sort from './sort';
 import { amountTransform } from '@/utils/utils'
 import Putaway from './putaway'
-import GcCascader from '@/components/gc-cascader'
+import GcCascader from './gc-cascader'
 import Form from './form';
 import Edit from './edit';
 
