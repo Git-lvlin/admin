@@ -235,7 +235,6 @@ export default (props) => {
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
         setRecordId(res.data[0])
         setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
-        console.log('res.data',res.data)
       })
     }
   }, [])
@@ -247,6 +246,7 @@ export default (props) => {
         return message.error('平台金额为负！')
       }
       const params = {
+        status: submitType?1:null,
         orderType: 30,
         id: recordList?.id ? recordList?.id : 0,
         spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
