@@ -120,15 +120,15 @@ const IntensiveGoods=() => {
         },
         hideInSearch: true,
       },
-      {
-        title: '供应商',
-        dataIndex: 'wholesaleSupplyPrice',
-        align: 'center',
-        render: (_,data)=>{
-          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
-        },
-        hideInSearch: true,
-      },
+      // {
+      //   title: '供应商',
+      //   dataIndex: 'wholesaleSupplyPrice',
+      //   align: 'center',
+      //   render: (_,data)=>{
+      //     return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+      //   },
+      //   hideInSearch: true,
+      // },
       {
         title: '汇能',
         dataIndex: 'company',

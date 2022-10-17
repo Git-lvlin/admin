@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import ProCard from '@ant-design/pro-card';
-import { Select, Form, Input, Tooltip, Button } from 'antd';
+import { Select, Form, Input, Tooltip, Button, message } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -31,7 +31,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { onClose, visible, setVisible, detailData, callback } = props;
+  const { onClose, visible, setVisible, detailData, callback,multi } = props;
   const [form] = Form.useForm();
   const [editableKeys, setEditableRowKeys] = useState();
   const [dataSource, setDataSource] = useState();
@@ -39,10 +39,14 @@ export default (props) => {
   const [configUser,setConfigUser] = useState()
   const [recordList, setRecordList] = useState([])
   const [sum, setSum] = useState(11)
-  const [rowKeys,setRowKeys]=useState()
+  // const [rowKeys,setRowKeys]=useState()
   const actionRef = useRef();
   const isPurchase = useLocation().pathname.includes('purchase')
+  const [datas,setDatas] = useState()
   const submit = (values) => {
+    if(recordList.length==0){
+      return message.error('请先修改结算配置!!')
+    }
     const params={
       spuId: detailData?.spuId,
       configUser:configUser
@@ -68,6 +72,17 @@ export default (props) => {
       align: 'center',
     },
     {
+      title: '分成类型',
+      dataIndex: 'commissionType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1: '金额',
+        2: '百分比'
+      },
+      hideInSearch: true,
+    },
+    {
       title: 'skuID',
       dataIndex: 'skuId',
       align: 'center',
@@ -77,56 +92,73 @@ export default (props) => {
       dataIndex: 'salePrice',
       align: 'center',
       render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+        return <span style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
       title: '直推人（必须是VIP店主）',
-      dataIndex: 'cityManageFee',
+      dataIndex: 'shoppervipChargeFee',
       align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
       title: '店主（下单人）开店地址所属市办事处',
-      dataIndex: 'shopperChargeFee',
+      dataIndex: 'cityManageFee',
       align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
       title: '培训中心',
-      dataIndex: 'userChargeFee',
+      dataIndex: 'trainCenterManageFee',
       align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
+    },
+    {
+      title: '运营中心',
+      dataIndex: 'companyAgent',
+      align: 'center',
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
+      },
+      hideInSearch: true,
     },
     {
       title: '汇能科技',
-      dataIndex: 'company',
+      dataIndex: 'serviceFee',
       align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
-    {
-      title: '供应商',
-      dataIndex: 'retailSupplyPrice',
-      align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
-      }
-    },
+    // {
+    //   title: '供应商',
+    //   dataIndex: 'wholesaleSupplyPrice',
+    //   align: 'center',
+    //   render: (_)=>{
+    //     return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+    //   }
+    // },
     {
       title: '汇能',
       dataIndex: 'shoppervipChargeFee',
       align: 'center',
-      render: (_)=>{
-        return <p style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</p>
+      render: (_,data)=>{
+        return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
+    },
+    {
+      title: '操作',
+      align: 'center',
+      render: (_,data)=>{
+        return <a onClick={()=>{ setDatas(data);setFormVisible(true) }}>修改结算配置</a>
+      },
+      fixed: 'right',
     }
   ];
 
@@ -151,6 +183,7 @@ export default (props) => {
                 setConfigUser(0)
               }}
               key='direct'
+              style={{display:multi?'none':'block'}}
             >
             保存分成配置，不上架
           </Button>,
@@ -161,6 +194,7 @@ export default (props) => {
               setConfigUser(1)
             }}
             key='adhibition'
+            style={{display:multi?'none':'block'}}
           >
             应用结算配置，并上架
           </Button>
@@ -187,7 +221,7 @@ export default (props) => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         postData={(data)=>{
           setRecordList(data)
-          setRowKeys(data[0]?.id)
+          // setRowKeys(data[0]?.id)
           return data
         }}
         params={{
@@ -195,29 +229,29 @@ export default (props) => {
           orderType: 30
         }}
         pagination={false}
-        rowSelection={{
-          renderCell:()=>{
-            return null
-          },
-          type:'radio',
-          selectedRowKeys:[rowKeys],
+        // rowSelection={{
+        //   renderCell:()=>{
+        //     return null
+        //   },
+        //   type:'radio',
+        //   selectedRowKeys:[rowKeys],
           
-        }}
+        // }}
         tableAlertRender={false}
-        onRow={(record) => {
-          return {  
-            onClick: async () => {
-              setRowKeys(record.id)
-            },
-          };
-        }}
+        // onRow={(record) => {
+        //   return {  
+        //     onClick: async () => {
+        //       setRowKeys(record.id)
+        //     },
+        //   };
+        // }}
         />
-        <a style={{float:'right'}} onClick={()=>{setFormVisible(true)}}>修改结算配置</a>
+        {/* <a style={{float:'right'}} onClick={()=>{setFormVisible(true)}}>修改结算配置</a> */}
         {formVisible && <Edit
           visible={formVisible}
           setVisible={setFormVisible}
           onClose={() => { setFormVisible(false)}}
-          detailData={recordList.find(ele=>ele.id==rowKeys)}
+          detailData={datas}
           callback={() => { actionRef.current.reload() }}
         />}
     </DrawerForm>
