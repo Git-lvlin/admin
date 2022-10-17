@@ -122,7 +122,7 @@ const IntensiveGoods=() => {
       },
       {
         title: '供应商',
-        dataIndex: 'retailSupplyPrice',
+        dataIndex: 'wholesaleSupplyPrice',
         align: 'center',
         render: (_,data)=>{
           return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
