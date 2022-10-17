@@ -106,7 +106,8 @@ export default (props) => {
   const [recordList, setRecordList] = useState([])
   const [recordId, setRecordId] = useState()
   const actionRef = useRef();
-  const [commType,setCommType] = useState(2)
+  const [commType, setCommType] = useState(2)
+  const [submitType, setSubmitType] = useState()
 
   useEffect(() => {
     if (detailData?.spuId) {
@@ -206,6 +207,7 @@ export default (props) => {
     try {
       console.log('dataSource',dataSource)
       const params = {
+        status: submitType?1:null,
         orderType: 30,
         id: recordList?.id ? recordList?.id : 0,
         spuId: recordList?.spuId,
@@ -376,11 +378,18 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'1000px'}}>当前分成版本：{recordList?.versionNo}</p>,
-                <Button  type="primary" key="submit" onClick={() => {
+                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo}</p>,
+                <Button  type="default" key="submit1" onClick={() => {
                   props.form?.submit?.()
+                  setSubmitType(1)
                 }}>
-                  {detailData?.id?'保存':'提交'}
+                  保存并应用
+                </Button>,
+                <Button  type="primary" key="submit2" onClick={() => {
+                  props.form?.submit?.()
+                  setSubmitType(0)
+                }}>
+                  保存
                 </Button>
             ];
         },
