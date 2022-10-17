@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Space, Select,Switch } from 'antd';
@@ -7,10 +6,6 @@ import { PageContainer } from '@/components/PageContainer';
 import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuCategory, goodsClassList,modifyOrderLimit } from '@/services/cms/fresh-goods-sort';
 import Sort from './sort';
 import { amountTransform } from '@/utils/utils'
-import Putaway from './putaway'
-import GcCascader from './gc-cascader'
-import Form from './form';
-import Edit from './edit';
 
 const BannerAdmin = () => {
   const actionRef = useRef();
@@ -119,7 +114,7 @@ const BannerAdmin = () => {
       search: false,
     },
     {
-      title: '基础分类',
+      title: '一级分类',
       dataIndex: 'gcName1',
       search: false,
     },
@@ -233,7 +228,6 @@ const BannerAdmin = () => {
   ];
 
   return (
-    <PageContainer>
       <ProTable
         rowKey="spuId"
         columns={columns}
@@ -304,36 +298,6 @@ const BannerAdmin = () => {
         )}}
         dateFormatter="string"
       />
-      
-      {sortVisible && <Sort
-        visible={sortVisible}
-        setVisible={setSortVisible}
-        detailData={detailData}
-        callback={() => { actionRef.current.reload(); setDetailData(null) }}
-        onClose={() => { actionRef.current.reload(); setDetailData(null) }}
-      />}
-      {visible && <Putaway
-        visible={visible}
-        setVisible={setVisible}
-        selectedRows={selectedRows}
-        callback={() => { actionRef.current.reload(); setSelectedRows(null) }}
-        onClose={() => { actionRef.current.reload(); setSelectedRows(null) }}
-      />}
-      {formVisible && <Form
-        visible={formVisible}
-        setVisible={setFormVisible}
-        onClose={() => { setFormVisible(false); setDetailData(null) }}
-        detailData={detailData}
-        callback={() => { actionRef.current.reload();setDetailData(null) }}
-      />}
-      {editVisible && <Edit
-        visible={editVisible}
-        setVisible={setEditVisible}
-        onClose={() => { actionRef.current.reload();setEditVisible(false); setDetailData(null) }}
-        detailData={detailData}
-        callback={() => { actionRef.current.reload();setDetailData(null) }}
-      />}
-    </PageContainer>
   );
 };
 

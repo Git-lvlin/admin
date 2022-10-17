@@ -114,6 +114,7 @@ export default (props) => {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
         const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId):res.data[0]
         setRecordList(findItem)
+        setRecordId(findItem)
         console.log('findItem?.commissionType',findItem)
         setCommType(findItem?.commissionType)
         form.setFieldsValue({
@@ -192,16 +193,15 @@ export default (props) => {
   useEffect(() => {
     if(detailData){
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
-        setRecordId(res.data[0])
+        setCommType(2)
         setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
-        console.log('res.data',res.data)
       })
     }
   }, [])
 
   const submit = (values) => {
     const { commissionType } = values
-    if(compute()<0){
+    if(commissionType==2?compute2()<0:compute()<0){
       return message.error('平台金额为负！')
     }
     try {
@@ -227,7 +227,7 @@ export default (props) => {
         provinceAgent: 0,
         cityAgent: 0,
         dividends: 0,
-        company: commissionType==2?compute():amountTransform(compute(), '*'),
+        company: commissionType==2?compute2():amountTransform(compute(), '*'),
         commissionType
       }
       saveCommissionConfig(params).then(res => {
@@ -253,6 +253,17 @@ export default (props) => {
     return company
   }
 
+  const compute2 = () => {
+    let sum = 0
+    for (let index = 0; index < 8; index++) {
+      if (dataSource[index]?.price) {
+        sum = sum + parseFloat(dataSource[index]?.price)
+      }
+    }
+    const company=amountTransform(10000 - amountTransform(sum,'*')-amountTransform(proportion2(),'*'),'/')
+    return company
+  }
+
   const proportion = (_) =>{
     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
                                   amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.distributePrice,'*')
@@ -260,9 +271,9 @@ export default (props) => {
   }
 
   const proportion2 = (_) =>{
-    const editPrice=commType==2?amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/'):
+    const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
                                 amountTransform(recordList?.wholesaleSupplyPrice/recordList?.distributePrice,'*') 
-  return <span>{editPrice&&editPrice.toFixed(2)}{commType==1?'%':'元'}</span>
+  return editPrice&&editPrice.toFixed(2)
 }
 
   const columns = [
@@ -293,8 +304,7 @@ export default (props) => {
           return <>
             <p>
               {amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
-              {/* {commType==1?'元':'%'}
-              <span style={{marginLeft:'415px'}}>= {proportion2(_)} </span> */}
+              {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>}
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
           </>
@@ -327,8 +337,7 @@ export default (props) => {
         } else if (_?.entry?.id == 8) {
           return <>
             <p>
-              {compute()}元
-              {/* {commType==1?'元':'%'} */}
+              {commType==1?compute():compute2()}{commType==1?'元':'%'}
             </p>
             <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
           </>
@@ -378,7 +387,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo}</p>,
+                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo||recordId?.versionNo}</p>,
                 <Button  type="default" key="submit1" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(1)

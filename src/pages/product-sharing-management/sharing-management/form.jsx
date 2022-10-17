@@ -151,6 +151,7 @@ export default (props) => {
   const actionRef = useRef();
   const [commType,setCommType] = useState(2)
   const [astrictType,setAstrictType] = useState(false)
+  const [submitType, setSubmitType] = useState()
   useEffect(() => {
     if (detailData?.spuId) {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
@@ -242,7 +243,7 @@ export default (props) => {
   const submit = (values) => {
     const { commissionType } = values
     try {
-      if(compute()<0){
+      if(commissionType==2?compute2()<0:compute()<0){
         return message.error('平台金额为负！')
       }
       const params = {
@@ -265,7 +266,7 @@ export default (props) => {
         provinceAgent: 0,
         cityAgent: 0,
         dividends: 0,
-        company: commissionType==2?compute():amountTransform(compute(), '*'),
+        company: commissionType==2?compute2():amountTransform(compute(), '*'),
         ...values
       }
       saveCommissionConfig(params).then(res => {
@@ -295,6 +296,18 @@ export default (props) => {
     return company
   }
 
+  const compute2 = () => {
+    let sum = 0
+    for (let index = 0; index < 8; index++) {
+      if (dataSource[index]?.price) {
+        sum = sum + parseFloat(dataSource[index]?.price)
+      }
+    }
+    console.log('proportion2()',proportion2())
+    const company=amountTransform(10000 - amountTransform(sum,'*')-amountTransform(proportion2(),'*'),'/')
+    return company
+  }
+
   const proportion = (_) =>{
       const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
                                   amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.distributePrice,'*')
@@ -304,11 +317,11 @@ export default (props) => {
   }
 
   const proportion2 = (_) =>{
-      const editPrice=commType==2?amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/'):
-                                  amountTransform(recordList?.wholesaleSupplyPrice/recordList?.distributePrice,'*') 
-      const price=commType==2?amountTransform(amountTransform(recordId?.distributePrice,'/')*amountTransform(recordId?.wholesaleSupplyPrice,'/'),'/'):
+      const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
+                                  amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/')
+      const price=commType==2?amountTransform(amountTransform(recordId?.wholesaleSupplyPrice,'/')/amountTransform(recordId?.distributePrice,'/'),'*'):
                               amountTransform(recordId?.wholesaleSupplyPrice/recordId?.distributePrice,'*')
-    return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
+    return editPrice&&editPrice.toFixed(2)||price.toFixed(2)
   }
 
   const proportion3 = (val) =>{
@@ -385,8 +398,7 @@ export default (props) => {
               return <>
                 <p>
                   {recordId?amountTransform(recordId?.wholesaleSupplyPrice, '/').toFixed(2):amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
-                  {/* {commType==1?'元':'%'}
-                  <span style={{marginLeft:'415px'}}>= {proportion2(_)} </span> */}
+                  {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>}
                 </p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价，非实物商品时固定为0）</p>
               </>
@@ -421,7 +433,7 @@ export default (props) => {
             } else if (_?.entry?.id == 8) {
               return <>
                 <p>
-                  {compute()}元
+                  {commType==1?compute():compute2()}{commType==1?'元':'%'}
                   {/* {commType==1?'元':'%'}  <span style={{marginLeft:'415px'}}>= {proportion3(compute())} </span> */}
                   </p>
                 <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
@@ -475,9 +487,16 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'1000px',display:detailData?.versionNo?'block':'none'}}>当前分成版本：{detailData?.versionNo}</p>,
-                <Button  type="primary" key="submit" onClick={() => {
+                <p key='versionNo' style={{marginRight:'900px',display:detailData?.versionNo?'block':'none'}}>当前分成版本：{detailData?.versionNo}</p>,
+                <Button  type="default" key="submit1" onClick={() => {
                   props.form?.submit?.()
+                  setSubmitType(1)
+                }}>
+                  保存并应用
+                </Button>,
+                <Button  type="primary" key="submit2" onClick={() => {
+                  props.form?.submit?.()
+                  setSubmitType(2)
                 }}>
                   {detailData?.id?'保存':'提交'}
                 </Button>
