@@ -108,9 +108,9 @@ const NewIntensivePerformance: FC = () => {
       dataIndex: 'orderStatus',
       valueType: 'select',
       valueEnum: {
-        2: '待发货',
-        3: '待收货',
-        5: '已完成（已确认收到货）'
+        '2': '待发货',
+        '3': '待收货',
+        '5': '已完成（已确认收到货）'
       },
       hideInTable: true
     },
@@ -169,7 +169,7 @@ const NewIntensivePerformance: FC = () => {
   return (
     <PageContainer className={styles.desc}>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={wholesalePm}

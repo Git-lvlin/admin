@@ -21,9 +21,9 @@ import AuditInfo from './audit-info';
 import OrderDetail from '@/pages/order-management/normal-order/detail';
 import styles from './style.less'
 import ContentModel from './content-model';
+import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
-import RangeInput from '@/components/range-input';
 
 const exportType = {
   normal: 'community-shopkeeper-export',

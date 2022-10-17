@@ -25,12 +25,12 @@ const Aggregate: FC<any> = ({data}) => {
     },
     {
       title: '总下单店铺数量',
-      dataIndex: 'totalShopNum',
+      dataIndex: 'totalUserNum',
       render: _ => `${_ ? _ : 0}家`
     },
     {
       title: '总销售数量',
-      dataIndex: 'totalSkuNum',
+      dataIndex: 'totalBuyNum',
       render: _ => `${_ ? _ : 0}台`
     }
   ]
@@ -103,11 +103,12 @@ const VIPHydrogen: FC = () => {
       title: '订单状态',
       dataIndex: 'orderStatus',
       valueType: 'select',
+      initialValue: '4',
       valueEnum: {
-        1: '已完成（已过售后期）',
-        2: '售后中',
-        3: '已退款',
-        4: '所有已完成'
+        '1': '已完成（已过售后期）',
+        '2': '售后中',
+        '3': '已退款',
+        '4': '所有已完成'
       },
       hideInTable: true
     },
@@ -164,9 +165,9 @@ const VIPHydrogen: FC = () => {
     <PageContainer className={styles.desc}>
       <div className={styles.title}>2022年9月24日至今 VIP店主购买氢原子交易业绩明细</div>
       <ProTable
-        rowKey='orderSn'
+        rowKey='id'
         columns={columns}
-        params={{orderStatus: 4}}
+        params={{}}
         request={vipStoreHydrogenPm}
         postData={(v:any)=>{
           setData(v[0].total)
