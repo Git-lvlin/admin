@@ -103,6 +103,7 @@ const VIPHydrogen: FC = () => {
       title: '订单状态',
       dataIndex: 'orderStatus',
       valueType: 'select',
+      initialValue: '4',
       valueEnum: {
         '1': '已完成（已过售后期）',
         '2': '售后中',
@@ -166,7 +167,7 @@ const VIPHydrogen: FC = () => {
       <ProTable
         rowKey='id'
         columns={columns}
-        params={{orderStatus: '4'}}
+        params={{}}
         request={vipStoreHydrogenPm}
         postData={(v:any)=>{
           setData(v[0].total)
