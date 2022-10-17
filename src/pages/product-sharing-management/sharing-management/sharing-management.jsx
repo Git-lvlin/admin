@@ -125,7 +125,7 @@ const IntensiveGoods=() => {
         dataIndex: 'wholesaleSupplyPrice',
         align: 'center',
         render: (_,data)=>{
-          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
