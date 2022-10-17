@@ -104,7 +104,6 @@ export default (props) => {
   const [dataSource, setDataSource] = useState(()=>bloodData);
   const [userList, setUserList] = useState([])
   const [recordList, setRecordList] = useState([])
-  const [recordId, setRecordId] = useState()
   const actionRef = useRef();
   const [commType, setCommType] = useState(2)
   const [submitType, setSubmitType] = useState()
@@ -114,7 +113,6 @@ export default (props) => {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
         const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId):res.data[0]
         setRecordList(findItem)
-        setRecordId(findItem)
         console.log('findItem?.commissionType',findItem)
         setCommType(findItem?.commissionType)
         form.setFieldsValue({
@@ -191,7 +189,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if(detailData){
+    if(!detailData.commissionConfig){
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
         setCommType(2)
         setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
@@ -205,7 +203,6 @@ export default (props) => {
       return message.error('平台金额为负！')
     }
     try {
-      console.log('dataSource',dataSource)
       const params = {
         status: submitType?1:null,
         orderType: 30,
@@ -387,7 +384,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo||recordId?.versionNo}</p>,
+                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo}</p>,
                 <Button  type="default" key="submit1" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(1)

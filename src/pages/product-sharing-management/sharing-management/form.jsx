@@ -230,15 +230,6 @@ export default (props) => {
     }
   }, [recordId])
 
-  useEffect(() => {
-    if(detailData){
-      productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
-        setRecordId(res.data[0])
-        setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
-      })
-    }
-  }, [])
-
   const submit = (values) => {
     const { commissionType } = values
     try {
@@ -400,7 +391,7 @@ export default (props) => {
                   {recordId?amountTransform(recordId?.wholesaleSupplyPrice, '/').toFixed(2):amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
                   {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>}
                 </p>
-                <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价，非实物商品时固定为0）</p>
+                <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价，非实物商品时固定为0）</p>
               </>
             } else if (_?.entry?.id == 7) {
               return <FromWrap
@@ -496,9 +487,9 @@ export default (props) => {
                 </Button>,
                 <Button  type="primary" key="submit2" onClick={() => {
                   props.form?.submit?.()
-                  setSubmitType(2)
+                  setSubmitType(0)
                 }}>
-                  {detailData?.id?'保存':'提交'}
+                  保存
                 </Button>
             ];
         },

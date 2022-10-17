@@ -24,6 +24,7 @@ const BannerAdmin = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const [multiSpecification, setMultiSpecification] = useState(0)
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -179,11 +180,23 @@ const BannerAdmin = () => {
       align: 'center',
       hideInSearch: true,
       render: (_,record) => {
-       return <a key='putaway' onClick={()=>{setDetailData(record);setEditVisible(true)}}>{_?'已配置（查看配置）':'未配置（点击配置）'}</a>
+       return <a key='putaway' 
+       onClick={()=>{
+         setDetailData(record);
+         if(_){
+          setFormVisible(true)
+          setMultiSpecification(1)
+         }else{
+          setEditVisible(true)
+         }
+        }}
+       >
+         {_?'已配置（查看配置）':'未配置（点击配置）'}
+       </a>
       },
     },
     {
-      title: '上架状态',
+      title: '采购列表上架状态',
       dataIndex: 'goodsState',
       valueEnum:{
         1:'已上架',
@@ -322,9 +335,10 @@ const BannerAdmin = () => {
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
-        onClose={() => { setFormVisible(false); setDetailData(null) }}
+        onClose={() => { setFormVisible(false); setDetailData(null);setMultiSpecification(null) }}
         detailData={detailData}
-        callback={() => { actionRef.current.reload();setDetailData(null) }}
+        callback={() => { actionRef.current.reload();setDetailData(null);setMultiSpecification(null) }}
+        multi={multiSpecification}
       />}
       {editVisible && <Edit
         visible={editVisible}
