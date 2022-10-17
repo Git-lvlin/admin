@@ -9,7 +9,7 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { wholesalePm } from "@/services/product-performance-management/new-intensive-performance"
+import { hydrogenStartUpPm } from "@/services/product-performance-management/hydrogen-start-fee"
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
@@ -25,18 +25,13 @@ const Aggregate: FC<any> = ({data}) => {
     },
     {
       title: '总下单店铺数量',
-      dataIndex: 'totalShopNum',
+      dataIndex: 'storeNum',
       render: _ => `${_ ? _ : 0}家`
     },
     {
-      title: '总销售sku数',
-      dataIndex: 'totalSkuNum',
-      render: _ => `${_ ? _ : 0}款`
-    },
-    {
-      title: '商品销量',
-      dataIndex: 'saleNum',
-      render: _ => `${_ ? _ : 0}件`
+      title: '总销售数量',
+      dataIndex: 'deviceNum',
+      render: _ => `${_ ? _ : 0}台`
     }
   ]
 
@@ -50,7 +45,7 @@ const Aggregate: FC<any> = ({data}) => {
   )
 }
 
-const NewIntensivePerformance: FC = () => {
+const HydrogenStartFee: FC = () => {
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
 
@@ -79,6 +74,11 @@ const NewIntensivePerformance: FC = () => {
       hideInSearch: true
     },
     {
+      title: '设备ID',
+      dataIndex: 'imei',
+      align: 'center'
+    },
+    {
       title: '支付时间',
       dataIndex: 'payTime',
       align: 'center',
@@ -88,6 +88,7 @@ const NewIntensivePerformance: FC = () => {
       title: '支付时间',
       dataIndex: 'payTime',
       valueType: 'dateRange',
+      initialValue: ['2022-9-24 00:00:00', moment(+new Date()).format("YYYY-MM-DD HH:mm:ss")],
       hideInTable: true
     },
     {
@@ -98,64 +99,39 @@ const NewIntensivePerformance: FC = () => {
       render: _ => amountTransform(_, '/')
     },
     {
-      title: '订单状态',
-      dataIndex: 'orderStatusDesc',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '订单状态',
-      dataIndex: 'orderStatus',
-      valueType: 'select',
-      valueEnum: {
-        '2': '待发货',
-        '3': '待收货',
-        '5': '已完成（已确认收到货）'
-      },
-      hideInTable: true
-    },
-    {
-      title: 'spuID',
-      dataIndex: 'spuId',
-      align: 'center'
-    },
-    {
-      title: 'skuID',
-      dataIndex: 'skuId',
-      align: 'center'
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      align: 'center'
-    },
-    {
-      title: '推荐人手机号',
+      title: '店主手机号',
       dataIndex: 'storeMemberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '推荐人店铺编号',
+      title: '店主店铺编号',
       dataIndex: 'storeHomeNumber',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
     },
     {
-      title: '推荐人店铺所在区域',
+      title: '店铺编号',
+      dataIndex: 'storeHomeNumber',
+      hideInTable: true
+    },
+    {
+      title: '店主店铺所在区域',
       dataIndex: 'storeArea',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '推荐人的店铺省市区',
+      title: '设备店铺s所属省市区',
       dataIndex: 'area',
       hideInTable: true,
       renderFormItem: () => <AddressCascader />
     },
     {
-      title: '推荐人店铺地址',
+      title: '店主店铺地址',
       dataIndex: 'storeAddress',
       align: 'center',
+      width: '12%',
       hideInSearch: true
     },
     {
@@ -163,34 +139,35 @@ const NewIntensivePerformance: FC = () => {
       dataIndex: 'cityAgencyName',
       align: 'center',
       hideInSearch: true
-    },
+    }
   ]
 
   return (
     <PageContainer className={styles.desc}>
+      <div className={styles.title}>2022年9月24日至今 氢原子设备启动费业绩明细</div>
       <ProTable
         rowKey='id'
         columns={columns}
         params={{}}
-        request={wholesalePm}
+        request={hydrogenStartUpPm}
         postData={(v:any)=>{
           setData(v[0].total)
           return (v[0].res)
         }}
-        formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         headerTitle={<Aggregate data={data}/>}
         options={false}
         search={{
           labelWidth: 140,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
-            <Export 
+            <Export
               key='export'
-              type='wholesalePm'
+              type="hydrogenStartUpPm"
               conditions={getFieldsValue}
             />
           ]
@@ -200,4 +177,4 @@ const NewIntensivePerformance: FC = () => {
   )
 }
 
-export default NewIntensivePerformance
+export default HydrogenStartFee

@@ -95,5 +95,10 @@ export type LeaseContractProps = {
 
 export type HealthyLivingPavilionProps = {
   id: number
-  
+  memberPhone: string
+  storeId:string
+  signTime: number
+  businessId: string
+  contractId: string
+  contractUrl: string
 }

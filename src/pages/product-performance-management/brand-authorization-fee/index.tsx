@@ -9,7 +9,7 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { wholesalePm } from "@/services/product-performance-management/new-intensive-performance"
+import { storeLifePm } from "@/services/product-performance-management/brand-authorization-fee"
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
@@ -24,19 +24,19 @@ const Aggregate: FC<any> = ({data}) => {
       render: (_) => `${amountTransform(_, '/')}元`
     },
     {
-      title: '总下单店铺数量',
-      dataIndex: 'totalShopNum',
+      title: '总下单店主数量',
+      dataIndex: 'buyUserNum',
       render: _ => `${_ ? _ : 0}家`
     },
     {
-      title: '总销售sku数',
-      dataIndex: 'totalSkuNum',
-      render: _ => `${_ ? _ : 0}款`
+      title: '有推荐人店铺数',
+      dataIndex: 'refererStoreNum',
+      render: _ => `${_ ? _ : 0}家`
     },
     {
-      title: '商品销量',
-      dataIndex: 'saleNum',
-      render: _ => `${_ ? _ : 0}件`
+      title: '合同签订状况(已签/未签)',
+      dataIndex: 'signedNum',
+      render: (_, r) => `${_ ? _ : 0} / ${r.unsignedNum ? r.unsignedNum : 0}`
     }
   ]
 
@@ -50,7 +50,7 @@ const Aggregate: FC<any> = ({data}) => {
   )
 }
 
-const NewIntensivePerformance: FC = () => {
+const BrandAuthorizationFee: FC = () => {
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
 
@@ -98,42 +98,9 @@ const NewIntensivePerformance: FC = () => {
       render: _ => amountTransform(_, '/')
     },
     {
-      title: '订单状态',
-      dataIndex: 'orderStatusDesc',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '订单状态',
-      dataIndex: 'orderStatus',
-      valueType: 'select',
-      valueEnum: {
-        '2': '待发货',
-        '3': '待收货',
-        '5': '已完成（已确认收到货）'
-      },
-      hideInTable: true
-    },
-    {
-      title: 'spuID',
-      dataIndex: 'spuId',
-      align: 'center'
-    },
-    {
-      title: 'skuID',
-      dataIndex: 'skuId',
-      align: 'center'
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      align: 'center'
-    },
-    {
       title: '推荐人手机号',
       dataIndex: 'storeMemberPhone',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '推荐人店铺编号',
@@ -153,14 +120,24 @@ const NewIntensivePerformance: FC = () => {
       renderFormItem: () => <AddressCascader />
     },
     {
-      title: '推荐人店铺地址',
-      dataIndex: 'storeAddress',
+      title: '下单店主店铺所在区域',
+      dataIndex: 'buyerStoreArea',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '市办事处',
-      dataIndex: 'cityAgencyName',
+      title: '合同签订状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        '1': '已签写',
+        '2': '未签写'
+      },
+      hideInTable: true
+    },
+    {
+      title: '合同签订状态',
+      dataIndex: 'contractStatusDesc',
       align: 'center',
       hideInSearch: true
     },
@@ -171,8 +148,8 @@ const NewIntensivePerformance: FC = () => {
       <ProTable
         rowKey='id'
         columns={columns}
-        params={{}}
-        request={wholesalePm}
+        params={{contractStatus: '4'}}
+        request={storeLifePm}
         postData={(v:any)=>{
           setData(v[0].total)
           return (v[0].res)
@@ -190,7 +167,7 @@ const NewIntensivePerformance: FC = () => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type='wholesalePm'
+              type='storeLifePm'
               conditions={getFieldsValue}
             />
           ]
@@ -200,4 +177,4 @@ const NewIntensivePerformance: FC = () => {
   )
 }
 
-export default NewIntensivePerformance
+export default BrandAuthorizationFee
