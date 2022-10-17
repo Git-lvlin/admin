@@ -35,6 +35,17 @@ const IntensiveGoods=() => {
         order: 2
       },
       {
+        title: '分成类型',
+        dataIndex: 'commissionType',
+        align: 'center',
+        valueType: 'select',
+        valueEnum: {
+          1: '金额',
+          2: '百分比'
+        },
+        hideInSearch: true,
+      },
+      {
         title: 'spuID',
         dataIndex: 'spuId',
         align: 'center',
@@ -59,8 +70,8 @@ const IntensiveGoods=() => {
         title: '直推人(vip店主)',
         dataIndex: 'shoppervipChargeFee',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -68,8 +79,8 @@ const IntensiveGoods=() => {
         title: '下单店主开店地址所属办事处',
         dataIndex: 'cityManageFee',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -77,8 +88,8 @@ const IntensiveGoods=() => {
         title: '培训中心',
         dataIndex: 'trainCenterManageFee',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -86,8 +97,8 @@ const IntensiveGoods=() => {
         title: '运营中心',
         dataIndex: 'companyAgent',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -95,8 +106,8 @@ const IntensiveGoods=() => {
         title: '运营成本',
         dataIndex: 'platformOperateFee',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -104,8 +115,8 @@ const IntensiveGoods=() => {
         title: '汇能科技积分/红包',
         dataIndex: 'serviceFee',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -113,8 +124,8 @@ const IntensiveGoods=() => {
         title: '供应商',
         dataIndex: 'retailSupplyPrice',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
@@ -122,8 +133,8 @@ const IntensiveGoods=() => {
         title: '汇能',
         dataIndex: 'company',
         align: 'center',
-        render: (_)=>{
-          return amountTransform(_,'/').toFixed(2)
+        render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
         },
         hideInSearch: true,
       },
