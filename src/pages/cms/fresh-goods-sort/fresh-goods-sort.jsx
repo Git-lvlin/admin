@@ -179,7 +179,7 @@ const BannerAdmin = () => {
       align: 'center',
       hideInSearch: true,
       render: (_,record) => {
-       return <a key='putaway' onClick={()=>{setDetailData(record);setEditVisible(true)}}>{_?'已配置':'未配置'}</a>
+       return <a key='putaway' onClick={()=>{setDetailData(record);setEditVisible(true)}}>{_?'已配置（查看配置）':'未配置（点击配置）'}</a>
       },
     },
     {

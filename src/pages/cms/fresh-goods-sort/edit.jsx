@@ -104,6 +104,7 @@ export default (props) => {
   const [dataSource, setDataSource] = useState(()=>bloodData);
   const [userList, setUserList] = useState([])
   const [recordList, setRecordList] = useState([])
+  const [recordId, setRecordId] = useState()
   const actionRef = useRef();
   const [commType,setCommType] = useState(2)
 
@@ -116,7 +117,7 @@ export default (props) => {
         setCommType(findItem?.commissionType)
         form.setFieldsValue({
           name: findItem?.goodsName,
-          commissionType: findItem?.commissionType
+          commissionType: findItem?.commissionType||2
         })
         if(findItem){
           const data = [
@@ -126,7 +127,7 @@ export default (props) => {
                     <div>直推人（必须是VIP店主）</div>
                     <div>直推收益</div>
                     </>,
-              price: amountTransform(findItem?.shoppervipChargeFee, '/')
+              price: findItem?.commissionType==2?findItem?.shoppervipChargeFee:amountTransform(findItem?.shoppervipChargeFee, '/')
             },
             {
               id: 2,
@@ -134,7 +135,7 @@ export default (props) => {
                     <div>店主（下单人）开店地址所属市办事处</div>
                     <div>管理佣金</div>
                     </>,
-              price: amountTransform(findItem?.cityManageFee, '/')
+              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
             },
              {
               id: 3,
@@ -142,7 +143,7 @@ export default (props) => {
                   <div>培训中心</div>
                   <div>管理奖励</div>
                   </>,
-              price: amountTransform(findItem?.trainCenterManageFee, '/')
+              price: findItem?.commissionType==2?findItem?.trainCenterManageFee:amountTransform(findItem?.trainCenterManageFee, '/')
             },
             {
               id: 4,
@@ -150,7 +151,7 @@ export default (props) => {
                     <div>汇能科技</div>
                     <div>积分/红包</div>
                     </>,
-              price: amountTransform(findItem?.serviceFee, '/')
+              price: findItem?.commissionType==2?findItem?.serviceFee:amountTransform(findItem?.serviceFee, '/')
             },
             {
               id: 5,
@@ -165,7 +166,7 @@ export default (props) => {
                     <div>运营中心</div>
                     <div>服务费佣金</div>
                     </>,
-              price: amountTransform(findItem?.companyAgent, '/')
+              price: findItem?.commissionType==2?findItem?.companyAgent:amountTransform(findItem?.companyAgent, '/')
             },
             {
               id: 7,
@@ -173,7 +174,7 @@ export default (props) => {
                     <div>汇能</div>
                     <div>平台运营成本</div>
                     </>,
-              price: amountTransform(findItem?.platformOperateFee, '/')
+              price: findItem?.commissionType==2?findItem?.platformOperateFee:amountTransform(findItem?.platformOperateFee, '/')
             },
             {
               id: 8,
@@ -187,7 +188,18 @@ export default (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    if(detailData){
+      productList({ skuId: recordList?.skuId, orderType: 30 }).then(res => {
+        setRecordId(res.data[0])
+        setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
+        console.log('res.data',res.data)
+      })
+    }
+  }, [])
+
   const submit = (values) => {
+    const { commissionType } = values
     if(compute()<0){
       return message.error('平台金额为负！')
     }
@@ -198,23 +210,23 @@ export default (props) => {
         id: recordList?.id ? recordList?.id : 0,
         spuId: recordList?.spuId,
         skuId: recordList?.skuId,
-        cityManageFee: amountTransform(dataSource[0]?.price, '*'),
-        shoppervipChargeFee: amountTransform(dataSource[1]?.price, '*'),
+        cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[0]?.price, '*'),
+        shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[1]?.price, '*'),
         provinceManageFee: 0,
         shopperChargeFee: 0,
         userChargeFee: 0,
         shopperManageFee: 0,
         userManageFee: 0,
         shoppervipManageFee: 0,
-        trainCenterManageFee:amountTransform(dataSource[2]?.price, '*'),
-        serviceFee: amountTransform(dataSource[3]?.price, '*'),
-        companyAgent: amountTransform(dataSource[5]?.price, '*'),
-        platformOperateFee: amountTransform(dataSource[6]?.price, '*'),
+        trainCenterManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+        serviceFee: commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+        companyAgent: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
+        platformOperateFee: commissionType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
         provinceAgent: 0,
         cityAgent: 0,
         dividends: 0,
-        company: amountTransform(compute(), '*'),
-        ...values
+        company: commissionType==2?compute():amountTransform(compute(), '*'),
+        commissionType
       }
       saveCommissionConfig(params).then(res => {
         if (res.code == 0) {
@@ -227,11 +239,7 @@ export default (props) => {
       console.log('error',error)
     }
   }
-  useEffect(() => {
-    productList({}).then(res => {
-      setUserList(res.data)
-    })
-  }, [])
+
   const compute = () => {
     let sum = 0
     for (let index = 0; index < 8; index++) {
@@ -239,19 +247,19 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=amountTransform(recordList?.salePrice - amountTransform(sum, '*')-recordList?.retailSupplyPrice, '/').toFixed(2)
+    const company=amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/').toFixed(2)
     return company
   }
 
   const proportion = (_) =>{
-    const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
-                                  amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.salePrice,'*')
+    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
+                                  amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.distributePrice,'*')
     return <span>{editPrice&&editPrice.toFixed(2)}{commType==1?'%':'元'}</span>
   }
 
   const proportion2 = (_) =>{
-    const editPrice=commType==2?amountTransform(amountTransform(recordList?.salePrice,'/')*amountTransform(recordList?.retailSupplyPrice,'/'),'/'):
-                                amountTransform(recordList?.retailSupplyPrice/recordList?.salePrice,'*') 
+    const editPrice=commType==2?amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/'):
+                                amountTransform(recordList?.wholesaleSupplyPrice/recordList?.distributePrice,'*') 
   return <span>{editPrice&&editPrice.toFixed(2)}{commType==1?'%':'元'}</span>
 }
 
@@ -273,7 +281,7 @@ export default (props) => {
     {
       title: <>
               <p>{recordList?.goodsName}</p>
-              <span>skuID:{recordList?.skuId}  新集约价:￥{amountTransform(recordList?.salePrice, '/')}</span>
+              <span>skuID:{recordList?.skuId}  新集约价:￥{amountTransform(recordList?.distributePrice, '/')}</span>
             </>,
       align: 'center',
       hideInSearch: true,
@@ -282,9 +290,9 @@ export default (props) => {
         if (_?.entry?.id == 5) {
           return <>
             <p>
-              {amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}
-              {commType==1?'元':'%'}
-              <span style={{marginLeft:'415px'}}>= {proportion2(_)} </span>
+              {amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
+              {/* {commType==1?'元':'%'}
+              <span style={{marginLeft:'415px'}}>= {proportion2(_)} </span> */}
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
           </>
@@ -292,7 +300,7 @@ export default (props) => {
           return <FromWrap
                   content={(value, onChange) =>  <InputNumber  
                     min="0"
-                    max={amountTransform(recordList?.salePrice,'/')}
+                    max={amountTransform(recordList?.distributePrice,'/')}
                     style={{ width: '450px' }} 
                     precision='2'
                     stringMode
@@ -305,8 +313,8 @@ export default (props) => {
                     return <span>= {proportion(_)} </span>
                   }}
                   bottom={(value)=>{
-                    const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
-                                                amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
+                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(value),'/'):
+                                                amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
                         if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==7){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
                         }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
@@ -316,14 +324,17 @@ export default (props) => {
                 />
         } else if (_?.entry?.id == 8) {
           return <>
-            <p>{compute()}{commType==1?'元':'%'}</p>
+            <p>
+              {compute()}元
+              {/* {commType==1?'元':'%'} */}
+            </p>
             <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
           </>
         }
         return  <FromWrap
                   content={(value, onChange) =>   <InputNumber  
                     min="0"
-                    max={amountTransform(recordList?.salePrice,'/')}
+                    max={amountTransform(recordList?.distributePrice,'/')}
                     style={{ width: '450px' }} 
                     precision='2'
                     stringMode
@@ -336,8 +347,8 @@ export default (props) => {
                     return <span>= {proportion(_)} </span>
                   }}
                   bottom={(value)=>{
-                    const editPrice=commType==2?amountTransform(recordList?.salePrice,'/')*amountTransform(parseInt(value),'/'):
-                                                amountTransform(amountTransform(value,'*')/recordList?.salePrice,'*')
+                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(value),'/'):
+                                                amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
                         if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=7){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
                         }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=7){
