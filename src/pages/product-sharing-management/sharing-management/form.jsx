@@ -232,7 +232,7 @@ export default (props) => {
 
   useEffect(() => {
     if(detailData){
-      productList({ skuId: recordList?.skuId, orderType: 30 }).then(res => {
+      productList({ spuId: detailData?.spuId,skuId:recordList?.skuId,orderType: 30 }).then(res => {
         setRecordId(res.data[0])
         setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
         console.log('res.data',res.data)
