@@ -189,7 +189,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if(!detailData.commissionConfig){
+    if(detailData.commissionConfig==0){
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
         setCommType(2)
         setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
@@ -239,6 +239,18 @@ export default (props) => {
     }
   }
 
+  const myToFixed=(num)=>{
+    num = num.toString()
+    const index = num.indexOf('.')
+    if (index !== -1) {
+      num = num.substring(0, 2 + index + 1)
+    } else {
+      num = num.substring(0)
+    }
+          //截取后保留两位小数
+    return parseFloat(num).toFixed(2)
+  }
+
   const compute = () => {
     let sum = 0
     for (let index = 0; index < 8; index++) {
@@ -246,8 +258,8 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/').toFixed(2)
-    return company
+    const company=amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/')
+    return myToFixed(company)
   }
 
   const compute2 = () => {
@@ -258,20 +270,27 @@ export default (props) => {
       }
     }
     const company=amountTransform(10000 - amountTransform(sum,'*')-amountTransform(proportion2(),'*'),'/')
-    return company
+    return myToFixed(company)
   }
 
   const proportion = (_) =>{
-    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
-                                  amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.distributePrice,'*')
-    return <span>{editPrice&&editPrice.toFixed(2)}{commType==1?'%':'元'}</span>
+    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(_?.entry?.price),'/'):
+                                  amountTransform(amountTransform(parseFloat(_?.entry?.price),'*')/recordList?.distributePrice,'*')
+    console.log('editPrice',editPrice)
+    return <span>{editPrice&&myToFixed(editPrice)}{commType==1?'%':'元'}</span>
   }
 
   const proportion2 = (_) =>{
     const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
                                 amountTransform(recordList?.wholesaleSupplyPrice/recordList?.distributePrice,'*') 
-  return editPrice&&editPrice.toFixed(2)
-}
+  return editPrice&&myToFixed(editPrice)
+  }
+
+  const proportion3 = (val) =>{
+    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(val),'/'):
+                                amountTransform(amountTransform(parseFloat(val),'*')/recordList?.distributePrice,'*')
+  return <span>{editPrice&&myToFixed(editPrice)}{commType==1?'%':'元'}</span>
+  }
 
   const columns = [
     {
@@ -300,8 +319,12 @@ export default (props) => {
         if (_?.entry?.id == 5) {
           return <>
             <p>
-              {amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
-              {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>}
+              {/* {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}元
+              {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>} */}
+              {commType==1&&<span>{myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==1?'元':'%'}</span>}
+              {commType==1&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}{commType==2?'元':'%'}</span>}
+              {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
+              {commType==2&&<span style={{marginLeft:'415px'}}> =  {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==2?'元':'%'} </span>}
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
           </>
@@ -322,7 +345,7 @@ export default (props) => {
                     return <span>= {proportion(_)} </span>
                   }}
                   bottom={(value)=>{
-                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(value),'/'):
+                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
                         if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==7){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
@@ -335,6 +358,7 @@ export default (props) => {
           return <>
             <p>
               {commType==1?compute():compute2()}{commType==1?'元':'%'}
+              <span style={{marginLeft:'415px'}}>= {proportion3(commType==1?compute():compute2())} </span>
             </p>
             <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
           </>
@@ -355,7 +379,7 @@ export default (props) => {
                     return <span>= {proportion(_)} </span>
                   }}
                   bottom={(value)=>{
-                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(value),'/'):
+                    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
                         if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=7){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>

@@ -271,6 +271,20 @@ export default (props) => {
       console.log('error',error)
     }
   }
+
+  const myToFixed=(num)=>{
+    num = num.toString()
+    const index = num.indexOf('.')
+    if (index !== -1) {
+      num = num.substring(0, 2 + index + 1)
+    } else {
+      num = num.substring(0)
+    }
+          //截取后保留两位小数
+    return parseFloat(num).toFixed(2)
+  }
+
+
   useEffect(() => {
     productList({ orderType: 30 }).then(res => {
       setUserList(res.data)
@@ -283,8 +297,8 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=recordId?amountTransform(recordId?.distributePrice - amountTransform(sum, '*')-recordId?.wholesaleSupplyPrice, '/').toFixed(2):amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/').toFixed(2)
-    return company
+    const company=recordId?amountTransform(recordId?.distributePrice - amountTransform(sum, '*')-recordId?.wholesaleSupplyPrice, '/'):amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/')
+    return myToFixed(company)
   }
 
   const compute2 = () => {
@@ -294,17 +308,16 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    console.log('proportion2()',proportion2())
     const company=amountTransform(10000 - amountTransform(sum,'*')-amountTransform(proportion2(),'*'),'/')
-    return company
+    return myToFixed(company)
   }
 
   const proportion = (_) =>{
-      const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
-                                  amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordList?.distributePrice,'*')
-      const price=commType==2?amountTransform(recordId?.distributePrice,'/')*amountTransform(parseInt(_?.entry?.price),'/'):
-                              amountTransform(amountTransform(parseInt(_?.entry?.price),'*')/recordId?.distributePrice,'*')
-    return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
+      const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(_?.entry?.price),'/'):
+                                  amountTransform(amountTransform(parseFloat(_?.entry?.price),'*')/recordList?.distributePrice,'*')
+      const price=commType==2?amountTransform(recordId?.distributePrice,'/')*amountTransform(parseFloat(_?.entry?.price),'/'):
+                              amountTransform(amountTransform(parseFloat(_?.entry?.price),'*')/recordId?.distributePrice,'*')
+    return <span>{editPrice&&myToFixed(editPrice)||myToFixed(price)}{commType==1?'%':'元'}</span>
   }
 
   const proportion2 = (_) =>{
@@ -312,15 +325,15 @@ export default (props) => {
                                   amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/')
       const price=commType==2?amountTransform(amountTransform(recordId?.wholesaleSupplyPrice,'/')/amountTransform(recordId?.distributePrice,'/'),'*'):
                               amountTransform(recordId?.wholesaleSupplyPrice/recordId?.distributePrice,'*')
-    return editPrice&&editPrice.toFixed(2)||price.toFixed(2)
+    return editPrice&&myToFixed(editPrice)||myToFixed(price)
   }
 
   const proportion3 = (val) =>{
-    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseInt(val),'/'):
-                                amountTransform(amountTransform(parseInt(val),'*')/recordList?.distributePrice,'*')
-    const price=commType==2?amountTransform(recordId?.distributePrice,'/')*amountTransform(parseInt(val),'/'):
-                            amountTransform(amountTransform(parseInt(val),'*')/recordId?.distributePrice,'*')
-  return <span>{editPrice&&editPrice.toFixed(2)||price.toFixed(2)}{commType==1?'%':'元'}</span>
+    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(val),'/'):
+                                amountTransform(amountTransform(parseFloat(val),'*')/recordList?.distributePrice,'*')
+    const price=commType==2?amountTransform(recordId?.distributePrice,'/')*amountTransform(parseFloat(val),'/'):
+                            amountTransform(amountTransform(parseFloat(val),'*')/recordId?.distributePrice,'*')
+  return <span>{editPrice&&myToFixed(editPrice)||myToFixed(price)}{commType==1?'%':'元'}</span>
 }
 
   const columns = [
@@ -372,7 +385,7 @@ export default (props) => {
             >
               <CusAutoComplete
                 placeholder="输入商品名称或skuID搜索"
-                options={userList?.map(item => ({ label: `skuID：${item.skuId} ${item.goodsName} 售价： ${amountTransform(item.distributePrice, '/').toFixed(2)}元`, value: item.skuId }))}
+                options={userList?.map(item => ({ label: `skuID：${item.skuId} ${item.goodsName} 售价： ${myToFixed(amountTransform(item.distributePrice, '/'))}元`, value: item.skuId }))}
                 onChange2={(v) => {
                   setRecordId(v)
                   compute()
@@ -388,8 +401,11 @@ export default (props) => {
             if (_?.entry?.id == 3) {
               return <>
                 <p>
-                  {recordId?amountTransform(recordId?.wholesaleSupplyPrice, '/').toFixed(2):amountTransform(recordList?.wholesaleSupplyPrice, '/').toFixed(2)}元
-                  {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>}
+                
+                {commType==1&&<span>{recordId?myToFixed(amountTransform(recordId?.wholesaleSupplyPrice, '/')):myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==1?'元':'%'}</span>}
+                {commType==1&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}{commType==2?'元':'%'}</span>}
+                {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
+                {commType==2&&<span style={{marginLeft:'415px'}}> =  {recordId?myToFixed(amountTransform(recordId?.wholesaleSupplyPrice, '/')):myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==2?'元':'%'} </span>}
                 </p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价，非实物商品时固定为0）</p>
               </>
@@ -425,7 +441,7 @@ export default (props) => {
               return <>
                 <p>
                   {commType==1?compute():compute2()}{commType==1?'元':'%'}
-                  {/* {commType==1?'元':'%'}  <span style={{marginLeft:'415px'}}>= {proportion3(compute())} </span> */}
+                  <span style={{marginLeft:'415px'}}>= {proportion3(commType==1?compute():compute2())} </span>
                   </p>
                 <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
               </>
