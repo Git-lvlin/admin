@@ -29,7 +29,7 @@ const Aggregate: FC<any> = ({data}) => {
       render: _ => `${_ ? _ : 0}家`
     },
     {
-      title: '有推荐人店铺数',
+      title: '有推荐人VIP店数',
       dataIndex: 'refererStoreNum',
       render: _ => `${_ ? _ : 0}家`
     },
@@ -103,24 +103,24 @@ const BrandAuthorizationFee: FC = () => {
       align: 'center'
     },
     {
-      title: '推荐人店铺编号',
+      title: '推荐人VIP店铺编号',
       dataIndex: 'storeHomeNumber',
       align: 'center'
     },
     {
-      title: '推荐人店铺所在区域',
+      title: '推荐人VIP店铺所在区域',
       dataIndex: 'storeArea',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '推荐人的店铺省市区',
+      title: '推荐人VIP店所属省市区',
       dataIndex: 'area',
       hideInTable: true,
       renderFormItem: () => <AddressCascader />
     },
     {
-      title: '下单店主店铺所在区域',
+      title: '下单店主VIP店铺所在区域',
       dataIndex: 'buyerStoreArea',
       align: 'center',
       hideInSearch: true
@@ -131,7 +131,7 @@ const BrandAuthorizationFee: FC = () => {
       valueType: 'select',
       valueEnum: {
         '1': '已签写',
-        '2': '未签写'
+        '3': '未签写',
       },
       hideInTable: true
     },
@@ -148,7 +148,7 @@ const BrandAuthorizationFee: FC = () => {
       <ProTable
         rowKey='id'
         columns={columns}
-        params={{contractStatus: '4'}}
+        params={{ contractStatus: form.current?.getFieldsValue().contractStatus ?? '4'}}
         request={storeLifePm}
         postData={(v:any)=>{
           setData(v[0].total)
@@ -162,7 +162,7 @@ const BrandAuthorizationFee: FC = () => {
         headerTitle={<Aggregate data={data}/>}
         options={false}
         search={{
-          labelWidth: 140,
+          labelWidth: 160,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
             <Export 
