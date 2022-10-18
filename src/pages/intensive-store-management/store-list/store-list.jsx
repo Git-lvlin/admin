@@ -989,7 +989,7 @@ const StoreList = (props) => {
             >
               新建
             </Button>,
-            (storeType != 'freshStores' || storeType !== 'life_house') &&
+            (storeType != 'freshStores'&& storeType !== 'life_house') &&
             <>
               <Export
                 change={(e) => { setVisit(e) }}
