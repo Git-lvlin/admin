@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
@@ -9,14 +9,32 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { storeLifePm } from "@/services/product-performance-management/brand-authorization-fee"
-import { amountTransform } from '@/utils/utils'
+import { storeLifePm, storeLifePmStats } from "@/services/product-performance-management/brand-authorization-fee"
+import { amountTransform, numFormat } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
 import Export from '@/components/export'
 
-const Aggregate: FC<any> = ({data}) => {
+const Aggregate: FC<any> = ({form}) => {
+  const [data, setData] = useState()
+
+  console.log(form);
   
+
+  const getData = async () => {
+    const contractStatus= form?.contractStatus ? form?.contractStatus : '4'
+    await storeLifePmStats({
+      ...form,
+      contractStatus
+    }).then(res => {
+      setData(res.data)
+    })
+  }
+  
+  useEffect(()=> {
+    getData()
+  }, [form])
+
   const columns: ProDescriptionsItemProps[] = [
     {
       title: '总业绩金额',
@@ -51,8 +69,8 @@ const Aggregate: FC<any> = ({data}) => {
 }
 
 const BrandAuthorizationFee: FC = () => {
-  const [data, setData] = useState()
   const form = useRef<FormInstance>()
+  const [searchConfig, setSearchConfig] = useState()
 
   const getFieldsValue = () => {
     const {payTime, area, ...rest} = form.current?.getFieldsValue()
@@ -148,18 +166,19 @@ const BrandAuthorizationFee: FC = () => {
       <ProTable
         rowKey='id'
         columns={columns}
-        params={{ contractStatus: form.current?.getFieldsValue().contractStatus ?? '4'}}
         request={storeLifePm}
-        postData={(v:any)=>{
-          setData(v[0].total)
-          return (v[0].res)
-        }}
         formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
-        headerTitle={<Aggregate data={data}/>}
+        onSubmit={()=>{
+          setSearchConfig(form.current?.getFieldsValue())
+        }}
+        onReset={()=> {
+          setSearchConfig(undefined)
+        }}
+        headerTitle={<Aggregate form={searchConfig}/>}
         options={false}
         search={{
           labelWidth: 160,
