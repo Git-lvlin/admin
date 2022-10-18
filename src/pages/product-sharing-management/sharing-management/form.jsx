@@ -155,7 +155,7 @@ export default (props) => {
   useEffect(() => {
     if (detailData?.spuId||recordId?.spuId) {
       getCommissionConfigBySpuId({ spuId: recordId?.spuId||detailData?.spuId,skuId:recordId?.skuId, orderType: 30 }).then(res => {
-        if(res.code==0){
+        if(res.code==0&&res.data.length!=0){
           const findItem=res?.data?.find(ele=>ele?.skuId==recordId?.skuId)||res?.data?.find(ele=>ele?.skuId==detailData?.skuId)
           setRecordList(findItem)
           setCommType(findItem?.commissionType)
