@@ -110,8 +110,8 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData?.spuId) {
-      getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
-        const findItem=res.data.find(ele=>ele?.skuId==detailData?.skuId)||detailData
+      getCommissionConfigBySpuId({ spuId: detailData?.spuId,orderType: 30 }).then(res => {
+        const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId)||detailData:res?.data[0]||detailData
         setRecordList(findItem)
         setCommType(findItem?.commissionType||2)
         form.setFieldsValue({
@@ -205,7 +205,7 @@ export default (props) => {
       const params = {
         status: submitType?1:null,
         orderType: 30,
-        id: recordList?.id ? recordList?.id : 0,
+        id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
         spuId: recordList?.spuId,
         skuId: recordList?.skuId,
         cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[0]?.price, '*'),
