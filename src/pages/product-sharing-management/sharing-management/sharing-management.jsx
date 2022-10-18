@@ -280,7 +280,7 @@ const BrandAuthorization=() => {
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上办事处后台记账，线下财务支付</div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>3</div>
@@ -299,7 +299,7 @@ const BrandAuthorization=() => {
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上运营中心后台记账，线下财务统计并支付</div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>4</div>
@@ -317,7 +317,7 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>汇能</div>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
       <div className={styles.box_wrap}>
@@ -337,7 +337,7 @@ const BrandAuthorization=() => {
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>分账到汇能</div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>6</div>
