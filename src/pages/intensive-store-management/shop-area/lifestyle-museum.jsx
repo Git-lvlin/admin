@@ -34,7 +34,7 @@ const LifestyleMuseum = () => {
     },
     {
       title: '备注说明',
-      dataIndex: 'collectingInfo',
+      dataIndex: 'remark',
     },
   ];
 
