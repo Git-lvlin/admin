@@ -408,7 +408,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-                <p key='versionNo' style={{marginRight:'900px'}}>当前分成版本：{recordList?.versionNo}</p>,
+                <p key='versionNo' style={{marginRight:'900px',display:recordList?.versionNo?'block':'none'}}>当前分成版本：{recordList?.versionNo}</p>,
                 <Button  type="default" key="submit1" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(1)
