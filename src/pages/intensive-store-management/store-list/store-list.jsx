@@ -249,6 +249,24 @@ const StoreList = (props) => {
       },
     },
     {
+      title: '开通类型',
+      dataIndex: 'lifeHouseFreeOpen',
+      valueType: 'text',
+      hideInSearch: true,
+      valueEnum: {
+        1: '系统免费开通',
+        0: '缴授权法开通'
+      },
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '合同签订状态',
+      dataIndex: 'lifeHouseContractStatus',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
       title: '氢原子交易',
       dataIndex: 'iotType',
       valueType: 'text',
@@ -295,6 +313,28 @@ const StoreList = (props) => {
       hideInSearch: true,
       hideInTable: storeType == 'vip',
       render: (_) => _ / 100
+    },
+    {
+      title: '交授权费(元)',
+      dataIndex: 'packagePeriodAmount',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house',
+      render: _ => _ / 100
+    },
+    {
+      title: '开通套餐',
+      dataIndex: 'packageTitle',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '开通期限',
+      dataIndex: 'packagePeriod',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
     },
     {
       title: '生鲜柜',
@@ -661,6 +701,20 @@ const StoreList = (props) => {
       },
     },
     {
+      title: '生活馆有效期至',
+      dataIndex: 'lifeHouseExpireTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '生活馆剩余天数(天)',
+      dataIndex: 'lifeHouseRemainingDay',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
       title: 'VIP有效期至',
       dataIndex: 'vipExpireTime',
       valueType: 'text',
@@ -837,6 +891,29 @@ const StoreList = (props) => {
         1: 'VIP店铺'
       },
       hideInSearch: storeType === 'vip' || storeType === 'cancelled',
+      hideInTable: true,
+    },
+    {
+      title: '套餐类型',
+      dataIndex: 'lifeHousePackageId',
+      valueType: 'select',
+      valueEnum: {
+        1001: '一年套餐',
+        1002: '两年套餐',
+        1003: '三年套餐',
+      },
+      hideInSearch: storeType !== 'life_house',
+      hideInTable: true,
+    },
+    {
+      title: '开通类型',
+      dataIndex: 'lifeHouseFreeOpen',
+      valueType: 'select',
+      valueEnum: {
+        1: '系统免费开通',
+        0: '缴授权法开通'
+      },
+      hideInSearch: storeType !== 'life_house',
       hideInTable: true,
     },
     {
@@ -1034,6 +1111,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="vip" tab="VIP社区店">
           {
             activeKey == 'vip' && <StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="life_house" tab="已开通健康生活馆店铺">
+          {
+            activeKey == 'life_house' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>

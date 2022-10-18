@@ -153,6 +153,40 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                     <div>氢原子托管租赁设备套餐数：</div><span>{detailData.hostingLeaseAmount}次 </span>
                   </div>
                 </Col>
+                <Col span={8}>
+                  <div style={{ display: 'flex', marginBottom: 10 }}>
+                    <div>是否开通健康生活馆：{detailData?.isLifeHouse === 1 ? '已开通' : '没有开通'}</div>
+                  </div>
+                  {detailData?.isLifeHouse === 1 &&<>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>开通健康生活馆类型：{detailData.lifeHouse.lifeHouseFreeOpen === 0 ? '缴授权费开通' : '系统免费开通'}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>开通健康生活馆时间：{detailData.lifeHouse.lifeHouseOpenTime}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>开通健康生活馆期限：{detailData.lifeHouse.lifeHouseOpenTime}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>健康生活馆截止时间：{detailData.lifeHouse.lifeHouseExpireTime}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>签订开通健康生活馆合同状态：{detailData.lifeHouse.lifeHouseContractStatus}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>开通健康生活馆合同ID：{detailData.lifeHouse.lifeHouseContractId}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>健康生活馆续期次数：{detailData.lifeHouse.lifeHouseDeadlineCount}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>累计健康生活馆期限：{detailData.lifeHouse.lifeHousePeriodCount}</div>
+                    </div>
+                    <div style={{ display: 'flex', marginBottom: 10 }}>
+                      <div>累计开通健康生活馆缴费金额：{detailData.lifeHouse.lifeHousePeriodAmountSum/100}</div>
+                    </div>
+                  </>}
+                </Col>
               </Row>
 
             </div>
