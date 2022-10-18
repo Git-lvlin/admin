@@ -126,7 +126,7 @@ const BannerAdmin = () => {
     },
     {
       title: '运营类目',
-      dataIndex: 'gcName1',
+      dataIndex: 'wscIdName',
       search: false,
     },
     {
