@@ -11,6 +11,7 @@ import {
   ProFormDependency,
 } from '@ant-design/pro-form';
 import { getCommissionConfigBySpuId } from '@/services/product-management/designated-commodity-settlement';
+import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { putOnSpu } from '@/services/cms/fresh-goods-sort';
 import { PlusOutlined } from '@ant-design/icons';
 import Edit from './edit'
@@ -89,7 +90,7 @@ export default (props) => {
     },
     {
       title: '新集约价',
-      dataIndex: 'salePrice',
+      dataIndex: 'distributePrice',
       align: 'center',
       render: (_)=>{
         return <span style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</span>
@@ -212,7 +213,7 @@ export default (props) => {
         rowKey="id"
         dataSource={dataSource}
         actionRef={actionRef}
-        request={getCommissionConfigBySpuId}
+        request={multi?productList:getCommissionConfigBySpuId}
         search={false}
         columns={columns}
         toolbar={{

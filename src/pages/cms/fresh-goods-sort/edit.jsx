@@ -111,10 +111,9 @@ export default (props) => {
   useEffect(() => {
     if (detailData?.spuId) {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
-        const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId):res.data[0]
+        const findItem=res.data.find(ele=>ele?.skuId==detailData?.skuId)||detailData
         setRecordList(findItem)
-        console.log('findItem?.commissionType',findItem)
-        setCommType(findItem?.commissionType)
+        setCommType(findItem?.commissionType||2)
         form.setFieldsValue({
           name: findItem?.goodsName,
           commissionType: findItem?.commissionType||2
@@ -276,7 +275,6 @@ export default (props) => {
   const proportion = (_) =>{
     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(_?.entry?.price),'/'):
                                   amountTransform(amountTransform(parseFloat(_?.entry?.price),'*')/recordList?.distributePrice,'*')
-    console.log('editPrice',editPrice)
     return <span>{editPrice&&myToFixed(editPrice)}{commType==1?'%':'元'}</span>
   }
 
@@ -319,8 +317,6 @@ export default (props) => {
         if (_?.entry?.id == 5) {
           return <>
             <p>
-              {/* {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}元
-              {commType==2&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}% </span>} */}
               {commType==1&&<span>{myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==1?'元':'%'}</span>}
               {commType==1&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}{commType==2?'元':'%'}</span>}
               {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}

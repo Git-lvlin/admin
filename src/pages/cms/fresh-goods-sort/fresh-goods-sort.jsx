@@ -189,7 +189,7 @@ const BannerAdmin = () => {
        return <a key='putaway' 
        onClick={()=>{
          setDetailData(record);
-         if(record?.isMultiSpec==1&&record?.commissionConfig==1){
+         if(record?.isMultiSpec==1){
           setFormVisible(true)
           setMultiSpecification(1)
          }else{
