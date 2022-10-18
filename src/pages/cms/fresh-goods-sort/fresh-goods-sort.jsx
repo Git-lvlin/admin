@@ -189,7 +189,7 @@ const BannerAdmin = () => {
        return <a key='putaway' 
        onClick={()=>{
          setDetailData(record);
-         if(record?.isMultiSpec==1){
+         if(record?.isMultiSpec==1&&record?.commissionConfig==1){
           setFormVisible(true)
           setMultiSpecification(1)
          }else{
@@ -217,7 +217,7 @@ const BannerAdmin = () => {
       }
     },
     {
-      title: '上架状态',
+      title: '上采购列表上架状态',
       dataIndex: 'goodsState',
       valueEnum:{
         1:'已上架',

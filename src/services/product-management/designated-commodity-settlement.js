@@ -37,7 +37,8 @@ export const getCommissionConfigBySpuId = async (params, options = {}) => {
   return {
     data: res.data,
     success: true,
-    total: res.data.total
+    total: res.data.total,
+    code: res.code
   }
 }
 

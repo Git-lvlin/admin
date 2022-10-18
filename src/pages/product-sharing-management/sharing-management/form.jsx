@@ -153,78 +153,80 @@ export default (props) => {
   const [astrictType,setAstrictType] = useState(false)
   const [submitType, setSubmitType] = useState()
   useEffect(() => {
-    if (detailData?.spuId) {
-      getCommissionConfigBySpuId({ spuId: detailData?.spuId, orderType: 30 }).then(res => {
-        const findItem=res.data.find(ele=>ele?.skuId==recordId?.skuId)||res.data.find(ele=>ele?.skuId==detailData?.skuId)
-        setRecordList(findItem)
-        setCommType(findItem?.commissionType)
-        form.setFieldsValue({
-          commissionType: findItem?.commissionType
-        })
-        form2.setFieldsValue({
-          name: findItem?.goodsName,
-        })
-        if(findItem){
-          const data = [
-            {
-              id: 1,
-              name: '店主（下单人）开店地址所属市办事处',
-              tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
-              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
-            },
-            {
-              id: 2,
-              name: '直推收益（VIP店主）-服务佣金(直)',
-              tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费',
-              price: findItem?.commissionType==2?findItem?.shoppervipChargeFee:amountTransform(findItem?.shoppervipChargeFee, '/')
-            },
-            {
-              id: 3,
-              name: <>
-                    <div>供应商-货款</div>
-                    <div>销售订单承担通道费</div>
+    if (detailData?.spuId||recordId?.spuId) {
+      getCommissionConfigBySpuId({ spuId: recordId?.spuId||detailData?.spuId,skuId:recordId?.skuId, orderType: 30 }).then(res => {
+        if(res.code==0){
+          const findItem=res?.data?.find(ele=>ele?.skuId==recordId?.skuId)||res?.data?.find(ele=>ele?.skuId==detailData?.skuId)
+          setRecordList(findItem)
+          setCommType(findItem?.commissionType)
+          form.setFieldsValue({
+            commissionType: findItem?.commissionType
+          })
+          form2.setFieldsValue({
+            name: findItem?.goodsName,
+          })
+          if(findItem){
+            const data = [
+              {
+                id: 1,
+                name: '店主（下单人）开店地址所属市办事处',
+                tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+                price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
+              },
+              {
+                id: 2,
+                name: '直推收益（VIP店主）-服务佣金(直)',
+                tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费',
+                price: findItem?.commissionType==2?findItem?.shoppervipChargeFee:amountTransform(findItem?.shoppervipChargeFee, '/')
+              },
+              {
+                id: 3,
+                name: <>
+                      <div>供应商-货款</div>
+                      <div>销售订单承担通道费</div>
+                      </>,
+              },
+               {
+                id: 4,
+                name:<>
+                    <div>培训中心</div>
+                    <div>管理奖励</div>
                     </>,
-            },
-             {
-              id: 4,
-              name:<>
-                  <div>培训中心</div>
-                  <div>管理奖励</div>
-                  </>,
-              price: findItem?.commissionType==2?findItem?.trainCenterManageFee:amountTransform(findItem?.trainCenterManageFee, '/')
-            },
-            {
-              id: 5,
-              name: <>
-                    <div>汇能科技</div>
-                    <div>积分/红包</div>
-                    </>,
-              price: findItem?.commissionType==2?findItem?.serviceFee:amountTransform(findItem?.serviceFee, '/')
-            },
-            {
-              id: 6,
-              name: <>
-                    <div>运营中心</div>
-                    <div>服务费佣金</div>
-                    </>,
-              price: findItem?.commissionType==2?findItem?.companyAgent:amountTransform(findItem?.companyAgent, '/')
-            },
-            {
-              id: 7,
-              name:<>
-                    <div>汇能</div>
-                    <div>平台运营成本</div>
-                    </>,
-              price: findItem?.commissionType==2?findItem?.platformOperateFee:amountTransform(findItem?.platformOperateFee, '/')
-            },
-            {
-              id: 8,
-              name: '汇能',
-              tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
-            },
-          ]
-          setEditableRowKeys(data?.map(item => item.id))
-          setDataSource(data)
+                price: findItem?.commissionType==2?findItem?.trainCenterManageFee:amountTransform(findItem?.trainCenterManageFee, '/')
+              },
+              {
+                id: 5,
+                name: <>
+                      <div>汇能科技</div>
+                      <div>积分/红包</div>
+                      </>,
+                price: findItem?.commissionType==2?findItem?.serviceFee:amountTransform(findItem?.serviceFee, '/')
+              },
+              {
+                id: 6,
+                name: <>
+                      <div>运营中心</div>
+                      <div>服务费佣金</div>
+                      </>,
+                price: findItem?.commissionType==2?findItem?.companyAgent:amountTransform(findItem?.companyAgent, '/')
+              },
+              {
+                id: 7,
+                name:<>
+                      <div>汇能</div>
+                      <div>平台运营成本</div>
+                      </>,
+                price: findItem?.commissionType==2?findItem?.platformOperateFee:amountTransform(findItem?.platformOperateFee, '/')
+              },
+              {
+                id: 8,
+                name: '汇能',
+                tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+              },
+            ]
+            setEditableRowKeys(data?.map(item => item.id))
+            setDataSource(data)
+          }
         }
       })
     }
