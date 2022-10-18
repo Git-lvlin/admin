@@ -29,6 +29,7 @@ const exportType = {
   normal: 'community-shopkeeper-export',
   cancelled: 'community-shopkeeper-cancelled-export',
   vip: 'store-export-vip-membershop',
+  life_house : 'store-export-life-house',
 }
 
 const StoreList = (props) => {
