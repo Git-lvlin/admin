@@ -128,6 +128,12 @@ const BannerAdmin = () => {
       title: '运营类目',
       dataIndex: 'wscIdName',
       search: false,
+      render: (_,data) =>{
+        if(data?.wscId2Name){
+          return <span>{_} - {data?.wscId2Name}</span>
+        }
+        return _
+      }
     },
     {
       title: '店主新集约价',
