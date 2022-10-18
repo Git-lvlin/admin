@@ -279,8 +279,8 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>3</div>
@@ -298,7 +298,7 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
       </div>
       <div className={styles.box_wrap}>
@@ -317,8 +317,8 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>5</div>
@@ -336,8 +336,8 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>6</div>
@@ -355,8 +355,8 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
       <div className={styles.box_wrap}>
         <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>7</div>
@@ -374,8 +374,8 @@ const BrandAuthorization=() => {
           <div>18%</div>
           <div style={{borderBottom:'none'}}>4320</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}>直推VIP店主</div>
-        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}>线上分账并提现</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px'}}></div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'400px',padding:'none'}}></div>
       </div>
     </div>
   );
