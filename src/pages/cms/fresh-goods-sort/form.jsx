@@ -32,7 +32,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { onClose, visible, setVisible, detailData, callback,multi } = props;
+  const { onClose, visible, setVisible, detailData, callback,multi,putaway } = props;
   const [form] = Form.useForm();
   const [editableKeys, setEditableRowKeys] = useState();
   const [dataSource, setDataSource] = useState();
@@ -184,7 +184,7 @@ export default (props) => {
                 setConfigUser(0)
               }}
               key='direct'
-              style={{display:multi?'none':'block'}}
+              style={{display:multi&&!putaway?'none':'block'}}
             >
             保存分成配置，不上架
           </Button>,
@@ -212,7 +212,7 @@ export default (props) => {
         rowKey="id"
         dataSource={dataSource}
         actionRef={actionRef}
-        request={multi?productList:getCommissionConfigBySpuId}
+        request={multi||putaway?productList:getCommissionConfigBySpuId}
         search={false}
         columns={columns}
         toolbar={{
