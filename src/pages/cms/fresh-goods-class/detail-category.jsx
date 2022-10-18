@@ -83,6 +83,7 @@ export default (props) => {
         await waitTime(values);
       }}
       {...formItemLayout}
+      className={styles.detail_category}
     >
       <ProFormText
         name="categoryName"
@@ -94,21 +95,21 @@ export default (props) => {
           {
             detailData?.items?.map(ele=>{
               return <div className={styles.box}>
-                      <div>{ele?.categoryName}</div>
+                      <div style={{width:'90px',textAlign:'center'}}>{ele?.categoryName}</div>
                       <div>
-                      <a onClick={() => { setPreviewVisible(true); }}>查看此分类商品</a>
-                      <Image
-                        width={200}
-                        style={{ display: 'none' }}
-                        src={ele?.icon}
-                        preview={{
-                          visible: previewVisible,
-                          src: ele?.icon,
-                          onVisibleChange: value => {
-                            setPreviewVisible(value)
-                          },
-                        }}
-                      />
+                        <a onClick={() => { setPreviewVisible(true); }}>查看此分类商品</a>
+                        <Image
+                          width={200}
+                          style={{ display: 'none' }}
+                          src={ele?.icon}
+                          preview={{
+                            visible: previewVisible,
+                            src: ele?.icon,
+                            onVisibleChange: value => {
+                              setPreviewVisible(value)
+                            },
+                          }}
+                        />
                       </div>
                      </div>
             })

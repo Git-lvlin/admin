@@ -221,30 +221,163 @@ const IntensiveGoods=() => {
 
 const BrandAuthorization=() => {
   return (
-    <>
+    <div className={styles.brand_authorization}>
       <p style={{marginLift:'100px'}}>约购健康生活馆服务费佣金分成</p>
-      <div className={styles.box_wrap}>
-        <div className={`${styles.box} ${styles.box_header}`}>序号</div>
-        <div className={styles.box}>
+      <div className={styles.box_wrap} style={{borderBottom:'none'}}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>序号</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'340px'}}>
           <div>约购健康生活馆加盟受权期限</div>
-          <div>约购健康生活馆加盟服务费（元）</div>
+          <div style={{borderBottom:'none'}}>约购健康生活馆加盟服务费（元）</div>
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
           <div>一年</div>
-          <div>12000</div>
+          <div style={{borderBottom:'none'}}>12000</div>
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
           <div>二年</div>
-          <div>18000</div>
+          <div style={{borderBottom:'none'}}>18000</div>
         </div>
-        <div className={styles.box}>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
           <div>三年</div>
-          <div>24000</div>
+          <div style={{borderBottom:'none'}}>24000</div>
         </div>
-        <div className={`${styles.box} ${styles.box_header}`}>分账对象</div>
-        <div className={`${styles.box} ${styles.box_header}`}>提成发放方式</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>分账对象</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>提成发放方式</div>
       </div>
-    </>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>1</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>直推佣金（仅限VIP资格）</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >服务费佣金（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>2</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'red'}}>办事处</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >服务费佣金（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>3</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'red'}}>运营中心</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >服务费佣金（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>4</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'red'}}>运营成本</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >服务费佣金（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>5</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'red'}}>服务费福利</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >赠送礼品</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>6</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>汇能利润</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}} >服务费佣金（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+      <div className={styles.box_wrap}>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',borderLeft:'none'}}>7</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center'}}>总计</div>
+        <div className={styles.box} style={{width:'170px',borderBottom:'none',display:'flex',alignItems:'center',justifyContent:'center',color:'red'}} >服务费佣金 发放比例（元）</div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>15%</div>
+          <div style={{borderBottom:'none'}}>1800</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>17%</div>
+          <div style={{borderBottom:'none'}}>3060</div>
+        </div>
+        <div className={styles.box} style={{borderBottom:'none',width:'70px'}}>
+          <div>18%</div>
+          <div style={{borderBottom:'none'}}>4320</div>
+        </div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px'}}>直推VIP店主</div>
+        <div className={`${styles.box} ${styles.box_header}`} style={{borderBottom:'none',width:'120px',padding:'none'}}>线上分账并提现</div>
+      </div>
+    </div>
   );
 };
   export default ()=>{

@@ -208,22 +208,23 @@ const BannerAdmin = () => {
         1:'已上架',
         0:'已下架',
       },
-      fieldProps: {
-        placeholder: '请选择上架状态'
-      },
       hideInTable: true,
       fieldProps: {
         placeholder: '请选择上架状态'
       }
     },
     {
-      title: '上采购列表上架状态',
+      title: '采购列表上架状态',
       dataIndex: 'goodsState',
-      valueEnum:{
-        1:'已上架',
-        0:'已下架',
-      },
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_)=>{
+        if(_){
+          return <span style={{ color:'#2ecc71' }}>已上架</span>
+        }else{
+          return <span style={{ color:'#e67e22' }}>已下架</span>
+        }
+
+      }
     },
     {
       title: '采购列表序号',
@@ -335,8 +336,8 @@ const BannerAdmin = () => {
         visible={visible}
         setVisible={setVisible}
         selectedRows={selectedRows}
-        callback={() => { actionRef.current.reload(); setSelectedRows(null) }}
-        onClose={() => { actionRef.current.reload(); setSelectedRows(null) }}
+        callback={() => { actionRef.current.reload(); setSelectedRows(null);setSelectedRowKeys([]) }}
+        onClose={() => { actionRef.current.reload(); setSelectedRows(null);setSelectedRowKeys([]) }}
       />}
       {formVisible && <Form
         visible={formVisible}

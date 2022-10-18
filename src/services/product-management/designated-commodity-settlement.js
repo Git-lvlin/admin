@@ -52,12 +52,14 @@ export const saveCommissionConfig = (params = {}, options = {}) => {
   }
 
 export const getCommissionLog = async (params, options = {}) => {
-const { current, pageSize, ...rest } = params;
+const { current, pageSize,updateTime, ...rest } = params;
 const res = await request('/auth/goods/product/getCommissionLog', {
     method: 'POST',
     data: {
     page: current,
     size: pageSize,
+    createTimeStart: updateTime&&updateTime[0],
+    createTimeEnd:updateTime&&updateTime[1],
     ...rest
     },
     ...options
