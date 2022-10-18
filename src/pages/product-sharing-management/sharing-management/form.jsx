@@ -42,13 +42,18 @@ const FromWrap = ({ value, onChange, content, right,bottom }) => (
 const bloodData = [
   {
     id: 1,
-    name: '店主（下单人）开店地址所属市办事处',
-    tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+    name: <>
+          <div>店主（下单人）开店地址所属市办事处</div>
+          <div style={{color:'#999999'}}>销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）</div>
+          </>
   },
   {
     id: 2,
-    name: '直推收益（VIP店主）-服务佣金(直)',
-    tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费',
+    name: <>
+          <div>直推收益（VIP店主）-服务佣金(直)</div>
+          <div>无相关角色，分成归属平台</div>
+          <div style={{color:'#999999'}}>无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费</div>
+          </>
   },
   {
     id: 3,
@@ -87,8 +92,10 @@ const bloodData = [
   },
   {
     id: 8,
-    name: '汇能',
-    tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+    name:<>
+        <div>汇能</div>
+        <div style={{color:'#999999'}}>没有对应角色的分成归此处,线下结算的角色资金先分账到平台</div>
+        </>
   },
 ]
 
@@ -154,29 +161,34 @@ export default (props) => {
   const [submitType, setSubmitType] = useState()
   useEffect(() => {
     if (detailData?.spuId||recordId?.spuId) {
-      getCommissionConfigBySpuId({ spuId: recordId?.spuId||detailData?.spuId,skuId:recordId?.skuId, orderType: 30 }).then(res => {
+      getCommissionConfigBySpuId({ spuId: recordId?.spuId||detailData?.spuId, orderType: 30 }).then(res => {
         if(res.code==0&&res.data.length!=0){
           const findItem=res?.data?.find(ele=>ele?.skuId==recordId?.skuId)||res?.data?.find(ele=>ele?.skuId==detailData?.skuId)
-          setRecordList(findItem)
-          setCommType(findItem?.commissionType)
-          form.setFieldsValue({
-            commissionType: findItem?.commissionType
-          })
-          form2.setFieldsValue({
-            name: findItem?.goodsName,
-          })
           if(findItem){
+            setRecordList(findItem)
+            setCommType(findItem?.commissionType)
+            form.setFieldsValue({
+              commissionType: findItem?.commissionType
+            })
+            form2.setFieldsValue({
+              name: findItem?.goodsName,
+            })
             const data = [
               {
                 id: 1,
-                name: '店主（下单人）开店地址所属市办事处',
-                tip: '销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）',
+                name: <>
+                      <div>店主（下单人）开店地址所属市办事处</div>
+                      <div style={{color:'#999999'}}>销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）</div>
+                      </>,
                 price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
               },
               {
                 id: 2,
-                name: '直推收益（VIP店主）-服务佣金(直)',
-                tip: '无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费',
+                name: <>
+                      <div>直推收益（VIP店主）-服务佣金(直)</div>
+                      <div>无相关角色，分成归属平台</div>
+                      <div style={{color:'#999999'}}>无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费</div>
+                      </>,
                 price: findItem?.commissionType==2?findItem?.shoppervipChargeFee:amountTransform(findItem?.shoppervipChargeFee, '/')
               },
               {
@@ -220,8 +232,10 @@ export default (props) => {
               },
               {
                 id: 8,
-                name: '汇能',
-                tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
+                name: <>
+                      <div>汇能</div>
+                      <div style={{color:'#999999'}}>没有对应角色的分成归此处,线下结算的角色资金先分账到平台</div>
+                      </>
               },
             ]
             setEditableRowKeys(data?.map(item => item.id))
@@ -356,19 +370,6 @@ export default (props) => {
           dataIndex: 'name',
           align: 'center',
           editable: false,
-          render: (_, data) => {
-            return <p>
-              {_}
-              {data?.id<3&&<Tooltip placement="top" title={data?.tip}>
-                            <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-                          </Tooltip>
-              }
-              {data?.id==8&&<Tooltip placement="top" title={data?.tip}>
-                            <QuestionCircleOutlined style={{ marginLeft: 4 }} />
-                          </Tooltip>
-              }
-            </p>
-          }
         }
       ]
     },

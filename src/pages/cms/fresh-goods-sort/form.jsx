@@ -195,7 +195,6 @@ export default (props) => {
               setConfigUser(1)
             }}
             key='adhibition'
-            style={{display:multi?'none':'block'}}
           >
             应用结算配置，并上架
           </Button>
@@ -222,7 +221,6 @@ export default (props) => {
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         postData={(data)=>{
           setRecordList(data)
-          // setRowKeys(data[0]?.id)
           return data
         }}
         params={{
@@ -230,24 +228,8 @@ export default (props) => {
           orderType: 30
         }}
         pagination={false}
-        // rowSelection={{
-        //   renderCell:()=>{
-        //     return null
-        //   },
-        //   type:'radio',
-        //   selectedRowKeys:[rowKeys],
-          
-        // }}
         tableAlertRender={false}
-        // onRow={(record) => {
-        //   return {  
-        //     onClick: async () => {
-        //       setRowKeys(record.id)
-        //     },
-        //   };
-        // }}
         />
-        {/* <a style={{float:'right'}} onClick={()=>{setFormVisible(true)}}>修改结算配置</a> */}
         {formVisible && <Edit
           visible={formVisible}
           setVisible={setFormVisible}
