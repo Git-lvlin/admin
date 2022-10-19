@@ -21,6 +21,12 @@ const IndicatorDataDetails = ({dateTimeRange, type, index, dataType}) => {
       width: '80%',
       children: [
         {
+          title: 'B端新集约',
+          dataIndex: 'bSnValue',
+          align: 'center',
+          sorter: (a, b) => a.bPsValue - b.bPsValue
+        },
+        {
           title: 'B端普适品',
           dataIndex: 'bPsValue',
           align: 'center',
@@ -114,15 +120,16 @@ const IndicatorDataDetails = ({dateTimeRange, type, index, dataType}) => {
         <ProTable.Summary fixed>
           <ProTable.Summary.Row align='center'>
             <ProTable.Summary.Cell index={0}>{sumaryData?.dateTime}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={1}>{sumaryData?.bPsValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={2}>{sumaryData?.bSxValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={3}>{sumaryData?.bSzValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={4}>{sumaryData?.cMiaoValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={5}>{sumaryData?.cPinValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={6}>{sumaryData?.cMangValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={7}>{sumaryData?.cQianValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={8}>{sumaryData?.cYangValue}</ProTable.Summary.Cell>
-            <ProTable.Summary.Cell index={9}>{sumaryData?.c1688Value}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={1}>{sumaryData?.bSnValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={2}>{sumaryData?.bPsValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={3}>{sumaryData?.bSxValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={4}>{sumaryData?.bSzValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={5}>{sumaryData?.cMiaoValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={6}>{sumaryData?.cPinValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={7}>{sumaryData?.cMangValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={8}>{sumaryData?.cQianValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={9}>{sumaryData?.cYangValue}</ProTable.Summary.Cell>
+            <ProTable.Summary.Cell index={10}>{sumaryData?.c1688Value}</ProTable.Summary.Cell>
           </ProTable.Summary.Row>
         </ProTable.Summary>
       )}
