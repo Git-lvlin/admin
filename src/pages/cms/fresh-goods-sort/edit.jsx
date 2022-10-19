@@ -11,9 +11,8 @@ import ProForm,{
   ProFormDependency,
   ProFormSelect
 } from '@ant-design/pro-form';
-import { saveCommissionConfig, getCommissionConfigBySpuId } from '@/services/product-management/designated-commodity-settlement';
+import { saveCommissionConfig, getCommissionConfigBySpuId,productList } from '@/services/product-management/designated-commodity-settlement';
 import { PlusOutlined } from '@ant-design/icons';
-import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
