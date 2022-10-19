@@ -120,12 +120,10 @@ export default (props) => {
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
-                    console.log('fields',fields)
-                    console.log('field',field)
                     return (
                       <List.Item
                         key={field.key}
-                        extra={fields.length !== 1 &&
+                        extra={!detailData?.items[field.name]?.id&&
                           <Button style={{ marginLeft: 10, width: 80 }} onClick={() => { remove(field.name) }} type="primary" danger>
                             删除
                           </Button>}
