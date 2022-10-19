@@ -146,7 +146,8 @@ const IntensiveGoods=() => {
         valueType: 'select',
         valueEnum: {
           1: '生效中',
-          0: '已失效'
+          0: '已失效',
+          2: '已关闭'
         },
         hideInTable: true,
         order: 3
