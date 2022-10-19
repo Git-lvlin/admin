@@ -10,6 +10,7 @@ import AmendModel from './amend-model'
 import ProForm,{ ProFormText } from '@ant-design/pro-form';
 import ServiceCharge from './service-charge' 
 import Handicapped from './handicapped-person' 
+import LifestyleMuseum from './lifestyle-museum'
 import { InfoCircleFilled } from '@ant-design/icons';
 const { TabPane } = Tabs
 
@@ -398,6 +399,11 @@ export default (props) =>{
           <TabPane tab="绿色通道缴费" key="3">
             {
               seleType==3&&<Handicapped/>
+            }
+          </TabPane>
+          <TabPane tab="生活馆品牌授权费" key="4">
+            {
+              seleType==4&&<LifestyleMuseum/>
             }
           </TabPane>
         </Tabs>
