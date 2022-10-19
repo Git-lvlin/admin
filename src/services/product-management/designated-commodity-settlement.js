@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import moment from 'moment';
 
 
 export const getCommissionList = async (params, options = {}) => {
@@ -58,8 +59,8 @@ const res = await request('/auth/goods/product/getCommissionLog', {
     data: {
     page: current,
     size: pageSize,
-    createTimeStart: updateTime&&updateTime[0],
-    createTimeEnd:updateTime&&updateTime[1],
+    createTimeStart: updateTime&&moment(updateTime[0]).unix(),
+    createTimeEnd:updateTime&&moment(updateTime[1]).unix(),
     ...rest
     },
     ...options
