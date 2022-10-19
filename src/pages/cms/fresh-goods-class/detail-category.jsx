@@ -12,6 +12,7 @@ import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { saveCategory2 } from '@/services/cms/fresh-goods-class';
 import Upload from '@/components/upload';
 import styles from './detail.less';
+import { history, connect } from 'umi';
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -97,19 +98,7 @@ export default (props) => {
               return <div className={styles.box}>
                       <div style={{width:'90px',textAlign:'center'}}>{ele?.categoryName}</div>
                       <div>
-                        <a onClick={() => { setPreviewVisible(true); }}>查看此分类商品</a>
-                        <Image
-                          width={200}
-                          style={{ display: 'none' }}
-                          src={ele?.icon}
-                          preview={{
-                            visible: previewVisible,
-                            src: ele?.icon,
-                            onVisibleChange: value => {
-                              setPreviewVisible(value)
-                            },
-                          }}
-                        />
+                        <a onClick={() => { history.push('/cms/fresh-goods-sort?wscId='+ele?.id);setVisible(false) }}>查看此分类商品</a>
                       </div>
                      </div>
             })
