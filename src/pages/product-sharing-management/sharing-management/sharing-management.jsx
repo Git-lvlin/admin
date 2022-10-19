@@ -248,8 +248,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.directVipStore?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.directVipStore?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.directVipStore?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.directVipStore?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
       hideInSearch: true,
@@ -260,8 +260,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.cityOffice?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.cityOffice?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.cityOffice?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.cityOffice?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
       hideInSearch: true,
@@ -272,8 +272,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.operationCenter?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.operationCenter?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.operationCenter?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.operationCenter?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
               </>
       },
       hideInSearch: true,
@@ -284,8 +284,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.operationCost?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.operationCost?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.operationCost?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.operationCost?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
       hideInSearch: true,
@@ -296,8 +296,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.welfare?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.welfare?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.welfare?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.welfare?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
       hideInSearch: true,
@@ -308,8 +308,8 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.platform?.amount,'/').toFixed(2)}</p>
-                <p>{amountTransform(data?.platform?.amount/data?.periodAmount,'*')}%</p>
+                <p>{amountTransform(data?.collectingInfo?.platform?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.platform?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
       hideInSearch: true,
@@ -347,7 +347,7 @@ const BrandAuthorization=() => {
             activeKey == '1' && <IntensiveGoods type={activeKey}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="0" tab="店铺品牌授权费">
+        <ProCard.TabPane key="0" tab="生活馆服务费">
           {
             activeKey == '0' && <BrandAuthorization type={activeKey}/>
           }

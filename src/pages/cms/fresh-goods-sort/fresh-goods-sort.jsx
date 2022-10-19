@@ -24,8 +24,6 @@ const BannerAdmin = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
-  const [multiSpecification, setMultiSpecification] = useState(0)
-  const [putaway, setPutaway] = useState(0)
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -192,7 +190,6 @@ const BannerAdmin = () => {
          setDetailData(record);
          if(record?.isMultiSpec==1){
           setFormVisible(true)
-          setMultiSpecification(1)
          }else{
           setEditVisible(true)
          }
@@ -247,7 +244,7 @@ const BannerAdmin = () => {
       render:(text, record, _, action)=>{
         return <>
          {record.goodsState==1&&<a onClick={() => { setVisible(true);setSelectedRows([record?.spuId]) }}>下架</a>}&nbsp;
-         {record.goodsState==0&&<a key='putaway' onClick={()=>{setDetailData(record);setFormVisible(true);setPutaway(1)}}>上架</a>}
+         {record.goodsState==0&&<a key='putaway' onClick={()=>{setDetailData(record);setFormVisible(true)}}>上架</a>}
         </>
       },
     }, 
@@ -343,11 +340,9 @@ const BannerAdmin = () => {
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
-        onClose={() => { setFormVisible(false); setDetailData(null);setMultiSpecification(null);setPutaway(null) }}
+        onClose={() => { setFormVisible(false); setDetailData(null);}}
         detailData={detailData}
-        callback={() => { actionRef.current.reload();setDetailData(null);setMultiSpecification(null);setPutaway(null) }}
-        multi={multiSpecification}
-        putaway={putaway}
+        callback={() => { actionRef.current.reload();setDetailData(null);}}
       />}
       {editVisible && <Edit
         visible={editVisible}

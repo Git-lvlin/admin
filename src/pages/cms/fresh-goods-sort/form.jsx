@@ -31,7 +31,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { onClose, visible, setVisible, detailData, callback,multi,putaway } = props;
+  const { onClose, visible, setVisible, detailData, callback,putaway } = props;
   const [form] = Form.useForm();
   const [editableKeys, setEditableRowKeys] = useState();
   const [dataSource, setDataSource] = useState();
@@ -162,6 +162,22 @@ export default (props) => {
     }
   ];
 
+  useEffect(async ()=>{
+    const arr=await getCommissionConfigBySpuId({spuId: detailData?.spuId,orderType: 30}).then(res=>{
+                      if(res.code==0){
+                        return res.data
+                      }
+                    })
+    const brr=await productList({spuId: detailData?.spuId,orderType: 30}).then(res=>{
+                        return res.data
+                    })
+
+    let ids=arr.map(ele=>ele?.skuId)
+    let brr2=brr.filter(item=>!(ids.indexOf(item?.skuId)>-1))
+    setDataSource([...arr,...brr2])
+    setRecordList(arr)
+  },[])
+  
   return (
     <DrawerForm
       onVisibleChange={setVisible}
@@ -177,16 +193,16 @@ export default (props) => {
       submitter={{
         render: ({ form }) => {
           return [
-            <Button
-              onClick={() => {
-                form?.submit()
-                setConfigUser(0)
-              }}
-              key='direct'
-              style={{display:multi&&!putaway?'none':'block'}}
-            >
-            保存分成配置，不上架
-          </Button>,
+          //   <Button
+          //     onClick={() => {
+          //       form?.submit()
+          //       setConfigUser(0)
+          //     }}
+          //     key='direct'
+          //     style={{display&&!putaway?'none':'block'}}
+          //   >
+          //   保存分成配置，不上架
+          // </Button>,
           <Button
             type='primary'
             onClick={() => {
@@ -211,21 +227,12 @@ export default (props) => {
         rowKey="id"
         dataSource={dataSource}
         actionRef={actionRef}
-        request={multi||putaway?productList:getCommissionConfigBySpuId}
         search={false}
         columns={columns}
         toolbar={{
             settings: false
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
-        postData={(data)=>{
-          setRecordList(data)
-          return data
-        }}
-        params={{
-          spuId: detailData?.spuId,
-          orderType: 30
-        }}
         pagination={false}
         tableAlertRender={false}
         />
