@@ -71,20 +71,31 @@ export default () => {
       order: 2
     },
     {
-      title: '供应商（货款）',
-      dataIndex: 'retailSupplyPrice',
+      title: '分成类型',
+      dataIndex: 'commissionType',
       align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1: '金额',
+        2: '百分比'
+      },
       hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
-      }
     },
+    // {
+    //   title: '供应商（货款）',
+    //   dataIndex: 'retailSupplyPrice',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_,data)=>{
+    //       return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
+    //   }
+    // },
     {
       title: '市办事处',
       dataIndex: 'cityManageFee',
       align: 'center',
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+      render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       },
       hideInSearch: true,
     },
@@ -93,8 +104,8 @@ export default () => {
       dataIndex: 'shoppervipChargeFee',
       align: 'center',
       hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+      render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
@@ -102,8 +113,8 @@ export default () => {
       dataIndex: 'companyAgent',
       align: 'center',
       hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+      render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
@@ -111,8 +122,8 @@ export default () => {
       dataIndex: 'serviceFee',
       align: 'center',
       hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+      render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {
@@ -120,8 +131,8 @@ export default () => {
       dataIndex: 'company',
       align: 'center',
       hideInSearch: true,
-      render: (_)=>{
-        return amountTransform(_,'/').toFixed(2)
+      render: (_,data)=>{
+          return data?.commissionType==2?<span>{parseFloat(_)}%</span>:<span>￥{amountTransform(_,'/').toFixed(2)}</span>
       }
     },
     {

@@ -120,6 +120,8 @@ export default (props) => {
                   itemLayout="horizontal"
                 >
                   {fields.map((field) => {
+                    console.log('fields',fields)
+                    console.log('field',field)
                     return (
                       <List.Item
                         key={field.key}
