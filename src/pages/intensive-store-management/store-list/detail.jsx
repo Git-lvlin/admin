@@ -165,7 +165,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                       <div>开通健康生活馆时间：{detailData.lifeHouse.lifeHouseOpenTime}</div>
                     </div>
                     <div style={{ display: 'flex', marginBottom: 10 }}>
-                      <div>开通健康生活馆期限：{detailData.lifeHouse.lifeHouseOpenTime}</div>
+                      <div>开通健康生活馆期限：{detailData.lifeHouse.lifeHousePeriod}</div>
                     </div>
                     <div style={{ display: 'flex', marginBottom: 10 }}>
                       <div>健康生活馆截止时间：{detailData.lifeHouse.lifeHouseExpireTime}</div>
