@@ -238,7 +238,7 @@ const BrandAuthorization=() => {
       dataIndex: 'periodAmount',
       align: 'center',
       render: (_)=>{
-        return <span style={{color:'red'}}>{amountTransform(_,'/').toFixed(2)}</span>
+        return <span style={{color:'red'}}>￥{amountTransform(_,'/').toFixed(2)}</span>
       },
       hideInSearch: true,
     },
@@ -248,7 +248,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.directVipStore?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.directVipStore?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.directVipStore?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
@@ -260,7 +260,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.cityOffice?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.cityOffice?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.cityOffice?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
@@ -272,7 +272,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.operationCenter?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.operationCenter?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.operationCenter?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
               </>
       },
@@ -284,7 +284,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.operationCost?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.operationCost?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.operationCost?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
@@ -296,7 +296,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.welfare?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.welfare?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.welfare?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
@@ -308,7 +308,7 @@ const BrandAuthorization=() => {
       align: 'center',
       render: (_,data)=>{
         return <>
-                <p>{amountTransform(data?.collectingInfo?.platform?.amount,'/').toFixed(2)}</p>
+                <p>￥{amountTransform(data?.collectingInfo?.platform?.amount,'/').toFixed(2)}</p>
                 <p>（{amountTransform(amountTransform(data?.collectingInfo?.platform?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
                </>
       },
