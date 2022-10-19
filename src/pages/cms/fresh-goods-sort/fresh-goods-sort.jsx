@@ -12,7 +12,8 @@ import GcCascader from './gc-cascader'
 import Form from './form';
 import Edit from './edit';
 
-const BannerAdmin = () => {
+const BannerAdmin = (props) => {
+  let wscId = props.location.query.wscId
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
   const [sortVisible, setSortVisible] = useState(false);
@@ -29,7 +30,9 @@ const BannerAdmin = () => {
     goodsClassList().then((res) => {
       setGoodsClass(res.data.map(item => ({ label: item.categoryName, value: item.id })))
     })
+    console.log('props',props)
     return {}
+
   }, [])
 
   const push = (selectedRowKeys) => {
@@ -258,13 +261,11 @@ const BannerAdmin = () => {
         actionRef={actionRef}
         request={getSpuList}
         params={{
-          orderType:30
+          orderType:30,
+          wscId:wscId
         }}
         search={{
           labelWidth: 'auto',
-        }}
-        params={{
-          orderType: 30
         }}
         headerTitle={selected&&<Space size={24}>
         <span>
