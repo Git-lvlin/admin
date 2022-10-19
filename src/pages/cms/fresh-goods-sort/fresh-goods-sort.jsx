@@ -13,7 +13,7 @@ import Form from './form';
 import Edit from './edit';
 
 const BannerAdmin = (props) => {
-  let wscId = props.location.query.wscId
+  let { wscId,wscId2 }= props.location.query
   const actionRef = useRef();
   const [visible, setVisible] = useState(false);
   const [sortVisible, setSortVisible] = useState(false);
@@ -260,9 +260,11 @@ const BannerAdmin = (props) => {
         columns={columns}
         actionRef={actionRef}
         request={getSpuList}
-        params={{
+        params={wscId?{
           orderType:30,
-          wscId:wscId
+          wscId:[parseInt(wscId),parseInt(wscId2)]
+        }:{
+          orderType:30,
         }}
         search={{
           labelWidth: 'auto',
