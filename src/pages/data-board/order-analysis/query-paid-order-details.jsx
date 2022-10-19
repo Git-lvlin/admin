@@ -165,7 +165,6 @@ const QueryPaidOrderDetails = () => {
 
   return (
     <ProTable
-      rowKey="orderID"
       style={{marginTop: '20px'}}
       columns={columns}
       params={{}}
