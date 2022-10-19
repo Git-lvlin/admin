@@ -38,6 +38,7 @@ const OrderTransactionData = ({timeSelect, time, status}) => {
         17: '盲盒订单',
         18: '签到订单',
         22: '样品订单',
+        30: 'B端新集约订单',
         91: 'B端普适品',
         92: 'B端精品生鲜',
         93: 'B端散装生鲜',
