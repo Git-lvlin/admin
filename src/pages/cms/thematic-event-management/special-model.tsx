@@ -102,7 +102,6 @@ export default (props:PropsItem) => {
     if(savePrevie){
       saveSubjectActiveConfig(params).then(res=>{
         if(res.code==0){
-          // callback()
           if(record?.id&&!copy){
             message.success('编辑成功')
           }else if(copy){
@@ -111,6 +110,7 @@ export default (props:PropsItem) => {
             message.success('新增成功')
           }
           setSavePrevie2(!savePrevie2)
+          setSavePrevie(0)
         }
       })
     }else{
@@ -364,7 +364,7 @@ export default (props:PropsItem) => {
               name="imgUrl1"
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} dimension={{ width: 750,height: 500 }} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
@@ -413,7 +413,7 @@ export default (props:PropsItem) => {
                 style={{marginLeft:'50px'}}
               >
                 <FromWrap
-                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
+                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750,height: 500 }} maxCount={1} accept="image/png" />}
                   right={(value) => {
                     return (
                       <dl>
@@ -438,7 +438,7 @@ export default (props:PropsItem) => {
               </Form.Item>
               <Form.Item name="lineWidth2" label='边框'>
                   <FromWrap
-                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 }} maxCount={1} accept="image/png" />}
+                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750,height: 500 }} maxCount={1} accept="image/png" />}
                     right={(value) => {
                       return (
                         <dl>
