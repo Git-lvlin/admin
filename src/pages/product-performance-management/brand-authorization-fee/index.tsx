@@ -10,7 +10,7 @@ import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
 import { storeLifePm, storeLifePmStats } from "@/services/product-performance-management/brand-authorization-fee"
-import { amountTransform, numFormat } from '@/utils/utils'
+import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
 import Export from '@/components/export'
