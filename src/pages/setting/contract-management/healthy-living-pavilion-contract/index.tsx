@@ -11,6 +11,7 @@ import { MemberLifeHouse } from "@/services/setting/contract-management"
 
 const HealthyLivingPavilionContract: FC = () => {
   const [storeId, setStoreId] = useState(JSON.parse(window.localStorage.getItem('managed') as string)?.storeId)
+  const [contractId, setContractId] = useState(JSON.parse(window.localStorage.getItem('managed') as string)?.contractId)
   const form = useRef<FormInstance>()
 
   const columns: ProColumns<HealthyLivingPavilionProps>[] = [
@@ -45,6 +46,7 @@ const HealthyLivingPavilionContract: FC = () => {
       title: '合同ID',
       dataIndex: 'contractId',
       align: 'center',
+      initialValue: contractId,
       render: (_, r)=> {
         if(r.contractUrl) {
           return <a target="_blank" href={`${r.contractUrl}`}>{_}</a>
@@ -75,6 +77,7 @@ const HealthyLivingPavilionContract: FC = () => {
       onReset={()=>{
         setTimeout(()=> {
           setStoreId(undefined)
+          setContractId(undefined)
           form.current?.resetFields()
           form.current?.submit()
         }, 0)
