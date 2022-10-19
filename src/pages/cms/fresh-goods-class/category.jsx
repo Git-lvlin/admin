@@ -123,7 +123,7 @@ export default (props) => {
                     return (
                       <List.Item
                         key={field.key}
-                        extra={!detailData?.items[field.name]?.id&&
+                        extra={detailData?.items&&!detailData?.items[field.name]?.id&&
                           <Button style={{ marginLeft: 10, width: 80 }} onClick={() => { remove(field.name) }} type="primary" danger>
                             删除
                           </Button>}
