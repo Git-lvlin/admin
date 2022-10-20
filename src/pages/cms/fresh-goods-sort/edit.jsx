@@ -328,7 +328,7 @@ export default (props) => {
               {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
               {commType==2&&<span style={{marginLeft:'415px'}}> =  {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight, '/'))}{commType==2?'元':'%'} </span>}
               </p>
-            <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
+            <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价+平均运费）</p>
           </>
         } else if (_?.entry?.id == 7) {
           return <FromWrap
