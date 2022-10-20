@@ -40,6 +40,7 @@ export default (props) => {
   const actionRef = useRef();
   const isPurchase = useLocation().pathname.includes('purchase')
   const [datas,setDatas] = useState()
+  const [loding,setLoding] = useState(0)
   const submit = (values) => {
     if(recordList.length==0){
       return message.error('请先修改结算配置!!')
@@ -173,7 +174,7 @@ export default (props) => {
     let brr2=brr.filter(item=>!(ids.indexOf(item?.skuId)>-1))
     setDataSource([...arr,...brr2])
     setRecordList(arr)
-  },[])
+  },[loding])
   
   return (
     <DrawerForm
@@ -236,9 +237,9 @@ export default (props) => {
         {formVisible && <Edit
           visible={formVisible}
           setVisible={setFormVisible}
-          onClose={() => { setFormVisible(false)}}
+          onClose={() => { actionRef.current.reload()}}
           detailData={datas}
-          callback={() => { actionRef.current.reload() }}
+          callback={() => { actionRef.current.reload();setLoding(loding+1)}}
         />}
     </DrawerForm>
   );
