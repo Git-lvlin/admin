@@ -256,7 +256,7 @@ const StoreList = (props) => {
       hideInSearch: true,
       valueEnum: {
         1: '系统免费开通',
-        0: '缴授权法开通'
+        0: '缴授权费开通'
       },
       hideInTable: storeType !== 'life_house'
     },
@@ -912,7 +912,7 @@ const StoreList = (props) => {
       valueType: 'select',
       valueEnum: {
         1: '系统免费开通',
-        0: '缴授权法开通'
+        0: '缴授权费开通'
       },
       hideInSearch: storeType !== 'life_house',
       hideInTable: true,

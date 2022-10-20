@@ -52,6 +52,12 @@ export default {
           wrappers: [RouteWatcher],
         },
         {
+          name: 'supplier-order-documentary',
+          path: '/order-management/intensive-order/supplier-order-documentary',
+          component: './order-management/intensive-order/supplier-order',
+          wrappers: [RouteWatcher],
+        },
+        {
           name: 'supplier-order-detail',
           path: '/order-management/intensive-order/supplier-order-detail/:id',
           component: './order-management/intensive-order/supplier-order-detail',
