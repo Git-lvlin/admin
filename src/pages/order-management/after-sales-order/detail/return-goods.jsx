@@ -133,7 +133,7 @@ const ReturnGoods = ({data}) => {
       title: '小计',
       dataIndex: 'subtotal',
       align: 'center',
-      render: (_, records) => `¥${amountTransform((records?.skuSalePrice * records?.returnNum), '/').toFixed(2)}`
+      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     },
     {
       title: '实付金额',

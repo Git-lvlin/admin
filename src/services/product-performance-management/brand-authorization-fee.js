@@ -17,7 +17,16 @@ export const storeLifePm = async (params, options = {}) => {
     },
     ...options
   })
-  const item = await request('/auth/java-admin/report/config/storeLifePmStats', {
+  return {
+    data: res.data.records,
+    total: res.data.total,
+    success: res.success
+  }
+}
+
+export const storeLifePmStats = async (params, options = {}) => {
+  const { payTime, area, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/storeLifePmStats', {
     method: 'POST',
     data: {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
@@ -30,7 +39,7 @@ export const storeLifePm = async (params, options = {}) => {
     ...options
   })
   return {
-    data: [{res: res.data.records, total: item.data[0]}],
+    data: res.data[0],
     total: res.data.total,
     success: res.success
   }
