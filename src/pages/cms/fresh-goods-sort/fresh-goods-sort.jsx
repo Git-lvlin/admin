@@ -30,9 +30,7 @@ const BannerAdmin = (props) => {
     goodsClassList().then((res) => {
       setGoodsClass(res.data.map(item => ({ label: item.categoryName, value: item.id })))
     })
-    console.log('props',props)
     return {}
-
   }, [])
 
   const push = (selectedRowKeys) => {
@@ -305,13 +303,6 @@ const BannerAdmin = (props) => {
             <span>
               已选 {selectedRowKeys.length} 项
               <span>添加到</span>&nbsp;
-              {/* <Select
-                placeholder="请选择运营类目"
-                options={goodsClass}
-                value={itemClass}
-                onChange={changeHandle}
-                allowClear
-              /> */}
               <GcCascader onChange={changeHandle} placeholder="请选择运营类目"/>
               <a style={{ marginLeft: 8 }} onClick={() => {push(selectedRowKeys)}}>
                 确定
