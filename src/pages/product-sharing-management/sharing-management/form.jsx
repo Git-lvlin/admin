@@ -59,7 +59,7 @@ const bloodData = [
     id: 3,
     name: <>
           <div>供应商-货款</div>
-          <div>销售订单承担通道费</div>
+          <div>批发供货价+平均运费，销售订单承担通道费</div>
           </>,
   },
    {
@@ -100,7 +100,6 @@ const bloodData = [
 ]
 
 const CusAutoComplete = ({ value, onChange, onChange2,setUserList, userList, options, ...rest }) => {
-  console.log('value',value)
   const changeHandle = (e) => {
     const findItem = userList?.find(item => item.skuId === e)
     if (findItem) {
@@ -195,7 +194,7 @@ export default (props) => {
                 id: 3,
                 name: <>
                       <div>供应商-货款</div>
-                      <div>销售订单承担通道费</div>
+                      <div>批发供货价+平均运费，销售订单承担通道费</div>
                       </>,
               },
                {
@@ -313,7 +312,7 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=recordId?amountTransform(recordId?.distributePrice - amountTransform(sum, '*')-recordId?.wholesaleSupplyPrice, '/'):amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/')
+    const company=recordId?amountTransform(recordId?.distributePrice - amountTransform(sum, '*')-recordId?.wholesaleSupplyPrice-recordId?.wholesaleFreight, '/'):amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice-recordList?.wholesaleFreight, '/')
     return myToFixed(company)
   }
 
@@ -337,10 +336,10 @@ export default (props) => {
   }
 
   const proportion2 = (_) =>{
-      const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
-                                  amountTransform(amountTransform(recordList?.distributePrice,'/')*amountTransform(recordList?.wholesaleSupplyPrice,'/'),'/')
-      const price=commType==2?amountTransform(amountTransform(recordId?.wholesaleSupplyPrice,'/')/amountTransform(recordId?.distributePrice,'/'),'*'):
-                              amountTransform(recordId?.wholesaleSupplyPrice/recordId?.distributePrice,'*')
+      const editPrice=commType==2?amountTransform(amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight),'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
+                                  amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight)/recordList?.distributePrice,'*')
+      const price=commType==2?amountTransform(amountTransform((recordId?.wholesaleSupplyPrice+recordId?.wholesaleFreight),'/')/amountTransform(recordId?.distributePrice,'/'),'*'):
+                              amountTransform((recordId?.wholesaleSupplyPrice+recordId?.wholesaleFreight)/recordId?.distributePrice,'*')
     return editPrice&&myToFixed(editPrice)||myToFixed(price)
   }
 
@@ -405,10 +404,10 @@ export default (props) => {
               return <>
                 <p>
                 
-                {commType==1&&<span>{recordId?myToFixed(amountTransform(recordId?.wholesaleSupplyPrice, '/')):myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==1?'元':'%'}</span>}
+                {commType==1&&<span>{recordId?myToFixed(amountTransform((recordId?.wholesaleSupplyPrice+recordId?.wholesaleFreight), '/')):myToFixed(amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight), '/'))}{commType==1?'元':'%'}</span>}
                 {commType==1&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}{commType==2?'元':'%'}</span>}
                 {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
-                {commType==2&&<span style={{marginLeft:'415px'}}> =  {recordId?myToFixed(amountTransform(recordId?.wholesaleSupplyPrice, '/')):myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==2?'元':'%'} </span>}
+                {commType==2&&<span style={{marginLeft:'415px'}}> =  {recordId?myToFixed(amountTransform((recordId?.wholesaleSupplyPrice+recordId?.wholesaleFreight), '/')):myToFixed(amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight), '/'))}{commType==2?'元':'%'} </span>}
                 </p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价，非实物商品时固定为0）</p>
               </>

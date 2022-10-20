@@ -71,8 +71,8 @@ const bloodData = [
   {
     id: 5,
     name: <>
-          <div>供应商</div>
-          <div>货款</div>
+          <div>供应商货款</div>
+          <div>批发供货价+平均运费</div>
           </>,
   },
   {
@@ -154,8 +154,8 @@ export default (props) => {
             {
               id: 5,
               name: <>
-                    <div>供应商</div>
-                    <div>货款</div>
+                    <div>供应商货款</div>
+                    <div>批发供货价+平均运费</div>
                     </>,
             },
             {
@@ -190,7 +190,14 @@ export default (props) => {
     if(detailData.commissionConfig==0){
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
         setCommType(2)
-        setRecordList({skuId:res.data[0]?.skuId,goodsName:res.data[0]?.goodsName,distributePrice:res.data[0]?.distributePrice,spuId:res.data[0]?.spuId,wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice})
+        setRecordList({
+          skuId:res.data[0]?.skuId,
+          goodsName:res.data[0]?.goodsName,
+          distributePrice:res.data[0]?.distributePrice,
+          spuId:res.data[0]?.spuId,
+          wholesaleSupplyPrice:res.data[0]?.wholesaleSupplyPrice,
+          wholesaleFreight:res.data[0]?.wholesaleFreight
+        })
       })
     }
   }, [])
@@ -256,7 +263,7 @@ export default (props) => {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
     }
-    const company=amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice, '/')
+    const company=amountTransform(recordList?.distributePrice - amountTransform(sum, '*')-recordList?.wholesaleSupplyPrice-recordList?.wholesaleFreight, '/')
     return myToFixed(company)
   }
 
@@ -278,8 +285,8 @@ export default (props) => {
   }
 
   const proportion2 = (_) =>{
-    const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
-                                amountTransform(recordList?.wholesaleSupplyPrice/recordList?.distributePrice,'*') 
+    const editPrice=commType==2?amountTransform(amountTransform(recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight,'/')/amountTransform(recordList?.distributePrice,'/'),'*'):
+                                amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight)/recordList?.distributePrice,'*') 
   return editPrice&&myToFixed(editPrice)
   }
 
@@ -316,10 +323,10 @@ export default (props) => {
         if (_?.entry?.id == 5) {
           return <>
             <p>
-              {commType==1&&<span>{myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==1?'元':'%'}</span>}
+              {commType==1&&<span>{myToFixed(amountTransform(recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight, '/'))}{commType==1?'元':'%'}</span>}
               {commType==1&&<span style={{marginLeft:'415px'}}>= {proportion2(_)}{commType==2?'元':'%'}</span>}
               {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
-              {commType==2&&<span style={{marginLeft:'415px'}}> =  {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice, '/'))}{commType==2?'元':'%'} </span>}
+              {commType==2&&<span style={{marginLeft:'415px'}}> =  {myToFixed(amountTransform(recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight, '/'))}{commType==2?'元':'%'} </span>}
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价）</p>
           </>
