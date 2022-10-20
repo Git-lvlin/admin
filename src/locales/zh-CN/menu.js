@@ -53,6 +53,7 @@ export default {
   'menu.order-management.details': '详情',
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
+  'menu.order-management.intensive-purchase-setting': '新集约采购设置',
 
   'menu.product-management': '商品管理',
   'menu.product-management.supplier': '供应商商品',
@@ -301,6 +302,10 @@ export default {
   'menu.daifa-store-management.agent-shop-store_apply':'内部店认证',
   'menu.daifa-store-management.store-apply-detail':'内部店认证',
 
+  'menu.product-sharing-management': '产品分成管理',
+  'menu.product-sharing-management.sharing-management': '分成管理',
+  'menu.product-sharing-management.settlement-records': '结算记录',
+
   'menu.financial-management':'财务管理',
   'menu.financial-management.money-management':'资金管理',
   'menu.financial-management.money-management.yeahgo-virtual-account-management':'约购虚拟户',
@@ -430,5 +435,11 @@ export default {
   'menu.city-office-management': '市办事处',
   'menu.city-office-management.city-office-management-list': '市办事处管理',
   'menu.city-office-management.city-office-achievements': '市办事处业绩',
+
+  'menu.product-performance-management': '产品业绩管理',
+  'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
+  'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',
+  'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
+  'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
 
 };

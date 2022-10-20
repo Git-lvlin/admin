@@ -160,6 +160,12 @@ export default {
       path: '/order-management/intensive-intervention-list/details/:id',
       component: './order-management/intensive-intervention-list/detail',
       hideInMenu: true,
+    },
+    {
+      name: 'intensive-purchase-setting',
+      path: '/order-management/intensive-purchase-setting',
+      component: './order-management/intensive-purchase-setting',
+      wrappers: [RouteWatcher]
     }
   ]
 }

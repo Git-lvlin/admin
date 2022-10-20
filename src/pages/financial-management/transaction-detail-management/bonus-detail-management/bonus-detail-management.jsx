@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
@@ -8,6 +8,7 @@ import { commissionPage } from '@/services/financial-management/transaction-deta
 import { Export, ExportHistory } from '@/pages/export-excel'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import RoyaltyDetails from "../royalty-details"
+import { orderTypes } from '@/services/financial-management/common'
 
 // bonus detail
 const BonusDetailManagement = () =>{
@@ -16,6 +17,16 @@ const BonusDetailManagement = () =>{
   const [selectItem, setSelectItem] = useState({})
   const [visit, setVisit] = useState(false)
   const [type, setType] = useState('')
+  const [orderType, setOrderType] = useState(null)
+
+  useEffect(() => {
+    orderTypes({}).then(res=>{
+      setOrderType(res.data)
+    })
+    return () => {
+      setOrderType(null)
+    }
+  }, [])
 
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
@@ -76,16 +87,7 @@ const BonusDetailManagement = () =>{
       title: '订单类型',
       dataIndex: 'orderType',
       valueType: 'select',
-      valueEnum: {
-        'second': '秒约订单',
-        'commandSalesOrder': '集约批发订单',
-        'dropShipping1688': '1688代发订单',
-        'settleChargeFee': '入驻服务费订单',
-        'wholesaleFresh': '集约批发-生鲜订单',
-        'hydrogenRent': '氢原子租金订单',
-        'hydrogen': '氢原子销售订单',
-        'storeShare': '分享订单'
-      },
+      valueEnum: orderType,
       hideInTable: true
     },
     {

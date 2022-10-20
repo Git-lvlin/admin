@@ -9,21 +9,30 @@ import { amountTransform } from '@/utils/utils'
 import { tradeType } from '../../common-enum'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
+import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
 import Export from "@/components/export"
 
 const PaymentDetails = ({query, visible, setVisible}) => {
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
+  const [newShopkeeperOrderVisible, setNewShopkeeperOrderVisible] = useState(false)
   const [id, setId] = useState()
+  const [types, setTypes] = useState()
   const form = useRef()
 
-  const skipToOrder = (id, type)=> {
-    if(type) {
-      setId(id)
-      setShopkeeperOrderVisible(true)
+  const skipToOrder = (id, type, orderType, billNo)=> {
+    if(orderType === 'newCommandSalesOrder') {
+      setId(billNo)
+      setNewShopkeeperOrderVisible(true)
+      setTypes(orderType)
     } else {
-      setId(id)
-      setNormalOrderVisible(true)
+      if(type) {
+        setId(id)
+        setShopkeeperOrderVisible(true)
+      } else {
+        setId(id)
+        setNormalOrderVisible(true)
+      }
     }
   }
 
@@ -70,7 +79,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       width: '10%',
       render: (_, records)=> (
         records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale)}>{_}</a>:
+        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
         <span>{_}</span>
       )
     },
@@ -185,6 +194,15 @@ const PaymentDetails = ({query, visible, setVisible}) => {
           id={id}
           visible={shopkeeperOrderVisible}
           setVisible={setShopkeeperOrderVisible}
+        />
+      }
+      {
+        newShopkeeperOrderVisible &&
+        <NewShopkeeperOrderDetail
+          id={id}
+          orderType={types}
+          visible={newShopkeeperOrderVisible}
+          setVisible={setNewShopkeeperOrderVisible}
         />
       }
     </Drawer>

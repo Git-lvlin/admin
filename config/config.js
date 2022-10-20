@@ -18,6 +18,7 @@ import messageManagement from './routers/message-management'
 import cms from './routers/cms'
 import businessSchool from './routers/business-school'
 // import communityManagement from './routers/community-management'
+import ProductSharingManagement from './routers/product-sharing-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
 // import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
@@ -32,6 +33,7 @@ import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
+import productPerformanceManagement from './routers/product-performance-management'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -97,6 +99,7 @@ const config = {
             // communityManagement,
             DaifaStoreManagement,
             businessSchool,
+            ProductSharingManagement,
             financialManagement,
             dataBoard,
             dc,
@@ -109,6 +112,7 @@ const config = {
             BuriedPoint,
             OfficeManagement,
             CityOfficeManagement,
+            productPerformanceManagement,
             {
               component: '404',
             },
