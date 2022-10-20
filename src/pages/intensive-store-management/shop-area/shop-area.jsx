@@ -401,15 +401,12 @@ export default (props) =>{
               seleType==3&&<Handicapped/>
             }
           </TabPane>
-          <TabPane tab="生活馆品牌授权费" key="4">
+          <TabPane tab="生活馆服务费" key="4">
             {
               seleType==4&&<LifestyleMuseum/>
             }
           </TabPane>
         </Tabs>
-        {/* <div style={{ backgroundColor: '#fff', padding: 30, display: 'flex' }}>
-          设置后立即生效，只对生效后新申请的店铺有效！
-        </div> */}
       </PageContainer>
   )
 }
