@@ -401,7 +401,7 @@ export default (props) =>{
               seleType==3&&<Handicapped/>
             }
           </TabPane>
-          <TabPane tab="生活馆品牌授权费" key="4">
+          <TabPane tab="生活馆服务费" key="4">
             {
               seleType==4&&<LifestyleMuseum/>
             }
