@@ -29,6 +29,7 @@ const exportType = {
   normal: 'community-shopkeeper-export',
   cancelled: 'community-shopkeeper-cancelled-export',
   vip: 'store-export-vip-membershop',
+  life_house : 'store-export-life-house',
 }
 
 const StoreList = (props) => {
@@ -132,8 +133,8 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店铺编号'
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
     {
       title: '店主手机号',
@@ -249,6 +250,24 @@ const StoreList = (props) => {
       },
     },
     {
+      title: '开通类型',
+      dataIndex: 'lifeHouseFreeOpen',
+      valueType: 'text',
+      hideInSearch: true,
+      valueEnum: {
+        1: '系统免费开通',
+        0: '缴授权法开通'
+      },
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '合同签订状态',
+      dataIndex: 'lifeHouseContractStatus',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
       title: '氢原子交易',
       dataIndex: 'iotType',
       valueType: 'text',
@@ -297,6 +316,28 @@ const StoreList = (props) => {
       render: (_) => _ / 100
     },
     {
+      title: '交授权费(元)',
+      dataIndex: 'packagePeriodAmount',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house',
+      render: _ => _ / 100
+    },
+    {
+      title: '开通套餐',
+      dataIndex: 'packageTitle',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '开通期限',
+      dataIndex: 'packagePeriod',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
       title: '生鲜柜',
       dataIndex: 'isOrdered',
       valueType: 'select',
@@ -343,7 +384,7 @@ const StoreList = (props) => {
       dataIndex: 'memberShopType',
       valueType: 'select',
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
       valueEnum: {
         0: '全部',
         20: '生鲜店铺',
@@ -355,7 +396,7 @@ const StoreList = (props) => {
       dataIndex: 'verifyStatus',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
       valueEnum: {
         "0": '没有申请过',
         "1": '审核通过',
@@ -369,7 +410,7 @@ const StoreList = (props) => {
       dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
       fieldProps: {
         placeholder: '请输入运营中心名称'
       },
@@ -379,7 +420,7 @@ const StoreList = (props) => {
       dataIndex: 'operationId',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
       render: (_, data) => {
         return <div>{_ == 0 ? '-' : _}</div>
       }
@@ -389,7 +430,7 @@ const StoreList = (props) => {
       dataIndex: 'operationCompanyName',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
     {
       title: '申请类型',
@@ -400,7 +441,7 @@ const StoreList = (props) => {
         20: '绿色通道申请',
       },
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
     {
       title: '申请类型',
@@ -408,7 +449,7 @@ const StoreList = (props) => {
       valueType: 'text',
       render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
       hideInSearch: true,
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
     {
       title: '店主收件号',
@@ -416,8 +457,8 @@ const StoreList = (props) => {
       fieldProps: {
         placeholder: '请输入店主收件手机号'
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip',
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '集约任务',
@@ -443,7 +484,7 @@ const StoreList = (props) => {
           </a>
           : _
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '店内订单',
@@ -468,7 +509,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '商品',
@@ -491,7 +532,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '订单用户',
@@ -514,7 +555,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '直推用户',
@@ -538,7 +579,7 @@ const StoreList = (props) => {
           :
           _
       },
-      hideInTable: storeType == 'freshStores' || storeType == 'vip'
+      hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '所在地区',
@@ -661,6 +702,20 @@ const StoreList = (props) => {
       },
     },
     {
+      title: '生活馆有效期至',
+      dataIndex: 'lifeHouseExpireTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
+      title: '生活馆剩余天数(天)',
+      dataIndex: 'lifeHouseRemainingDay',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType !== 'life_house'
+    },
+    {
       title: 'VIP有效期至',
       dataIndex: 'vipExpireTime',
       valueType: 'text',
@@ -751,35 +806,35 @@ const StoreList = (props) => {
         1: '有改价记录',
       },
       hideInTable: true,
-      hideInSearch: storeType == 'freshStores' || storeType == 'vip',
+      hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
-      hideInSearch: storeType === 'freshStores' || storeType == 'vip'
+      hideInSearch: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType === 'freshStores' || storeType == 'vip'
+      hideInTable: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'dateTimeRange',
       hideInTable: true,
-      hideInSearch: storeType === 'freshStores' || storeType == 'vip'
+      hideInSearch: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType === 'freshStores' || storeType == 'vip'
+      hideInTable: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
     {
       title: '注销时间',
@@ -837,6 +892,29 @@ const StoreList = (props) => {
         1: 'VIP店铺'
       },
       hideInSearch: storeType === 'vip' || storeType === 'cancelled',
+      hideInTable: true,
+    },
+    {
+      title: '套餐类型',
+      dataIndex: 'lifeHousePackageId',
+      valueType: 'select',
+      valueEnum: {
+        1001: '一年套餐',
+        1002: '两年套餐',
+        1003: '三年套餐',
+      },
+      hideInSearch: storeType !== 'life_house',
+      hideInTable: true,
+    },
+    {
+      title: '开通类型',
+      dataIndex: 'lifeHouseFreeOpen',
+      valueType: 'select',
+      valueEnum: {
+        1: '系统免费开通',
+        0: '缴授权法开通'
+      },
+      hideInSearch: storeType !== 'life_house',
       hideInTable: true,
     },
     {
@@ -911,7 +989,7 @@ const StoreList = (props) => {
             >
               新建
             </Button>,
-            storeType != 'freshStores' &&
+            (storeType != 'freshStores'&& storeType !== 'life_house') &&
             <>
               <Export
                 change={(e) => { setVisit(e) }}
@@ -1034,6 +1112,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="vip" tab="VIP社区店">
           {
             activeKey == 'vip' && <StoreList storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="life_house" tab="已开通健康生活馆店铺">
+          {
+            activeKey == 'life_house' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
