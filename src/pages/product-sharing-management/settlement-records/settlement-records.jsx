@@ -57,7 +57,7 @@ export default () => {
     },
     {
       title: '新集约价',
-      dataIndex: 'salePrice',
+      dataIndex: 'distributePrice',
       align: 'center',
       hideInSearch: true,
       render: (_)=>{
