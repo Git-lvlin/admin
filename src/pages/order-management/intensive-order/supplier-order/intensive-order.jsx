@@ -152,7 +152,7 @@ const TableList = () => {
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isDocumentary ? 'followOrderList' : isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
-                    isPurchase
+                    isPurchase && !isDocumentary
                     &&
                     <>
                       <Import
@@ -495,7 +495,7 @@ const TableList = () => {
                             <div>{it.goodsName}</div>
                             <div>
                               {!isDocumentary &&<>集约价：{amountTransform(it.price, '/')}元{it?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(it?.wholesaleFreight, '/')}/件）` : ''}</>}
-                              <time style={{ marginLeft: 20 }}>规格：{it.skuName}</time>
+                              <time style={{ marginLeft: !isDocumentary?20:0 }}>规格：{it.skuName}</time>
                             </div>
                             <div>数量： <span>{it.totalNum}</span>{it.unit}</div>
                             {
