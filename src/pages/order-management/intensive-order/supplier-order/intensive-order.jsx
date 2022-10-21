@@ -435,7 +435,7 @@ const TableList = () => {
         <div className={styles.list_header_wrap}>
           <div className={styles.list_header}>
             <div>商品信息</div>
-            <div>支付金额</div>
+            {!isDocumentary &&<div>支付金额</div>}
             <div>商品ID</div>
             {/* <div>合计实收</div> */}
             <div>订单状态</div>
@@ -510,9 +510,10 @@ const TableList = () => {
                       ))
                     }
                   </div>
-                  <div className={styles.cell}>
-                    {
-                      !isDocumentary && <>
+                  {
+                    !isDocumentary && <>
+                      <div className={styles.cell}>
+
                         {
                           item.sku.map(it => (
                             <div>
@@ -523,9 +524,10 @@ const TableList = () => {
                             </div>
                           ))
                         }
-                      </>
-                    }
-                  </div>
+                      </div>
+                    </>
+                  }
+                  
                   <div className={styles.cell} style={{ textAlign: 'center' }}>
                     {
                       item.sku.map(it => (
