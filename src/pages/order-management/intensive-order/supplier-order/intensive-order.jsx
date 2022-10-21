@@ -6,7 +6,7 @@ import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import styles from './style.less';
-import { orderList, refundAllRetailOrders, getPurchaseOrderList, refundOrder } from '@/services/order-management/supplier-order';
+import { orderList, refundAllRetailOrders, getPurchaseOrderList, refundOrder, getFollowOrderList } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -33,6 +33,7 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
   const isPurchase = location.pathname.includes('purchase')
+  const isDocumentary = location.pathname.includes('documentary')
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const [orderStatusType, setOrderStatusType] = useState()
@@ -91,7 +92,10 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    const apiMethod = isPurchase ? getPurchaseOrderList : orderList;
+    let apiMethod = isPurchase ? getPurchaseOrderList : orderList;
+    if (isDocumentary) {
+      apiMethod = getFollowOrderList
+    }
     apiMethod({
       page,
       size: pageSize,
@@ -143,12 +147,12 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
+                    type={`${isDocumentary ? 'followOrderList' : isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`}
                     conditions={getFieldValue}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isDocumentary ? 'followOrderList' : isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
-                    isPurchase
+                    isPurchase && !isDocumentary
                     &&
                     <>
                       <Import
@@ -431,7 +435,7 @@ const TableList = () => {
         <div className={styles.list_header_wrap}>
           <div className={styles.list_header}>
             <div>商品信息</div>
-            <div>支付金额</div>
+            {!isDocumentary &&<div>支付金额</div>}
             <div>商品ID</div>
             {/* <div>合计实收</div> */}
             <div>订单状态</div>
@@ -454,8 +458,8 @@ const TableList = () => {
                     <span>下单用户：{item.store.linkman}</span>
                     <span>用户手机号：{item.store.phone}</span>
                     <span>下单店主ID：{item.storeNo}</span>
-                    {!!+item.wsId &&<span>商品归属集约活动ID：{item.wsId}</span>}
-                    <span>总金额：{amountTransform(item.totalFee, '/')}元</span>
+                    {!!+item.wsId && <span>商品归属集约活动ID：{item.wsId}</span>}
+                    {!isDocumentary && <span>总金额：{amountTransform(item.totalFee, '/')}元</span>}
                   </Space>
                 </div>
                 {item.businessType === 30
@@ -489,27 +493,41 @@ const TableList = () => {
                           <img width="100" height="100" src={it.skuImageUrl} />
                           <div className={styles.info}>
                             <div>{it.goodsName}</div>
-                            <div>集约价：{amountTransform(it.price, '/')}元{it?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(it?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>
+                            <div>
+                              {!isDocumentary &&<>集约价：{amountTransform(it.price, '/')}元{it?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(it?.wholesaleFreight, '/')}/件）` : ''}</>}
+                              <time style={{ marginLeft: !isDocumentary?20:0 }}>规格：{it.skuName}</time>
+                            </div>
                             <div>数量： <span>{it.totalNum}</span>{it.unit}</div>
-                            <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
-                            {isPurchase && <div>批发供货价： ¥{amountTransform(it.wholesaleSupplyPrice, '/')}</div>}
+                            {
+                              !isDocumentary && <>
+                                <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                                {isPurchase && <div>批发供货价： ¥{amountTransform(it.wholesaleSupplyPrice, '/')}</div>}
+                              </>
+                            }
+
                           </div>
                         </div>
                       ))
                     }
                   </div>
-                  <div className={styles.cell}>
-                    {
-                      item.sku.map(it => (
-                        <div>
-                          <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                            <Descriptions.Item label="应付金额">{amountTransform(it.orderAmount, '/')}元</Descriptions.Item>
-                            <Descriptions.Item label="用户实付">{amountTransform(it.actualAmount, '/')}元</Descriptions.Item>
-                          </Descriptions>
-                        </div>
-                      ))
-                    }
-                  </div>
+                  {
+                    !isDocumentary && <>
+                      <div className={styles.cell}>
+
+                        {
+                          item.sku.map(it => (
+                            <div>
+                              <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
+                                <Descriptions.Item label="应付金额">{amountTransform(it.orderAmount, '/')}元</Descriptions.Item>
+                                <Descriptions.Item label="用户实付">{amountTransform(it.actualAmount, '/')}元</Descriptions.Item>
+                              </Descriptions>
+                            </div>
+                          ))
+                        }
+                      </div>
+                    </>
+                  }
+                  
                   <div className={styles.cell} style={{ textAlign: 'center' }}>
                     {
                       item.sku.map(it => (
@@ -533,7 +551,7 @@ const TableList = () => {
                           {item.isRefundable === 1 && <div><a onClick={() => { refund(item.orderId) }}>启动C端退款</a></div>}
                           {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                           <a onClick={() => { setSelectItem(it); setDetailVisible(true); }}>详情</a>
-                         {item.businessType !==30&&<div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>}
+                          {item.businessType !== 30 && !isDocumentary && <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>}
                           {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
                             <Popconfirm
                               title="确认操作?"
@@ -582,6 +600,7 @@ const TableList = () => {
           setVisible={setDetailVisible}
           isPurchase={isPurchase}
           skuId={selectItem?.skuId}
+          isDocumentary={isDocumentary}
         />
       }
 
