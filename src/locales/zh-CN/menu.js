@@ -36,7 +36,7 @@ export default {
   'menu.order-management.intensive-order.shopkeeper-order': '集约零售订单',
   'menu.order-management.intensive-order.supplier-order': '集约批发订单',
   'menu.order-management.intensive-order.supplier-order-purchase': '集约批发订单(采购)',
-  'menu.order-management.intensive-order.supplier-order-documentary': '集约批发订单(跟单)',
+  'menu.order-management.intensive-order.supplier-order-purchase-documentary': '集约批发订单(跟单)',
   'menu.order-management.sample-order': '样品订单',
   'menu.order-management.sample-order-purchase': '样品订单(采购)',
   'menu.order-management.sample-order-detail': '订单详情',

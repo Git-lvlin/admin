@@ -22,6 +22,17 @@ export const getPurchaseOrderList = async (params = {}, options = {}) => {
   });
 }
 
+export const getFollowOrderList = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/supplierOrder/getFollowOrderList', {
+    method: 'POST',
+    data: {
+      // wholesaleType: 5,
+      ...params
+    },
+    ...options
+  });
+}
+
 export const orderShip = async (params = {}, options = {}) => {
   return request('/auth/order/collectiveOrder/orderShip', {
     method: 'POST',
