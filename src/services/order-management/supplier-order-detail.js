@@ -39,3 +39,11 @@ export const detailForVirtualVccount = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const nichtware = async (params = {}, options = {}) => {
+  return request('/auth/store/storePayOrder/nichtware', {
+    method: 'GET',
+    params,
+    ...options
+  });
+}
