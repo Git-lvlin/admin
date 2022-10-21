@@ -16,6 +16,14 @@ export const getPurchaseOrderDetail = async (params = {}, options = {}) => {
   });
 }
 
+export const getFollowOrderDetail = async (params = {}, options = {}) => {
+  return request('/auth/wholesale/supplierOrder/getFollowOrderDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const modifyShip = async (params = {}, options = {}) => {
   return request('/auth/order/collectiveOrder/modifyShip', {
     method: 'POST',
