@@ -118,13 +118,25 @@ const NewIntensivePerformance: FC = () => {
       title: 'spuID',
       dataIndex: 'spuId',
       valueType: 'digit',
-      align: 'center'
+      hideInTable: true
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
       valueType: 'digit',
-      align: 'center'
+      hideInTable: true
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '商品名称',
