@@ -117,11 +117,13 @@ const NewIntensivePerformance: FC = () => {
     {
       title: 'spuID',
       dataIndex: 'spuId',
+      valueType: 'digit',
       align: 'center'
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
+      valueType: 'digit',
       align: 'center'
     },
     {
