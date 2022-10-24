@@ -1,8 +1,8 @@
 import { useState,useEffect } from 'react'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography,Skeleton, Form, InputNumber,message } from 'antd'
-import ProForm, {
+import { Button, Space, Typography, Form, InputNumber,message } from 'antd'
+import {
   DrawerForm,
   ProFormText,
   ProFormDateTimeRangePicker,
@@ -39,10 +39,11 @@ const formItemLayout = {
 };
 
 export default (props:PropsItem) => {
-  const { visible, setVisible, callback, id, onClose,copy } = props;
+  const { visible, setVisible, callback, record, onClose,copy } = props;
   const [form] = Form.useForm();
-  const [picture, setPicture] = useState<number>()
   const [detailList,setDetailList]=useState<DetailListItem>()
+  const [savePrevie,setSavePrevie]=useState<number>(0)
+  const [savePrevie2,setSavePrevie2]=useState<boolean>(false)
   const onSubmit = (values) => {
     if(detailList?.length==0) return message.error('请选择商品')
     const params={
@@ -98,23 +99,40 @@ export default (props:PropsItem) => {
         id:ele.id==ele.skuId||copy?0:ele.id
       }))
     }
-    saveSubjectActiveConfig(params).then(res=>{
-      if(res.code==0){
-        setVisible(false)
-        callback()
-        if(id&&!copy){
-          message.success('编辑成功')
-        }else if(copy){
-          message.success('复制成功')
-        }else{
-          message.success('新增成功')
+    if(savePrevie){
+      saveSubjectActiveConfig(params).then(res=>{
+        if(res.code==0){
+          if(record?.id&&!copy){
+            message.success('编辑成功')
+          }else if(copy){
+            message.success('复制成功')
+          }else{
+            message.success('新增成功')
+          }
+          setSavePrevie2(!savePrevie2)
+          setSavePrevie(0)
         }
-      }
-    })
+      })
+    }else{
+      saveSubjectActiveConfig(params).then(res=>{
+        if(res.code==0){
+          setVisible(false)
+          callback()
+          if(record?.id&&!copy){
+            message.success('编辑成功')
+          }else if(copy){
+            message.success('复制成功')
+          }else{
+            message.success('新增成功')
+          }
+        }
+      })
+    }
+    
   }
   useEffect(()=>{
-    if(id){
-      getActiveConfigById({id}).then(res=>{
+    if(record?.id){
+      getActiveConfigById({id:record?.id}).then(res=>{
         if(res.code==0){
           setDetailList(res.data?.content?.goods.map(ele=>({...ele,actPrice:amountTransform(ele?.actPrice,'/')})))
           form.setFieldsValue({
@@ -147,7 +165,8 @@ export default (props:PropsItem) => {
         }
       })
     }
-  },[id])
+  },[record?.id,savePrevie2])
+
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
   }
@@ -157,7 +176,7 @@ export default (props:PropsItem) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
-      title={!id?'新建活动':copy?'复制活动':'活动详情'}
+      // title={!record?.id?'新建活动':copy?'复制活动':'活动详情'}
       visible={visible}
       width={1500}
       form={form}
@@ -171,6 +190,7 @@ export default (props:PropsItem) => {
       submitter={{
         render: (props, defaultDoms) => {
           return [
+            <Button type='primary' key='savePrevie' onClick={()=>{ props.form?.submit?.();setSavePrevie(savePrevie+1) }}>保存并预览</Button>,
             ...defaultDoms
           ];
         },
@@ -182,8 +202,8 @@ export default (props:PropsItem) => {
       {...formItemLayout}
     >
       <div className={styles?.three_column_layout}>
-        <div className={styles?.border_box}>
-          <Title style={{ marginBottom: 10 }} level={5}>基础设置</Title>
+        <div className={styles?.border_box2}>
+          <Title style={{ marginBottom: 10 }} level={5}>页面DIY设置</Title>
           <ProFormRadio.Group
               name="status"
               hidden
@@ -199,7 +219,7 @@ export default (props:PropsItem) => {
               ]}
             />
           {
-            id&&!copy&&<ProFormText
+            record?.id&&!copy&&<ProFormText
             name="id"
             hidden
           />
@@ -227,60 +247,37 @@ export default (props:PropsItem) => {
               }),
             ]}
           />
+          <Title style={{ marginBottom: 10 }} level={5}>页面预览</Title>
+          {
+            !savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+          }
+          {
+            savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
+          }
         </div>
         <div className={styles?.border_box}>
-          <Title style={{ marginBottom: 10 }} level={5}>组件设置</Title>
-          <div className={styles?.topic_page}>
-            <header className={styles?.header} onClick={() => { setPicture(1) }}>
-              <p>点击配置图片</p>
-              <Button onClick={(e) => { setPicture(2); e.stopPropagation() }}>倒计时控件</Button>
-            </header>
-            <figure className={styles?.figure} onClick={() => { setPicture(3) }}>
-              副标题图
-            </figure>
-            <aside className={styles?.aside} onClick={() => { setPicture(5) }}>
-              <section className={styles?.section}>
-                <Skeleton.Image />
-                <div className={styles?.section_goos}>
-                  <p>商品名称商品名称<br />商品名称</p>
-                  <figure className={styles?.figure} onClick={(e) => { setPicture(4); e.stopPropagation() }}> 价格标签 </figure>
-                </div>
-              </section>
-              <article className={styles?.article}>
-                <div className={styles?.article_goos}>
-                  <Skeleton.Image />
-                  <p>商品名称商品名称<br />商品名称</p>
-                  <Button onClick={(e) => { setPicture(4); e.stopPropagation() }}> 价格标签 </Button></div>
-                <div className={styles?.article_goos}>
-                  <Skeleton.Image />
-                  <p>商品名称商品名称<br />商品名称...</p>
-                </div>
-              </article>
-            </aside>
+          <div className={styles?.interval}>
+            <Form.Item
+              label="页面主图"
+              name="bannerImgUrl"
+              rules={[{ required: true, message: '请上传页面主图' }]}
+            >
+              <FromWrap
+                content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height: 500}} maxCount={1} accept="image/png" />}
+                right={(value) => {
+                  return (
+                    <dl>
+                      <dd>支持jpg/png，2M以内，宽度750px，高度500px</dd>
+                    </dl>
+                  )
+                }}
+              />
+            </Form.Item>
           </div>
-        </div>
-        <div className={styles?.border_box}>
-          <Title style={{ marginBottom: 10 }} level={5}>{{ 1: '头图', 2: '倒计时控件', 3: '副标题', 4: '价格标签1', 5: '商品卡片' }[picture]}</Title>
-          <Form.Item
-            label="选择图片"
-            name="bannerImgUrl"
-            style={{ display: picture == 1 ? 'block' : 'none' }}
-          >
-            <FromWrap
-              content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height:'*'}} maxCount={1} accept="image/png" />}
-              right={(value) => {
-                return (
-                  <dl>
-                    <dd>支持jpg/png，2M以内，宽度750</dd>
-                  </dl>
-                )
-              }}
-            />
-          </Form.Item>
-          <div style={{ display: picture == 2 ? 'block' : 'none' }}>
-            <ProFormSwitch name="switch1" label="开关控制" />
+          <div className={styles?.interval}>
+            <ProFormSwitch name="switch1" label={<span style={{fontWeight:'bolder'}}>活动倒计时显示</span>}/>
             <ProFormText
-              label="控件位置"
+              label="倒计时控件位置"
               readonly
               fieldProps={{
                 value: <>
@@ -289,7 +286,15 @@ export default (props:PropsItem) => {
                     label="X轴"
                     options={[
                       {
-                        label: '左',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="l"
+                                  label={<span>左 左边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'L',
                       },
                       {
@@ -297,7 +302,15 @@ export default (props:PropsItem) => {
                         value: 'M',
                       },
                       {
-                        label: '右',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="r"
+                                  label={<span>右 右边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'R',
                       }
                     ]}
@@ -307,7 +320,15 @@ export default (props:PropsItem) => {
                     label="Y轴"
                     options={[
                       {
-                        label: '上',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="t"
+                                  label={<span>上 顶边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'T',
                       },
                       {
@@ -315,221 +336,126 @@ export default (props:PropsItem) => {
                         value: 'M',
                       },
                       {
-                        label: '下',
+                        label: <div className={styles.measure}>
+                                <Form.Item
+                                  name="b"
+                                  label={<span>下 底边距</span>}
+                                >
+                                  <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+                                </Form.Item>
+                                <span>px</span>
+                              </div>,
                         value: 'B',
                       }
                     ]}
                   />
                 </>
               }}
+              extra='画布宽度基于375px'
             />
-            <ProFormText
-              label="边距"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="l"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>左侧</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="t"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>顶部</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="r"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>右侧</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="b"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>底部</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <Form.Item label='透明遮罩' name='alphaMasked'>
+            <Form.Item label='倒计时控件背景颜色' name='alphaMasked'>
               <ReactColor/>
             </Form.Item>
           </div>
-          <div style={{ display: picture == 3 ? 'block' : 'none' }}>
-            <ProFormSwitch name="switch2" label="开关控制" />
+          <div className={styles?.interval}>
+            <ProFormSwitch name="switch2" label={<span style={{fontWeight:'bolder'}}>显示副标题</span>}/>
             <Form.Item
-              label="选择图片"
+              label="副标题图片"
               name="imgUrl1"
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} dimension={{ width: 750, height: '*' }} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
-                      <dd>支持jpg/png，2M以内</dd>
+                      <dd>支持jpg/png，2M以内，宽度750</dd>
                     </dl>
                   )
                 }}
               />
             </Form.Item>
           </div>
-          <div style={{ display: picture == 4 ? 'block' : 'none' }}>
-            <ProFormRadio.Group
-              name="priceStyle"
-              layout="vertical"
-              label="标签样式"
-              options={[
-                {
-                  label: '风格1：明黄箭头',
-                  value: 1,
-                },
-                {
-                  label: '风格2：大红',
-                  value: 2,
-                },
-                {
-                  label: '风格3：3C电子风',
-                  value: 3,
-                },
-                {
-                  label: '风格4：黄色圆角',
-                  value: 4,
-                },
-              ]}
-            />
-          </div>
-          <div style={{ display: picture == 5 ? 'block' : 'none' }}>
+          <div style={{ paddingTop:'10px' }}>
+            <Title style={{ marginLeft: 100 }} level={5}>商品列表设置：</Title>
             <ProFormRadio.Group
               name="showType"
               layout="horizontal"
               label="展示形式"
+              initialValue={1}
               options={[
                 {
-                  label: '一行一个',
+                  label: '单排',
                   value: 1,
                 },
                 {
-                  label: '一行两个',
+                  label: '双排',
                   value: 2,
                 }
               ]}
             />
-            <ProFormText
-              label="卡片边框"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color1'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="lineWidth1"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>线宽</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <ProFormText
-              label="卡片背景"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color2'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="imgUrl2"
-                    >
-                      <Upload multiple  size={2 * 1024} maxCount={1} accept="image/png" />
-                    </Form.Item>
-                    {/* <p>图片</p> */}
-                  </div>
-                </Space>
-              }}
-            />
-            <Form.Item
-              name="radius"
-              label='卡片圆角'
-            >
-              <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-            </Form.Item>
-            <ProFormText
-              label="文字样式"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color3'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="fontSize"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>字号</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <ProFormText
-              label="商品边框"
-              readonly
-              fieldProps={{
-                value: <Space>
-                  <div className={styles.measure}>
-                    <Form.Item name='color4'>
-                      <ReactColor/>
-                    </Form.Item>
-                    <p>颜色</p>
-                  </div>
-                  <div className={styles.measure}>
-                    <Form.Item
-                      name="lineWidth2"
-                    >
-                      <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
-                    </Form.Item>
-                    <p>线宽</p>
-                  </div>
-                </Space>
-              }}
-            />
-            <Form.Item
-              name="goodsRadius"
-              label='商品圆角'
-            >
-              <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+            <Space style={{marginLeft:'110px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color1' label="卡片边框颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="lineWidth1" label="卡片边框线宽">
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="radius" label='卡片圆角'>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+            </Space>
+            <div className={styles.measure} style={{marginLeft:'110px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color2' label="卡片背景颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item
+                name="imgUrl2"
+                style={{marginLeft:'50px'}}
+              >
+                <FromWrap
+                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750, height:'*' }} maxCount={1} accept="image/png" />}
+                  right={(value) => {
+                    return (
+                      <dl>
+                        <dd>支持jpg/png，2M以内，宽度750</dd>
+                      </dl>
+                    )
+                  }}
+                />
+              </Form.Item>
+            </div>
+            <Space style={{marginLeft:'140px'}}>
+              <Form.Item labelCol={3} wrapperCol={10} name='color3' label="文字颜色">
+                <ReactColor/>
+              </Form.Item>
+              <Form.Item labelCol={3} wrapperCol={10} name="fontSize" label="文字大小" style={{marginLeft:'10px'}}>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+            </Space>
+            <Space style={{marginLeft:'140px'}}>
+              <Form.Item name="goodsRadius" label='商品圆角' labelCol={3} wrapperCol={10}>
+                <InputNumber min="0" formatter={limitDecimalsF} placeholder="_______" bordered={false} />
+              </Form.Item>
+              <Form.Item name="lineWidth2" label='边框'>
+                  <FromWrap
+                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750, height:'*'  }} maxCount={1} accept="image/png" />}
+                    right={(value) => {
+                      return (
+                        <dl>
+                          <dd>支持jpg/png，2M以内，宽度750</dd>
+                        </dl>
+                      )
+                    }}
+                  />
+              </Form.Item>
+            </Space>
+            <Form.Item name='color4' label='页面背景颜色'>
+              <ReactColor/>
             </Form.Item>
           </div>
         </div>
       </div>
-      <Associated0Goods detailList={detailList} id={id} callback={(data)=>{
+      <Associated0Goods detailList={detailList} id={record?.id} callback={(data)=>{
         setDetailList(data)
       }}/>
     </DrawerForm>
