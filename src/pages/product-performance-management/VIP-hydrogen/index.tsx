@@ -133,7 +133,7 @@ const VIPHydrogen: FC = () => {
       title: '推荐人的店铺省市区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
       title: '推荐人店铺地址',

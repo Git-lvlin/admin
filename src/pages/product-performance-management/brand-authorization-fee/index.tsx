@@ -135,7 +135,7 @@ const BrandAuthorizationFee: FC = () => {
       title: '推荐人VIP店所属省市区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
       title: '下单店主VIP店铺所在区域',
