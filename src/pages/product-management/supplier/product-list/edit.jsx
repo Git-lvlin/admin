@@ -970,14 +970,7 @@ export default (props) => {
           )
         }}
       </ProFormDependency>
-      {goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
-        name="wholesaleFreight"
-        label="平均运费"
-        disabled
-        fieldProps={{
-          addonAfter: `元/${goods.unit}`
-        }}
-      />}
+      
       <ProFormText
         name="wholesaleTaxRate"
         label="商品开票税率(%)"
@@ -1602,12 +1595,20 @@ export default (props) => {
                   </Form.Item>}
                 </>
               }
+              {goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
+                name="wholesaleFreight"
+                label="平均运费"
+                disabled
+                fieldProps={{
+                  addonAfter: `元/${goods.unit}`
+                }}
+              />}
               {
                 goods.goodsSaleType !== 2 &&
                 <>
                   <ProFormText
                     name="distributePrice"
-                    label="店主新集约价"
+                    label="店主新集约价(含平均运费)"
                     placeholder="请输入店主新集约价"
                     validateFirst
                     rules={[

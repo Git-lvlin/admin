@@ -140,7 +140,14 @@ export default function EditTable(props) {
         render: _ => `${_}元/${unit}`
       },
       {
-        title: `店主新集约价`,
+        title: '平均运费',
+        dataIndex: 'wholesaleFreight',
+        hideInTable: goodsSaleType === 2,
+        editable: false,
+        render: _ => `${_}元/${unit}`
+      },
+      {
+        title: `店主新集约价(含平均运费)`,
         dataIndex: 'distributePrice',
         hideInTable: goodsSaleType === 2,
         fieldProps: {
@@ -228,13 +235,6 @@ export default function EditTable(props) {
         //     message: '请输入可用库存',
         //   }],
         // }
-      },
-      {
-        title: '平均运费',
-        dataIndex: 'wholesaleFreight',
-        hideInTable: goodsSaleType === 2,
-        editable: false,
-        render: _ => `${_}元/${unit}`
       },
       {
         title: '是否包邮',

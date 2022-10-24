@@ -501,7 +501,8 @@ const TableList = () => {
                             {
                               !isDocumentary && <>
                                 <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
-                                {isPurchase && <div>批发供货价： ¥{amountTransform(it.wholesaleSupplyPrice, '/')}</div>}
+                                {isPurchase && <div>批发供货价： {amountTransform(it.wholesaleSupplyPrice, '/')}元</div>}
+                                {isPurchase && <div>平均运费： {amountTransform(it.wholesaleFreight, '/')}元</div>}
                               </>
                             }
 
