@@ -179,7 +179,6 @@ export default (props) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
-      title='商品上架应用结算配置'
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
