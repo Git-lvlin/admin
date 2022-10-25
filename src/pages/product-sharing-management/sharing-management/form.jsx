@@ -43,16 +43,15 @@ const bloodData = [
   {
     id: 1,
     name: <>
-          <div>店主（下单人）开店地址所属市办事处</div>
-          <div style={{color:'#999999'}}>销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）</div>
+          <div>直推收益（VIP店主）-服务佣金(直)</div>
+          <div>无相关角色，分成归属平台</div>
+          <div style={{color:'#999999'}}>无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费</div>
           </>
   },
   {
     id: 2,
     name: <>
-          <div>直推收益（VIP店主）-服务佣金(直)</div>
-          <div>无相关角色，分成归属平台</div>
-          <div style={{color:'#999999'}}>无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费</div>
+          <div>店主（下单人）开店地址所属市办事处</div>
           </>
   },
   {
@@ -176,19 +175,18 @@ export default (props) => {
               {
                 id: 1,
                 name: <>
-                      <div>店主（下单人）开店地址所属市办事处</div>
-                      <div style={{color:'#999999'}}>销售订单按订单收货地址判断业绩归属。（线下结算，下单后修改收货地址，依然按下单时的地址判断业绩归属）</div>
-                      </>,
-                price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
-              },
-              {
-                id: 2,
-                name: <>
                       <div>直推收益（VIP店主）-服务佣金(直)</div>
                       <div>无相关角色，分成归属平台</div>
                       <div style={{color:'#999999'}}>无相关角色，分成归属平台 提现时扣除7%手续费和2元/笔，不承担通道费</div>
                       </>,
                 price: findItem?.commissionType==2?findItem?.shoppervipChargeFee:amountTransform(findItem?.shoppervipChargeFee, '/')
+              },
+              {
+                id: 2,
+                name: <>
+                      <div>店主（下单人）开店地址所属市办事处</div>
+                      </>,
+                price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
               },
               {
                 id: 3,
@@ -257,8 +255,8 @@ export default (props) => {
         id: recordList?.id ? recordList?.id : 0,
         spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
         skuId: recordList?.id ? recordList?.skuId : recordId?.skuId,
-        cityManageFee: commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
-        shoppervipChargeFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
+        shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
+        cityManageFee: commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
         provinceManageFee: 0,
         shopperChargeFee: 0,
         userChargeFee: 0,

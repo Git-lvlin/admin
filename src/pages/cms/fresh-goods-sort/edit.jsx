@@ -214,8 +214,8 @@ export default (props) => {
         id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
         spuId: recordList?.spuId,
         skuId: recordList?.skuId,
-        cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[0]?.price, '*'),
-        shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[1]?.price, '*'),
+        shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
+        cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
         provinceManageFee: 0,
         shopperChargeFee: 0,
         userChargeFee: 0,
@@ -399,6 +399,7 @@ export default (props) => {
   return (
     <DrawerForm
       onVisibleChange={setVisible}
+      title='商品上架应用结算配置'
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
