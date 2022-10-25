@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
@@ -9,13 +9,28 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { vipStoreHydrogenPm } from "@/services/product-performance-management/VIP-hydrogen"
+import { vipStoreHydrogenPm, vipStoreHydrogenPmStats } from "@/services/product-performance-management/VIP-hydrogen"
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
 import Export from '@/components/export'
 
-const Aggregate: FC<any> = ({data}) => {
+const Aggregate: FC<any> = ({form}) => {
+  const [data, setData] = useState()
+
+  const getData = async () => {
+    const orderStatus = form?.orderStatus ? form?.orderStatus : '4'
+    await vipStoreHydrogenPmStats({
+      ...form,
+      orderStatus
+    }).then(res => {
+      setData(res.data)
+    })
+  }
+
+  useEffect(()=> {
+    getData()
+  }, [form])
   
   const columns: ProDescriptionsItemProps[] = [
     {
@@ -46,7 +61,7 @@ const Aggregate: FC<any> = ({data}) => {
 }
 
 const VIPHydrogen: FC = () => {
-  const [data, setData] = useState()
+  const [searchConfig, setSearchConfig] = useState()
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
@@ -169,17 +184,19 @@ const VIPHydrogen: FC = () => {
         columns={columns}
         params={{}}
         request={vipStoreHydrogenPm}
-        postData={(v:any)=>{
-          setData(v[0].total)
-          return (v[0].res)
-        }}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
         formRef={form}
-        headerTitle={<Aggregate data={data}/>}
+        headerTitle={<Aggregate form={searchConfig}/>}
         options={false}
+        onSubmit={()=>{
+          setSearchConfig(form.current?.getFieldsValue())
+        }}
+        onReset={()=> {
+          setSearchConfig(undefined)
+        }}
         search={{
           labelWidth: 140,
           optionRender: (searchConfig, props, dom) => [

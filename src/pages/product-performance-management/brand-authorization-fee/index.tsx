@@ -17,10 +17,7 @@ import Export from '@/components/export'
 
 const Aggregate: FC<any> = ({form}) => {
   const [data, setData] = useState()
-
-  console.log(form);
   
-
   const getData = async () => {
     const contractStatus= form?.contractStatus ? form?.contractStatus : '4'
     await storeLifePmStats({
