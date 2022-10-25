@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
-import { getSupplierOrderDetail, getPurchaseOrderDetail } from '@/services/order-management/supplier-order-detail';
+import { getSupplierOrderDetail, getPurchaseOrderDetail, getFollowOrderDetail } from '@/services/order-management/supplier-order-detail';
 import { amountTransform, dateFormat } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
@@ -22,13 +22,16 @@ const payType = {
 }
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id, skuId } = props;
+  const { visible, setVisible, isPurchase, id, skuId, isDocumentary } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
 
   const getDetailData = () => {
     setLoading(true);
-    const apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
+    let apiMethod = isPurchase ? getPurchaseOrderDetail : getSupplierOrderDetail
+    if (isDocumentary) {
+      apiMethod = getFollowOrderDetail
+    }
     apiMethod({
       orderId: id,
       skuId,
@@ -133,48 +136,31 @@ const Detail = (props) => {
                 </div>
               </div>
               <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
-                <div className={`${styles.box} ${styles.box_header}`}>
-                  订单金额
-                </div>
-                <div className={styles.box}>
-                  <div>应付金额</div>
-                  <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
-                </div>
-                <div className={styles.box}>
-                  <div>红包</div>
-                  <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
-                </div>
-                <div className={styles.box}>
-                  <div>用户实付</div>
-                  <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
-                </div>
-                {/* <div className={styles.box}>
-                  <div>尾款</div>
-                  <div className={styles.box_wrap}>
-                    <div className={styles.box}>
-                      <div>应付金额</div>
-                      <div>{amountTransform(detailData?.final?.amount, '/')}元（含运费）</div>
+                {!isDocumentary&&
+                  <>
+                    <div className={`${styles.box} ${styles.box_header}`}>
+                      订单金额
                     </div>
                     <div className={styles.box}>
-                      <div>运费</div>
-                      <div>{amountTransform(detailData?.final?.shippingAmount, '/')}元</div>
+                      <div>应付金额</div>
+                      <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
+                    </div>
+                    <div className={styles.box}>
+                      <div>红包</div>
+                      <div>{amountTransform(detailData?.advance?.couponAmount, '/')}元</div>
                     </div>
                     <div className={styles.box}>
                       <div>用户实付</div>
-                      <div>{amountTransform(detailData?.final?.actualAmount, '/')}元</div>
+                      <div>{amountTransform(detailData?.advance?.actualAmount, '/')}元</div>
                     </div>
-                  </div>
-                </div> */}
-                {/* <div className={styles.box}>
-                  <div>合计实收</div>
-                  <div>{amountTransform(detailData?.actualAmount, '/')}元</div>
-                </div> */}
-                {
-                  detailData.status != 0 && detailData.status != 6 &&
-                  <div className={styles.box}>
-                    <div>备注</div>
-                    <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio * 100 + '%'} 金额,订单超过售后期可提现剩余金额。</div>
-                  </div>
+                    {
+                      detailData.status != 0 && detailData.status != 6 &&
+                      <div className={styles.box}>
+                        <div>备注</div>
+                        <div>买家付款后可提现 {detailData?.receivingInfo?.withdrawableCashRatio * 100 + '%'} 金额,订单超过售后期可提现剩余金额。</div>
+                      </div>
+                    }
+                  </>
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
@@ -228,10 +214,10 @@ const Detail = (props) => {
                       <div>规格</div>
                       <div>{detailData?.sku?.skuName}</div>
                     </div>
-                    <div className={styles.box}>
+                    {!isDocumentary &&<div className={styles.box}>
                       <div>集约价</div>
                       <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/${detailData?.sku?.unit}）` : ''}</div>
-                    </div>
+                    </div>}
                     <div className={styles.box}>
                       <div>预定数量</div>
                       <div>{detailData?.sku?.totalNum}{detailData?.sku?.unit}</div>
@@ -247,7 +233,7 @@ const Detail = (props) => {
                   <div>{detailData?.receivingInfo?.remark}</div>
                 </div>
               </div>
-              <div className={`${styles.box_wrap} ${styles.margin_top}`}>
+              {!isDocumentary &&<div className={`${styles.box_wrap} ${styles.margin_top}`}>
                 <div className={`${styles.box} ${styles.box_header}`}>
                   补贴信息
                 </div>
@@ -277,7 +263,7 @@ const Detail = (props) => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
 
