@@ -152,7 +152,7 @@ const TableList = () => {
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isDocumentary ? 'followOrderList' : isPurchase ? 'purchase-order-intensive-export' : 'order-intensive-export'}`} />
                   {
-                    isPurchase
+                    isPurchase && !isDocumentary
                     &&
                     <>
                       <Import
@@ -435,7 +435,7 @@ const TableList = () => {
         <div className={styles.list_header_wrap}>
           <div className={styles.list_header}>
             <div>商品信息</div>
-            <div>支付金额</div>
+            {!isDocumentary &&<div>支付金额</div>}
             <div>商品ID</div>
             {/* <div>合计实收</div> */}
             <div>订单状态</div>
@@ -493,7 +493,10 @@ const TableList = () => {
                           <img width="100" height="100" src={it.skuImageUrl} />
                           <div className={styles.info}>
                             <div>{it.goodsName}</div>
-                            {!isDocumentary && <div>集约价：{amountTransform(it.price, '/')}元{it?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(it?.wholesaleFreight, '/')}/件）` : ''}<time style={{ marginLeft: 20 }}>规格：{it.skuName}</time></div>}
+                            <div>
+                              {!isDocumentary &&<>集约价：{amountTransform(it.price, '/')}元{it?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(it?.wholesaleFreight, '/')}/件）` : ''}</>}
+                              <time style={{ marginLeft: !isDocumentary?20:0 }}>规格：{it.skuName}</time>
+                            </div>
                             <div>数量： <span>{it.totalNum}</span>{it.unit}</div>
                             {
                               !isDocumentary && <>
@@ -507,9 +510,10 @@ const TableList = () => {
                       ))
                     }
                   </div>
-                  <div className={styles.cell}>
-                    {
-                      !isDocumentary && <>
+                  {
+                    !isDocumentary && <>
+                      <div className={styles.cell}>
+
                         {
                           item.sku.map(it => (
                             <div>
@@ -520,9 +524,10 @@ const TableList = () => {
                             </div>
                           ))
                         }
-                      </>
-                    }
-                  </div>
+                      </div>
+                    </>
+                  }
+                  
                   <div className={styles.cell} style={{ textAlign: 'center' }}>
                     {
                       item.sku.map(it => (
