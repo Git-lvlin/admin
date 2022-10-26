@@ -263,7 +263,7 @@ export default (props:PropsItem) => {
               rules={[{ required: true, message: '请上传页面主图' }]}
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750 ,height: 500}} maxCount={1} accept="image/png" />}
+                content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
@@ -364,7 +364,7 @@ export default (props:PropsItem) => {
               name="imgUrl1"
             >
               <FromWrap
-                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} dimension={{ width: 750, height: '*' }} maxCount={1} accept="image/png" />}
+                content={(value, onChange) => <Upload multiple value={value} onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
                 right={(value) => {
                   return (
                     <dl>
@@ -413,7 +413,7 @@ export default (props:PropsItem) => {
                 style={{marginLeft:'50px'}}
               >
                 <FromWrap
-                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750, height:'*' }} maxCount={1} accept="image/png" />}
+                  content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
                   right={(value) => {
                     return (
                       <dl>
@@ -438,7 +438,7 @@ export default (props:PropsItem) => {
               </Form.Item>
               <Form.Item name="lineWidth2" label='边框'>
                   <FromWrap
-                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} dimension={{ width: 750, height:'*'  }} maxCount={1} accept="image/png" />}
+                    content={(value, onChange) => <Upload multiple value={value}  onChange={onChange} size={2 * 1024} maxCount={1} accept="image/png" />}
                     right={(value) => {
                       return (
                         <dl>
