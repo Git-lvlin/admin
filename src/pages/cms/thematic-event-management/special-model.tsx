@@ -53,6 +53,7 @@ export default (props:PropsItem) => {
       startTime:moment(values.dateRange[0]).valueOf()/1000,
       endTime:moment(values.dateRange[1]).valueOf()/1000,
       bannerImgUrl:values.bannerImgUrl,
+      backgroundColor:values.backgroundColor,
       bannerTime:{
         switch:values.switch1,
         xL:values.xL,
@@ -86,7 +87,6 @@ export default (props:PropsItem) => {
         },
         priceStyle:values?.priceStyle,
         goodsBorder:{
-          color:values?.color4,
           lineWidth:values?.lineWidth2
         },
         goodsRadius:values?.goodsRadius
@@ -138,6 +138,7 @@ export default (props:PropsItem) => {
           form.setFieldsValue({
             dateRange:[res.data?.startTime*1000,res.data?.endTime*1000],
             bannerImgUrl:res.data?.content?.bannerImgUrl,
+            backgroundColor:res.data?.content?.backgroundColor,
             switch1:res.data?.content?.bannerTime?.switch,
             xL:res.data?.content?.bannerTime?.xL,
             yL:res.data?.content?.bannerTime?.yL,
@@ -157,7 +158,6 @@ export default (props:PropsItem) => {
             color3:res.data?.content?.goodsCards?.textStyle?.color,
             fontSize:res.data?.content?.goodsCards?.textStyle?.fontSize,
             priceStyle:res.data?.content?.goodsCards?.priceStyle,
-            color4:res.data?.content?.goodsCards?.goodsBorder?.color,
             lineWidth2:res.data?.content?.goodsCards?.goodsBorder?.lineWidth,
             goodsRadius:res.data?.content?.goodsCards?.goodsRadius,
             ...res.data
@@ -449,7 +449,7 @@ export default (props:PropsItem) => {
                   />
               </Form.Item>
             </Space>
-            <Form.Item name='color4' label='页面背景颜色'>
+            <Form.Item name='backgroundColor' label='页面背景颜色'>
               <ReactColor/>
             </Form.Item>
           </div>
