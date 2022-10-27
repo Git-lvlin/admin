@@ -65,7 +65,8 @@ export default (props) => {
       ia[index] = bytes.charCodeAt(index);
     });
     //文件流转换成url路径
-    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0],name:+new Date() }),204)
+    const resetName=`${Math.random()}${+new Date()}`.split('.')[1]
+    const link=await upload(new Blob([ia], { type: urlData.split(',')[0].split(':')[1].split(';')[0],name:+new Date() }),204,resetName)
     return link
 };
 
@@ -182,9 +183,9 @@ export default (props) => {
       
         ['clean']
       ],
-      handlers: {
-        image: ()=>imageHandler()
-      }
+      // handlers: {
+      //   image: ()=>imageHandler()
+      // }
     },
     'emoji-toolbar': true,
     // 'emoji-textarea': true,
@@ -192,23 +193,23 @@ export default (props) => {
   }
  
 
-  const imageHandler = () => {
-    const quillEditor = ref.current?.getEditor()
-    const input = document.createElement('input')
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.setAttribute('multiple', 'multiple');
-    input.click()
-    input.onchange = async () => {
-      const file = input.files[0]
-      const formData = new FormData()
-      formData.append('quill-image', file)
-      const code=204
-      const link=await upload(file,code)
-      const range = quillEditor?.getSelection()
-      quillEditor.insertEmbed(range.index, 'image', link)
-    }
-  }
+  // const imageHandler = () => {
+  //   const quillEditor = ref.current?.getEditor()
+  //   const input = document.createElement('input')
+  //   input.setAttribute('type', 'file')
+  //   input.setAttribute('accept', 'image/*')
+  //   input.setAttribute('multiple', 'multiple');
+  //   input.click()
+  //   input.onchange = async () => {
+  //     const file = input.files[0]
+  //     const formData = new FormData()
+  //     formData.append('quill-image', file)
+  //     const code=204
+  //     const link=await upload(file,code)
+  //     const range = quillEditor?.getSelection()
+  //     quillEditor.insertEmbed(range.index, 'image', link)
+  //   }
+  // }
 
   return (
     <DrawerForm

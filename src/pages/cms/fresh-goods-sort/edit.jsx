@@ -252,7 +252,7 @@ export default (props) => {
     } else {
       num = num.substring(0)
     }
-          //截取后保留两位小数
+    //截取后保留两位小数
     return parseFloat(num).toFixed(2)
   }
 
