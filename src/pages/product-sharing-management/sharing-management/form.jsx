@@ -244,7 +244,7 @@ export default (props) => {
   }, [recordId])
 
   const submit = (values) => {
-    const { commissionType } = values
+    const { commissionType, saleType } = values
     try {
       if(commissionType==2?compute2()<0:compute()<0){
         return message.error('平台金额为负！')
@@ -271,7 +271,8 @@ export default (props) => {
         cityAgent: 0,
         dividends: 0,
         company: commissionType==2?compute2():amountTransform(compute(), '*'),
-        ...values
+        commissionType,
+        saleType
       }
       saveCommissionConfig(params).then(res => {
         if (res.code == 0) {
@@ -518,6 +519,25 @@ export default (props) => {
       {...formItemLayout}
     >
       <ProFormRadio.Group
+        name="saleType"
+        label='销售类型'
+        options={[
+          {
+              label: '引流',
+              value: 1,
+          },
+          {
+              label: '利润',
+              value: 2,
+          },
+          {
+              label:'其他',
+              value: 0,
+          },
+        ]}
+        initialValue={0}
+      />
+      <ProFormRadio.Group
         name="commissionType"
         label='结算分成类型'
         options={[
@@ -575,3 +595,6 @@ export default (props) => {
     </DrawerForm>
   );
 };
+
+
+
