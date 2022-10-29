@@ -121,7 +121,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
   }
 
   const goodsInfoTitleFreight = {
-    'hydrogenRent': '额外租金'
+    'hydrogenRent': '额外租金',
+    'newCommandSalesOrder': '平均运费'
   }
 
   const goodsInfoDataIndexFreight = {
@@ -294,6 +295,12 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       title: '应付金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '配送运费',
+      dataIndex: '',
+      render: (_) => `￥${amountTransform(_, '/')}`,
+      hideInDescriptions: info?.orderType !== 'newCommandSalesOrder'
     }
   ]
 

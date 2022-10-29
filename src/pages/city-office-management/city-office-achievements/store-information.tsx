@@ -46,6 +46,8 @@ export default (props) => {
         return '运营推广提成'
       case 5:
         return '托管租赁管理费提成'
+      case 6:
+        return '启动费提成'
       default:
         return ''
     }

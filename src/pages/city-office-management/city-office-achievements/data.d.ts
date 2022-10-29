@@ -5,6 +5,7 @@ export type DescriptionsProps = {
   totalBuyCommission: number;
   totalTrainingCommission: number;
   totalLeaseCommission: number;
+  totalBootCommission: number;
 }
 
 export type TableProps = {

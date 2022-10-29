@@ -84,6 +84,8 @@ const CumulativePerformance=(props:DevicesProps) => {
       orderType:type,
       orderNo:time?.orderNo,
       begin:time?.dateRange?.[0],
+
+      
       end:time?.dateRange?.[1]
     }
     cityTotalTradeItemSum(params).then(res=>{
@@ -201,6 +203,11 @@ export default (props:CumulativeProps)=>{
         <ProCard.TabPane key="hydrogen" tab="全款购买订单">
           {
             activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="hydrogenBoot " tab="启动费">
+          {
+            activeKey=='hydrogenBoot '&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
       </ProCard>
