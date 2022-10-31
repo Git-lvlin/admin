@@ -187,7 +187,6 @@ export default (props) => {
       getCommissionConfigBySpuId({ spuId: recordId?.spuId||detailData?.spuId, orderType: 30 }).then(res => {
         if(res.code==0&&res.data.length!=0){
           const findItem=res?.data?.find(ele=>ele?.skuId==recordId?.skuId)||res?.data?.find(ele=>ele?.skuId==detailData?.skuId)
-          console.log('findItem',findItem)
           if(findItem){
             wholeSaleAccountCheck(findItem).then(res=>{
               if(res.code==0){
@@ -654,7 +653,6 @@ export default (props) => {
           },
           onValuesChange: (record, List) => {
             compute()
-            console.log('List',List)
             const params = {
               status: submitType?1:null,
               orderType: 30,
@@ -681,10 +679,8 @@ export default (props) => {
               commissionType: commType,
               saleType: marketType
             }
-            console.log('params',params)
             wholeSaleAccountCheck(params).then(res=>{
               if(res.code==0){
-                console.log('res',res)
                 setComputePrice(res.data)
               }
             })
