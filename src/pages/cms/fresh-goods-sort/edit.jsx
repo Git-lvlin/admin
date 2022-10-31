@@ -143,7 +143,7 @@ export default (props) => {
           commissionType: findItem?.commissionType||2
         })
         if(findItem){
-          if(detailData.commissionConfig!=0){
+          if(detailData.commissionConfig==1){
             wholeSaleAccountCheck(findItem).then(res=>{
               if(res.code==0){
                 setComputePrice(res.data)
@@ -564,7 +564,6 @@ export default (props) => {
           },
           onValuesChange: (record, List) => {
             compute()
-            console.log('List',List)
             const params = {
               status: submitType?1:null,
               orderType: 30,
@@ -591,10 +590,8 @@ export default (props) => {
               commissionType: commType,
               saleType: marketType
             }
-            console.log('params',params)
             wholeSaleAccountCheck(params).then(res=>{
               if(res.code==0){
-                console.log('res',res)
                 setComputePrice(res.data)
               }
             })
