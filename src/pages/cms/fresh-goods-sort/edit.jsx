@@ -359,6 +359,40 @@ export default (props) => {
                                 amountTransform(val/recordList?.distributePrice,'*')                  
   return <span>{editPrice&&myToFixed(editPrice)}</span>
   }
+
+  const touchBlur = () =>{
+    const params = {
+      status: submitType?1:null,
+      orderType: 30,
+      id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
+      spuId: recordList?.spuId,
+      skuId: recordList?.skuId,
+      shoppervipChargeFee:commType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
+      cityManageFee:commType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
+      trainCenterManageFee:commType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+      serviceFee: commType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+      provinceAgent: commType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
+      cityAgent: commType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
+      hydrogenCityAgent:commType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
+      companyAgent: commType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
+      platformOperateFee: commType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+      dividends: 0,
+      provinceManageFee: 0,
+      shopperChargeFee: 0,
+      userChargeFee: 0,
+      shopperManageFee: 0,
+      userManageFee: 0,
+      shoppervipManageFee: 0,
+      company: commType==2?compute2():amountTransform(compute(), '*'),
+      commissionType: commType,
+      saleType: marketType
+    }
+    wholeSaleAccountCheck(params).then(res=>{
+      if(res.code==0){
+        setComputePrice(res.data)
+      }
+    })
+  }
   const columns = [
     {
       title: '序号',
@@ -382,7 +416,7 @@ export default (props) => {
       align: 'center',
       hideInSearch: true,
       dataIndex: 'price',
-      renderFormItem: (_, r) => {
+      renderFormItem: (_,{ record }) => {
         if (_?.entry?.id == 5) {
           return <>
             <p>
@@ -405,6 +439,7 @@ export default (props) => {
                     placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
                     value={value} 
                     onChange={onChange}
+                    onBlur={()=>{ touchBlur() }}
                   />}
                   right={(value) => {
                     return <span>= {proportion(_)} </span>
@@ -440,6 +475,7 @@ export default (props) => {
                     placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
                     value={value} 
                     onChange={onChange}
+                    onBlur={()=>{ touchBlur() }}
                   />}
                   right={(value) => {
                     return <span>= {proportion(_)} </span>
@@ -564,37 +600,6 @@ export default (props) => {
           },
           onValuesChange: (record, List) => {
             compute()
-            const params = {
-              status: submitType?1:null,
-              orderType: 30,
-              id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
-              spuId: recordList?.spuId,
-              skuId: recordList?.skuId,
-              shoppervipChargeFee:commType==2?List[0]?.price:amountTransform(List[0]?.price, '*'),
-              cityManageFee:commType==2?List[1]?.price:amountTransform(List[1]?.price, '*'),
-              trainCenterManageFee:commType==2?List[2]?.price:amountTransform(List[2]?.price, '*'),
-              serviceFee: commType==2?List[3]?.price:amountTransform(List[3]?.price, '*'),
-              provinceAgent: commType==2?List[5]?.price:amountTransform(List[5]?.price, '*'),
-              cityAgent: commType==2?List[6]?.price:amountTransform(List[6]?.price, '*'),
-              hydrogenCityAgent:commType==2?List[7]?.price:amountTransform(List[7]?.price, '*'),
-              companyAgent: commType==2?List[8]?.price:amountTransform(List[8]?.price, '*'),
-              platformOperateFee: commType==2?List[9]?.price:amountTransform(List[9]?.price, '*'),
-              dividends: 0,
-              provinceManageFee: 0,
-              shopperChargeFee: 0,
-              userChargeFee: 0,
-              shopperManageFee: 0,
-              userManageFee: 0,
-              shoppervipManageFee: 0,
-              company: commType==2?compute2():amountTransform(compute(), '*'),
-              commissionType: commType,
-              saleType: marketType
-            }
-            wholeSaleAccountCheck(params).then(res=>{
-              if(res.code==0){
-                setComputePrice(res.data)
-              }
-            })
             setDataSource(List)
           }
         }}
