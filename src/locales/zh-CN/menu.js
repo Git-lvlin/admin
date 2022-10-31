@@ -434,6 +434,8 @@ export default {
   'menu.city-office-management': '市办事处',
   'menu.city-office-management.city-office-management-list': '市办事处管理',
   'menu.city-office-management.city-office-achievements': '市办事处业绩',
+  'menu.city-office-management.hydrogen-atom-generation': '氢原子市代',
+  'menu.city-office-management.hydrogen-atom-generation.generation-management': '氢原子市代管理',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

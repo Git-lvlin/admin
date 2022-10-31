@@ -52,6 +52,14 @@ export const saveCommissionConfig = (params = {}, options = {}) => {
     });
   }
 
+export const wholeSaleAccountCheck = (params = {}, options = {}) => {
+  return request('/auth/goods/product/wholeSaleAccountCheck', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const getCommissionLog = async (params, options = {}) => {
 const { current, pageSize,updateTime, ...rest } = params;
 const res = await request('/auth/goods/product/getCommissionLog', {
