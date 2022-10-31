@@ -11,9 +11,10 @@ import ProForm,{
   ProFormDependency,
   ProFormSelect
 } from '@ant-design/pro-form';
-import { saveCommissionConfig, getCommissionConfigBySpuId,productList } from '@/services/product-management/designated-commodity-settlement';
+import { saveCommissionConfig, getCommissionConfigBySpuId, productList, wholeSaleAccountCheck } from '@/services/product-management/designated-commodity-settlement';
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
+import { history } from 'umi';
 
 const formItemLayout = {
   labelCol: { span: 2 },
@@ -78,19 +79,40 @@ const bloodData = [
   {
     id: 6,
     name: <>
+          <div>汇智能通省代</div>
+          <div>VIP直推人开启地址所属省代收益</div>
+          </>,
+  },
+  {
+    id: 7,
+    name: <>
+          <div>汇智能通市代</div>
+          <div>VIP直推人开启地址所属市代收益</div>
+          </>,
+  },
+  {
+    id: 8,
+    name: <>
+          <div>氢原子市代</div>
+          <div>VIP直推人开启地址所属氢原子市代收益</div>
+          </>,
+  },
+  {
+    id: 9,
+    name: <>
           <div>运营中心</div>
           <div>服务费佣金</div>
           </>
   },
   {
-    id: 7,
+    id: 10,
     name:<>
           <div>汇能</div>
           <div>平台运营成本</div>
           </>
   },
   {
-    id: 8,
+    id: 11,
     name:'汇能'
   },
 ]
@@ -106,6 +128,9 @@ export default (props) => {
   const actionRef = useRef();
   const [commType, setCommType] = useState(2)
   const [submitType, setSubmitType] = useState()
+  const [loding, setLoding] = useState(0)
+  const [marketType, setMarketType] = useState(0)
+  const [computePrice, setComputePrice] = useState()
 
   useEffect(() => {
     if (detailData?.spuId) {
@@ -118,6 +143,13 @@ export default (props) => {
           commissionType: findItem?.commissionType||2
         })
         if(findItem){
+          if(detailData.commissionConfig!=0){
+            wholeSaleAccountCheck(findItem).then(res=>{
+              if(res.code==0){
+                setComputePrice(res.data)
+              }
+            })
+          }
           const data = [
             {
               id: 1,
@@ -161,13 +193,37 @@ export default (props) => {
             {
               id: 6,
               name: <>
+                    <div>汇智能通省代</div>
+                    <div>VIP直推人开启地址所属省代收益</div>
+                    </>,
+              price: findItem?.commissionType==2?findItem?.provinceAgent:amountTransform(findItem?.provinceAgent, '/')
+            },
+            {
+              id: 7,
+              name: <>
+                    <div>汇智能通市代</div>
+                    <div>VIP直推人开启地址所属市代收益</div>
+                    </>,
+              price: findItem?.commissionType==2?findItem?.cityAgent:amountTransform(findItem?.cityAgent, '/')
+            },
+            {
+              id: 8,
+              name: <>
+                    <div>氢原子市代</div>
+                    <div>VIP直推人开启地址所属氢原子市代收益</div>
+                    </>,
+              price: findItem?.commissionType==2?findItem?.hydrogenCityAgent:amountTransform(findItem?.hydrogenCityAgent, '/')
+            },
+            {
+              id: 9,
+              name: <>
                     <div>运营中心</div>
                     <div>服务费佣金</div>
                     </>,
               price: findItem?.commissionType==2?findItem?.companyAgent:amountTransform(findItem?.companyAgent, '/')
             },
             {
-              id: 7,
+              id: 10,
               name:<>
                     <div>汇能</div>
                     <div>平台运营成本</div>
@@ -175,7 +231,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.platformOperateFee:amountTransform(findItem?.platformOperateFee, '/')
             },
             {
-              id: 8,
+              id: 11,
               name:'汇能'
             },
           ]
@@ -184,7 +240,7 @@ export default (props) => {
         }
       })
     }
-  }, [])
+  }, [loding])
 
   useEffect(() => {
     if(detailData.commissionConfig==0){
@@ -200,7 +256,7 @@ export default (props) => {
         })
       })
     }
-  }, [])
+  }, [loding])
 
   const submit = (values) => {
     const { commissionType, saleType } = values
@@ -216,19 +272,20 @@ export default (props) => {
         skuId: recordList?.skuId,
         shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
         cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
+        trainCenterManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+        serviceFee: commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+        provinceAgent: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
+        cityAgent: commissionType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
+        hydrogenCityAgent:commissionType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
+        companyAgent: commissionType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
+        platformOperateFee: commissionType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+        dividends: 0,
         provinceManageFee: 0,
         shopperChargeFee: 0,
         userChargeFee: 0,
         shopperManageFee: 0,
         userManageFee: 0,
         shoppervipManageFee: 0,
-        trainCenterManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
-        serviceFee: commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
-        companyAgent: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
-        platformOperateFee: commissionType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
-        provinceAgent: 0,
-        cityAgent: 0,
-        dividends: 0,
         company: commissionType==2?compute2():amountTransform(compute(), '*'),
         commissionType,
         saleType
@@ -259,7 +316,7 @@ export default (props) => {
 
   const compute = () => {
     let sum = 0
-    for (let index = 0; index < 8; index++) {
+    for (let index = 0; index < 11; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
@@ -270,7 +327,7 @@ export default (props) => {
 
   const compute2 = () => {
     let sum = 0
-    for (let index = 0; index < 8; index++) {
+    for (let index = 0; index < 11; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
@@ -291,12 +348,17 @@ export default (props) => {
   return editPrice&&myToFixed(editPrice)
   }
 
-  const proportion3 = (val) =>{
-    const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(val),'/'):
-                                amountTransform(amountTransform(parseFloat(val),'*')/recordList?.distributePrice,'*')
-  return <span>{editPrice&&myToFixed(editPrice)}{commType==1?'%':'元'}</span>
+  const proportion4 = (val) =>{
+    const editPrice=commType==2?amountTransform(val/recordList?.distributePrice,'*'):
+                                amountTransform(parseFloat(val),'/')
+  return <span>{editPrice&&myToFixed(editPrice)}</span>
   }
 
+  const proportion5 = (val) =>{
+    const editPrice=commType==2?amountTransform(parseFloat(val),'/'):
+                                amountTransform(val/recordList?.distributePrice,'*')                  
+  return <span>{editPrice&&myToFixed(editPrice)}</span>
+  }
   const columns = [
     {
       title: '序号',
@@ -315,7 +377,7 @@ export default (props) => {
     {
       title: <>
               <p>{recordList?.goodsName}</p>
-              <span>skuID:{recordList?.skuId}  新集约价:￥{amountTransform(recordList?.distributePrice, '/')}</span>
+              <span>skuID:{recordList?.skuId}  新集约价:￥{amountTransform(recordList?.distributePrice, '/')}&nbsp;&nbsp;&nbsp; <a onClick={()=>{ setLoding(loding+1) }}>获取最新价</a></span>
             </>,
       align: 'center',
       hideInSearch: true,
@@ -331,7 +393,7 @@ export default (props) => {
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价+平均运费）</p>
           </>
-        } else if (_?.entry?.id == 7) {
+        } else if (_?.entry?.id == 10) {
           return <FromWrap
                   content={(value, onChange) =>  <InputNumber  
                     min="0"
@@ -350,20 +412,21 @@ export default (props) => {
                   bottom={(value)=>{
                     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
-                        if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==7){
+                        if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==10){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
-                        }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==7){
+                        }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==10){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
                 />
-        } else if (_?.entry?.id == 8) {
+        } else if (_?.entry?.id == 11) {
           return <>
             <p>
-              {commType==1?compute():compute2()}{commType==1?'元':'%'}
-              <span style={{marginLeft:'415px'}}>= {proportion3(commType==1?compute():compute2())} </span>
+              {proportion4(computePrice)}{commType==1?'元':'%'}
+              <span style={{marginLeft:'415px'}}>= {proportion5(computePrice)} </span>{commType==2?'元':'%'}
             </p>
             <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
+            <p>新集约价：{amountTransform(recordList?.distributePrice,'/')}元&nbsp;&nbsp;&nbsp; <a target='_blank' href={'/product-management/supplier/product-list?spuId='+detailData?.spuId}>编辑新集约价</a></p>
           </>
         }
         return  <FromWrap
@@ -384,9 +447,9 @@ export default (props) => {
                   bottom={(value)=>{
                     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
-                        if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=7){
+                        if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=10){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
-                        }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=7){
+                        }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=10){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
@@ -453,6 +516,11 @@ export default (props) => {
               value: 0,
           },
         ]}
+        fieldProps={{
+          onChange:(_)=>{
+            setMarketType(_.target.value)
+          }
+        }}
         initialValue={0}
       />
       <ProFormRadio.Group
@@ -494,9 +562,43 @@ export default (props) => {
           onSave: async (rowKey, data, row) => {
             console.log(rowKey, data, row);
           },
-          onValuesChange: (record, recordList) => {
+          onValuesChange: (record, List) => {
             compute()
-            setDataSource(recordList)
+            console.log('List',List)
+            const params = {
+              status: submitType?1:null,
+              orderType: 30,
+              id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
+              spuId: recordList?.spuId,
+              skuId: recordList?.skuId,
+              shoppervipChargeFee:commType==2?List[0]?.price:amountTransform(List[0]?.price, '*'),
+              cityManageFee:commType==2?List[1]?.price:amountTransform(List[1]?.price, '*'),
+              trainCenterManageFee:commType==2?List[2]?.price:amountTransform(List[2]?.price, '*'),
+              serviceFee: commType==2?List[3]?.price:amountTransform(List[3]?.price, '*'),
+              provinceAgent: commType==2?List[5]?.price:amountTransform(List[5]?.price, '*'),
+              cityAgent: commType==2?List[6]?.price:amountTransform(List[6]?.price, '*'),
+              hydrogenCityAgent:commType==2?List[7]?.price:amountTransform(List[7]?.price, '*'),
+              companyAgent: commType==2?List[8]?.price:amountTransform(List[8]?.price, '*'),
+              platformOperateFee: commType==2?List[9]?.price:amountTransform(List[9]?.price, '*'),
+              dividends: 0,
+              provinceManageFee: 0,
+              shopperChargeFee: 0,
+              userChargeFee: 0,
+              shopperManageFee: 0,
+              userManageFee: 0,
+              shoppervipManageFee: 0,
+              company: commType==2?compute2():amountTransform(compute(), '*'),
+              commissionType: commType,
+              saleType: marketType
+            }
+            console.log('params',params)
+            wholeSaleAccountCheck(params).then(res=>{
+              if(res.code==0){
+                console.log('res',res)
+                setComputePrice(res.data)
+              }
+            })
+            setDataSource(List)
           }
         }}
         recordCreatorProps={false}

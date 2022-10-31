@@ -58,7 +58,7 @@ const SubTable = (props) => {
   )
 };
 
-const TableList = () => {
+const TableList = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [productDetailDrawerVisible, setProductDetailDrawerVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
@@ -72,6 +72,7 @@ const TableList = () => {
   const [visit, setVisit] = useState(false)
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
+  const { spuId }= props.location.query
 
   const getDetail = (id, cb) => {
     api.getDetail({
@@ -580,7 +581,10 @@ const TableList = () => {
       <ProTable
         rowKey="id"
         options={false}
-        params={{
+        params={spuId?{
+          selectType: 1,
+          spuId
+        }:{
           selectType: 1,
         }}
         actionRef={actionRef}

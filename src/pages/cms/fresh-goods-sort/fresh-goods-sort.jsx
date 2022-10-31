@@ -11,6 +11,8 @@ import Putaway from './putaway'
 import GcCascader from './gc-cascader'
 import Form from './form';
 import Edit from './edit';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 const BannerAdmin = (props) => {
   let { wscId,wscId2 }= props.location.query
@@ -25,6 +27,7 @@ const BannerAdmin = (props) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [formVisible, setFormVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
 
   useEffect(() => {
     goodsClassList().then((res) => {
@@ -251,6 +254,15 @@ const BannerAdmin = (props) => {
     }, 
   ];
 
+  const getFieldValue = (searchConfig) => {
+    const { wscId, ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      wscId:wscId&&wscId[0],
+      wscId2:wscId&&wscId[1],
+      ...rest
+    }
+  }
+
   return (
     <PageContainer>
       <ProTable
@@ -265,7 +277,18 @@ const BannerAdmin = (props) => {
           orderType:30,
         }}
         search={{
-          labelWidth: 'auto',
+          defaultCollapsed: false,
+          labelWidth: 150,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+                key='export'
+                change={(e) => { setVisit(e) }}
+                type={'wholesale-spu-new-template'}
+                conditions={()=>{return getFieldValue(searchConfig)}}
+              />,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type='wholesale-spu-new-template'/>,
+          ],
         }}
         headerTitle={selected&&<Space size={24}>
         <span>
