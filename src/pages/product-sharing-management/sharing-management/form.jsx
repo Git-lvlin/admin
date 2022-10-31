@@ -415,6 +415,39 @@ export default (props) => {
                            
   return <span>{editPrice&&myToFixed(editPrice)||myToFixed(price)}</span>
   }
+  const touchBlur = () =>{
+    const params = {
+      status: submitType?1:null,
+      orderType: 30,
+      id: recordList?.id ? recordList?.id : 0,
+      spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
+      skuId: recordList?.id ? recordList?.skuId : recordId?.skuId,
+      shoppervipChargeFee:commType==2?dataSource[0]?.price?dataSource[0]?.price:0:amountTransform(dataSource[0]?.price, '*'),
+      cityManageFee: commType==2?dataSource[1]?.price?dataSource[1]?.price:0:amountTransform(dataSource[1]?.price, '*'),
+      provinceManageFee: 0,
+      shopperChargeFee: 0,
+      userChargeFee: 0,
+      shopperManageFee: 0,
+      userManageFee: 0,
+      shoppervipManageFee: 0,
+      provinceAgent: commType==2?dataSource[3]?.price?dataSource[3]?.price:0:amountTransform(dataSource[3]?.price, '*'),
+      cityAgent: commType==2?dataSource[4]?.price?dataSource[4]?.price:0:amountTransform(dataSource[4]?.price, '*'),
+      hydrogenCityAgent:commType==2?dataSource[5]?.price?dataSource[5]?.price:0:amountTransform(dataSource[5]?.price, '*'),
+      trainCenterManageFee:commType==2?dataSource[6]?.price?dataSource[6]?.price:0:amountTransform(dataSource[6]?.price, '*'),
+      serviceFee: commType==2?dataSource[7]?.price?dataSource[7]?.price:0:amountTransform(dataSource[7]?.price, '*'),
+      companyAgent: commType==2?dataSource[8]?.price?dataSource[8]?.price:0:amountTransform(dataSource[8]?.price, '*'),
+      platformOperateFee: commType==2?dataSource[9]?.price?dataSource[9]?.price:0:amountTransform(dataSource[9]?.price, '*'),
+      dividends: 0,
+      company: commType==2?compute2():amountTransform(compute(), '*'),
+      commissionType: commType,
+      saleType: marketType
+    }
+    wholeSaleAccountCheck(params).then(res=>{
+      if(res.code==0){
+        setComputePrice(res.data)
+      }
+    })
+  }
   const columns = [
     {
       title: '参与角色',
@@ -490,6 +523,7 @@ export default (props) => {
                         placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
                         value={value} 
                         onChange={onChange}
+                        onBlur={()=>{ touchBlur() }}
                       />}
                       right={(value) => {
                         return <span>= {proportion(_)} </span>
@@ -527,6 +561,7 @@ export default (props) => {
                       placeholder='请输此行角色的结算金额，0.00至新集约价。总结算金额<新集约价' 
                       value={value} 
                       onChange={onChange}
+                      onBlur={()=>{ touchBlur() }}
                     />}
                     right={(value) => {
                       return <span>= {proportion(_)} </span>
@@ -550,6 +585,7 @@ export default (props) => {
 
   ]
 
+ 
   return (
     <DrawerForm
       onVisibleChange={setVisible}
@@ -653,37 +689,6 @@ export default (props) => {
           },
           onValuesChange: (record, List) => {
             compute()
-            const params = {
-              status: submitType?1:null,
-              orderType: 30,
-              id: recordList?.id ? recordList?.id : 0,
-              spuId: recordList?.id ? recordList?.spuId : recordId?.spuId,
-              skuId: recordList?.id ? recordList?.skuId : recordId?.skuId,
-              shoppervipChargeFee:commType==2?List[0]?.price?List[0]?.price:0:amountTransform(List[0]?.price, '*'),
-              cityManageFee: commType==2?List[1]?.price?List[1]?.price:0:amountTransform(List[1]?.price, '*'),
-              provinceManageFee: 0,
-              shopperChargeFee: 0,
-              userChargeFee: 0,
-              shopperManageFee: 0,
-              userManageFee: 0,
-              shoppervipManageFee: 0,
-              provinceAgent: commType==2?List[3]?.price?List[3]?.price:0:amountTransform(List[3]?.price, '*'),
-              cityAgent: commType==2?List[4]?.price?List[4]?.price:0:amountTransform(List[4]?.price, '*'),
-              hydrogenCityAgent:commType==2?List[5]?.price?List[5]?.price:0:amountTransform(List[5]?.price, '*'),
-              trainCenterManageFee:commType==2?List[6]?.price?List[6]?.price:0:amountTransform(List[6]?.price, '*'),
-              serviceFee: commType==2?List[7]?.price?List[7]?.price:0:amountTransform(List[7]?.price, '*'),
-              companyAgent: commType==2?List[8]?.price?List[8]?.price:0:amountTransform(List[8]?.price, '*'),
-              platformOperateFee: commType==2?List[9]?.price?List[9]?.price:0:amountTransform(List[9]?.price, '*'),
-              dividends: 0,
-              company: commType==2?compute2():amountTransform(compute(), '*'),
-              commissionType: commType,
-              saleType: marketType
-            }
-            wholeSaleAccountCheck(params).then(res=>{
-              if(res.code==0){
-                setComputePrice(res.data)
-              }
-            })
             setDataSource(List)
           }
         }}
