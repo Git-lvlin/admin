@@ -144,7 +144,6 @@ export default (props) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
       agentId:msgDetail?.agentId,
-      type:type,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
@@ -199,10 +198,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              type={type==2?'cityAgentHydrogenComm':'cityAgentWholesaleComm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==2?'cityAgentHydrogenComm':'cityAgentWholesaleComm'}/>
           ],
         }}
         tableRender={(_, dom) => {
