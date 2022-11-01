@@ -67,26 +67,6 @@ export default (props) => {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金'
-      },
       hideInSearch: true
     },
     {
