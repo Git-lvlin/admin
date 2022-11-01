@@ -69,7 +69,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
       },
       hideInSearch: true,
@@ -82,7 +82,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <p>{amountTransform(_,'/').toFixed(2)}</p>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -96,7 +96,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -110,7 +110,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
       },
       hideInSearch: true
@@ -149,7 +149,7 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="氢原子市代总数量">{amountTransform(detailList?.agentNum,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子市代总数量">{detailList?.agentNum}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
