@@ -69,7 +69,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
       },
       hideInSearch: true,
@@ -82,7 +82,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <p>{amountTransform(_,'/').toFixed(2)}</p>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -96,7 +96,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -110,7 +110,7 @@ export default function GenerationManagement () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
       },
       hideInSearch: true
