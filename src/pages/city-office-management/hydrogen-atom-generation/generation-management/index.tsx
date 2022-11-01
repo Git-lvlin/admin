@@ -66,8 +66,11 @@ export default function GenerationManagement () {
       dataIndex: 'totalAmount',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
-
+        if(parseFloat(_)){
+          return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return _
+        }
       },
       hideInSearch: true,
     },
@@ -90,11 +93,11 @@ export default function GenerationManagement () {
       dataIndex: 'hydrogenCommission',
       align: 'center',
       render: (_,data)=>{
-        // if(parseFloat(_)){
+        if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        // }else{
-        //   return _
-        // }
+        }else{
+          return _
+        }
 
       },
       hideInSearch: true
@@ -104,11 +107,11 @@ export default function GenerationManagement () {
       dataIndex: 'wholesaleAmount',
       align: 'center',
       render: (_,data)=>{
-        // if(parseFloat(_)){
+        if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        // }else{
-        //   return _
-        // }
+        }else{
+          return _
+        }
       },
       hideInSearch: true
     },
