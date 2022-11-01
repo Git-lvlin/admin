@@ -40,6 +40,16 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
     
   }, [pageSize, page, query])
 
+  const getFieldsValue = () => {
+    const { time, ...rest } = form.current?.getFieldsValue()
+    return {
+      agencyId: id,
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
+
   const pageChange = (a: number, b?: number) => {
     setPage(a)
     setPageSize(b)
@@ -68,7 +78,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
                 <Space size={10} key='1' className={styles.search}>
                   <Button type='primary' onClick={()=>form?.submit()}>查询</Button>
                   <Button onClick={()=>{form?.resetFields(); setQuery(query + 1)}}>重置</Button>
-                  <Export type="newWholesaleCityAgencyPmDetail"/>
+                  <Export type="newWholesaleCityAgencyPmDetail" conditions={getFieldsValue} key='export'/>
                 </Space>
               ]
             }}
