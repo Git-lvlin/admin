@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { cityAgentHydrogenComm,cityAgentWholesaleComm,cityAgentHydrogenCommStats,cityAgentWholesaleCommStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -36,16 +36,10 @@ export default (props) => {
 
   const divideName=()=>{
     switch (type) {
-      case 1:
-        return '累计业绩'
       case 2:
         return '销售提成'
       case 3:
-        return '托管推广提成'
-      case 4:
-        return '运营推广提成'
-      case 5:
-        return '托管租赁管理费提成'
+        return '新集约批发业绩提成'
       default:
         return ''
     }
@@ -53,7 +47,7 @@ export default (props) => {
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -66,7 +60,7 @@ export default (props) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
@@ -97,7 +91,7 @@ export default (props) => {
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -110,7 +104,7 @@ export default (props) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -124,33 +118,41 @@ export default (props) => {
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1]
+      agentId:msgDetail?.agentId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      orderType:time?.orderType
     }
-    cityItemOrderSum(params).then(res=>{
-      if(res.code==0){
-        setOrderSum(res?.data?.total)
-      }
-    })
+    if(type==2){
+      cityAgentHydrogenCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.amount)
+        }
+      })
+    }else{
+      cityAgentWholesaleCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.amount)
+        }
+      })
+    }
+
   },[time])
 
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+      agentId:msgDetail?.agentId,
       type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      title={`${msgDetail?.agentName} ${divideName()} （ID:${msgDetail?.agentId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -176,12 +178,12 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={type==2?cityAgentHydrogenComm:cityAgentWholesaleComm}
         columnEmptyText={false}
         actionRef={ref}
         params={{
           type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agentId:msgDetail?.agentId,
         }}
         pagination={{
           pageSize: 10,

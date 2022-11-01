@@ -4,7 +4,7 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/city-office-management-list"
+import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
@@ -43,10 +43,10 @@ export default (props) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
+    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agentId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          name:msgDetail?.agencyName,
+          name:msgDetail?.agentName,
           ...res.data
         })
       }

@@ -135,6 +135,20 @@ export default function TransactionData () {
 
       },
       hideInSearch: true
+    },
+    {
+      title: '租赁管理费提成（元）',
+      dataIndex: 'totalLeaseCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }else{
+          return _
+        }
+
+      },
+      hideInSearch: true
     }
   ]
 
@@ -147,6 +161,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="总托管购买交易提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="租赁管理费业绩">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="businessDeptId"
