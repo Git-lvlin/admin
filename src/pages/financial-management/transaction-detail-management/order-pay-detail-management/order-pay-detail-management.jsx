@@ -59,8 +59,7 @@ const OrderPayDetailManagement = () =>{
     },
     {
       title: '收方会员ID',
-      dataIndex: 'sellerSn',
-      
+      dataIndex: 'sellerSn'
     },
     {
       title: '收方手机',
