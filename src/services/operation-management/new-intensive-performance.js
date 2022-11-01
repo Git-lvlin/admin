@@ -1,14 +1,17 @@
 import request from '@/utils/request';
+import moment from "moment";
 
 
 // 新集约批发单运营中心业绩
 export const newWholesaleOperationPm = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { time, current, pageSize, ...rest } = params;
   const res = await request('/auth/stats/performance/newWholesaleOperationPm', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options

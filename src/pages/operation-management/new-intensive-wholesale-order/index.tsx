@@ -87,6 +87,7 @@ const NewIntensivePerformance: FC = () => {
     {
       title: '运营中心ID',
       dataIndex: 'operationId',
+      valueType: 'digit',
       hideInTable: true
     },
     {
