@@ -149,7 +149,7 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="氢原子市代总数量">{amountTransform(detailList?.agentNum,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子市代总数量">{detailList?.agentNum}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
