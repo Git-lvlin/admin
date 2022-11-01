@@ -193,7 +193,7 @@ export default (props:CumulativeProps)=>{
             activeKey=='operatorEquipment'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳租赁管理费">
+        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳托管租赁管理费">
           {
             activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
@@ -201,6 +201,11 @@ export default (props:CumulativeProps)=>{
         <ProCard.TabPane key="hydrogen" tab="全款购买订单">
           {
             activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳租赁管理费">
+          {
+            activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
       </ProCard>

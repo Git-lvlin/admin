@@ -128,14 +128,8 @@ export default () => {
         valueType: 'text',
       },
       {
-        title: '描述',
+        title: '7800元（三个月租金）',
         dataIndex: 'describe',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '分成金额（元）',
-        dataIndex: 'divideMoney',
         valueType: 'text',
         hideInSearch: true,
         render:(_)=>{
@@ -143,10 +137,13 @@ export default () => {
         }
       },
       {
-        title: '分成比例（%）',
-        dataIndex: 'percent',
+        title: '15000（六个月租金）',
+        dataIndex: 'divideMoney',
         valueType: 'text',
         hideInSearch: true,
+        render:(_)=>{
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }
       },
       {
         title: '分成说明',
@@ -176,9 +173,9 @@ export default () => {
           rowKey="id"
           options={false}
           headerTitle="租赁_氢原子租金款的各个角色提成比例"
-          toolBarRender={()=>[
-            <p key='money'>租金金额：{amountTransform(rent,'/').toFixed(2)}元 / 月</p>
-          ]}
+          // toolBarRender={()=>[
+          //   <p key='money'>租金金额：{amountTransform(rent,'/').toFixed(2)}元 / 月</p>
+          // ]}
           search={false}
           columns={columns2}
           pagination={false}
@@ -194,10 +191,10 @@ export default () => {
             <Descriptions.Item label="氢原子机器押金金额">
               {amountTransform(rentDetail?.deposit,'/').toFixed(2)}元
             </Descriptions.Item>
-            <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item>
-            <Descriptions.Item label="氢原子机器租金金额">
+            {/* <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次缴租最低缴租天数">{rentDetail?.firstRentDay}天</Descriptions.Item> */}
+            {/* <Descriptions.Item label="氢原子机器租金金额">
               {amountTransform(rentDetail?.monthRentMoney,'/').toFixed(2)}元 / 月，固定按1月30天计算{((rentDetail?.monthRentMoney/30)/100).toFixed(2)}元 / 天（四舍五入）
-            </Descriptions.Item>
+            </Descriptions.Item> */}
             <Descriptions.Item labelStyle={{ textAlign: 'right', width: 230, display: 'inline-block' }} label="氢原子机器首次启用后免租期天数">
               <p>{rentDetail?.firstFreeRentDay}天</p>
               <p style={{color:'#FBB336'}}>（从机器激活的次日算起）</p>

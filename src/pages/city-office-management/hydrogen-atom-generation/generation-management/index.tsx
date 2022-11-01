@@ -6,7 +6,7 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { listPage,cityBusinessDeptSum } from "@/services/city-office-management/city-office-achievements"
+import { cityAgentManage,cityAgentManageStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
@@ -26,14 +26,14 @@ export default function GenerationManagement () {
 
   useEffect(() => {
     const params={
-      cityBusinessDeptId:time?.cityBusinessDeptId,
-      cityBusinessDeptName:time?.cityBusinessDeptName,
-      begin:time?.createTime&&time?.createTime[0],
-      end:time?.createTime&&time?.createTime[1]
+      agentId:time?.agentId,
+      agentName:time?.agentName,
+      startTime:time?.createTime&&time?.createTime[0],
+      endTime:time?.createTime&&time?.createTime[1]
     }
-    cityBusinessDeptSum(params).then(res=>{
+    cityAgentManageStats(params).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data[0])
       }
     })
 
@@ -42,13 +42,13 @@ export default function GenerationManagement () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'cityBusinessDeptId',
+      dataIndex: 'agentId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '氢原子市代名称',
-      dataIndex: 'cityBusinessDeptName',
+      dataIndex: 'agentName',
       align: 'center',
       order: 4,
       fieldProps:{
@@ -63,7 +63,7 @@ export default function GenerationManagement () {
     },
     {
       title: '累计业绩（元）',
-      dataIndex: 'totalTradeCommission',
+      dataIndex: 'totalAmount',
       align: 'center',
       render: (_,data)=>{
         return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
@@ -87,34 +87,47 @@ export default function GenerationManagement () {
     },
     {
       title: '氢原子全款销售提成',
-      dataIndex: 'totalSaleCommission',
+      dataIndex: 'hydrogenCommission',
       align: 'center',
       render: (_,data)=>{
-        if(parseFloat(_)){
+        // if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        }else{
-          return _
-        }
+        // }else{
+        //   return _
+        // }
 
       },
       hideInSearch: true
     },
     {
       title: '新集约批发业绩提成',
-      dataIndex: 'totalBuyCommission',
+      dataIndex: 'wholesaleAmount',
       align: 'center',
       render: (_,data)=>{
-        if(parseFloat(_)){
+        // if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        }else{
-          return _
-        }
+        // }else{
+        //   return _
+        // }
       },
       hideInSearch: true
     },
+    // {
+    //   title: '氢原子租赁管理费提成',
+    //   dataIndex: 'wholesaleAmount',
+    //   align: 'center',
+    //   render: (_,data)=>{
+    //     // if(parseFloat(_)){
+    //       return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
+    //     // }else{
+    //     //   return _
+    //     // }
+    //   },
+    //   hideInSearch: true
+    // },
     {
       title: '登录账号',
-      dataIndex: 'cityBusinessDeptName',
+      dataIndex: 'accountName',
       align: 'center',
       hideInSearch: true
     },
@@ -133,16 +146,17 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="氢原子市代总数量">{amountTransform(detailList?.totalTradeCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子市代总数量">{amountTransform(detailList?.agentNum,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
+        {/* <Descriptions.Item  label="氢原子租赁管理费提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item> */}
       </Descriptions>
       <ProTable<TableProps>
-        rowKey="businessDeptId"
+        rowKey="agentId"
         headerTitle='列表'
         columns={tableColumns}
-        request={listPage}
+        request={cityAgentManage}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{
@@ -154,6 +168,7 @@ export default function GenerationManagement () {
         }}
         options={false}
         search={{
+          labelWidth: 200,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse()
           ],

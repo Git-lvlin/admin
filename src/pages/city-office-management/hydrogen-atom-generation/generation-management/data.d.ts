@@ -1,21 +1,24 @@
 export type DescriptionsProps = {
-  totalTradeCommission: number;
+  agentNum: number;
+  hydrogenAmount: number;
+  hydrogenCommission: number;
+  wholesaleCommission: number;
   totalCommission: number;
-  totalSaleCommission: number;
-  totalBuyCommission: number;
-  totalTrainingCommission: number;
-  totalLeaseCommission: number;
 }
 
 export type TableProps = {
-  cityBusinessDeptId: string;
-  cityBusinessDeptName: string;
-  totalTradeCommission: string;
-  totalCommission: string;
-  totalSaleCommission: string;
-  totalBuyCommission: string;
-  totalTrainingCommission: string;
-  totalLeaseCommission: string;
+  hydrogenAmount: number;
+  accountId: number;
+  agentId: number;
+  manager: string;
+  accountName: string;
+  hydrogenCommission: number;
+  wholesaleCommission: number;
+  managerPhone: string;
+  agentName: string;
+  totalCommission: number;
+  wholesaleAmount: string;
+  totalAmount: string;
 }
 
 
@@ -31,15 +34,15 @@ export type GithubIssueItem = {
 
 export type DevicesProps = {
   msgDetail: {
-    cityBusinessDeptId: String;
+    agentId: String;
   }
   type: string;
 }
 
 export type CumulativeProps = {
   msgDetail: {
-    cityBusinessDeptId: String;
-    cityBusinessDeptName: string;
+    agentId: String;
+    agentName: string;
   }
   type: string;
   visible: boolean;

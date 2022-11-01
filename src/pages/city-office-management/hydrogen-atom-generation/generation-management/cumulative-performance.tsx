@@ -4,14 +4,13 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityTotalTradeItemListPage,cityTotalTradeItemSum } from "@/services/city-office-management/city-office-achievements"
+import { cityAgentComm,cityAgentCommStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-import ProCard from "@ant-design/pro-card"
 import moment from "moment";
 
 const formItemLayout = {
@@ -27,8 +26,12 @@ const formItemLayout = {
     }
   };
 
-const CumulativePerformance=(props:DevicesProps) => {
-  const { type,msgDetail } = props
+
+
+
+export default (props:CumulativeProps)=>{
+  const { visible, setVisible,msgDetail,onClose} = props;
+  const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState({})
   const ref = useRef()
@@ -37,7 +40,7 @@ const CumulativePerformance=(props:DevicesProps) => {
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -50,18 +53,18 @@ const CumulativePerformance=(props:DevicesProps) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -74,21 +77,21 @@ const CumulativePerformance=(props:DevicesProps) => {
     },
     {
       title: '店铺编号',
-      dataIndex: 'shopMemberAccount',
+      dataIndex: 'storeHouseNumber',
       align: 'center',
     }
   ]
   useEffect(()=>{
     const params={
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:type,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1]
+      agentId:msgDetail?.agentId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      storeHouseNumber:time?.storeHouseNumber
     }
-    cityTotalTradeItemSum(params).then(res=>{
+    cityAgentCommStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.totalAmount)
+        setOrderSum(res?.data?.amount)
       }
     })
   },[time])
@@ -96,23 +99,42 @@ const CumulativePerformance=(props:DevicesProps) => {
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      agentId:msgDetail?.agentId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
+      <DrawerForm
+        title={`${msgDetail?.agentName} 累计业绩 （ID:${msgDetail?.agentId}）`}
+        onVisibleChange={setVisible}
+        visible={visible}
+        form={form}
+        width={1300}
+        drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+            onClose();
+        }
+        }}
+        submitter={{
+        render:()=>{
+          return []
+        }
+        }}
+        {...formItemLayout}
+        className={styles.store_information}
+      >
        <ProTable<GithubIssueItem>
         rowKey="date"
         columns={Columns}
-        request={cityTotalTradeItemListPage}
+        request={cityAgentComm}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          orderType:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agentId:msgDetail?.agentId,
         }}
         pagination={{
           pageSize: 10,
@@ -146,64 +168,6 @@ const CumulativePerformance=(props:DevicesProps) => {
           </>
         }}
       />
-  );
-};
-
-
-export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose} = props;
-  const [form] = Form.useForm();
-  const [activeKey, setActiveKey] = useState<string>('hydrogenAgent')
-  return (
-      <DrawerForm
-        title={`${msgDetail?.cityBusinessDeptName} 累计业绩 （ID:${msgDetail?.cityBusinessDeptId}）`}
-        onVisibleChange={setVisible}
-        visible={visible}
-        form={form}
-        width={1300}
-        drawerProps={{
-        forceRender: true,
-        destroyOnClose: true,
-        onClose: () => {
-            onClose();
-        }
-        }}
-        submitter={{
-        render:()=>{
-          return []
-        }
-        }}
-        {...formItemLayout}
-        className={styles.store_information}
-      >
-       <ProCard
-        tabs={{
-          type: 'card',
-          activeKey,
-          onChange: setActiveKey
-        }}
-      >
-        <ProCard.TabPane key="hydrogenAgent" tab="托管购买订单">
-          {
-            activeKey=='hydrogenAgent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
-          }
-        </ProCard.TabPane>
-        <ProCard.TabPane key="operatorEquipment" tab="缴纳培训服务费">
-          {
-            activeKey=='operatorEquipment'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
-          }
-        </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳租赁管理费">
-          {
-            activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
-          }
-        </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogen" tab="全款购买订单">
-          {
-            activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
-          }
-        </ProCard.TabPane>
-      </ProCard>
     </DrawerForm >
   )
 }

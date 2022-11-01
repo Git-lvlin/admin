@@ -5,7 +5,7 @@ import {
   DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
+import { accountCityResetPwd } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -26,12 +26,12 @@ export default (props) => {
   useEffect(()=>{
       form.setFieldsValue({
         accountId:msgDetail?.accountId,
-        agencyId:msgDetail?.agencyId
+        agencyId:msgDetail?.agentId
       })
   },[])
   return (
     <ModalForm
-      title={`请确认要重置事业部：${msgDetail?.agencyName}（账号：${msgDetail?.accountName}）的登录密码？`}
+      title={`请确认要重置事业部：${msgDetail?.agentName}（账号：${msgDetail?.accountName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
