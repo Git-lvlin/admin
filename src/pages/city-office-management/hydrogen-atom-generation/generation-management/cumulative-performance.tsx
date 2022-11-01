@@ -150,10 +150,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityTotalTradeItemList'}
+              type={'cityAgentComm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityTotalTradeItemList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentComm'}/>
           ],
         }}
         tableRender={(_, dom) => {
