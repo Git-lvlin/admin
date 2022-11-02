@@ -237,17 +237,31 @@ export default function EditTable(props) {
         // }
       },
       {
-        title: '是否包邮',
+        title: '零售是否包邮',
         dataIndex: 'isFreeFreight',
         render: (_) => _ === 1 ? '包邮' : '不包邮',
         hideInTable: goodsSaleType === 1,
         editable: false,
       },
       {
-        title: '运费模板',
+        title: '零售运费模板',
         dataIndex: 'freightTemplateId',
         render: (_) => _.label ? _.label : '_',
         hideInTable: goodsSaleType === 1,
+        editable: false,
+      },
+      {
+        title: '批发是否包邮',
+        dataIndex: 'wsFreight',
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+        hideInTable: goodsSaleType === 2,
+        editable: false,
+      },
+      {
+        title: '批发运费模板',
+        dataIndex: 'wsFreightId',
+        render: (_) => _.label ? _.label : '_',
+        hideInTable: goodsSaleType === 2,
         editable: false,
       },
       {

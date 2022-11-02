@@ -117,6 +117,7 @@ export default (props) => {
       marketPrice,
       freightTemplateId,
       sampleFreightId,
+      wsFreightId,
       wholesaleFreight,
       wholesaleTaxRate,
       wholesaleSupplyPrice,
@@ -167,6 +168,7 @@ export default (props) => {
         freightTemplateId: freightTemplateIds,
         sampleFreightId: sampleFreightIds,
         distributePrice: distributePrices,
+        wsFreightId: wsFreightIds,
         ...rests
       } = item;
       const obj = {};
@@ -200,6 +202,11 @@ export default (props) => {
       if (freightTemplateIds) {
         obj.freightTemplateId = freightTemplateIds.value;
         obj.freightTemplateName = freightTemplateIds.label;
+      }
+
+      if (wsFreightIds) {
+        obj.wsFreightId = wsFreightIds.value;
+        obj.wsFreightName = wsFreightIds.label;
       }
 
       if (sampleFreightIds) {
@@ -246,6 +253,8 @@ export default (props) => {
         skuName: goods.skuName,
         operateType,
         goodsName: goodsName.replace(/\s+/, ' '),
+        invoiceType: goods.invoiceType,
+        invoiceTaxRate: goods.invoiceTaxRate,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -277,6 +286,11 @@ export default (props) => {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
         obj.goods.distributePrice = amountTransform(distributePrice)
+      }
+
+      if (wsFreightId) {
+        obj.goods.wsFreightId = wsFreightId.value;
+        obj.goods.wsFreightName = wsFreightId.label;
       }
 
       if (sampleFreightId) {
@@ -666,6 +680,7 @@ export default (props) => {
         goodsKeywords: goods.goodsKeywords,
         goodsSaleType: goods.goodsSaleType,
         isFreeFreight: goods.isFreeFreight,
+        wsFreight: goods.wsFreight,
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
@@ -700,6 +715,12 @@ export default (props) => {
       if (freightTemplateId && freightTemplateName) {
         form.setFieldsValue({
           freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
+        })
+      }
+
+      if (goods.wsFreightId && goods.wsFreightName) {
+        form.setFieldsValue({
+          wsFreightId: { label: goods.wsFreightName, value: goods.wsFreightId }
         })
       }
 
@@ -780,6 +801,7 @@ export default (props) => {
             // isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateId !== 0 ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
             sampleFreightId: item[1]?.sampleFreightId !== 0 ? { label: item[1]?.sampleFreightName, value: item[1]?.sampleFreightId } : undefined,
+            wsFreightId: item[1]?.wsFreightId !== 0 ? { label: item[1]?.wsFreightName, value: item[1]?.wsFreightId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -976,6 +998,16 @@ export default (props) => {
         label="商品开票税率(%)"
         disabled
       />
+      <Form.Item
+        label="运费发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.invoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="运费发票税率"
+      >
+        {amountTransform(goods.invoiceTaxRate) || ''}{!!+goods.invoiceTaxRate && '%'}
+      </Form.Item>
       <ProFormText
         name="goodsDesc"
         label="商品副标题"
@@ -1755,7 +1787,7 @@ export default (props) => {
         goods.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&
         <ProFormRadio.Group
           name="isFreeFreight"
-          label="是否包邮"
+          label="零售是否包邮"
           rules={[{ required: true }]}
           options={[
             {
@@ -1773,7 +1805,35 @@ export default (props) => {
 
       {goods.goodsSaleType !== 1 && !goods.isFreeFreight && detailData?.isMultiSpec === 0 && <Form.Item
         name="freightTemplateId"
-        label="选择运费模板"
+        label="零售运费模板"
+        rules={[{ required: true, message: '请选择运费模板' }]}
+      >
+        <FreightTemplateSelect labelInValue disabled />
+      </Form.Item>}
+
+      {
+        goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
+        <ProFormRadio.Group
+          name="wsFreight"
+          label="批发是否包邮"
+          rules={[{ required: true }]}
+          options={[
+            {
+              label: '包邮',
+              value: 1,
+            },
+            {
+              label: '不包邮',
+              value: 0,
+            },
+          ]}
+          disabled
+        />
+      }
+
+      {goods.goodsSaleType !== 2 && !goods.wsFreight && detailData?.isMultiSpec === 0 && <Form.Item
+        name="wsFreightId"
+        label="批发运费模板"
         rules={[{ required: true, message: '请选择运费模板' }]}
       >
         <FreightTemplateSelect labelInValue disabled />

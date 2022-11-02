@@ -124,6 +124,16 @@ export default (props) => {
         {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>
       <Form.Item
+        label="运费发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.invoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="运费发票税率"
+      >
+        {amountTransform(goods.invoiceTaxRate) || ''}{!!+goods.invoiceTaxRate && '%'}
+      </Form.Item>
+      <Form.Item
         label="商品副标题"
       >
         {goods.goodsDesc}
@@ -444,15 +454,26 @@ export default (props) => {
           </>
       }
       {goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 && <Form.Item
-        label="是否包邮"
+        label="零售是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[goods?.isFreeFreight]}
       </Form.Item>}
       {goods?.goodsSaleType !== 1 && !goods?.isFreeFreight && detailData?.isMultiSpec === 0 &&
         <Form.Item
-          label="运费模板"
+          label="零售运费模板"
         >
           {detailData?.freightTemplateName}
+        </Form.Item>}
+      {goods.goodsSaleType !== 2 && detailData.isMultiSpec === 0 && <Form.Item
+        label="批发是否包邮"
+      >
+        {{ 0: '不包邮', 1: '包邮', }[goods.wsFreight]}
+      </Form.Item>}
+      {goods.goodsSaleType !== 2 && !goods.wsFreight && detailData.isMultiSpec === 0 &&
+        <Form.Item
+          label="批发运费模板"
+        >
+          {detailData.wsFreightName}
         </Form.Item>}
       {/* <Form.Item
         label="七天无理由退货"
