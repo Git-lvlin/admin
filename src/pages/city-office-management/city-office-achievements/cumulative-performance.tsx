@@ -206,6 +206,11 @@ export default (props:CumulativeProps)=>{
             activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
+        <ProCard.TabPane key="hydrogenBoot" tab="启动费">
+          {
+            activeKey=='hydrogenBoot'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+          }
+        </ProCard.TabPane>
         <ProCard.TabPane key="hydrogenRent" tab="缴纳租赁管理费">
           {
             activeKey=='hydrogenRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
