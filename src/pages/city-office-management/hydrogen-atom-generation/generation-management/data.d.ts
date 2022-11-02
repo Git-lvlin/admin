@@ -4,6 +4,7 @@ export type DescriptionsProps = {
   hydrogenCommission: number;
   wholesaleCommission: number;
   totalCommission: number;
+  hydrogenLeaseCommission: number
 }
 
 export type TableProps = {
