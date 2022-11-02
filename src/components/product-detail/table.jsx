@@ -5,7 +5,7 @@ import { Image } from 'antd'
 
 Big.RM = 0;
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType, wholeSaleCheckPrice, setFreightTemplateDetailVisible, setFreightTemplateId } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -241,7 +241,7 @@ export default function EditTable(props) {
       {
         title: '零售运费模板',
         dataIndex: 'freightTemplateId',
-        render: (_) => _.label ? _.label : '_',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看零售运费模板不发货地区</a></> : '-',
         hideInTable: goodsSaleType === 1,
         editable: false,
       },
@@ -255,7 +255,7 @@ export default function EditTable(props) {
       {
         title: '批发运费模板',
         dataIndex: 'wsFreightId',
-        render: (_) => _.label ? _.label : '_',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看批发运费模板不发货地区</a></> : '-',
         hideInTable: goodsSaleType === 2,
         editable: false,
       },

@@ -9,7 +9,7 @@ import Big from 'big.js';
 Big.RM = 0;
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice,setFreightTemplateDetailVisible, setFreightTemplateId } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -160,8 +160,6 @@ export default function EditTable(props) {
         editable: false,
         hideInTable: goodsSaleType === 2,
         render: (_,record) => {
-          console.log('record', record)
-          console.log('wholeSaleCheckPrice', wholeSaleCheckPrice)
           return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(wholeSaleCheckPrice).minus(record.wholesaleSupplyPrice).toFixed(2) }元/${unit}` : '-'
         }
       },
@@ -246,7 +244,7 @@ export default function EditTable(props) {
       {
         title: '零售运费模板',
         dataIndex: 'freightTemplateId',
-        render: (_) => _.label ? _.label : '_',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看零售运费模板不发货地区</a></> : '-',
         hideInTable: goodsSaleType === 1,
         editable: false,
       },
@@ -260,7 +258,7 @@ export default function EditTable(props) {
       {
         title: '批发运费模板',
         dataIndex: 'wsFreightId',
-        render: (_) => _.label ? _.label : '_',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看批发运费模板不发货地区</a></> : '-',
         hideInTable: goodsSaleType === 2,
         editable: false,
       },

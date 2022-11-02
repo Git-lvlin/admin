@@ -5,12 +5,16 @@ import EditTable from './table';
 import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 import Big from 'big.js';
+import FreightTemplateDetail from '@/components/freight-template-detail'
+
 
 Big.RM = 0;
 export default (props) => {
   const { detailData, review } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [freightTemplateId, setFreightTemplateId] = useState(null);
+  const [freightTemplateDetailVisible, setFreightTemplateDetailVisible] = useState(false);
 
   const { goods } = detailData;
   const formItemLayout = {
@@ -216,6 +220,8 @@ export default (props) => {
                 review={review}
                 operateType={goods?.operateType}
                 wholeSaleCheckPrice={+detailData?.wholeSaleCheckPrice}
+                setFreightTemplateDetailVisible={setFreightTemplateDetailVisible}
+                setFreightTemplateId={setFreightTemplateId}
               />
             }
             <Form.Item
@@ -462,7 +468,8 @@ export default (props) => {
         <Form.Item
           label="零售运费模板"
         >
-          {detailData?.freightTemplateName}
+          <div>{detailData?.freightTemplateName}</div>
+          <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(detailData?.freightTemplateId) }}>点击查看零售运费模板不发货地区</a>
         </Form.Item>}
       {goods.goodsSaleType !== 2 && detailData.isMultiSpec === 0 && <Form.Item
         label="批发是否包邮"
@@ -473,7 +480,8 @@ export default (props) => {
         <Form.Item
           label="批发运费模板"
         >
-          {detailData.wsFreightName}
+          <div>{goods.wsFreightName}</div>
+          <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(goods?.wsFreightId) }}>点击查看批发运费模板不发货地区</a>
         </Form.Item>}
       {/* <Form.Item
         label="七天无理由退货"
@@ -563,7 +571,10 @@ export default (props) => {
             options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
           />
            */}
-
+      {freightTemplateDetailVisible && <FreightTemplateDetail
+        id={freightTemplateId}
+        setVisible={setFreightTemplateDetailVisible}
+      />}
     </Form>
   );
 };

@@ -22,6 +22,7 @@ import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
 import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
+import FreightTemplateDetail from '@/components/freight-template-detail'
 import { useLocation } from 'umi';
 import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
 import ProfitTable from './profit-table';
@@ -34,10 +35,13 @@ Big.RM = 0;
 
 const { confirm } = Modal
 
-const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex' }}>
-    <div>{content(value, onChange)}</div>
-    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+const FromWrap = ({ value, onChange, content, right, bottom }) => (
+  <div>
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+    </div>
+    <div>{bottom?.(value)}</div>
   </div>
 )
 
@@ -57,6 +61,8 @@ export default (props) => {
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
   const [overruleVisible, setOverruleVisible] = useState(false);
+  const [freightTemplateId, setFreightTemplateId] = useState(null);
+  const [freightTemplateDetailVisible, setFreightTemplateDetailVisible] = useState(false);
   const [form] = Form.useForm()
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
@@ -1348,6 +1354,8 @@ export default (props) => {
                           wsUnit={goods.wsUnit}
                           ladderSwitch={detailData?.ladderSwitch}
                           wholeSaleCheckPrice={+detailData?.wholeSaleCheckPrice}
+                          setFreightTemplateDetailVisible={setFreightTemplateDetailVisible}
+                          setFreightTemplateId={setFreightTemplateId}
                         />}
                     </>
                   )
@@ -1808,7 +1816,11 @@ export default (props) => {
         label="零售运费模板"
         rules={[{ required: true, message: '请选择运费模板' }]}
       >
-        <FreightTemplateSelect labelInValue disabled />
+        <FromWrap
+          content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
+          right={() => {}}
+          bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看零售运费模板不发货地区</a>}
+        />
       </Form.Item>}
 
       {
@@ -1836,7 +1848,11 @@ export default (props) => {
         label="批发运费模板"
         rules={[{ required: true, message: '请选择运费模板' }]}
       >
-        <FreightTemplateSelect labelInValue disabled />
+        <FromWrap
+          content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
+          right={() => {}}
+          bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看批发运费模板不发货地区</a>}
+        />
       </Form.Item>}
 
       {/* <ProFormRadio.Group
@@ -2000,6 +2016,10 @@ export default (props) => {
         setVisible={setLookVisible}
         dataList={lookData || detailData}
         callback={(text) => { console.log('callback', text) }}
+      />}
+      {freightTemplateDetailVisible && <FreightTemplateDetail
+        id={freightTemplateId}
+        setVisible={setFreightTemplateDetailVisible}
       />}
     </DrawerForm>
   );
