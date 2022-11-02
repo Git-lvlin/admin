@@ -4,7 +4,14 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityAgentHydrogenComm,cityAgentWholesaleComm,cityAgentHydrogenCommStats,cityAgentWholesaleCommStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { 
+  cityAgentHydrogenComm,
+  cityAgentWholesaleComm,
+  cityAgentHydrogenCommStats,
+  cityAgentWholesaleCommStats,
+  cityAgentHydrogenLeaseComm,
+  cityAgentHydrogenLeaseCommStats
+ } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -40,6 +47,8 @@ export default (props) => {
         return '销售提成'
       case 3:
         return '新集约批发业绩提成'
+      case 4:
+        return '租赁管理费提成'
       default:
         return ''
     }
@@ -110,8 +119,14 @@ export default (props) => {
           setOrderSum(res?.data?.[0]?.amount)
         }
       })
-    }else{
+    }else if(type==3){
       cityAgentWholesaleCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.[0]?.amount)
+        }
+      })
+    }else{
+      cityAgentHydrogenLeaseCommStats(params).then(res=>{
         if(res.code==0){
           setOrderSum(res?.data?.[0]?.amount)
         }
@@ -157,7 +172,7 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={type==2?cityAgentHydrogenComm:cityAgentWholesaleComm}
+        request={type==2?cityAgentHydrogenComm:type==3?cityAgentWholesaleComm:cityAgentHydrogenLeaseComm}
         columnEmptyText={false}
         actionRef={ref}
         params={{
@@ -181,10 +196,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={type==2?'cityAgentHydrogenComm':'cityAgentWholesaleComm'}
+              type={type==2?'cityAgentHydrogenComm':type==3?'cityAgentWholesaleComm':'cityAgentHydrogenLeaseComm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==2?'cityAgentHydrogenComm':'cityAgentWholesaleComm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==2?'cityAgentHydrogenComm':type==3?'cityAgentWholesaleComm':'cityAgentHydrogenLeaseComm'}/>
           ],
         }}
         tableRender={(_, dom) => {

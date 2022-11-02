@@ -121,7 +121,7 @@ export default function GenerationManagement () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
