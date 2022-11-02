@@ -80,7 +80,7 @@ export default function GenerationManagement () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+          return <span>{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '0.00'
         }
