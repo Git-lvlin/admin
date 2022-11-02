@@ -138,12 +138,14 @@ export default (props) => {
         const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId)||detailData:res?.data[0]||detailData
         setRecordList(findItem)
         setCommType(findItem?.commissionType||2)
+        setMarketType(findItem?.saleType||0)
         form.setFieldsValue({
           name: findItem?.goodsName,
-          commissionType: findItem?.commissionType||2
+          commissionType: findItem?.commissionType||2,
+          saleType: findItem?.saleType||0
         })
         if(findItem){
-          if(detailData.commissionConfig==1){
+          if(findItem?.skuId&&findItem?.provinceAgent){
             wholeSaleAccountCheck(findItem).then(res=>{
               if(res.code==0){
                 setComputePrice(res.data)
@@ -460,7 +462,7 @@ export default (props) => {
               {proportion4(computePrice)}{commType==1?'元':'%'}
               <span style={{marginLeft:'415px'}}>= {proportion5(computePrice)} </span>{commType==2?'元':'%'}
             </p>
-            <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
+            <p style={{ color: '#F88000' }}>= 根据含抵税的新集约新定价公式计算所得（2022/10/28）</p>
             <p>新集约价：{amountTransform(recordList?.distributePrice,'/')}元&nbsp;&nbsp;&nbsp; <a target='_blank' href={'/product-management/supplier/product-list?spuId='+detailData?.spuId}>编辑新集约价</a></p>
           </>
         }

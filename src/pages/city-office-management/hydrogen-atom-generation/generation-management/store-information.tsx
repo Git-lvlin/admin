@@ -107,13 +107,13 @@ export default (props) => {
     if(type==2){
       cityAgentHydrogenCommStats(params).then(res=>{
         if(res.code==0){
-          setOrderSum(res?.data?.amount)
+          setOrderSum(res?.data?.[0]?.amount)
         }
       })
     }else{
       cityAgentWholesaleCommStats(params).then(res=>{
         if(res.code==0){
-          setOrderSum(res?.data?.amount)
+          setOrderSum(res?.data?.[0]?.amount)
         }
       })
     }
@@ -155,7 +155,7 @@ export default (props) => {
       className={styles.store_information}
     >
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="orderSn"
         columns={Columns}
         request={type==2?cityAgentHydrogenComm:cityAgentWholesaleComm}
         columnEmptyText={false}

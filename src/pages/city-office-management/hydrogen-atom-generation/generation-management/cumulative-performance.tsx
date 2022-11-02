@@ -91,7 +91,7 @@ export default (props:CumulativeProps)=>{
     }
     cityAgentCommStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.amount)
+        setOrderSum(res?.data?.[0]?.amount)
       }
     })
   },[time])
@@ -128,7 +128,7 @@ export default (props:CumulativeProps)=>{
         className={styles.store_information}
       >
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="orderSn"
         columns={Columns}
         request={cityAgentComm}
         columnEmptyText={false}

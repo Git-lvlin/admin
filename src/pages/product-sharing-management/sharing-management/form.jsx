@@ -193,11 +193,12 @@ export default (props) => {
                 setComputePrice(res.data)
               }
             })
-
+            setMarketType(findItem?.saleType)
             setRecordList(findItem)
             setCommType(findItem?.commissionType)
             form.setFieldsValue({
-              commissionType: findItem?.commissionType
+              commissionType: findItem?.commissionType,
+              saleType: findItem?.saleType
             })
             form2.setFieldsValue({
               name: findItem?.goodsName,
@@ -546,7 +547,7 @@ export default (props) => {
                   {proportion4(computePrice)}{commType==1?'元':'%'}
                   <span style={{marginLeft:'415px'}}>= {proportion5(computePrice)} </span>{commType==2?'元':'%'}
                 </p>
-                <p style={{ color: '#F88000' }}>= 新集约价 - 前各项金额之和(随前各项数据即时更新)</p>
+                <p style={{ color: '#F88000' }}>= 根据含抵税的新集约新定价公式计算所得（2022/10/28）</p>
                 <p>新集约价：{amountTransform(recordId?.distributePrice,'/')||amountTransform(recordList?.distributePrice,'/')}元 &nbsp;&nbsp;&nbsp;<a target='_blank' href={'/product-management/supplier/product-list?spuId='+detailData?.spuId||recordId?.spuId}>编辑新集约价</a></p>
               </>
             }
