@@ -115,19 +115,19 @@ export default function GenerationManagement () {
       },
       hideInSearch: true
     },
-    // {
-    //   title: '氢原子租赁管理费提成',
-    //   dataIndex: 'wholesaleAmount',
-    //   align: 'center',
-    //   render: (_,data)=>{
-    //     // if(parseFloat(_)){
-    //       return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
-    //     // }else{
-    //     //   return _
-    //     // }
-    //   },
-    //   hideInSearch: true
-    // },
+    {
+      title: '氢原子租赁管理费提成',
+      dataIndex: 'hydrogenLeaseCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }else{
+          return '0.00'
+        }
+      },
+      hideInSearch: true
+    },
     {
       title: '登录账号',
       dataIndex: 'accountName',
@@ -153,7 +153,7 @@ export default function GenerationManagement () {
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-        {/* <Descriptions.Item  label="氢原子租赁管理费提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item> */}
+        <Descriptions.Item  label="氢原子租赁管理费提成">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="agentId"

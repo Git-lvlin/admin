@@ -73,9 +73,9 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+          return <span>{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -89,7 +89,7 @@ export default function TransactionData () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -103,7 +103,7 @@ export default function TransactionData () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
       },
       hideInSearch: true
@@ -116,7 +116,7 @@ export default function TransactionData () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
 
       },
@@ -130,26 +130,26 @@ export default function TransactionData () {
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(5)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
-          return _
+          return '0.00'
         }
 
       },
       hideInSearch: true
     },
-    // {
-    //   title: '租赁管理费提成（元）',
-    //   dataIndex: 'totalLeaseCommission',
-    //   align: 'center',
-    //   render: (_,data)=>{
-    //     if(parseFloat(_)){
-    //       return <p>{amountTransform(_,'/').toFixed(2)}</p>
-    //     }else{
-    //       return _
-    //     }
+    {
+      title: '租赁管理费提成（元）',
+      dataIndex: 'hydrogenRent',
+      align: 'center',
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+        }else{
+          return '0.00'
+        }
 
-    //   },
-    //   hideInSearch: true
-    // }
+      },
+      hideInSearch: true
+    }
   ]
 
   return (
@@ -161,7 +161,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="总托管购买交易提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
-        {/* <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item> */}
+        <Descriptions.Item  label="租赁管理费业绩">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="businessDeptId"

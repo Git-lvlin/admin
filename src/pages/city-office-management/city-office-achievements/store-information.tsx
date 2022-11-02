@@ -190,6 +190,9 @@ export default (props) => {
         onSubmit={(val)=>{
           setTime(val)
         }}
+        onReset={()=>{
+          setTime()
+        }}
         options={false}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
