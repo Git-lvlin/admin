@@ -46,6 +46,8 @@ export default (props) => {
         return '运营推广提成'
       case 5:
         return '托管租赁管理费提成'
+      case 6:
+        return '启动费提成'
       default:
         return ''
     }
@@ -78,21 +80,15 @@ export default (props) => {
         'hydrogen': '氢原子销售',
         'hydrogenAgent': '氢原子托管',
         'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金'
+        'hydrogenAgentRent': '氢原子租金',
+        'hydrogenBoot': '氢原子启动',
+        'hydrogenBootForBuy': '氢原子购买启动'
       },
       hideInTable: true
     },
     {
       title: '订单类型',
-      dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金'
-      },
+      dataIndex: 'orderTypeDesc',
       hideInSearch: true
     },
     {

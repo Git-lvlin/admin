@@ -137,6 +137,20 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
+      title: '启动费提成（元）',
+      dataIndex: 'totalBootCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(parseFloat(_)){
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(6)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return _
+        }
+
+      },
+      hideInSearch: true
+    },
+    {
       title: '租赁管理费提成（元）',
       dataIndex: 'hydrogenRent',
       align: 'center',
@@ -161,6 +175,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="总托管购买交易提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.totalBootCommission, '/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="租赁管理费业绩">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
