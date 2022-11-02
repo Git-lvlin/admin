@@ -428,8 +428,8 @@ export default {
   'menu.buried-point.metadata-management.meta-event': '元事件',
   
   'menu.office-management': '省办事处',
-  'menu.office-management.office-management-list': '省办事处管理',
-  'menu.office-management.office-achievements': '省办事处业绩',
+  'menu.office-management.office-management-list': '氢原子管理',
+  'menu.office-management.office-achievements': '氢原子业绩',
 
   'menu.city-office-management': '市办事处',
   'menu.city-office-management.city-office-management-list': '氢原子管理',
