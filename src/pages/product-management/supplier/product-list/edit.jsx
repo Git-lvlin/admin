@@ -1001,7 +1001,7 @@ export default (props) => {
       
       <ProFormText
         name="wholesaleTaxRate"
-        label="商品开票税率(%)"
+        label="商品发票税率(%)"
         disabled
       />
       <Form.Item

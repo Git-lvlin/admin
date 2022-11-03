@@ -123,7 +123,7 @@ export default (props) => {
         {goods.goodsName}
       </Form.Item>
       <Form.Item
-        label="发票税率(%)"
+        label="商品发票税率(%)"
       >
         {amountTransform(goods.wholesaleTaxRate)}
       </Form.Item>
