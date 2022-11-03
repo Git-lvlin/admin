@@ -99,6 +99,7 @@ export default (props) => {
             batchNumber: item[1].batchNumber,
             isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateName ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
+            wsFreightId: item[1]?.wsFreightId !== 0 ? { label: item[1]?.wsFreightName, value: item[1]?.wsFreightId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -123,9 +124,14 @@ export default (props) => {
         {goods.goodsName}
       </Form.Item>
       <Form.Item
-        label="商品发票税率(%)"
+        label="商品发票类型"
       >
-        {amountTransform(goods.wholesaleTaxRate)}
+        {{ 1: '普通发票', 2: '专用发票' }[goods.supplyInvoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="商品发票税率"
+      >
+        {amountTransform(goods.wholesaleTaxRate) || ''}{!!+goods.wholesaleTaxRate && '%'}
       </Form.Item>
       <Form.Item
         label="运费发票类型"
