@@ -80,9 +80,9 @@ const TableList = () => {
         }
       })
     } else {
-      setSelectItem(record)
       setSecondReviewVisible(true);
     }
+    setSelectItem(record)
   }
 
   const purchaseAuditPass = (spuId) => {
