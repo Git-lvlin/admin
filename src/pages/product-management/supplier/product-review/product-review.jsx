@@ -67,6 +67,7 @@ const TableList = () => {
   const formRef = useRef();
 
   const getDetail = (record) => {
+    setSelectItem(record)
     if (record.firstAudit === 1) {
       api.getDetail({
         spuId: record.id
@@ -80,7 +81,6 @@ const TableList = () => {
         }
       })
     } else {
-      setSelectItem(record)
       setSecondReviewVisible(true);
     }
   }
