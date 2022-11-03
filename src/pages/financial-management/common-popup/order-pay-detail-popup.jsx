@@ -298,7 +298,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
     {
       title: '配送运费',
       dataIndex: 'deliveryFee',
-      render: (_) => `￥${amountTransform(_, '/')}`,
+      render: () => `￥${amountTransform(info?.deliveryFee, '/')}`,
       hideInDescriptions: info?.orderType !== 'newCommandSalesOrder'
     }
   ]
