@@ -104,7 +104,7 @@ export default function GenerationManagement () {
     },
     {
       title: '新集约批发业绩提成',
-      dataIndex: 'wholesaleAmount',
+      dataIndex: 'wholesaleCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
