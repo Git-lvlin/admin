@@ -214,10 +214,17 @@ const Detail = (props) => {
                       <div>规格</div>
                       <div>{detailData?.sku?.skuName}</div>
                     </div>
-                    {!isDocumentary &&<div className={styles.box}>
-                      <div>集约价</div>
-                      <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/${detailData?.sku?.unit}）` : ''}</div>
-                    </div>}
+                    {!isDocumentary &&
+                    <>
+                      <div className={styles.box}>
+                        <div>集约价</div>
+                        <div>{amountTransform(detailData?.sku?.price, '/')}元{detailData?.sku?.wholesaleFreight > 0 ? `（含平均运费¥${amountTransform(detailData?.sku?.wholesaleFreight, '/')}/${detailData?.sku?.unit}）` : ''}</div>
+                      </div>
+                      <div className={styles.box}>
+                        <div>配送运费</div>
+                        <div>{amountTransform(detailData?.sku?.freight, '/')}元</div>
+                      </div>
+                    </>}
                     <div className={styles.box}>
                       <div>预定数量</div>
                       <div>{detailData?.sku?.totalNum}{detailData?.sku?.unit}</div>

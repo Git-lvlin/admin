@@ -2,6 +2,8 @@ import React from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';
 import { history } from 'umi';
+import { ProfileOutlined } from '@ant-design/icons'
+
 import style from './style.less'
 
 
@@ -12,7 +14,7 @@ const WorkPlace = () => {
         <ProCard colSpan="148px">
           <div className={style.card} onClick={() => { history.push('/order-management/normal-order')}}>
             <div>
-              <img />
+              <ProfileOutlined />
             </div>
             <span>订单管理</span>
           </div>
@@ -20,7 +22,7 @@ const WorkPlace = () => {
         <ProCard colSpan="148px">
           <div className={style.card} onClick={() => { history.push('/product-management/supplier/product-list') }}>
             <div>
-              <img />
+              <ProfileOutlined />
             </div>
             <span>商品管理</span>
           </div>

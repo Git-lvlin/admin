@@ -5,12 +5,16 @@ import EditTable from './table';
 import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 import Big from 'big.js';
+import FreightTemplateDetail from '@/components/freight-template-detail'
+
 
 Big.RM = 0;
 export default (props) => {
   const { detailData, review } = props;
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [freightTemplateId, setFreightTemplateId] = useState(null);
+  const [freightTemplateDetailVisible, setFreightTemplateDetailVisible] = useState(false);
 
   const { goods } = detailData;
   const formItemLayout = {
@@ -119,9 +123,19 @@ export default (props) => {
         {goods.goodsName}
       </Form.Item>
       <Form.Item
-        label="发票税率(%)"
+        label="商品发票税率(%)"
       >
         {amountTransform(goods.wholesaleTaxRate)}
+      </Form.Item>
+      <Form.Item
+        label="运费发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.invoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="运费发票税率"
+      >
+        {amountTransform(goods.invoiceTaxRate) || ''}{!!+goods.invoiceTaxRate && '%'}
       </Form.Item>
       <Form.Item
         label="商品副标题"
@@ -206,6 +220,8 @@ export default (props) => {
                 review={review}
                 operateType={goods?.operateType}
                 wholeSaleCheckPrice={+detailData?.wholeSaleCheckPrice}
+                setFreightTemplateDetailVisible={setFreightTemplateDetailVisible}
+                setFreightTemplateId={setFreightTemplateId}
               />
             }
             <Form.Item
@@ -444,15 +460,28 @@ export default (props) => {
           </>
       }
       {goods?.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 && <Form.Item
-        label="是否包邮"
+        label="零售是否包邮"
       >
         {{ 0: '不包邮', 1: '包邮', }[goods?.isFreeFreight]}
       </Form.Item>}
       {goods?.goodsSaleType !== 1 && !goods?.isFreeFreight && detailData?.isMultiSpec === 0 &&
         <Form.Item
-          label="运费模板"
+          label="零售运费模板"
         >
-          {detailData?.freightTemplateName}
+          <div>{detailData?.freightTemplateName}</div>
+          <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(detailData?.freightTemplateId) }}>点击查看零售运费模板不发货地区</a>
+        </Form.Item>}
+      {goods.goodsSaleType !== 2 && detailData.isMultiSpec === 0 && <Form.Item
+        label="批发是否包邮"
+      >
+        {{ 0: '不包邮', 1: '包邮', }[goods.wsFreight]}
+      </Form.Item>}
+      {goods.goodsSaleType !== 2 && !goods.wsFreight && detailData.isMultiSpec === 0 &&
+        <Form.Item
+          label="批发运费模板"
+        >
+          <div>{goods.wsFreightName}</div>
+          <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(goods?.wsFreightId) }}>点击查看批发运费模板不发货地区</a>
         </Form.Item>}
       {/* <Form.Item
         label="七天无理由退货"
@@ -542,7 +571,10 @@ export default (props) => {
             options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
           />
            */}
-
+      {freightTemplateDetailVisible && <FreightTemplateDetail
+        id={freightTemplateId}
+        setVisible={setFreightTemplateDetailVisible}
+      />}
     </Form>
   );
 };
