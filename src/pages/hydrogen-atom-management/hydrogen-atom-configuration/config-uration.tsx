@@ -210,7 +210,7 @@ export default () => {
                 }}
               />
               天
-              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起5天）</p>
+              <p style={{color:'#FBB336'}}>（从机器租约到期日的次日算起的5天）</p>
             </Descriptions.Item>
             <Descriptions.Item  label="对于租赁的氢原子">
               普通用户 可扫机器 {scanDetail?.member?.count} 次 / 天，每次间隔 {scanDetail?.member?.minute} 分钟
