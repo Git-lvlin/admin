@@ -32,6 +32,7 @@ import HydrogenAtomManagement from './routers/hydrogen-atom-management'
 import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
+import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 import productPerformanceManagement from './routers/product-performance-management'
 
@@ -112,6 +113,7 @@ const config = {
             BuriedPoint,
             OfficeManagement,
             CityOfficeManagement,
+            HydrogenAtomGeneration,
             productPerformanceManagement,
             {
               component: '404',
