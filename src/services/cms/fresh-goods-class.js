@@ -46,3 +46,12 @@ export const categoryEdit = (params = {}, options = {}) => {
       ...options
     });
   }
+
+
+export const saveCategory2 = (params = {}, options = {}) => {
+    return request('/auth/wholesale/SpuCategory/saveCategory2', {
+      method: 'POST',
+      data: params,
+      ...options
+    });
+  }

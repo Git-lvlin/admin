@@ -133,6 +133,10 @@ const Detail = (props) => {
                   <div>-{amountTransform(detailData?.couponAmount, '/')}元</div>
                 </div>
                 <div className={styles.box}>
+                  <div>配送费</div>
+                  <div>{amountTransform(detailData?.deliveryFeeAmount, '/')}元</div>
+                </div>
+                <div className={styles.box}>
                   <div>用户实付</div>
                   <div>{amountTransform(detailData?.payAmount, '/')}元</div>
                 </div>
@@ -144,6 +148,10 @@ const Detail = (props) => {
                 }
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
+                </div>
+                <div className={styles.box}>
+                  <div>配送方式</div>
+                  <div>{detailData?.deliveryModeStr}</div>
                 </div>
                 {
                   detailData.logisticsList && detailData.logisticsList.map((ele, idx) => (

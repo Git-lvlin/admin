@@ -1,0 +1,21 @@
+.detail_category{
+.box_wrap {
+  border: 1px solid #000;
+
+  >.box:not(:nth-last-of-type(1)) {
+    border-bottom: 1px solid #000;
+  }
+
+  >.box {
+    display: flex;
+    div:not(:nth-last-of-type(1)) {
+      border-right: 1px solid #000;
+    }
+
+    >div {
+      padding: 10px;
+      display: flex;
+    }
+  }
+}
+}

@@ -19,6 +19,7 @@ import Stock from './stock';
 import Area from './area';
 import TimeSet from './time-set';
 import style from './area.less';
+import GcCascader from '@/components/gc-cascader'
 
 const { confirm } = Modal;
 
@@ -496,6 +497,79 @@ const TableList = () => {
           <Dropdown.Button onClick={(e) => { handleButtonClick(e, data) }} overlay={() => { return menu(data) }}>详情</Dropdown.Button>
         </Space >
       ),
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      valueType: 'text',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入商品spu'
+      }
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      valueType: 'text',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入商品sku'
+      }
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入商品名称'
+      }
+    },
+    {
+      title: '商品分类',
+      dataIndex: 'gcId',
+      renderFormItem: () => (<GcCascader />),
+      hideInTable: true,
+    },
+    {
+      title: '配送模式',
+      dataIndex: 'wholesaleFlowType',
+      valueType: 'select',
+      valueEnum: {
+        1: '直发到店',
+        2: '运营中心配送',
+      },
+      hideInTable: true,
+    },
+    {
+      title: '预售状态',
+      dataIndex: 'preSale',
+      valueType: 'select',
+      valueEnum: {
+        1: '开启预售',
+        2: '不支持预售',
+      },
+      hideInTable: true,
+    },
+    {
+      title: '指定配送补贴',
+      dataIndex: 'isAppointSubsidy',
+      valueType: 'select',
+      valueEnum: {
+        1: '指定了配送补贴',
+        2: '未指定配送补贴',
+      },
+      hideInTable: true,
+    },
+    {
+      title: '集约区域',
+      dataIndex: 'wholesaleArea',
+      valueType: 'select',
+      valueEnum: {
+        1: '全国地区都可集约',
+        2: '指定地区才可集约',
+      },
+      hideInTable: true,
     },
   ];
 
