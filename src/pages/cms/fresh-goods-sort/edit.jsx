@@ -136,15 +136,15 @@ export default (props) => {
     if (detailData?.spuId) {
       getCommissionConfigBySpuId({ spuId: detailData?.spuId,orderType: 30 }).then(res => {
         const findItem=detailData?.skuId?res.data.find(ele=>ele?.skuId==detailData?.skuId)||detailData:res?.data[0]||detailData
-        setRecordList(findItem)
-        setCommType(findItem?.commissionType||2)
-        setMarketType(findItem?.saleType||0)
-        form.setFieldsValue({
-          name: findItem?.goodsName,
-          commissionType: findItem?.commissionType||2,
-          saleType: findItem?.saleType||0
-        })
         if(findItem){
+          setRecordList(findItem)
+          setCommType(findItem?.commissionType||2)
+          setMarketType(findItem?.saleType||0)
+          form.setFieldsValue({
+            name: findItem?.goodsName,
+            commissionType: findItem?.commissionType||2,
+            saleType: findItem?.saleType||0
+          })
           if(findItem?.skuId&&findItem?.provinceAgent){
             wholeSaleAccountCheck(findItem).then(res=>{
               if(res.code==0){
