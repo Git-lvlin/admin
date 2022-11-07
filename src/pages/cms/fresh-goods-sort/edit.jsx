@@ -245,7 +245,7 @@ export default (props) => {
   }, [loding])
 
   useEffect(() => {
-    if(detailData.commissionConfig==0){
+    if(detailData.commissionConfig==0&&recordList.length==0){
       productList({ spuId: detailData?.spuId,skuId:detailData?.skuId,orderType: 30 }).then(res => {
         setCommType(2)
         setRecordList({
