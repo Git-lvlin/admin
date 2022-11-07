@@ -44,7 +44,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
       render: _ => `${amountTransform(_, '/')}元`
     },
     {
-      title: '有业绩市办事处数量',
+      title: '有业绩运营中心数量',
       dataIndex: 'operationNum',
       render: _ => `${_ ? _ : 0}家` 
     }
