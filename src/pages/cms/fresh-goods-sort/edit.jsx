@@ -269,7 +269,7 @@ export default (props) => {
       const params = {
         status: submitType?1:null,
         orderType: 30,
-        id: recordList?.id&&recordList?.id!= recordList?.skuId? recordList?.id : 0,
+        id: recordList?.id&&recordList?.provinceAgent? recordList?.id : 0,
         spuId: recordList?.spuId,
         skuId: recordList?.skuId,
         shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
