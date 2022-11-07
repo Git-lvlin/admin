@@ -377,7 +377,8 @@ const TableList = () => {
                   </div>
                   <div>
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
-                      <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元（含运费）</Descriptions.Item>
+                      <Descriptions.Item label="商品总金额">{amountTransform(item.totalAmount, '/')}元{item.subType !== 151&&'（含运费）'}</Descriptions.Item>
+                      <Descriptions.Item label="配送运费">{amountTransform(item.deliveryFeeAmount, '/')}元</Descriptions.Item>
                       {/* <Descriptions.Item label="运费">+{amountTransform(item.sumOrder?.shippingFeeAmount, '/')}元</Descriptions.Item> */}
                       <Descriptions.Item label="红包">-{amountTransform(item.sumOrder?.couponAmount, '/')}元</Descriptions.Item>
                       <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>

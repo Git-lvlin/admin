@@ -142,6 +142,14 @@ const Detail = (props) => {
                       订单金额
                     </div>
                     <div className={styles.box}>
+                      <div>商品小计</div>
+                      <div>{(detailData?.advance?.amount - detailData?.freight)/100}元</div>
+                    </div>
+                    <div className={styles.box}>
+                      <div>配送运费</div>
+                      <div>{amountTransform(detailData?.freight, '/')}元</div>
+                    </div>
+                    <div className={styles.box}>
                       <div>应付金额</div>
                       <div>{amountTransform(detailData?.advance?.amount, '/')}元</div>
                     </div>
