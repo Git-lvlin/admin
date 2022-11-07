@@ -30,6 +30,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
       startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
       endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
       page,
+      pageSize,
       ...rest
     }).then(res=> {
       setData(res.data)
