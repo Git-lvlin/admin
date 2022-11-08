@@ -83,6 +83,7 @@ const TableList = () => {
     } else {
       setSecondReviewVisible(true);
     }
+    setSelectItem(record)
   }
 
   const purchaseAuditPass = (spuId) => {
