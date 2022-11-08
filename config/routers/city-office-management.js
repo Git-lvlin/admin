@@ -16,5 +16,11 @@ export default {
       component: './city-office-management/city-office-achievements',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'new-intensive-performance',
+      path: '/city-office-management/new-intensive-performance',
+      component: './city-office-management/new-intensive-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

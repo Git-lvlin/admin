@@ -117,17 +117,49 @@ const NewIntensivePerformance: FC = () => {
     {
       title: 'spuID',
       dataIndex: 'spuId',
-      align: 'center'
+      valueType: 'digit',
+      hideInTable: true
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
-      align: 'center'
+      valueType: 'digit',
+      hideInTable: true
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '销售类型',
+      dataIndex: 'commissionSaleType',
+      valueType: 'select',
+      valueEnum: {
+        '1': '引流款',
+        '2': '利润款',
+        '0': '其他'
+      },
+      hideInTable: true
+    },
+    {
+      title: '销售类型',
+      dataIndex: 'commissionSaleType',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      align: 'center'
+      align: 'center',
+      width: '10%'
     },
     {
       title: '推荐人手机号',
@@ -150,12 +182,13 @@ const NewIntensivePerformance: FC = () => {
       title: '推荐人的店铺省市区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
       title: '推荐人店铺地址',
       dataIndex: 'storeAddress',
       align: 'center',
+      width: '10%',
       hideInSearch: true
     },
     {

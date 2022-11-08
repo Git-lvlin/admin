@@ -66,7 +66,7 @@ const afterSalesOrder = () => {
       dataIndex: 'supplierId',
       align: 'center',
       order: -1,
-      width: 100,
+      width: '5%',
       initialValue: getPageQuery()?.supplierId
     },
     {
@@ -103,8 +103,16 @@ const afterSalesOrder = () => {
       title: '规格',
       dataIndex: 'goodsSpec',
       align: 'center',
-      width: '5%',
-      hideInSearch: true
+      width: '10%',
+      hideInSearch: true,
+      render: (_)=> {
+        if(_ && _ !== '-') {
+          const res = JSON.parse(_)
+          return res.map((item, idx)=> <div key={idx}>{item.key}：{item.value}</div>)
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '数量',
@@ -146,7 +154,7 @@ const afterSalesOrder = () => {
       title: '商家手机号',
       dataIndex: 'storePhone',
       align: 'center',
-      width: "10%",
+      width: "5%",
       order: 1,
     },
     {
@@ -158,13 +166,14 @@ const afterSalesOrder = () => {
         2: '退款退货'
       },
       align: 'center',
-      width: 100,
+      width: '5%',
       order: 7
     },
     {
       title: '退款总金额（元）',
       dataIndex: 'returnAmount',
       align: 'center',
+      width: '5%',
       hideInSearch: true,
       render: (_, r) => amountTransform((r.returnNum * Number(r.retailSupplyPrice)), '/').toFixed(2)
     },
@@ -174,7 +183,7 @@ const afterSalesOrder = () => {
       valueEnum: sourceType,
       valueType: 'select',
       align: 'center',
-      width: 100,
+      width: '5%',
       order: 6
     },
     {
