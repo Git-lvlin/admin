@@ -13,7 +13,7 @@ const getConfig = (params = {}, options = {}) => {
 let ossConfig = null;
 let codeTemp = null
 
-const upload = async (file, code) => {
+const upload = async (file, code, resetName) => {
   if (code !== codeTemp) {
     ossConfig = null
   }
@@ -30,7 +30,7 @@ const upload = async (file, code) => {
     bucket: ossConfig.uploadInfo.bucket,
   })
   return new Promise((resolve) => {
-    const fileName = `${ossConfig.uploadInfo.dir}/${file.uid}-y_g-${file.name}`
+    const fileName = `${ossConfig.uploadInfo.dir}/${file.uid}-y_g-${resetName||file.name}`
     client.put(fileName, file).then(res => {
       if (file.type.indexOf('image') !== -1) {
         getImageSize(file).then(size => {
