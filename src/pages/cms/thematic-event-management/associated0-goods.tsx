@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
-import { Button,InputNumber,message,Input} from 'antd';
+import { Button,Input} from 'antd';
 import debounce from 'lodash/debounce';
 
 
@@ -73,24 +73,32 @@ export default (props) => {
       dataIndex: 'spuId',
       valueType: 'text',
       editable:false,
+      hideInSearch: true
     },
     {
       title: 'skuid',
       dataIndex: 'skuId',
       valueType: 'text',
       editable:false,
+      fieldProps:{
+        placeholder:'请输入skuID'
+      }
     },
     {
       title: '商品图片',
       dataIndex: 'imageUrl',
       valueType: 'image',
       editable:false,
+      hideInSearch: true
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
       valueType: 'text',
       editable:false,
+      fieldProps:{
+        placeholder:'请输入商品名称'
+      }
     },
     {
       title: '市场价',
@@ -99,7 +107,8 @@ export default (props) => {
       editable:false,
       render:(_)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '销售价',
@@ -108,7 +117,8 @@ export default (props) => {
       editable:false,
       render:(_)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '活动价',
@@ -117,6 +127,7 @@ export default (props) => {
       renderFormItem: (_, { record }) => {
         return  <Input onBlur={() => { debounceFetcher({ record, recordList: dataSource })}} />
       },
+      hideInSearch: true
     },
     {
       title: '发票税率',
@@ -127,6 +138,7 @@ export default (props) => {
       render:(_)=>{
         return _
       },
+      hideInSearch: true
     },
     {
       title: '平台亏盈',
@@ -135,7 +147,8 @@ export default (props) => {
       editable:false,
       render:(_,data)=>{
         return amountTransform(_,'/')
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '商品状态',
@@ -145,18 +158,21 @@ export default (props) => {
       valueEnum:{
         1: '上架中',
         0: '已下架'
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '可用库存',
       dataIndex: 'stockNum',
       valueType: 'text',
       editable:false,
+      hideInSearch: true
     }, 
     {
       title: '排序',
       dataIndex: 'sort',
       valueType: 'text',
+      hideInSearch: true
     },   
     {
       title: '操作',
@@ -164,7 +180,8 @@ export default (props) => {
       editable:false,
       render:(text, record, _, action)=>[
         <a key='detele' onClick={()=>{delGoods(record.id)}}>删除</a>
-    ],
+      ],
+      hideInSearch: true
     },  
   ];
   // 删除商品
@@ -184,7 +201,6 @@ export default (props) => {
           options={false}
           value={dataSource}
           recordCreatorProps={false}
-          search={false}
           columns={columns}
           editable={{
             type: 'multiple',
@@ -196,12 +212,37 @@ export default (props) => {
               callback(recordList)
             },
           }}
-          toolBarRender={()=>[
-            <Button onClick={()=>{setVisible(true)}}>选择商品</Button>
-          ]}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,
+          }}
+          search={{
+            defaultCollapsed: true,
+            labelWidth: 100,
+            optionRender: (searchConfig, formProps, dom) => [
+              <Button 
+                key="rest" 
+                onClick={() => { 
+                  searchConfig?.form?.resetFields()
+                  setDataSource(detailList)
+                }}> 
+                重置 
+              </Button>,
+              <Button 
+                key="search" 
+                type="primary" 
+                onClick={() => { 
+                  searchConfig?.form?.submit()
+                  const { skuId,goodsName } = searchConfig?.form?.getFieldsValue()
+                  const arr=dataSource.filter(ele=>(
+                        ele?.skuId==skuId || ele?.goodsName==goodsName
+                  ))
+                  setDataSource(arr) 
+                }}> 
+                搜索 
+              </Button>,
+              <Button onClick={()=>{setVisible(true)}}>选择商品</Button>
+            ],
           }}
         />
         {
