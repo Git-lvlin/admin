@@ -438,6 +438,10 @@ export default {
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
 
+  'menu.hydrogen-atom-generation': '氢原子市代',
+  'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
+
+
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
   'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',

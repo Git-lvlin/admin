@@ -6,15 +6,19 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { listPage,cityBusinessDeptSum } from "@/services/city-office-management/city-office-achievements"
+import { cityAgentManage,cityAgentManageStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
+import EditInformation from './edit-information'
+import ResetPasswords from './reset-passwords'
 
-export default function TransactionData () {
+export default function GenerationManagement () {
   const [type, setType] = useState<number>(0)
   const [visible, setVisible] = useState<boolean>(false)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
+  const [editVisible, setEditVisible] = useState<boolean>(false)
+  const [resetVisible, setResetVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState()
@@ -22,14 +26,14 @@ export default function TransactionData () {
 
   useEffect(() => {
     const params={
-      cityBusinessDeptId:time?.cityBusinessDeptId,
-      cityBusinessDeptName:time?.cityBusinessDeptName,
-      begin:time?.createTime&&time?.createTime[0],
-      end:time?.createTime&&time?.createTime[1]
+      agentId:time?.agentId,
+      agentName:time?.agentName,
+      startTime:time?.createTime&&time?.createTime[0],
+      endTime:time?.createTime&&time?.createTime[1]
     }
-    cityBusinessDeptSum(params).then(res=>{
+    cityAgentManageStats(params).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data[0])
       }
     })
 
@@ -38,17 +42,17 @@ export default function TransactionData () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'cityBusinessDeptId',
+      dataIndex: 'agentId',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '办事处名称',
-      dataIndex: 'cityBusinessDeptName',
+      title: '氢原子市代名称',
+      dataIndex: 'agentName',
       align: 'center',
       order: 4,
       fieldProps:{
-        placeholder:'请输入办事处名称'
+        placeholder:'请输入氢原子市代名称'
       },
     },
     {
@@ -59,11 +63,14 @@ export default function TransactionData () {
     },
     {
       title: '累计业绩（元）',
-      dataIndex: 'totalTradeCommission',
+      dataIndex: 'totalAmount',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
-
+        if(parseFloat(_)){
+          return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return '0.00'
+        }
       },
       hideInSearch: true,
     },
@@ -82,8 +89,8 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '全款销售提成（元）',
-      dataIndex: 'totalSaleCommission',
+      title: '氢原子全款销售提成',
+      dataIndex: 'hydrogenCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -96,8 +103,8 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '托管购买交易提成（元）',
-      dataIndex: 'totalBuyCommission',
+      title: '新集约批发业绩提成',
+      dataIndex: 'wholesaleCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -109,8 +116,8 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '运营租赁服务费提成(元)',
-      dataIndex: 'totalTrainingCommission',
+      title: '氢原子租赁管理费提成',
+      dataIndex: 'hydrogenLeaseCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -118,71 +125,41 @@ export default function TransactionData () {
         }else{
           return '0.00'
         }
-
       },
       hideInSearch: true
     },
     {
-      title: '托管租赁管理费提成（元）',
-      dataIndex: 'totalLeaseCommission',
+      title: '登录账号',
+      dataIndex: 'accountName',
       align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(5)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        }else{
-          return '0.00'
-        }
-
-      },
       hideInSearch: true
     },
     {
-      title: '启动费提成（元）',
-      dataIndex: 'totalBootCommission',
+      title: '操作',
+      valueType: 'option',
       align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(6)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        }else{
-          return _
-        }
-
-      },
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,data)=>([
+        <a onClick={()=>{setEditVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
+        <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>
+      ])
     },
-    {
-      title: '租赁管理费提成（元）',
-      dataIndex: 'hydrogenRent',
-      align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
-        }else{
-          return '0.00'
-        }
-
-      },
-      hideInSearch: true
-    }
   ]
 
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalTradeCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子市代总数量">{detailList?.agentNum}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总全款销售提成">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总托管购买交易提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.totalBootCommission, '/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="租赁管理费业绩">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子租赁管理费提成">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
-        rowKey="businessDeptId"
+        rowKey="agentId"
         headerTitle='列表'
         columns={tableColumns}
-        request={listPage}
+        request={cityAgentManage}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{
@@ -194,6 +171,7 @@ export default function TransactionData () {
         }}
         options={false}
         search={{
+          labelWidth: 200,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse()
           ],
@@ -217,6 +195,26 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           type={type}
+        />
+      }
+      {
+        editVisible&&
+        <EditInformation
+          visible={editVisible}
+          setVisible={setEditVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+        />
+      }
+      {
+        resetVisible&&
+        <ResetPasswords
+          visible={resetVisible}
+          setVisible={setResetVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
         />
       }
     </PageContainer>

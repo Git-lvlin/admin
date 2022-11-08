@@ -123,6 +123,9 @@ const CumulativePerformance=(props:DevicesProps) => {
         onSubmit={(val)=>{
           setTime(val)
         }}
+        onReset={()=>{
+          setTime()
+        }}
         options={false}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
@@ -195,7 +198,7 @@ export default (props:CumulativeProps)=>{
             activeKey=='operatorEquipment'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳租赁管理费">
+        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳托管租赁管理费">
           {
             activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
@@ -205,9 +208,14 @@ export default (props:CumulativeProps)=>{
             activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenBoot " tab="启动费">
+        <ProCard.TabPane key="hydrogenBoot" tab="启动费">
           {
             activeKey=='hydrogenBoot'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="hydrogenRent" tab="缴纳租赁管理费">
+          {
+            activeKey=='hydrogenRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
       </ProCard>
