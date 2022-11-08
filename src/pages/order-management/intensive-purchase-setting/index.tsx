@@ -120,7 +120,8 @@ const IntensivePurchaseSetting = () => {
           width="md"
           fieldProps={{
             addonAfter: '元',
-            placeholder: '请输入最低采购金额'
+            placeholder: '请输入最低采购金额',
+            precision: 2
           }}
           rules={[{required: true}]}
         />
@@ -149,7 +150,8 @@ const IntensivePurchaseSetting = () => {
           width="md"
           fieldProps={{
             addonAfter: '元/月',
-            placeholder: '请输入最低采购金额'
+            placeholder: '请输入最低采购金额',
+            precision: 2
           }}
           rules={[{required: true}]}
         />

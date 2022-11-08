@@ -233,7 +233,7 @@ const TransactionDetails = (props) => {
       render: (_) => goodsInfoRender(_)
     },
     {
-      title: `${goodsInfoTitleFreight [info?.orderType] || '运费'}`,
+      title: `${goodsInfoTitleFreight [info?.orderType] || '平均运费'}`,
       dataIndex: `${goodsInfoDataIndexFreight [info?.orderType] || 'freight'}`,
       render: (_) => `￥${amountTransform(_, '/')}`
     },

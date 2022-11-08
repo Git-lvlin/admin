@@ -286,7 +286,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       render: (_) => goodsInfoRender(_)
     },
     {
-      title: `${goodsInfoTitleFreight [info?.orderType] || '运费'}`,
+      title: `${goodsInfoTitleFreight [info?.orderType] || '平均运费'}`,
       dataIndex: `${goodsInfoDataIndexFreight [info?.orderType] || 'freight'}`,
       render: (_) => `￥${amountTransform(_, '/')}`
     },
@@ -294,6 +294,12 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       title: '应付金额',
       dataIndex: 'amount',
       render: (_) => `￥${amountTransform(_, '/')}`
+    },
+    {
+      title: '配送运费',
+      dataIndex: 'deliveryFee',
+      render: () => `￥${amountTransform(info?.deliveryFee, '/')}`,
+      hideInDescriptions: info?.orderType !== 'newCommandSalesOrder'
     }
   ]
 

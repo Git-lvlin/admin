@@ -280,6 +280,7 @@ const SupplierFundManagement = () => {
           query={query}
           visible={detailedVisible}
           setVisible={setDetailedVisible}
+          title='供应商'
         />
       }
       {

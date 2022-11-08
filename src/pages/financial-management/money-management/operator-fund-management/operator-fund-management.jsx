@@ -279,6 +279,7 @@ const OperatorFundManagement = () => {
           query={query}
           visible={detailedVisible}
           setVisible={setDetailedVisible}
+          title='运营中心'
         />
       }
       {
