@@ -84,6 +84,8 @@ const CumulativePerformance=(props:DevicesProps) => {
       orderType:type,
       orderNo:time?.orderNo,
       begin:time?.dateRange?.[0],
+
+      
       end:time?.dateRange?.[1]
     }
     cityTotalTradeItemSum(params).then(res=>{

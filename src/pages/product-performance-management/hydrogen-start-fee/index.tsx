@@ -125,7 +125,7 @@ const HydrogenStartFee: FC = () => {
       title: '设备店铺所属省市区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => <AddressCascader />
+      renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
       title: '店主店铺地址',

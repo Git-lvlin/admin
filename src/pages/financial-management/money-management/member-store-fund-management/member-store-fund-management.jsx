@@ -315,6 +315,7 @@ const MemberStoreFundManagement = () => {
           query={query}
           visible={detailedVisible}
           setVisible={setDetailedVisible}
+          title='社区店'
         />
       }
       {

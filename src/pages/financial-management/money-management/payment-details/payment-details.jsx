@@ -10,28 +10,39 @@ import { tradeType } from '../../common-enum'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
+import NotGoodsOrderDetail from '../../common-popup/notGoodsOrderDetail'
 import Export from "@/components/export"
 
-const PaymentDetails = ({query, visible, setVisible}) => {
+const PaymentDetails = ({query, visible, setVisible, title}) => {
   const [normalOrderVisible, setNormalOrderVisible] = useState(false)
   const [shopkeeperOrderVisible, setShopkeeperOrderVisible] = useState(false)
   const [newShopkeeperOrderVisible, setNewShopkeeperOrderVisible] = useState(false)
+  const [notGoodsVisible, setNotGoodsVisible] = useState(false)
   const [id, setId] = useState()
   const [types, setTypes] = useState()
   const form = useRef()
 
   const skipToOrder = (id, type, orderType, billNo)=> {
-    if(orderType === 'newCommandSalesOrder') {
-      setId(billNo)
-      setNewShopkeeperOrderVisible(true)
+    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth'
+
+    if(isGoodsOrder) {
+      setId(id)
+      setNotGoodsVisible(true)
       setTypes(orderType)
     } else {
-      if(type) {
-        setId(id)
-        setShopkeeperOrderVisible(true)
+      if(orderType === 'newCommandSalesOrder') {
+        setId(billNo)
+        setNewShopkeeperOrderVisible(true)
+        setTypes(orderType)
       } else {
-        setId(id)
-        setNormalOrderVisible(true)
+        if(type) {
+          setId(id)
+          setShopkeeperOrderVisible(true)
+        } else {
+          console.log(11);
+          setId(id)
+          setNormalOrderVisible(true)
+        }
       }
     }
   }
@@ -77,11 +88,20 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       title: '订单号',
       dataIndex:'billNo',
       width: '10%',
-      render: (_, records)=> (
-        records.orderId ? 
-        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
-        <span>{_}</span>
-      )
+      render: (_, records)=> {
+        if(records.orderType === 'hydrogenRent') {
+          return <span>{_}</span>
+        } else {
+          if(records.orderId) {
+            return(
+              <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>
+            )
+          } else {
+            return <span>{_}</span>
+          }
+        }
+       
+      }
     },
     {
       title: '平台单号',
@@ -153,7 +173,7 @@ const PaymentDetails = ({query, visible, setVisible}) => {
       visible={visible}
       onClose={()=>{setVisible(false)}}
       width={1200}
-      title={`供应商资金管理-收支明细（供应商id：${query.accountId}）`}
+      title={`${title}资金管理-收支明细（${title}id：${query.accountId}）`}
     >
       <ProTable
         rowKey='id'
@@ -203,6 +223,15 @@ const PaymentDetails = ({query, visible, setVisible}) => {
           orderType={types}
           visible={newShopkeeperOrderVisible}
           setVisible={setNewShopkeeperOrderVisible}
+        />
+      }
+      {
+        notGoodsVisible &&
+        <NotGoodsOrderDetail
+          id={id}
+          orderType={types}
+          visible={notGoodsVisible}
+          setVisible={setNotGoodsVisible}
         />
       }
     </Drawer>
