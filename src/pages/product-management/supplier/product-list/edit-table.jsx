@@ -9,7 +9,7 @@ import Big from 'big.js';
 Big.RM = 0;
 
 export default function EditTable(props) {
-  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice,setFreightTemplateDetailVisible, setFreightTemplateId } = props;
+  const { tableHead, tableData, setTableData, settleType, goodsSaleType, isSample, unit, wsUnit, ladderSwitch, operateType, wholeSaleCheckPrice, setFreightTemplateDetailVisible, setFreightTemplateId } = props;
   const [columns, setColumns] = useState([])
   const [editableKeys, setEditableKeys] = useState([])
   const [dataSource, setDataSource] = useState([]);
@@ -159,28 +159,28 @@ export default function EditTable(props) {
         dataIndex: 'aaff',
         editable: false,
         hideInTable: goodsSaleType === 2,
-        render: (_,record) => {
-          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(wholeSaleCheckPrice).minus(record.wholesaleSupplyPrice).toFixed(2) }元/${unit}` : '-'
+        render: (_, record) => {
+          return record.distributePrice > 0 ? `${+new Big(record.distributePrice).minus(record.wholesaleFreight).times(wholeSaleCheckPrice).minus(record.wholesaleSupplyPrice).toFixed(2)}元/${unit}` : '-'
         }
       },
       {
         title: `分享补贴价平台毛利`,
         dataIndex: 'tPlatformGain',
         editable: false,
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
       },
       {
         title: '店主补贴金额',
         dataIndex: 'operateGain',
         editable: false,
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
       },
       {
         title: '分享补贴店主占比',
         dataIndex: 'tStoreScale',
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         fieldProps: {
           addonAfter: '%',
         }
@@ -188,7 +188,7 @@ export default function EditTable(props) {
       {
         title: '分享补贴平台毛利占比',
         dataIndex: 'tPlatformScale',
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         fieldProps: {
           addonAfter: '%',
           placeholder: '不低于5%'
@@ -198,14 +198,14 @@ export default function EditTable(props) {
         title: '分享补贴运营中心占比',
         dataIndex: 'tOperateScale',
         editable: false,
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         render: _ => `${_}%`,
       },
       {
         title: '分享补贴供应商占比',
         dataIndex: 'tSupplierScale',
         editable: false,
-        hideInTable: operateType !== 2,
+        hideInTable: operateType !== 2 || goodsSaleType === 1,
         render: _ => `${_}%`,
       },
       {

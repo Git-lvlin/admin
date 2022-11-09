@@ -1270,9 +1270,6 @@ export default (props) => {
                 label="规格一"
                 placeholder="请输入规格名称"
                 rules={[{ required: true, message: '请输入规格名称' }]}
-                fieldProps={{
-                  maxLength: 18,
-                }}
                 disabled
                 extra='示例：包装、重量、尺寸等'
               />
@@ -1288,7 +1285,7 @@ export default (props) => {
                           colon={false}
                           extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
-                          <Input disabled placeholder="请输入规格属性" maxLength={18} addonAfter={
+                          <Input disabled placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
                               <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
@@ -1319,7 +1316,7 @@ export default (props) => {
                           colon={false}
                           extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
-                          <Input disabled maxLength={18} placeholder="请输入规格属性" addonAfter={
+                          <Input disabled placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
                               <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
