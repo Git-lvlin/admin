@@ -273,7 +273,7 @@ const TransactionDetails = (props) => {
       render: (_, data)=> {
         return data?.divideInfos.map(item=> (
           <div key={item?.type}>
-            {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
+            {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight)}
           </div>
         ))
       } 
