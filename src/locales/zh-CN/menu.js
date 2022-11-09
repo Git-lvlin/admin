@@ -143,6 +143,7 @@ export default {
   'menu.operation-management.operation-account-info': '运营中心资金账户信息',
   'menu.operation-management.bind-audit-list': '运营中心绑定审核',
   'menu.operation-management.performance-report': '运营中心氢原子业绩表',
+  'menu.operation-management.new-intensive-wholesale-order': '新集约批发单业绩',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -434,9 +435,11 @@ export default {
   'menu.city-office-management': '市办事处',
   'menu.city-office-management.city-office-management-list': '氢原子管理',
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
+  'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
+
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

@@ -281,6 +281,7 @@ const IssuingStoreFundManagement = () => {
           query={query}
           visible={detailedVisible}
           setVisible={setDetailedVisible}
+          title='内部店'
         />
       }
       {

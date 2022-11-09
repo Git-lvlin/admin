@@ -125,7 +125,7 @@ export default (props) => {
       sampleFreightId,
       wsFreightId,
       wholesaleFreight,
-      wholesaleTaxRate,
+      // wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
       supplierHelperId,
@@ -254,13 +254,15 @@ export default (props) => {
         gcId1: gcId[0],
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
-        wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
+        // wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: goods.goodsSaleType,
         skuName: goods.skuName,
         operateType,
         goodsName: goodsName.replace(/\s+/, ' '),
         invoiceType: goods.invoiceType,
         invoiceTaxRate: goods.invoiceTaxRate,
+        supplyInvoiceType: goods.supplyInvoiceType,
+        wholesaleTaxRate: goods.wholesaleTaxRate,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -998,12 +1000,16 @@ export default (props) => {
           )
         }}
       </ProFormDependency>
-      
-      <ProFormText
-        name="wholesaleTaxRate"
-        label="商品发票税率(%)"
-        disabled
-      />
+      <Form.Item
+        label="商品发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.supplyInvoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="商品发票税率"
+      >
+        {amountTransform(goods.wholesaleTaxRate) || ''}{!!+goods.wholesaleTaxRate && '%'}
+      </Form.Item>
       <Form.Item
         label="运费发票类型"
       >

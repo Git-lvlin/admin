@@ -71,5 +71,11 @@ export default {
       component: './operation-management/performance-report',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'new-intensive-wholesale-order',
+      path: '/operation-management/new-intensive-wholesale-order',
+      component: './operation-management/new-intensive-wholesale-order',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
