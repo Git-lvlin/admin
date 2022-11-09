@@ -152,7 +152,7 @@ export default function TransactionData () {
     },
     {
       title: '租赁管理费提成（元）',
-      dataIndex: 'hydrogenRent',
+      dataIndex: 'totalRentCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -176,7 +176,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.totalBootCommission, '/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="租赁管理费业绩">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="租赁管理费提成">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="businessDeptId"
