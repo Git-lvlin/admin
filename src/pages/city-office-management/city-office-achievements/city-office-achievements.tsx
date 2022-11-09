@@ -156,7 +156,7 @@ export default function TransactionData () {
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <p>{amountTransform(_,'/').toFixed(2)}</p>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(7)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }

@@ -48,6 +48,8 @@ export default (props) => {
         return '托管租赁管理费提成'
       case 6:
         return '启动费提成'
+      case 7:
+        return '租赁管理费提成'
       default:
         return ''
     }
@@ -82,7 +84,8 @@ export default (props) => {
         'operatorEquipment': '运营设备服务费',
         'hydrogenAgentRent': '氢原子租金',
         'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动'
+        'hydrogenBootForBuy': '氢原子购买启动',
+        'hydrogenRent': '租赁管理费'
       },
       hideInTable: true
     },
