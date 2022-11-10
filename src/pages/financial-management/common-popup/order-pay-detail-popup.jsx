@@ -321,8 +321,9 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       dataIndex: 'payTpyeName'
     },
     {
-      title: 'skuID',
-      dataIndex: 'skuId'
+      title: '',
+      dataIndex: '',
+      render: ()=> ''
     },
     {
       title: '实付金额',
