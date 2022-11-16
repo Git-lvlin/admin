@@ -4,21 +4,33 @@ import ProTable from "@ant-design/pro-table"
 import type { ProColumns } from "@ant-design/pro-table"
 import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
-
-import { cityAgentManage,cityAgentManageStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { useLocation } from 'umi';
+import { getInvoiceList } from "@/services/order-management/invoice-management"
 import { amountTransform } from '@/utils/utils'
 import { Button } from "antd"
-// import StoreInformation from './store-information'
-// import CumulativePerformance from './cumulative-performance'
-// import EditInformation from './edit-information'
-// import ResetPasswords from './reset-passwords'
+import moment from "moment"
+
+import Detail from '../normal-order/detail';
+import CheckBillingInformation from './check-billing-information'
+import RefuseInvoice from './refuse-invoice'
+import CheckTheInvoice from './check-the-invoice'
+import ConfirmPayment from './confirm-payment'
+import UploadTheInvoice from './upload-the-invoice'
+import CancellationOfInvoice from './cancellation-of-invoice'
+import ModifyBillingInformation from './modify-billing-information'
 
 export default function GenerationManagement () {
   const [type, setType] = useState<number>(0)
-  const [visible, setVisible] = useState<boolean>(false)
-  const [storeVisible, setStoreVisible] = useState<boolean>(false)
+  const [refusevisible, setRefuseVisible] = useState<boolean>(false)
+  const [detailVisible, setDetailVisible] = useState(false);
+  const isPurchase = useLocation().pathname.includes('purchase')
+  const [checkVisible, setCheckVisible] = useState<boolean>(false)
   const [editVisible, setEditVisible] = useState<boolean>(false)
-  const [resetVisible, setResetVisible] = useState<boolean>(false)
+  const [lookVisible, setLookVisible] = useState<boolean>(false)
+  const [confirmVisible, setConfirmVisible] = useState<boolean>(false)
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
+  const [cancellVisible, setCancellVisible] = useState<boolean>(false)
+  const [modifyVisible, setModifyVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState()
@@ -31,11 +43,11 @@ export default function GenerationManagement () {
       startTime:time?.createTime&&time?.createTime[0],
       endTime:time?.createTime&&time?.createTime[1]
     }
-    cityAgentManageStats(params).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data[0])
-      }
-    })
+    // cityAgentManageStats(params).then(res=>{
+    //   if(res.code==0){
+    //     setDetailList(res.data[0])
+    //   }
+    // })
 
   }, [time])
 
@@ -54,25 +66,25 @@ export default function GenerationManagement () {
     },
     {
       title: '订单类型',
-      dataIndex: 'agentName',
+      dataIndex: 'orderTypeStr',
       align: 'center',
     },
     {
       title: '订单号',
-      dataIndex: 'agentName',
+      dataIndex: 'orderNo',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{_}</a>
+        return <a onClick={()=>{setDetailVisible(true);setMsgDetail(data)}}>{_}</a>
       },
     },
     {
       title: '商品',
-      dataIndex: 'agentName',
+      dataIndex: 'goodsName',
       align: 'center',
     },
     {
       title: '数量',
-      dataIndex: 'agentName',
+      dataIndex: 'goodsNum',
       align: 'center',
     },
     {
@@ -82,7 +94,7 @@ export default function GenerationManagement () {
     },
     {
       title: '订单金额(元)',
-      dataIndex: 'totalAmount',
+      dataIndex: 'orderAmount',
       align: 'center',
       render: (_,data)=>{
           return amountTransform(_,'/').toFixed(2)
@@ -90,7 +102,7 @@ export default function GenerationManagement () {
     },
     {
       title: '供应商ID',
-      dataIndex: 'totalCommission',
+      dataIndex: 'supplierId',
       align: 'center',
     },
     {
@@ -98,28 +110,39 @@ export default function GenerationManagement () {
       dataIndex: 'hydrogenCommission',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>查看开票信息</a>
+        return <a onClick={()=>{setCheckVisible(true);setMsgDetail(data)}}>查看开票信息</a>
       }
     },
     {
       title: '开票时间',
-      dataIndex: 'wholesaleCommission',
+      dataIndex: 'invoiceTime',
       align: 'center',
+      render: (_,data)=>{
+        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+      }
     },
     {
       title: '最近操作人',
-      dataIndex: 'hydrogenLeaseCommission',
+      dataIndex: 'lastEditor',
       align: 'center',
     },
     {
       title: '最近操作时间',
-      dataIndex: 'accountName',
+      dataIndex: 'lastEditTime',
       align: 'center',
     },
     {
       title: '开票状态',
-      dataIndex: 'accountName',
+      dataIndex: 'invoiceStatus',
       align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        '-1':'待支付',
+        0: '待开票',
+        1: '已开票',
+        2: '已作废',
+        3: '拒绝开票'
+      }
     },
     {
       title: '操作',
@@ -127,8 +150,12 @@ export default function GenerationManagement () {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>([
-        <Button onClick={()=>{setEditVisible(true);setMsgDetail(data)}} key='edit'>拒绝</Button>,
-        <Button onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</Button>
+        <Button type='default' style={{ display:data?.invoiceStatus==0?'block':'none' }} onClick={()=>{setRefuseVisible(true);setMsgDetail(data)}} key='edit'>拒绝开票</Button>,
+        <Button type='default' style={{ display:data?.invoiceStatus==1||data?.invoiceStatus==2?'block':'none' }} onClick={()=>{setLookVisible(true);setMsgDetail(data)}} key='edit'>查看发票</Button>,
+        <Button type='primary' style={{ display:data?.invoiceStatus==-1?'block':'none' }} onClick={()=>{setConfirmVisible(true);setMsgDetail(data)}} key='reset'>确认支付</Button>,
+        <Button type='primary' style={{ display:data?.invoiceStatus==0||data?.invoiceStatus==1?'block':'none' }} onClick={()=>{setUploadVisible(true);setMsgDetail(data)}} key='reset'>{data?.invoiceStatus==0?'上传发票':'更新发票'}</Button>,
+        <Button type='primary' style={{ display:data?.invoiceStatus==1?'block':'none' }} onClick={()=>{setCancellVisible(true);setMsgDetail(data)}} key='reset'>发票作废</Button>,
+        <Button type='primary' style={{ display:data?.invoiceStatus==-1||data?.invoiceStatus==0?'block':'none' }} onClick={()=>{setModifyVisible(true);setMsgDetail(data)}} key='reset'>修改开票信息</Button>
       ])
     },
   ]
@@ -136,10 +163,9 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="agentId"
-        headerTitle='列表'
+        rowKey="id"
         columns={tableColumns}
-        request={cityAgentManage}
+        request={getInvoiceList}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{
@@ -149,54 +175,85 @@ export default function GenerationManagement () {
           pageSize: 10,
           showQuickJumper: true,
         }}
-        options={false}
-        search={{
-          labelWidth: 200,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
-          ],
+        postData={(data)=>{
+          try {
+            return data.map(ele=>({...ele,goodsName:ele?.goodsInfo?.[0]?.goodsName}))
+          } catch (error) {
+            console.log('error',error)
+          }
         }}
+        options={false}
+        search={false}
       />
-      {/* {
-        storeVisible&&
-        <StoreInformation
-          visible={storeVisible}
-          setVisible={setStoreVisible}
-          msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          type={type}
+      {detailVisible &&
+        <Detail
+          id={msgDetail?.orderNo}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
         />
       }
-      {
-        visible&&
-        <CumulativePerformance
-          visible={visible}
-          setVisible={setVisible}
+      {checkVisible&&
+        <CheckBillingInformation
+          visible={checkVisible}
+          setVisible={setCheckVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          type={type}
         />
       }
-      {
-        editVisible&&
-        <EditInformation
-          visible={editVisible}
-          setVisible={setEditVisible}
+      {refusevisible&&
+        <RefuseInvoice
+          visible={refusevisible}
+          setVisible={setRefuseVisible}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+        />
+      }
+      {lookVisible&&
+        <CheckTheInvoice
+          visible={lookVisible}
+          setVisible={setLookVisible}
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
         />
       }
-      {
-        resetVisible&&
-        <ResetPasswords
-          visible={resetVisible}
-          setVisible={setResetVisible}
+      {confirmVisible&&
+        <ConfirmPayment
+          visible={confirmVisible}
+          setVisible={setConfirmVisible}
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
         />
-      } */}
+      }
+      {uploadVisible&&
+        <UploadTheInvoice
+          visible={uploadVisible}
+          setVisible={setUploadVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+        />
+      }
+      {cancellVisible&&
+        <CancellationOfInvoice
+          visible={cancellVisible}
+          setVisible={setCancellVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+        />
+      }
+      {modifyVisible&&
+        <ModifyBillingInformation
+          visible={modifyVisible}
+          setVisible={setModifyVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+        />
+      }
     </PageContainer>
   )
 }

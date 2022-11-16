@@ -8,18 +8,37 @@ export type DescriptionsProps = {
 }
 
 export type TableProps = {
-  hydrogenAmount: number;
-  accountId: number;
-  agentId: number;
-  manager: string;
-  accountName: string;
-  hydrogenCommission: number;
-  wholesaleCommission: number;
-  managerPhone: string;
-  agentName: string;
-  totalCommission: number;
-  wholesaleAmount: string;
-  totalAmount: string;
+  id: number;
+  orderNo: string;
+  orderType: number;
+  goodsInfo: string;
+  goodsNum: number;
+  orderAmount: number;
+  supplierId: number;
+  memberId: string;
+  memberPhone: string;
+  payTime: number;
+  editInfo: EditInfo;
+  invoiceTime: number;
+  invoiceStatus: number;
+  invType: number;
+  invTitleType: number;
+  invTitleName: string;
+  invNumber: string;
+  invBankNo: string;
+  invBankName: string;
+  invAddress: string;
+  invPhone: string;
+  invEmail: string;
+  invSendEmail: number;
+  lastEditInfo: LastEditInfo;
+  createTime: string;
+  updateTime: string;
+  deleteTime: number;
+  orderTypeStr: string;
+  lastEditor: string;
+  lastEditTime: string;
+  invoiceStatusStr: string;
 }
 
 

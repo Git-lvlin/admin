@@ -166,6 +166,12 @@ export default {
       path: '/order-management/intensive-purchase-setting',
       component: './order-management/intensive-purchase-setting',
       wrappers: [RouteWatcher]
+    },
+    {
+      name: 'invoice-management',
+      path: '/order-management/invoice-management',
+      component: './order-management/invoice-management',
+      wrappers: [RouteWatcher]
     }
   ]
 }

@@ -59,5 +59,11 @@ export default {
       component: './user-management/logout-list',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'hydrogen-atom-user-management',
+      path: '/user-management/hydrogen-atom-user-management',
+      component: './user-management/hydrogen-atom-user-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
