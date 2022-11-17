@@ -148,7 +148,7 @@ export default function TransactionData () {
         options={false}
         search={{
           defaultCollapsed: false,
-          labelWidth: 160,
+          labelWidth: 165,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
           ],
