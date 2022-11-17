@@ -83,7 +83,7 @@ export default (props) => {
         name="payAmount"
       />
       <Form.Item name='payUrl' label='支付凭证图片'>
-        <Upload  multiple maxCount={1} accept="image/*" size={1 * 1024}/>
+        <Upload  multiple maxCount={1} accept="image/*" code={308} size={1 * 1024}/>
       </Form.Item>
       <ProFormTextArea
         label='备注'

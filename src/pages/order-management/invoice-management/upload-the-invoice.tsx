@@ -93,7 +93,7 @@ export default (props) => {
         readonly
       />
       <Form.Item name='invoiceUrl' label='上传发票' rules={[{ required: true, message: '请上传发票' }]}>
-        <Upload  multiple maxCount={1} accept="image/*" code={308}/>
+        <Upload  multiple maxCount={1} accept="image/*" code={308} size={1 * 1024}/>
       </Form.Item>
       <ProFormRadio.Group
         name="invSendEmail"

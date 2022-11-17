@@ -61,7 +61,7 @@ export default function GenerationManagement () {
     },
     {
       title: '申请人',
-      dataIndex: 'agentName',
+      dataIndex: 'memberPhone',
       align: 'center',
     },
     {
@@ -147,7 +147,8 @@ export default function GenerationManagement () {
     {
       title: '操作',
       valueType: 'option',
-      align: 'center',
+      // width: 100,
+      fixed: 'right',
       hideInSearch: true,
       render: (_,data)=>([
         <Button type='default' style={{ display:data?.invoiceStatus==0?'block':'none' }} onClick={()=>{setRefuseVisible(true);setMsgDetail(data)}} key='edit'>拒绝开票</Button>,
@@ -156,7 +157,8 @@ export default function GenerationManagement () {
         <Button type='primary' style={{ display:data?.invoiceStatus==0||data?.invoiceStatus==1?'block':'none' }} onClick={()=>{setUploadVisible(true);setMsgDetail(data)}} key='reset'>{data?.invoiceStatus==0?'上传发票':'更新发票'}</Button>,
         <Button type='primary' style={{ display:data?.invoiceStatus==1?'block':'none' }} onClick={()=>{setCancellVisible(true);setMsgDetail(data)}} key='reset'>发票作废</Button>,
         <Button type='primary' style={{ display:data?.invoiceStatus==-1||data?.invoiceStatus==0?'block':'none' }} onClick={()=>{setModifyVisible(true);setMsgDetail(data)}} key='reset'>修改开票信息</Button>
-      ])
+      ]),
+
     },
   ]
 
@@ -171,6 +173,7 @@ export default function GenerationManagement () {
         onSubmit={(val)=>{
           setTime(val)
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
