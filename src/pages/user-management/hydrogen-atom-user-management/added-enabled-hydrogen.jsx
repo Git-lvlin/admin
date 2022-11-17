@@ -37,14 +37,12 @@ export default (props) => {
   const [form] = Form.useForm();
   const [phone, setPhone] = useState()
   useEffect(()=>{
-    if(phone){
+    if(phone&&phone.length==11){
       queryByMobile({memberPhone:phone}).then(res=>{
         if(res?.code === 0){
-          console.log('res',res.data)
           form.setFieldsValue({
             ...res.data,
             memberPhone:phone,
-            // time:[res.data?.freeStartTime,res.data?.freeEndTime],
             usedTimes:`${res.data?.usedTimes===0?'0':res.data?.usedTimes}次  于 ${res.data?.freeEndTime} 失效`
           })
         }
