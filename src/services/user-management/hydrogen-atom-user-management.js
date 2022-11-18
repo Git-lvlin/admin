@@ -1,12 +1,14 @@
 import request from '@/utils/request';
 
 export const queryPage = async (params = {}, options = {}) => {
-  const { current, pageSize,...rest } = params;
+  const { current, pageSize,usedTimes,...rest } = params;
   const res = await request('/auth/java-admin/deviceFreeUse/queryPage', {
     method: 'POST',
     data: {
       page: current,
       size:pageSize,
+      usableTimesStart:usedTimes&&parseInt(usedTimes?.min),
+      usableTimesEnd:usedTimes&&parseInt(usedTimes?.max),
       ...rest
     },
     ...options

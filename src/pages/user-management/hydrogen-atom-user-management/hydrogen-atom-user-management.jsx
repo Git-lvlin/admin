@@ -7,6 +7,7 @@ import { Descriptions } from 'antd';
 import moment from 'moment'
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Card } from 'antd';
+import RangeInput from "@/components/range-input"
 
 import { queryPage } from "@/services/user-management/hydrogen-atom-user-management"
 
@@ -80,7 +81,7 @@ export default function TransactionData () {
     },
     {
       title: '当前免费状态',
-      dataIndex: 'freeStatus',
+      dataIndex: 'freeStatusName',
       align: 'center',
       hideInSearch: true,
     },
@@ -88,6 +89,7 @@ export default function TransactionData () {
       title: '当前免费机会已使用次数',
       dataIndex: 'usedTimes',
       align: 'center',
+      renderFormItem: ()=> <RangeInput beforePlaceholder='最低次数' afterPlaceholder='最高次数' />,
       hideInTable: true
     },
     {
