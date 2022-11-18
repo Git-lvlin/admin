@@ -4,7 +4,7 @@ import {
   ProFormText,
   ModalForm,
   ProFormTextArea,
-  ProFormDateRangePicker
+  ProFormDateTimeRangePicker
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import { deviceFreeUseSave,queryByMobile } from "@/services/user-management/hydrogen-atom-user-management"
@@ -36,6 +36,7 @@ export default (props) => {
   const { visible, setVisible,onClose} = props;
   const [form] = Form.useForm();
   const [phone, setPhone] = useState()
+  const user=JSON.parse(window.localStorage.getItem('user'))
   useEffect(()=>{
     if(phone&&phone.length==11){
       queryByMobile({memberPhone:phone}).then(res=>{
@@ -43,7 +44,8 @@ export default (props) => {
           form.setFieldsValue({
             ...res.data,
             memberPhone:phone,
-            usedTimes:`${res.data?.usedTimes===0?'0':res.data?.usedTimes}次  于 ${res.data?.freeEndTime} 失效`
+            usableTimes:res.data?.usableTimes===0?'0次':`${res.data?.usableTimes}次  于 ${res.data?.freeEndTime} 失效`,
+            operater:user?.username
           })
         }
       })
@@ -107,7 +109,7 @@ export default (props) => {
       />
       <ProFormText
         label='用户还有免费机会'
-        name="usedTimes"  
+        name="usableTimes"  
         readonly
       />
       <ProFormText
@@ -118,7 +120,7 @@ export default (props) => {
           addonAfter:'次'
         }}
       />
-      <ProFormDateRangePicker 
+      <ProFormDateTimeRangePicker 
         label="免费有效期"
         rules={[{ required: true, message: '请选择有效期' }]}
         name="time"
@@ -138,7 +140,7 @@ export default (props) => {
         readonly
       />
       <ProFormText
-        name="id"
+        name="operateId"
         hidden
       />
     </ModalForm >
