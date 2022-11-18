@@ -107,12 +107,12 @@ export default () => {
       },
       order:3
     },
-    // {
-    //   title: '社区店店铺名称',
-    //   dataIndex: 'storeName',
-    //   valueType: 'text',
-    //   hideInSearch: true
-    // },
+    {
+      title: '启用机器所属店铺编号',
+      dataIndex: 'storeName',
+      valueType: 'text',
+      hideInSearch: true
+    },
     {
       title: '启动时间',
       dataIndex: 'dateTimeRange',
@@ -123,6 +123,12 @@ export default () => {
     {
       title: '启动时间',
       dataIndex: 'createTime',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '使用健康卡卡号',
+      dataIndex: 'storeName',
       valueType: 'text',
       hideInSearch: true
     },

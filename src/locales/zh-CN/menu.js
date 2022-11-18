@@ -364,6 +364,7 @@ export default {
   'menu.sign-activity-management.grant-detail': '发放明细',
   'menu.sign-activity-management.user-detail': '用户红包明细',
   'menu.sign-activity-management.consume-detail': '消耗明细',
+  'menu.sign-activity-management.show-configuration': '签到模块显示配置',
 
 
   'menu.blind-box-activity-management': '盲盒活动管理',
