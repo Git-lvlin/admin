@@ -993,6 +993,9 @@ export default (props) => {
                   },
                 })
               ]}
+              fieldProps={{
+                maxLength: 90,
+              }}
             />
           )
         }}
