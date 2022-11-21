@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Space, Button, Modal, Steps, Spin } from 'antd';
-import { findAdminOrderDetail, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
+import { findAdminOrderDetail, findAdminOrderDetail2, findAdminOrderDetail4 } from '@/services/order-management/normal-order-detail';
 import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
@@ -10,14 +10,19 @@ import { history } from 'umi'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id } = props;
+  const { visible, setVisible, isPurchase, id, isDocumentary } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
 
   const getDetailData = () => {
     setLoading(true);
-    const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    let apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+
+    if (isDocumentary) {
+      apiMethod = findAdminOrderDetail4
+    }
+
     apiMethod({
       id
     }).then(res => {
@@ -118,7 +123,7 @@ const Detail = (props) => {
                   </div>
                 </div>
               </div>
-              <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
+              {!isDocumentary && <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
                 <div className={`${styles.box} ${styles.box_header}`}>
                   订单金额
                 </div>
@@ -188,7 +193,7 @@ const Detail = (props) => {
                     </ProDescriptions>
                   ))
                 }
-              </div>
+              </div>}
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.box_wrap}>
@@ -208,28 +213,28 @@ const Detail = (props) => {
                           <div>规格</div>
                           <div>{item.skuName}</div>
                         </div>
-                        <div className={styles.box}>
+                        {!isDocumentary && <div className={styles.box}>
                           <div>样品价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
-                        </div>
+                        </div>}
                         <div className={styles.box}>
                           <div>购买数量</div>
                           <div>{item.skuNum}{item.unit}</div>
                         </div>
-                        <div className={styles.box}>
+                        {!isDocumentary && <div className={styles.box}>
                           <div>小计</div>
                           <div>
-                            {amountTransform(item.totalAmount, '/')}元  
-                            {item.afterSalesStatus!==0&&
-                            <a 
-                            href={`/order-management/after-sales-order/detail/${item.afterSalesApplyId}`}
-                            target="_blank" 
-                            className={styles.after_sale}>
-                              {item.afterSalesStatusStr}
-                            </a>
+                            {amountTransform(item.totalAmount, '/')}元
+                            {item.afterSalesStatus !== 0 &&
+                              <a
+                                href={`/order-management/after-sales-order/detail/${item.afterSalesApplyId}`}
+                                target="_blank"
+                                className={styles.after_sale}>
+                                {item.afterSalesStatusStr}
+                              </a>
                             }</div>
 
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   ))
