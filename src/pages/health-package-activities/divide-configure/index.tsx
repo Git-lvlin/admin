@@ -28,7 +28,7 @@ const DivideConfigure: FC = () => {
       width: '30%'
     },
     {
-      title: '4900.00',
+      title: '490.00',
       align: 'center',
       children: [
         {
