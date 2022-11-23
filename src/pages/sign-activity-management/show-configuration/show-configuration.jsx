@@ -1,8 +1,8 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { Form, message, Button, Space,Spin} from 'antd';
-import { setLadderConfig,getLadderConfig } from '@/services/setting/switch-setting';
+import { updateSigninConfig,querySigninConfig } from '@/services/sign-activity-management/show-configuration';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormRadio} from '@ant-design/pro-form';
+import ProForm, { ProFormRadio, ProFormText} from '@ant-design/pro-form';
 import styles from './style.less'
 
 
@@ -23,14 +23,14 @@ export default (props) => {
   const [form] = Form.useForm()
   const ref=useRef()
   const onsubmit = (values) => {
-    setLadderConfig(values).then(res=>{
+    updateSigninConfig(values).then(res=>{
       if(res.code==0){
         message.success('配置成功')
       }
     })
   }
   useEffect(()=>{
-    getLadderConfig({}).then(res=>{
+    querySigninConfig({}).then(res=>{
       form.setFieldsValue(res.data)
     })
   },[])
@@ -63,20 +63,23 @@ export default (props) => {
         className={styles.switch_setting}
       >
         <ProFormRadio.Group
-                name="ladderSwitch"
+                name="value"
                 label={<span className={styles.blod}>是否显示签到信息</span>}
-                // rules={[{ required: true, message: '请设置' }]}
                 options={[
                     {
                         label:'不显示',
-                        value: 0,
+                        value: '0',
                     },
                     {
                         label: '显示',
-                        value: 1,
+                        value: '1',
                     },
                 ]}
             />
+        <ProFormText
+          name="id"
+          hidden
+        />
       </ProForm >
       </PageContainer>
   );

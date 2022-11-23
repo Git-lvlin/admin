@@ -109,7 +109,7 @@ export default () => {
     },
     {
       title: '启用机器所属店铺编号',
-      dataIndex: 'storeName',
+      dataIndex: 'shopMemberAccount',
       valueType: 'text',
       hideInSearch: true
     },
@@ -128,7 +128,7 @@ export default () => {
     },
     {
       title: '使用健康卡卡号',
-      dataIndex: 'storeName',
+      dataIndex: 'cardNo',
       valueType: 'text',
       hideInSearch: true
     },
