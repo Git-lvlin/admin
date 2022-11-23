@@ -196,7 +196,12 @@ export default function EquipmentManagement() {
     },
     {
       title: '用卡状态',
-      dataIndex: '',
+      dataIndex: 'activity',
+      valueType: 'select',
+      valueEnum: {
+        1: '可用',
+        0: '不可用'
+      },
       align: 'center',
     },
     {

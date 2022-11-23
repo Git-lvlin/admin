@@ -35,7 +35,6 @@ const DivideConfigure: FC = () => {
           title: '分成金额(元)',
           dataIndex: 'firstPackageAmount',
           align: 'center',
-          render: (_) => amountTransform(_, '/')
         },
         {
           title: '分成百分比',
@@ -51,7 +50,6 @@ const DivideConfigure: FC = () => {
         {
           title: '分成金额(元)',
           dataIndex: 'secondPackageAmount',
-          render: (_) => amountTransform(_, '/'),
           align: 'center'
         },
         {
