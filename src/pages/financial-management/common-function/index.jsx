@@ -2,10 +2,16 @@ import { Space } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 
-export const fashionableType = (data, amount, fee, couponAmount, realAmount) =>{
+export const fashionableType = (data, amount, fee, couponAmount, realAmount, freight) =>{
   return (
     <div style={{marginBottom: '10px'}}>
-      <div>{data}: ¥{amountTransform(amount, '/')}</div>
+      <div>
+        {data}: ¥{amountTransform(amount, '/')}
+        {
+          freight > 0 &&
+          `（含平均运费¥${amountTransform(freight, '/')}）`
+        }
+      </div>
       {
         (couponAmount !== '0' && couponAmount)&&
         <div>优惠金额: ¥{amountTransform(couponAmount, '/')}</div>
