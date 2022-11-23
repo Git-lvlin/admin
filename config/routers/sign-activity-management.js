@@ -34,6 +34,12 @@ export default {
         component: './sign-activity-management/user-detail',
         wrappers: [RouteWatcher],
         hideInMenu: true
+      },
+      {
+        name: 'show-configuration',
+        path: '/sign-activity-management/show-configuration',
+        component: './sign-activity-management/show-configuration',
+        wrappers: [RouteWatcher],
       }
     ]
   }
