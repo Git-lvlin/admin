@@ -34,6 +34,7 @@ import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 import productPerformanceManagement from './routers/product-performance-management'
+import healthPackageActivities from './routers/health-package-activities'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -113,6 +114,7 @@ const config = {
             OfficeManagement,
             CityOfficeManagement,
             productPerformanceManagement,
+            healthPackageActivities,
             {
               component: '404',
             },

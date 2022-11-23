@@ -195,6 +195,11 @@ export default function EquipmentManagement() {
       hideInTable: true
     },
     {
+      title: '用卡状态',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
       title: '订单状态',
       dataIndex: 'occupationMode',
       align: 'center',

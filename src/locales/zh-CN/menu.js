@@ -445,4 +445,9 @@ export default {
   'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
   'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
 
+  'menu.health-package-activities': '健康套餐活动',
+  'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',
+  'menu.health-package-activities.promotion-activity-management': '推广活动管理', 
+  'menu.health-package-activities.divide-configure': '健康套餐分成配置', 
+
 };
