@@ -199,10 +199,17 @@ export default function EquipmentManagement() {
       dataIndex: 'activity',
       valueType: 'select',
       valueEnum: {
-        1: '可用',
-        0: '不可用'
+        'cardReg': '可用',
+        '!cardReg': '不可用'
       },
-      align: 'center',
+      hideInTable: true
+    },
+    {
+      title: '用卡状态',
+      dataIndex: 'activity',
+      render: (_, r) => r.activity === 'cardReg' ? '可用' : '不可用',
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '订单状态',

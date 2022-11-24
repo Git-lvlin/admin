@@ -5,8 +5,6 @@ import type { ProColumns } from '@ant-design/pro-table'
 
 import PageContainer from "@/components/PageContainer"
 import { getConfig } from '@/services/health-package-activities/divide-configure'
-import { amountTransform } from '@/utils/utils'
-
 
 const DivideConfigure: FC = () => {
 

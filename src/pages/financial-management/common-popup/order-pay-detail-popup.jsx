@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { Button, Space, Progress, Drawer } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
+import ProTable from '@ant-design/pro-table'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPageDetail } from "@/services/financial-management/transaction-detail-management"
@@ -381,6 +382,50 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
     }
   ]
 
+  const healthyCard = [
+    {
+      title: '明细单号/卡号',
+      dataIndex: '',
+      align: 'center'
+    },
+    {
+      title: '产品类型',
+      dataIndex: '',
+      align: 'center'
+    },
+    {
+      title: '产品名称',
+      dataIndex: 'goodsName',
+      align: 'center'
+    },
+    {
+      title: '产品数量',
+      dataIndex: 'paidCount',
+      align: 'center'
+    },
+    {
+      title: '产品skuID',
+      dataIndex: 'skuId',
+      align: 'center'
+    },
+    {
+      title: '销售价（元）',
+      dataIndex: 'salePrice',
+      align: 'center',
+      render: (_) => amountTransform(_, '/')
+    },
+    {
+      title: '供应商ID/所属店铺编号',
+      dataIndex: '',
+      align: 'center'
+    },
+    {
+      title: '订单状态',
+      dataIndex: '',
+      align: 'center'
+    },
+  ]
+
   const account = [
     {
       title: '汇能虚拟户（佣金户）',
@@ -435,9 +480,21 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       />
       {
         info?.skus &&
-        info?.skus.map(item => (
-          <CustomList data={item} key={item.skuId} columns={goodsInfo} />
-        ))
+        info?.skus.map(item => {
+          if(info.orderType !== 'healthyCard') {
+            return <CustomList data={item} key={item.skuId} columns={goodsInfo} />
+          } else {
+            return (
+              <ProTable
+                columns={healthyCard}
+                search={false}
+                options={false}
+                pagination={false}
+                dataSource={info.skus}
+              />
+            )
+          }
+        })
       }
       {
         payInfos?.map(item => (
