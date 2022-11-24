@@ -36,18 +36,6 @@ export default function TransactionData () {
       }
     },
     {
-      title: '地区',
-      dataIndex: 'address',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '店铺编号',
-      dataIndex: 'shopMemberAccount',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
       title: '注册时间',
       dataIndex: 'memberRegisterTime',
       align: 'center',
