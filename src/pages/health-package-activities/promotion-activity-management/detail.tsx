@@ -28,8 +28,13 @@ const Detail: FC<DetailProps> = ({visible, handleCancel, storeNo}) => {
       align: 'center'
     },
     {
-      title: '设备状态',
+      title: '状态',
       dataIndex: 'deviceStatus',
+      align: 'center'
+    },
+    {
+      title: '参加类型',
+      dataIndex: 'activityTypeDesc',
       align: 'center'
     },
     {

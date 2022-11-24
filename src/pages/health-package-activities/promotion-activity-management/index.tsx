@@ -54,24 +54,24 @@ const PromotionActivityManagement: FC = () => {
     //   align: 'center',
     //   hideInSearch: true
     // },
-    {
-      title: '参与活动类型',
-      dataIndex: 'activityStatusDesc',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      dataIndex: 'activityType',
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '报名参加',
-        2: '自动参加'
-      },
-      fieldProps: {
-        placeholder: '请选择参加活动类型'
-      }
-    },
+    // {
+    //   title: '参与活动类型',
+    //   dataIndex: 'activityStatusDesc',
+    //   align: 'center',
+    //   hideInSearch: true
+    // },
+    // {
+    //   dataIndex: 'activityType',
+    //   hideInTable: true,
+    //   valueType: 'select',
+    //   valueEnum: {
+    //     1: '报名参加',
+    //     2: '自动参加'
+    //   },
+    //   fieldProps: {
+    //     placeholder: '请选择参加活动类型'
+    //   }
+    // },
     {
       title: '店铺自提点地址',
       dataIndex: 'address',
