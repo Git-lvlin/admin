@@ -44,7 +44,7 @@ export default (props) => {
           form.setFieldsValue({
             ...res.data,
             memberPhone:phone,
-            usableTimes:res.data?.usableTimes===0?'0次':`${res.data?.usableTimes}次  于 ${res.data?.freeEndTime} 失效`,
+            usableTimes:res.data?.usableTimes?`${res.data?.usableTimes}次  于 ${res.data?.freeEndTime} 失效`:'0次',
             operater:user?.username
           })
         }
@@ -102,11 +102,11 @@ export default (props) => {
         name="memberRegisterTime"
         readonly
       />
-      <ProFormText
+      {/* <ProFormText
         label='用户所在地区'
         name="address"
         readonly
-      />
+      /> */}
       <ProFormText
         label='用户还有免费机会'
         name="usableTimes"  
