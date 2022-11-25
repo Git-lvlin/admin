@@ -32,6 +32,16 @@ const checkConfirm = (rule, value, callback) => {
   })
 }
 
+const checkConfirm2=(rule, value, callback)=>{
+  return new Promise(async (resolve, reject) => {
+  if (value&&value.length<5) {
+      await reject('至少5个字符')
+  }else {
+      await resolve()
+  }
+  })
+}
+
 export default (props) => {
   const { visible, setVisible,onClose} = props;
   const [form] = Form.useForm();
@@ -128,7 +138,10 @@ export default (props) => {
       <ProFormTextArea
         label='免费原因'
         name="freeReason"
-        rules={[{ required: true, message: '请输入拒绝原因' }]}
+        rules={[
+          { required: true, message: '请输入免费原因' },
+          { validator: checkConfirm2 }
+        ]}
         fieldProps={{
           minLength:5,
           placeholder:'请输入至少5个字符'
