@@ -127,10 +127,17 @@ export default () => {
       hideInSearch: true
     },
     {
-      title: '使用健康卡卡号',
+      title: '吸氢服务号',
       dataIndex: 'cardNo',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) =>{
+        if(_=='null'){
+          return '-'
+        }else{
+          return _
+        }
+      }
     },
     {
       title: '启动时长(分钟)',
