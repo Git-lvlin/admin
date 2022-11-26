@@ -195,7 +195,7 @@ export default function EquipmentManagement() {
       hideInTable: true
     },
     {
-      title: '用卡状态',
+      title: '吸氢服务状态',
       dataIndex: 'activity',
       valueType: 'select',
       valueEnum: {
@@ -205,7 +205,7 @@ export default function EquipmentManagement() {
       hideInTable: true
     },
     {
-      title: '用卡状态',
+      title: '吸氢服务状态',
       dataIndex: 'activity',
       render: (_, r) => r.activity === 'cardReg' ? '可用' : '不可用',
       hideInSearch: true,
