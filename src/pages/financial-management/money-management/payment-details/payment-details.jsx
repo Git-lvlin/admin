@@ -88,7 +88,7 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
       dataIndex:'billNo',
       width: '10%',
       render: (_, records)=> {
-        if(records.orderType === 'hydrogenRent' || records.orderType === 'healthyCard') {
+        if(records.orderType === 'hydrogenRent') {
           return <span>{_}</span>
         } else {
           if(records.orderId) {
