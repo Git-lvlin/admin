@@ -1261,11 +1261,11 @@ const OverallStore = () => {
             activeKey == 'life_house' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="shop_health_packages" tab="购买健康套餐店铺">
+        {/* <ProCard.TabPane key="shop_health_packages" tab="购买健康套餐店铺">
           {
             activeKey == 'shop_health_packages' && <ShopHealthPackages storeType={activeKey} />
           }
-        </ProCard.TabPane>
+        </ProCard.TabPane> */}
       </ProCard>
     </PageContainer>
   )
