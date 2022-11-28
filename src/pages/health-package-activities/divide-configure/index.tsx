@@ -5,8 +5,6 @@ import type { ProColumns } from '@ant-design/pro-table'
 
 import PageContainer from "@/components/PageContainer"
 import { getConfig } from '@/services/health-package-activities/divide-configure'
-import { amountTransform } from '@/utils/utils'
-
 
 const DivideConfigure: FC = () => {
 
@@ -28,14 +26,13 @@ const DivideConfigure: FC = () => {
       width: '30%'
     },
     {
-      title: '4900.00',
+      title: '490.00',
       align: 'center',
       children: [
         {
           title: '分成金额(元)',
           dataIndex: 'firstPackageAmount',
           align: 'center',
-          render: (_) => amountTransform(_, '/')
         },
         {
           title: '分成百分比',
@@ -51,7 +48,6 @@ const DivideConfigure: FC = () => {
         {
           title: '分成金额(元)',
           dataIndex: 'secondPackageAmount',
-          render: (_) => amountTransform(_, '/'),
           align: 'center'
         },
         {

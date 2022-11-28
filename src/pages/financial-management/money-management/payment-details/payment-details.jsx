@@ -23,7 +23,7 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
   const form = useRef()
 
   const skipToOrder = (id, type, orderType, billNo)=> {
-    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth'
+    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
 
     if(isGoodsOrder) {
       setId(id)
@@ -39,7 +39,6 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
           setId(id)
           setShopkeeperOrderVisible(true)
         } else {
-          console.log(11);
           setId(id)
           setNormalOrderVisible(true)
         }
@@ -89,7 +88,7 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
       dataIndex:'billNo',
       width: '10%',
       render: (_, records)=> {
-        if(records.orderType === 'hydrogenRent') {
+        if(records.orderType === 'hydrogenRent' || records.orderType === 'healthyCard') {
           return <span>{_}</span>
         } else {
           if(records.orderId) {
