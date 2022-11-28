@@ -6,7 +6,7 @@ import {
 import ProTable from "@ant-design/pro-table"
 import { cityAgentComm,cityAgentCommStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
+import type { GithubIssueItem,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
@@ -33,7 +33,7 @@ export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState({})
+  const [time,setTime]=useState<GithubIssueItem>()
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
@@ -144,7 +144,7 @@ export default (props:CumulativeProps)=>{
           setTime(val)
         }}
         onReset={()=>{
-          setTime()
+          setTime({})
         }}
         options={false}
         search={{
