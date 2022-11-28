@@ -28,8 +28,13 @@ const Detail: FC<DetailProps> = ({visible, handleCancel, storeNo}) => {
       align: 'center'
     },
     {
-      title: '设备状态',
+      title: '状态',
       dataIndex: 'deviceStatus',
+      align: 'center'
+    },
+    {
+      title: '参加类型',
+      dataIndex: 'activityTypeDesc',
       align: 'center'
     },
     {
@@ -58,6 +63,7 @@ const Detail: FC<DetailProps> = ({visible, handleCancel, storeNo}) => {
       footer={[
         <Button type='primary' key='close' onClick={handleCancel}>关闭</Button>
       ]}
+      onCancel={handleCancel}
     >
       <div>
         <div>店铺编号：{data?.storeHouseNumber}</div>
@@ -67,7 +73,6 @@ const Detail: FC<DetailProps> = ({visible, handleCancel, storeNo}) => {
         <div>店铺自提点地址：{data?.address}</div>
       </div>
       <ProTable
-        rowKey=''
         search={false}
         headerTitle='店铺参与活动的设备：'
         pagination={{

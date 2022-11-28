@@ -195,9 +195,21 @@ export default function EquipmentManagement() {
       hideInTable: true
     },
     {
-      title: '用卡状态',
-      dataIndex: '',
-      align: 'center',
+      title: '吸氢服务状态',
+      dataIndex: 'activity',
+      valueType: 'select',
+      valueEnum: {
+        'cardReg': '可用',
+        '!cardReg': '不可用'
+      },
+      hideInTable: true
+    },
+    {
+      title: '吸氢服务状态',
+      dataIndex: 'activity',
+      render: (_, r) => r.activity === 'cardReg' ? '可用' : '不可用',
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '订单状态',

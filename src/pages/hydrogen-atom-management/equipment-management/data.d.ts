@@ -22,6 +22,7 @@ export type EquipmentItem = {
 	contractUrl: string;
 	bindStatus: number;
 	leaseDeadline: string;
+	activity: string;
 }
 
 export type ModalFormProps = {

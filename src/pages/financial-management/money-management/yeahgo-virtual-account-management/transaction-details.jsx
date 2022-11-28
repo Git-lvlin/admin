@@ -12,6 +12,7 @@ import { tradeType } from '../../common-enum'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
+import NotGoodsOrderDetail from '../../common-popup/notGoodsOrderDetail'
 import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
 
 const TransactionDetails = ({
@@ -27,6 +28,7 @@ const TransactionDetails = ({
   const [id, setId] = useState()
   const [visit, setVisit] = useState(false)
   const [orderType, setOrderType] = useState()
+  const [notGoodsVisible, setNotGoodsVisible] = useState(false)
   const [types, setTypes] = useState()
   const actionform = useRef()
 
@@ -43,17 +45,24 @@ const TransactionDetails = ({
   }, [])
 
   const skipToOrder = (id, type, orderType, billNo)=> {
-    if(orderType === 'newCommandSalesOrder') {
-      setId(billNo)
-      setNewShopkeeperOrderVisible(true)
+    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
+    if(isGoodsOrder) {
+      setId(id)
+      setNotGoodsVisible(true)
       setTypes(orderType)
     } else {
-      if(type) {
-        setId(id)
-        setShopkeeperOrderVisible(true)
+      if(orderType === 'newCommandSalesOrder') {
+        setId(billNo)
+        setNewShopkeeperOrderVisible(true)
+        setTypes(orderType)
       } else {
-        setId(id)
-        setNormalOrderVisible(true)
+        if(type) {
+          setId(id)
+          setShopkeeperOrderVisible(true)
+        } else {
+          setId(id)
+          setNormalOrderVisible(true)
+        }
       }
     }
   }
@@ -163,7 +172,7 @@ const TransactionDetails = ({
       dataIndex:'billNo',
       width: '10%',
       render: (_, records) => (
-        records.orderId ? 
+        records.orderId? 
         <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
         <span>{_}</span>
       )
@@ -328,6 +337,15 @@ const TransactionDetails = ({
           orderType={types}
           visible={newShopkeeperOrderVisible}
           setVisible={setNewShopkeeperOrderVisible}
+        />
+      }
+      {
+        notGoodsVisible &&
+        <NotGoodsOrderDetail
+          id={id}
+          orderType={types}
+          visible={notGoodsVisible}
+          setVisible={setNotGoodsVisible}
         />
       }
     </Drawer>
