@@ -32,6 +32,16 @@ const checkConfirm = (rule, value, callback) => {
   })
 }
 
+const checkConfirm2=(rule, value, callback)=>{
+  return new Promise(async (resolve, reject) => {
+  if (value&&value.length<5) {
+      await reject('至少5个字符')
+  }else {
+      await resolve()
+  }
+  })
+}
+
 export default (props) => {
   const { visible, setVisible,onClose} = props;
   const [form] = Form.useForm();
@@ -44,7 +54,7 @@ export default (props) => {
           form.setFieldsValue({
             ...res.data,
             memberPhone:phone,
-            usableTimes:res.data?.usableTimes===0?'0次':`${res.data?.usableTimes}次  于 ${res.data?.freeEndTime} 失效`,
+            usableTimes:res.data?.usableTimes?`${res.data?.usableTimes}次  于 ${res.data?.freeEndTime} 失效`:'0次',
             operater:user?.username
           })
         }
@@ -102,11 +112,11 @@ export default (props) => {
         name="memberRegisterTime"
         readonly
       />
-      <ProFormText
+      {/* <ProFormText
         label='用户所在地区'
         name="address"
         readonly
-      />
+      /> */}
       <ProFormText
         label='用户还有免费机会'
         name="usableTimes"  
@@ -128,7 +138,10 @@ export default (props) => {
       <ProFormTextArea
         label='免费原因'
         name="freeReason"
-        rules={[{ required: true, message: '请输入拒绝原因' }]}
+        rules={[
+          { required: true, message: '请输入免费原因' },
+          { validator: checkConfirm2 }
+        ]}
         fieldProps={{
           minLength:5,
           placeholder:'请输入至少5个字符'

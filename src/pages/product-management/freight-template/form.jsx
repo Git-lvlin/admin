@@ -227,7 +227,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      setBySelect(detailData.freeArea.map(item => `${item}`));
+      setBySelect(detailData.freeArea?.map?.(item => `${item}`));
 
       let notExpressCity = []
 
@@ -262,7 +262,7 @@ export default (props) => {
       setFfData(expressArea)
 
       const byInfo = JSON.parse(JSON.stringify(defaultArea))
-      detailData.freeArea.forEach(item => {
+      detailData.freeArea?.forEach?.(item => {
         byInfo.forEach(it => {
           if (it.data.includes(item)) {
             it.value.push(`${item}`);
