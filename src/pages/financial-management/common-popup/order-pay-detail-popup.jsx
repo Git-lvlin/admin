@@ -298,8 +298,12 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
     {
       title: '配送运费',
       dataIndex: 'deliveryFee',
-      render: () => `￥${amountTransform(info?.deliveryFee, '/')}`,
+      render: (_) => `￥${amountTransform(_, '/')}`,
       hideInDescriptions: info?.orderType !== 'newCommandSalesOrder'
+    },
+    {
+      title: 'skuID',
+      dataIndex: 'skuId',
     }
   ]
 
@@ -317,9 +321,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       dataIndex: 'payTpyeName'
     },
     {
-      title: '',
-      dataIndex: '',
-      render: ()=> ''
+      title: 'skuID',
+      dataIndex: 'skuIds'
     },
     {
       title: '实付金额',
@@ -329,17 +332,19 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
     {
       title: '虚拟分账计算',
       dataIndex: 'divideInfo',
-      render: (_, data)=> (
-        <>
-          {
-            data?.divideInfos?.map(item=> (
-              <div key={item?.type}>
-                {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount)}
-              </div>
-            ))
-          }
-        </>
-      )
+      render: (_, data)=> {
+        return (
+          <>
+            {
+              data?.divideInfos?.map(item=> (
+                <div key={item?.type}>
+                  {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight)}
+                </div>
+              ))
+            }
+          </>
+        )
+      }
     },
     {
       title: '支付单号',
