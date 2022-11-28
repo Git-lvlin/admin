@@ -35,6 +35,7 @@ import CityOfficeManagement from './routers/city-office-management'
 import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 import productPerformanceManagement from './routers/product-performance-management'
+import healthPackageActivities from './routers/health-package-activities'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -115,6 +116,7 @@ const config = {
             CityOfficeManagement,
             HydrogenAtomGeneration,
             productPerformanceManagement,
+            healthPackageActivities,
             {
               component: '404',
             },

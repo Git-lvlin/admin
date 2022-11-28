@@ -27,10 +27,6 @@ const DivideDetail: FC<PropsDivide> = (props) => {
 
   const columns: ProColumnType<PropsDivide>[] = [
     {
-      title: '序号',
-      valueType: 'indexBorder'
-    },
-    {
       title: '提成对象和对应分成项名称',
       dataIndex: 'objectName',
       align: 'center'
