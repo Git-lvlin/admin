@@ -79,6 +79,10 @@ const Detail = (props) => {
                   订单信息
                 </div>
                 <div className={styles.box}>
+                  <div>订单类型</div>
+                  <div>{detailData.typeStr}</div>
+                </div>
+                <div className={styles.box}>
                   <div>订单状态</div>
                   <div>{detailData.statusDesc}</div>
                 </div>

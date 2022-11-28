@@ -163,7 +163,7 @@ const TransactionDetails = ({
       dataIndex:'billNo',
       width: '10%',
       render: (_, records) => (
-        records.orderId ? 
+        (records.orderId && records.orderType !== 'healthyCard')? 
         <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
         <span>{_}</span>
       )

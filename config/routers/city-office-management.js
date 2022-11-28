@@ -22,5 +22,11 @@ export default {
       component: './city-office-management/new-intensive-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'living-service-fee-performance',
+      path: '/city-office-management/living-service-fee-performance',
+      component: './city-office-management/living-service-fee-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
