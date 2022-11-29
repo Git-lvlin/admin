@@ -31,3 +31,12 @@ export const detail = async (params = {}, options = {}) => {
     success: res.success
   }
 }
+
+// 删除报名图片
+export const delImg = async (params = {}, options = {}) => {
+  return await request('/auth/healthy/card_reg/delImg', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
