@@ -19,6 +19,16 @@ const formItemLayout = {
       },
     }
   };
+const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      console.log('valkue',value)
+    if (value&&value.length<5) {
+      reject('最少输入5个字符')
+    }else {
+      resolve('error')
+    }
+    })
+  }
 
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose} = props;
@@ -68,7 +78,10 @@ export default (props) => {
           minLength:5,
           placeholder:'请输入至少5个字符'
         }}
-        rules={[{ required: true, message: '请输入作废原因' }]}
+        rules={[
+          { required: true, message: '请输入作废原因' },
+          { validator: checkConfirm}
+        ]}
       />
       <ProFormText
         label='操作人'
