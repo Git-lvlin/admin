@@ -21,13 +21,24 @@ const formItemLayout = {
     }
   };
 
+const checkConfirm = (rule, value, callback) => {
+    return new Promise(async (resolve, reject) => {
+      console.log('valkue',value)
+    if (value&&value.length<5) {
+      reject('最少输入5个字符')
+    }else {
+      resolve('error')
+    }
+    })
+  }
+
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
     form.setFieldsValue({
       ...msgDetail,
-      goodsName:msgDetail?.goodsInfo?.goodsName
+      goodsName:msgDetail?.goodsInfo?.[0]?.goodsName
     })
   },[])
   const waitTime = (values) => {
@@ -94,7 +105,10 @@ export default (props) => {
       <ProFormTextArea
         label='拒绝原因'
         name="rejectRemark"
-        rules={[{ required: true, message: '请输入拒绝原因' }]}
+        rules={[
+          { required: true, message: '请输入拒绝原因' },
+          { validator: checkConfirm}
+        ]}
         fieldProps={{
           minLength:5,
           placeholder:'请输入至少5个字符'
