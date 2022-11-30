@@ -1190,7 +1190,7 @@ const ShopHealthPackages = (props) => {
   return (
     <>
       <ProTable
-        rowKey="id"
+        rowKey="storeId"
         options={false}
         actionRef={actionRef}
         formRef={formRef}
