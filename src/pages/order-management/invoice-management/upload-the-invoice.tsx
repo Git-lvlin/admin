@@ -6,7 +6,7 @@ import {
   ProFormRadio
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
-import { updateAdminInvoiceUrl } from "@/services/order-management/invoice-management"
+import { updateAdminInvoiceUrl,updateAdminInvoiceInfo } from "@/services/order-management/invoice-management"
 import Upload from '@/components/upload';
 
 const formItemLayout = {
@@ -28,12 +28,16 @@ export default (props) => {
   useEffect(()=>{
     form.setFieldsValue({
       ...msgDetail,
+      goodsName:msgDetail?.goodsInfo?.[0]?.goodsName,
+      goodsNum:msgDetail?.goodsInfo?.[0]?.goodsNum,
       invoiceUrl:msgDetail?.editInfo?.invoiceUrl
     })
   },[])
   const waitTime = (values) => {
     return new Promise((resolve, reject) => {
-        updateAdminInvoiceUrl({id:values?.id,invoiceUrl:values?.invoiceUrl,invSendEmail:values?.invSendEmail}).then((res) => {
+      const api=msgDetail?.invoiceStatus==0?updateAdminInvoiceUrl:updateAdminInvoiceInfo
+      const params=msgDetail?.invoiceStatus==0?{id:values?.id,invoiceUrl:values?.invoiceUrl,invSendEmail:values?.invSendEmail}:{...msgDetail,...values}
+        api(params).then((res) => {
         if (res.code === 0) {
           resolve(true);
           onClose();
@@ -59,7 +63,7 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('上传成功');
+        message.success(msgDetail?.invoiceStatus==0?'上传成功':'更新成功');
         return true;
       }}
       {...formItemLayout}
