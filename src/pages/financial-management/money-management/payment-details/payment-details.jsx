@@ -26,7 +26,11 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
     const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
 
     if(isGoodsOrder) {
-      setId(id)
+      if(orderType === 'healthyCard'){
+        setId(billNo)
+      } else {
+        setId(id)
+      }
       setNotGoodsVisible(true)
       setTypes(orderType)
     } else {

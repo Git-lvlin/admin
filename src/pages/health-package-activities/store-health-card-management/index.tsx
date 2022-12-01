@@ -1,124 +1,173 @@
 import { useState, useRef } from "react"
 import ProTable from '@ant-design/pro-table'
+import moment from "moment"
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import PageContainer from "@/components/PageContainer"
 import RangeInput from '@/components/range-input'
 import Detail from "./detail"
+import { getUseCardByParams } from "@/services/health-package-activities/store-health-card-management"
+import Export from '@/components/export'
 
 const StoreHealthCardManagement = () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [dataSource, setDataSource] = useState()
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { remainingNum, ...rest } = form.current?.getFieldsValue()
+    return {
+      remainingMin: remainingNum && remainingNum.min,
+      remainingMax: remainingNum && remainingNum.max,
+      ...rest
+    }
+  }
 
   const columns: ProColumns[] = [
     {
       title: '所属店铺编号',
-      dataIndex: '',
+      dataIndex: 'storeNo',
       align: 'center',
     },
     {
       title: '所属店主手机',
-      dataIndex: '',
+      dataIndex: 'storePhone',
       align: 'center'
     },
     {
       title: '服务号',
-      dataIndex: '',
+      dataIndex: 'cardNo',
       align: 'center'
     },
     {
       title: '服务类型',
-      dataIndex: '',
-      align: 'center'
+      dataIndex: 'ownerType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        'buy': '礼包赠送',
+        'platformSend': '平台赠送'
+      }
     },
     {
       title: '服务状态',
-      dataIndex: '',
-      align: 'center'
+      dataIndex: 'statusStr',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '服务状态',
+      dataIndex: 'cardStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        1: '生效',
+        2: '失效'
+      }
     },
     {
       title: '有效期截止日',
-      dataIndex: '',
+      dataIndex: 'canUesTime',
       align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '价值(元)',
-      dataIndex: '',
-      align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r)=> r.canUesTime ? moment(r.canUesTime * 1000).format('YYYY-MM-DD') : '-'
     },
     {
       title: '总次数',
-      dataIndex: '',
+      dataIndex: 'totalNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '剩余可用次数',
-      dataIndex: '',
+      dataIndex: 'remainingNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '剩余可用次数',
-      dataIndex: '',
+      dataIndex: 'remainingNum',
       align: 'center',
       hideInTable: true,
       renderFormItem: () => <RangeInput/>
     },
     {
       title: '服务所属人手机号',
-      dataIndex: '',
+      dataIndex: 'ownerMobile',
       align: 'center'
     },
     {
       title: '所属套餐名称',
-      dataIndex: '',
-      align: 'center'
+      dataIndex: 'cardRule',
+      align: 'center',
+      hideInSearch: true
     },
-
+    {
+      title: '所属套餐名称',
+      dataIndex: 'giftCodeUserN',
+      valueType: 'select',
+      valueEnum: {
+        'giftCodeUser1': '体验礼包',
+        'giftCodeUser2': '礼包一',
+        'giftCodeUser3': '礼包二',
+        'giftCodeUser4': '礼包三',
+        'giftCodeUser5': '礼包四',
+        'giftCodeUser6': '礼包五'
+      },
+      hideInTable: true
+    },
     {
       title: '服务所属人店铺编号',
-      dataIndex: '',
+      dataIndex: 'storeNo',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '持有时间',
-      dataIndex: '',
+      dataIndex: 'createTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r)=> r.createTime ? moment(r.createTime * 1000).format('YYYY-MM-DD') : '-'
     },
     {
       title: '最近使用时间',
-      dataIndex: '',
+      dataIndex: 'updateTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r)=> r.updateTime ? moment(r.updateTime * 1000).format('YYYY-MM-DD') : '-'
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r)=> <a onClick={()=> {setVisible(true)}}>详情</a>
+      render: (_, r)=> <a onClick={()=> {setVisible(true); setDataSource(r)}}>使用明细</a>
     },
   ]
 
   return (
     <PageContainer>
       <ProTable
+        rowKey='id'
         columns={columns}
         params={{}}
-        // request={}
+        request={getUseCardByParams}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         options={false}
         search={{
           labelWidth: 120,
           optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='export'
+              type="card-healthy"
+              conditions={getFieldsValue}
+            />
           ]
         }}
       />
@@ -127,6 +176,7 @@ const StoreHealthCardManagement = () => {
         <Detail
           visible={visible}
           setVisible={setVisible}
+          dataSource={dataSource}
         />
       }
     </PageContainer>

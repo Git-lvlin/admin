@@ -10,4 +10,12 @@ export type DataProps = {
   address: string
   realName: string
   memberPhone: string
+  img: [string]
+}
+
+export type ImageDetailProps = {
+  visible: boolean
+  handleCancel: React.Dispatch<React.SetStateAction<boolean>>
+  storeNo?: string
+  callback: () => void
 }

@@ -1,20 +1,23 @@
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 import type { FC } from 'react'
 
 import PageContainer from "@/components/PageContainer"
-import { joinStore } from "@/services/health-package-activities/health-package-order-management"
+import { joinStore } from "@/services/health-package-activities/promotion-activity-management"
 import Detail from './detail'
+import ImageDetail from './imageDetail'
 import Export from '@/components/export'
 
 const PromotionActivityManagement: FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [imgModalVisible, setImgModalVisible] = useState<boolean>(false)
   const [storeNo, setStoreNo] = useState<string>()
 
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const columns: ProColumns[]  = [
     {
@@ -95,6 +98,17 @@ const PromotionActivityManagement: FC = () => {
           return <a onClick={()=>{ setModalVisible(true); setStoreNo(r.storeNo)}}>{_}</a>
         return <span>{_}</span>
       }
+    },
+    {
+      title: '门店图片（张）',
+      dataIndex: 'imgNums',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.imgNums > 0)
+          return <a onClick={()=>{ setImgModalVisible(true); setStoreNo(r.storeNo)}}>{_}</a>
+        return <span>{_}</span>
+      }
     }
   ]
   return (
@@ -105,6 +119,7 @@ const PromotionActivityManagement: FC = () => {
         request={joinStore}
         options={false}
         formRef={form}
+        actionRef={actRef}
         search={{
           labelWidth: 100,
           optionRender: (searchConfig, props, dom) => [
@@ -127,6 +142,15 @@ const PromotionActivityManagement: FC = () => {
           visible={modalVisible}
           handleCancel={() => setModalVisible(false)}
           storeNo={storeNo}
+        />
+      }
+      {
+        imgModalVisible&&
+        <ImageDetail
+          visible={imgModalVisible}
+          handleCancel={setImgModalVisible}
+          storeNo={storeNo}
+          callback={()=> actRef.current?.reload()}
         />
       }
     </PageContainer>

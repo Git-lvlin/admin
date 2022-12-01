@@ -4,84 +4,93 @@ import ProTable from '@ant-design/pro-table'
 import type { ProColumns } from '@ant-design/pro-table'
 
 import PageContainer from "@/components/PageContainer"
-// import Detail from "./detail"
+import Detail from "./detail"
+import { giftPackageOrder } from "@/services/health-package-activities/health-package-order-management"
 
 const StoreHealthCardManagement = () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [id, setId] = useState()
 
   const columns: ProColumns[] = [
     {
       title: '订单号',
-      dataIndex: '',
+      dataIndex: 'orderId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '套餐所属店铺编号',
-      dataIndex: '',
+      dataIndex: 'giftPpackageShopMemberAccount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '套餐所属店铺名称',
-      dataIndex: '',
+      dataIndex: 'giftPpackageStoreName',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '下单人手机号',
-      dataIndex: '',
+      dataIndex: 'memberPhone',
       align: 'center'
     },
     {
       title: '套餐名称',
-      dataIndex: '',
+      dataIndex: 'giftPackageTitle',
       align: 'center',
-      hideInSearch: true
     },
     {
       title: '下单人店铺编号',
-      dataIndex: '',
+      dataIndex: 'buyerShopMemberAccount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '收货人详细地址',
-      dataIndex: '',
+      dataIndex: 'receiverAddress',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '20%'
     },
     {
       title: '下单时间',
-      dataIndex: '',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: '',
+      dataIndex: 'payAmountYuan',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单状态',
-      dataIndex: '',
+      dataIndex: 'payStatus',
       align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        1: '未支付',
+        2: '已支付',
+        3: '交易关闭'
+      }
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r)=> <a onClick={()=> {setVisible(true)}}>详情</a>
+      render: (_, r)=> <a onClick={()=> {setVisible(true); setId(r.orderId)}}>详情</a>
     },
   ]
 
   return (
     <PageContainer>
       <ProTable
+        rowKey='id'
         columns={columns}
-        params={{}}
-        // request={}
+        params={{orderType: 32}}
+        request={giftPackageOrder}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
@@ -94,13 +103,14 @@ const StoreHealthCardManagement = () => {
           ]
         }}
       />
-      {/* {
+      {
         visible&&
         <Detail
           visible={visible}
           setVisible={setVisible}
+          id={id}
         />
-      } */}
+      }
     </PageContainer>
   )
 }
