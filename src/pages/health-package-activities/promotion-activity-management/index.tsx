@@ -6,7 +6,7 @@ import type { FormInstance } from 'antd'
 import type { FC } from 'react'
 
 import PageContainer from "@/components/PageContainer"
-import { joinStore } from "@/services/health-package-activities/health-package-order-management"
+import { joinStore } from "@/services/health-package-activities/promotion-activity-management"
 import Detail from './detail'
 import ImageDetail from './imageDetail'
 import Export from '@/components/export'

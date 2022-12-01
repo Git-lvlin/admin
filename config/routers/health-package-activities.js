@@ -22,5 +22,11 @@ export default {
       component: './health-package-activities/divide-configure',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-package-order-management',
+      path: '/health-package-activities/health-package-order-management',
+      component: './health-package-activities/health-package-order-management',
+      wrappers: [RouteWatcher],
+    }
   ]
 }

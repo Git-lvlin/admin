@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-// 推广活动管理
-export const joinStore = async (params = {}, options = {}) => {
+// 健康套餐礼包订单分页列表
+export const giftPackageOrder = async (params = {}, options = {}) => {
   const { current = 1, pageSize = 10, ...rest } = params
-  const res = await request('/auth/healthy/card_reg/joinStore', {
-    method: 'POST',
-    data: {
+  const res = await request('/auth/order/giftPackageOrder/page', {
+    method: 'GET',
+    params: {
       page: current,
       size: pageSize,
       ...rest
@@ -19,24 +19,11 @@ export const joinStore = async (params = {}, options = {}) => {
   }
 }
 
-// 参与活动设备详情
-export const detail = async (params = {}, options = {}) => {
-  const res = await request('/auth/healthy/card_reg/detail', {
-    method: 'POST',
-    data: params,
-    ...options
-  })
-  return {
-    data: res.data,
-    success: res.success
-  }
-}
-
-// 删除报名图片
-export const delImg = async (params = {}, options = {}) => {
-  return await request('/auth/healthy/card_reg/delImg', {
-    method: 'POST',
-    data: params,
+// 健康套餐礼包订单详情
+export const giftPackageOrderDetail = async (data = {}, options = {}) => {
+  return await request('/auth/order/giftPackageOrder/detail', {
+    method: 'GET',
+    params: data,
     ...options
   })
 }

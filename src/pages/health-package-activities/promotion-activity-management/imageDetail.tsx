@@ -6,7 +6,7 @@ import type { FC } from 'react'
 import type { ImageDetailProps, DataProps } from './data'
 import { FormInstance, Image } from 'antd'
 
-import { detail, delImg } from "@/services/health-package-activities/health-package-order-management"
+import { detail, delImg } from "@/services/health-package-activities/promotion-activity-management"
 import Upload from "@/components/upload"
 
 const ImageDetail: FC<ImageDetailProps> = ({visible, handleCancel, storeNo, callback}) => {
@@ -33,22 +33,27 @@ const ImageDetail: FC<ImageDetailProps> = ({visible, handleCancel, storeNo, call
 
   const submit = (values: DataProps) => {
     return new Promise<void>((resolve, reject) => {
-      delImg(
-        {
-          storeNo,
-          ...values
-        },
-        {
-          showSuccess: true
-        }
-      ).then(res => {
-        if(res.code === 0) {
-          resolve()
-          callback()
-        } else {
-          reject()
-        }
-      })
+      if(flag) {
+        delImg(
+          {
+            storeNo,
+            ...values
+          },
+          {
+            showSuccess: true
+          }
+        ).then(res => {
+          if(res.code === 0) {
+            resolve()
+            callback()
+          } else {
+            reject()
+          }
+        })
+      } else {
+        resolve()
+        callback()
+      }
     })
   }
 
@@ -111,15 +116,17 @@ const ImageDetail: FC<ImageDetailProps> = ({visible, handleCancel, storeNo, call
                     label='删除原因'
                     name='reason'
                     placeholder="请输入删除原因"
+                    validateFirst
                     rules={[
                       () => ({
                         validator(_, value) {
-                          if (value.length < 3) {
+                          if (value && value.length < 3) {
                             return Promise.reject(new Error('请输入删除原因，3-100个字符'))
                           }
                           return Promise.resolve()
-                        },
-                      })
+                        }
+                      }),
+                      { required: true }
                     ]}
                     fieldProps={{
                       maxLength: 100,
@@ -152,6 +159,7 @@ const ImageDetail: FC<ImageDetailProps> = ({visible, handleCancel, storeNo, call
           }
         }
       </ProFormDependency>
+      <div style={{color: '#E66B07'}}>备注：删除图片将会通知店主</div>
     </ModalForm>
   )
 }
