@@ -29,7 +29,6 @@ export default (props) => {
     form.setFieldsValue({
       ...msgDetail,
       goodsName:msgDetail?.goodsInfo?.[0]?.goodsName,
-      goodsNum:msgDetail?.goodsInfo?.[0]?.goodsNum,
       invoiceUrl:msgDetail?.editInfo?.invoiceUrl
     })
   },[])
