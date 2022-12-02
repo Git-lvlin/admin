@@ -22,5 +22,11 @@ export default {
       component: './health-package-activities/divide-configure',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-package-performance-statistics',
+      path: '/health-package-activities/health-package-performance-statistics',
+      component: './health-package-activities/health-package-performance-statistics',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

@@ -24,6 +24,7 @@ import ContentModel from './content-model';
 import CreatePc from './create-pc';
 import moment from 'moment';
 import RangeInput from '@/components/range-input';
+import StoreChargeRecord from '../store-review/store-charge-record'
 
 const exportType = {
   normal: 'community-shopkeeper-export',
@@ -48,6 +49,7 @@ const StoreList = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
   const [createPcVisible, setCreatePcVisible] = useState(false);
+  const [chargeRecordVisible, setChargeRecordVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
@@ -90,7 +92,10 @@ const StoreList = (props) => {
       setSelectItem(data)
       setCreatePcVisible(true)
     }
-
+    if (key === '9') {
+      setSelectItem(data)
+      setChargeRecordVisible(true)
+    }
   }
 
   const menu = (data) => {
@@ -106,6 +111,7 @@ const StoreList = (props) => {
           店铺等级调整
         </Menu.Item>}
         <Menu.Item key="8">操作PC后台</Menu.Item>
+        <Menu.Item key="9">缴费记录</Menu.Item>
       </Menu>
     )
   }
@@ -1075,6 +1081,13 @@ const StoreList = (props) => {
           storeNo={selectItem.storeNo}
           visible={gradeChangeVisible}
           setVisible={setGradeChangeVisible}
+        />
+      }
+      {chargeRecordVisible &&
+        <StoreChargeRecord
+          data={selectItem}
+          visible={chargeRecordVisible}
+          setVisible={setChargeRecordVisible}
         />
       }
     </>

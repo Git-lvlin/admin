@@ -8,6 +8,7 @@ import RejectForm from './refuse';
 import { amountTransform } from '@/utils/utils'
 import { approve } from '@/services/intensive-store-management/store-review'
 import OrderDetail from '@/pages/order-management/normal-order/detail';
+import StoreChargeRecord from './store-charge-record'
 
 
 const formItemLayout = {
@@ -88,6 +89,7 @@ const Detail = (props) => {
   const [location, setLocation] = useState([]);
   const [rejectFormVisible, setRejectFormVisible] = useState(false);
   const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [chargeRecordVisible, setChargeRecordVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const map = useRef();
 
@@ -238,6 +240,7 @@ const Detail = (props) => {
         render: (props, doms) => {
           return (
             <Space>
+              <a onClick={()=>{ setChargeRecordVisible(true) }}>查看缴费记录</a>&nbsp;&nbsp;
               <Button type="primary" onClick={() => props.form?.submit()}>
                 通过
               </Button>
@@ -485,6 +488,14 @@ const Detail = (props) => {
             id={selectItem?.id}
             visible={orderDetailVisible}
             setVisible={setOrderDetailVisible}
+          />
+        }
+        {
+          chargeRecordVisible &&
+          <StoreChargeRecord
+            data={selectItem}
+            visible={chargeRecordVisible}
+            setVisible={setChargeRecordVisible}
           />
         }
       </Spin>
