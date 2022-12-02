@@ -107,7 +107,7 @@ const StoreHealthCardManagement = () => {
             <Export
               key='exprot'
               type='trans-export-gift-package-order'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={{orderType: 32, ...form.current?.getFieldsValue()}}
             />
           ]
         }}
