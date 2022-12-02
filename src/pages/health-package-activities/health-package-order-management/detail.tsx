@@ -5,7 +5,7 @@ import ProTable from "@ant-design/pro-table"
 
 import type { FC } from 'react'
 import type { DetailProps, DataProps, ListDataProps } from './data'
-import { ProColumns } from "@ant-design/pro-table"
+import type { ProColumns } from "@ant-design/pro-table"
 
 import styles from './styles.less'
 import { giftPackageOrderDetail } from '@/services/health-package-activities/health-package-order-management'

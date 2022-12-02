@@ -2,14 +2,17 @@ import { useState, useRef } from "react"
 import ProTable from '@ant-design/pro-table'
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import PageContainer from "@/components/PageContainer"
 import Detail from "./detail"
 import { giftPackageOrder } from "@/services/health-package-activities/health-package-order-management"
+import Export from "@/components/export"
 
 const StoreHealthCardManagement = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [id, setId] = useState()
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -96,10 +99,16 @@ const StoreHealthCardManagement = () => {
           pageSize: 10
         }}
         options={false}
+        formRef={form}
         search={{
           labelWidth: 120,
           optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='exprot'
+              type='trans-export-gift-package-order'
+              conditions={{...form.current?.getFieldsValue()}}
+            />
           ]
         }}
       />
