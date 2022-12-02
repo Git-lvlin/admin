@@ -3,7 +3,7 @@ import { Modal } from 'antd'
 import ProTable from '@ant-design/pro-table'
 
 import type { FC } from 'react'
-import type { ServiceProps } from "./data"
+import type { ServiceProps } from './data'
 import type { ProColumns } from '@ant-design/pro-table'
 
 
@@ -13,7 +13,7 @@ const ServiceDetail: FC<ServiceProps> = ({visible, setVisible, data}) => {
 
   useEffect(()=> {
     let total = 0
-    data?.map(res=> {
+    data?.map(res => {
       total += res.cardNum
     })
     setTotalNum(total)
@@ -24,7 +24,7 @@ const ServiceDetail: FC<ServiceProps> = ({visible, setVisible, data}) => {
       title: '吸氢服务号',
       dataIndex: 'cardNo',
       align: 'center',
-      render: (_, r) => r.cardNo ? <a onClick={()=> {}}>{_}</a> : '-'
+      render: (_, r) => r.cardNo ? <a href={`/health-package-activities/store-health-card-management?cardNo=${r.cardNo}`} target="_blank">{_}</a> : '-'
     },
     {
       title: '吸氢次数（次）',

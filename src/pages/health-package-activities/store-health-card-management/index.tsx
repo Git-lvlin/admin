@@ -10,12 +10,15 @@ import RangeInput from '@/components/range-input'
 import Detail from "./detail"
 import { getUseCardByParams } from "@/services/health-package-activities/store-health-card-management"
 import Export from '@/components/export'
+import { getPageQuery } from "@/utils/utils"
 
 const StoreHealthCardManagement = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [dataSource, setDataSource] = useState()
   const form = useRef<FormInstance>()
 
+  const query = getPageQuery()
+  
   const getFieldsValue = () => {
     const { remainingNum, ...rest } = form.current?.getFieldsValue()
     return {
@@ -39,7 +42,8 @@ const StoreHealthCardManagement = () => {
     {
       title: '服务号',
       dataIndex: 'cardNo',
-      align: 'center'
+      align: 'center',
+      initialValue: query && query.cardNo
     },
     {
       title: '服务类型',
