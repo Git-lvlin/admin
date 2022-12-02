@@ -85,7 +85,12 @@ const LoanDetailManagement = () =>{
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo'
+      dataIndex: 'orderNo',
+      render: (_, records) => (
+        records?.orderNo?
+        <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '平台单号',
