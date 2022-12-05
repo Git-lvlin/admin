@@ -1194,7 +1194,7 @@ const ShopHealthPackages = (props) => {
       hideInSearch: true,
     },
     {
-      title: '购买套餐次数',
+      title: '购买套餐数量',
       dataIndex: 'orderNum',
       valueType: 'text',
       hideInSearch: true,
