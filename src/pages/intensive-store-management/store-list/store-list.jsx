@@ -111,7 +111,7 @@ const StoreList = (props) => {
           店铺等级调整
         </Menu.Item>}
         <Menu.Item key="8">操作PC后台</Menu.Item>
-        <Menu.Item key="9">缴费记录</Menu.Item>
+        {data.status.code === 1 &&<Menu.Item key="9">缴费记录</Menu.Item>}
       </Menu>
     )
   }
@@ -1085,7 +1085,7 @@ const StoreList = (props) => {
       }
       {chargeRecordVisible &&
         <StoreChargeRecord
-          data={selectItem}
+          storeNo={selectItem.storeNo}
           visible={chargeRecordVisible}
           setVisible={setChargeRecordVisible}
         />

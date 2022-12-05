@@ -493,7 +493,7 @@ const Detail = (props) => {
         {
           chargeRecordVisible &&
           <StoreChargeRecord
-            data={selectItem}
+            storeNo={detailData?.deposit?.storeNo}
             visible={chargeRecordVisible}
             setVisible={setChargeRecordVisible}
           />
