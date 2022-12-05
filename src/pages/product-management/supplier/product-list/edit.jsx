@@ -1025,7 +1025,7 @@ export default (props) => {
         label="商品副标题"
         placeholder="请输入商品副标题"
         fieldProps={{
-          maxLength: 20,
+          maxLength: 90,
         }}
         rules={[
           () => ({
