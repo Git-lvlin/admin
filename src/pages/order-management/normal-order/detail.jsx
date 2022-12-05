@@ -261,7 +261,7 @@ const Detail = (props) => {
                   <div>{detailData?.note}</div>
                 </div>
                 {
-                  detailData?.subType == 3 || detailData?.subType == 4 && <div className={styles.box}>
+                  detailData?.subType == 3 && <div className={styles.box}>
                     <div>租赁合同</div>
                     <div>
                       <a href={detailData?.contractUrl} target="_blank">点击查看</a>
