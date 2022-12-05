@@ -24,7 +24,6 @@ import ContentModel from './content-model';
 import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
-import RangeInput from '@/components/range-input';
 import StoreChargeRecord from '../store-review/store-charge-record'
 
 const exportType = {
