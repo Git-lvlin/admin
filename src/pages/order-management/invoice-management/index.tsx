@@ -118,7 +118,12 @@ export default function GenerationManagement () {
       dataIndex: 'invoiceTime',
       align: 'center',
       render: (_,data)=>{
-        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+        if(_){
+          return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+        }else{
+          return '-'
+        }
+     
       }
     },
     {
