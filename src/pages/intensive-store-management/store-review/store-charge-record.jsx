@@ -92,7 +92,7 @@ export default (props) => {
       dataIndex: 'contractId',
       align: 'center',
       render:(_,data) =>{
-        if(_){
+        if(_&&_!='-'){
           return <a href={data?.contractUrl} target="_blank">{_}</a>
         }else{
           return '-'
@@ -113,7 +113,7 @@ export default (props) => {
       title='店铺信息'
       onVisibleChange={setVisible}
       visible={visible}
-      width={1200}
+      width={1400}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
