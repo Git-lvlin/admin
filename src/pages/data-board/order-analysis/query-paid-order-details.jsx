@@ -4,6 +4,7 @@ import ProTable from '@ant-design/pro-table'
 import { payOrderDetailQuery, wholeSaleOrderSubCompany } from '@/services/data-board/order-analysis'
 import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
+import { ORDER_TYPE } from "@/constants"
 
 const QueryPaidOrderDetails = () => {
   const [company, setCompany] = useState()
@@ -27,20 +28,7 @@ const QueryPaidOrderDetails = () => {
       dataIndex: 'orders',
       align: 'center',
       valueType: 'select',
-      valueEnum: {
-        1: '普通订单',
-        2: '秒约订单',
-        3: '拼团订单',
-        11: '1688订单',
-        15: 'C端集约订单',
-        17: '盲盒订单',
-        18: '签到订单',
-        22: '样品订单',
-        30: 'B端新集约订单',
-        91: 'B端普适品',
-        92: 'B端精品生鲜',
-        93: 'B端散装生鲜'
-      }
+      valueEnum: ORDER_TYPE
     },
     {
       title: '订单支付时间',
