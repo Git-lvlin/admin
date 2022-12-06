@@ -4,7 +4,14 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { 
+  cityAgentHydrogenComm,
+  cityAgentWholesaleComm,
+  cityAgentHydrogenCommStats,
+  cityAgentWholesaleCommStats,
+  cityAgentHydrogenLeaseComm,
+  cityAgentHydrogenLeaseCommStats
+ } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -36,19 +43,11 @@ export default (props) => {
 
   const divideName=()=>{
     switch (type) {
-      case 1:
-        return '累计业绩'
       case 2:
         return '销售提成'
       case 3:
-        return '托管推广提成'
+        return '新集约批发业绩提成'
       case 4:
-        return '运营推广提成'
-      case 5:
-        return '托管租赁管理费提成'
-      case 6:
-        return '启动费提成'
-      case 7:
         return '租赁管理费提成'
       default:
         return ''
@@ -57,7 +56,7 @@ export default (props) => {
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -70,33 +69,18 @@ export default (props) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
-        'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -109,7 +93,7 @@ export default (props) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -123,33 +107,46 @@ export default (props) => {
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1]
+      agentId:msgDetail?.agentId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      orderType:time?.orderType
     }
-    cityItemOrderSum(params).then(res=>{
-      if(res.code==0){
-        setOrderSum(res?.data?.total)
-      }
-    })
+    if(type==2){
+      cityAgentHydrogenCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.[0]?.amount)
+        }
+      })
+    }else if(type==3){
+      cityAgentWholesaleCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.[0]?.amount)
+        }
+      })
+    }else{
+      cityAgentHydrogenLeaseCommStats(params).then(res=>{
+        if(res.code==0){
+          setOrderSum(res?.data?.[0]?.amount)
+        }
+      })
+    }
+
   },[time])
 
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      agentId:msgDetail?.agentId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      title={`${msgDetail?.agentName} ${divideName()} （ID:${msgDetail?.agentId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -173,14 +170,14 @@ export default (props) => {
       className={styles.store_information}
     >
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="orderSn"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={type==2?cityAgentHydrogenComm:type==3?cityAgentWholesaleComm:cityAgentHydrogenLeaseComm}
         columnEmptyText={false}
         actionRef={ref}
         params={{
           type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agentId:msgDetail?.agentId,
         }}
         pagination={{
           pageSize: 10,
@@ -199,10 +196,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              type={type==2?'cityAgentHydrogenComm':type==3?'cityAgentWholesaleComm':'cityAgentHydrogenLeaseComm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==2?'cityAgentHydrogenComm':type==3?'cityAgentWholesaleComm':'cityAgentHydrogenLeaseComm'}/>
           ],
         }}
         tableRender={(_, dom) => {

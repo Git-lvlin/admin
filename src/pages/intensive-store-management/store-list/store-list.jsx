@@ -255,8 +255,8 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
       valueEnum: {
-        1: '系统免费开通',
-        0: '缴授权费开通'
+        1: '免费开通',
+        0: '缴费开通'
       },
       hideInTable: storeType !== 'life_house'
     },
@@ -911,8 +911,8 @@ const StoreList = (props) => {
       dataIndex: 'lifeHouseFreeOpen',
       valueType: 'select',
       valueEnum: {
-        1: '系统免费开通',
-        0: '缴授权费开通'
+        1: '免费开通',
+        0: '缴费开通'
       },
       hideInSearch: storeType !== 'life_house',
       hideInTable: true,
@@ -1081,6 +1081,148 @@ const StoreList = (props) => {
   );
 };
 
+const ShopHealthPackages = (props) => {
+  const { storeType } = props
+  const actionRef = useRef();
+  const formRef = useRef();
+  const columns = [
+    {
+      title: '店铺ID',
+      dataIndex: 'id',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店铺ID'
+      }
+    },
+    {
+      title: '店主',
+      dataIndex: 'phone',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
+    },
+    {
+      title: '店铺名称',
+      dataIndex: 'storeName',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店铺名称'
+      },
+    },
+    {
+      title: '店主姓名',
+      dataIndex: 'realname',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主姓名'
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '店主手机号',
+      dataIndex: 'memberPhone',
+      valueType: 'text',
+      fieldProps: {
+        placeholder: '请输入店主手机号'
+      },
+      hideInTable: true,
+    },
+    {
+      title: 'VIP店铺',
+      dataIndex: 'vip',
+      valueType: 'text',
+      valueEnum: {
+        0: '否',
+        1: '是'
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '等级',
+      dataIndex: ['level', 'levelName'],
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '提货点所在地区',
+      dataIndex: '',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, details) => {
+        return (
+          <>
+            {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
+          </>)
+      },
+    },
+    {
+      title: '提货点详细地址',
+      dataIndex: 'address',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '最近购买健康卡套餐名称',
+      dataIndex: 'lifeHouseExpireTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '累计购买健康卡套餐金额',
+      dataIndex: 'serviceFee',
+      valueType: 'text',
+      renderFormItem: () => <RangeInput />,
+      hideInSearch: true,
+    },
+    {
+      title: '最近购买健康卡套餐时间',
+      dataIndex: 'provideTime',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '最近购买健康卡套餐单号',
+      dataIndex: 'lifeHouseRemainingDay',
+      valueType: 'text',
+      hideInSearch: true,
+    },
+    {
+      title: '购买套餐次数',
+      dataIndex: 'vipExpireTime',
+      valueType: 'text',
+      hideInSearch: true,
+    }
+  ];
+  return (
+    <>
+      <ProTable
+        rowKey="id"
+        options={false}
+        actionRef={actionRef}
+        formRef={formRef}
+        params={{
+          operation: storeType,
+        }}
+        request={
+          storeType == 'freshStores' ? applyConditionPage : getStoreList
+        }
+        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        search={{
+          defaultCollapsed: true,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse()
+          ],
+        }}
+        columns={columns}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+        className={styles.store_list}
+      />
+    </>
+  );
+}
 
 const OverallStore = () => {
   const [activeKey, setActiveKey] = useState('normal')
@@ -1119,6 +1261,11 @@ const OverallStore = () => {
             activeKey == 'life_house' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
+        {/* <ProCard.TabPane key="shop_health_packages" tab="购买健康套餐店铺">
+          {
+            activeKey == 'shop_health_packages' && <ShopHealthPackages storeType={activeKey} />
+          }
+        </ProCard.TabPane> */}
       </ProCard>
     </PageContainer>
   )

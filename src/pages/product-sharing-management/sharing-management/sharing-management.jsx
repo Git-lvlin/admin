@@ -292,6 +292,30 @@ const BrandAuthorization=() => {
       hideInSearch: true,
     },
     {
+      title: '汇智能通省代',
+      dataIndex: 'provinceAgent',
+      align: 'center',
+      render: (_,data)=>{
+        return <>
+                <p>￥{amountTransform(data?.collectingInfo?.provinceAgent?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.provinceAgent?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
+               </>
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '汇智能通市代',
+      dataIndex: 'cityAgent',
+      align: 'center',
+      render: (_,data)=>{
+        return <>
+                <p>￥{amountTransform(data?.collectingInfo?.cityAgent?.amount,'/').toFixed(2)}</p>
+                <p>（{amountTransform(amountTransform(data?.collectingInfo?.cityAgent?.amount,'/')/amountTransform(data?.periodAmount,'/'),'*').toFixed(2)}%）</p>
+               </>
+      },
+      hideInSearch: true,
+    },
+    {
       title: '服务费福利',
       dataIndex: 'welfare',
       align: 'center',

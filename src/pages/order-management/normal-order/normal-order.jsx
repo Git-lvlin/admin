@@ -6,7 +6,7 @@ import { history, useLocation } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
-import { orderList, deliverGoods, orderList2 } from '@/services/order-management/normal-order';
+import { orderList, deliverGoods, orderList2, orderList3 } from '@/services/order-management/normal-order';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
@@ -27,10 +27,11 @@ const TableList = () => {
   const [search, setSearch] = useState(0)
   // const [deliveryVisible, setDeliveryVisible] = useState(false)
   const [importVisit, setImportVisit] = useState(false)
-  const isPurchase = useLocation().pathname.includes('purchase')
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const location = useLocation();
+  const isPurchase = location.pathname.includes('purchase')
+  const isDocumentary = location.pathname.includes('documentary')
   const [orderStatusType, setOrderStatusType] = useState()
   const [orderTypes, setOrderTypes] = useState(location?.query.orderTypes || 0)
   const [addressVisible, setAddressVisible] = useState(false)
@@ -77,7 +78,8 @@ const TableList = () => {
       payStartCreateTime: payTime?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       payEndCreateTime: payTime?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
-      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18] : [orderTypes],
+      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32] : [orderTypes],
+      exclusiveSubType: 1004,
       ...rest,
     }
   }
@@ -90,7 +92,12 @@ const TableList = () => {
 
   useEffect(() => {
     setLoading(true);
-    const apiMethod = isPurchase ? orderList2 : orderList;
+    let apiMethod = isPurchase ? orderList2 : orderList;
+
+    if (isDocumentary) {
+      apiMethod = orderList3
+    }
+
     apiMethod({
       page,
       size: pageSize,
@@ -142,7 +149,7 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
+                    type={`${isDocumentary ?'order-common-doc-export':isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
                     conditions={getFieldValue}
                   />
                   <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
@@ -393,7 +400,7 @@ const TableList = () => {
         <div className={styles.list_header_wrap}>
           <div className={styles.list_header}>
             <div>商品信息</div>
-            <div>金额</div>
+            {!isDocumentary &&<div>金额</div>}
             {/* <div>实收</div> */}
             <div>订单状态</div>
             <div>订单类型</div>
@@ -441,9 +448,12 @@ const TableList = () => {
                           <img width="100" height="100" src={it.skuImageUrl} />
                           <div className={styles.info}>
                             <div>{it.goodsName}</div>
-                            <div>{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元    规格：{it.skuName}</div>
+                            <div>
+                              {!isDocumentary &&<>{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元</>}
+                              <time style={{ marginLeft: !isDocumentary ? 20 : 0 }}>规格：{it.skuName}</time>
+                            </div>
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
-                            <div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>
+                            {!isDocumentary &&<div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>}
                             {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                             {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
                           </div>
@@ -451,7 +461,7 @@ const TableList = () => {
                       ))
                     }
                   </div>
-                  <div>
+                  {!isDocumentary &&<div>
                     <Descriptions column={1} labelStyle={{ width: 100, justifyContent: 'flex-end' }}>
                       <Descriptions.Item label="商品总金额">{amountTransform(item.goodsTotalAmount, '/')}元</Descriptions.Item>
                       <Descriptions.Item label="运费">{item.shippingType ? `+${amountTransform(item.shippingFeeAmount, '/')}元` : '收货时付运费'}</Descriptions.Item>
@@ -464,7 +474,7 @@ const TableList = () => {
                       </Descriptions.Item>
                       <Descriptions.Item label="用户实付">{amountTransform(item.payAmount, '/')}元</Descriptions.Item>
                     </Descriptions>
-                  </div>
+                  </div>}
                   {/* <div style={{ textAlign: 'center' }}>
                   {item.status === 5 ? 0 : amountTransform(item.incomeAmount, '/')}元
                 </div> */}
@@ -513,6 +523,7 @@ const TableList = () => {
           visible={detailVisible}
           setVisible={setDetailVisible}
           isPurchase={isPurchase}
+          isDocumentary={isDocumentary}
         />
       }
       {

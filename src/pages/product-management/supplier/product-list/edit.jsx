@@ -22,6 +22,7 @@ import debounce from 'lodash/debounce';
 import ImageSort from './image-sort';
 import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
+import FreightTemplateDetail from '@/components/freight-template-detail'
 import { useLocation } from 'umi';
 import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
 import ProfitTable from './profit-table';
@@ -34,10 +35,13 @@ Big.RM = 0;
 
 const { confirm } = Modal
 
-const FromWrap = ({ value, onChange, content, right }) => (
-  <div style={{ display: 'flex' }}>
-    <div>{content(value, onChange)}</div>
-    <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+const FromWrap = ({ value, onChange, content, right, bottom }) => (
+  <div>
+    <div style={{ display: 'flex' }}>
+      <div>{content(value, onChange)}</div>
+      <div style={{ flex: 1, marginLeft: 10, minWidth: 180 }}>{right(value)}</div>
+    </div>
+    <div>{bottom?.(value)}</div>
   </div>
 )
 
@@ -57,6 +61,8 @@ export default (props) => {
   const [lookVisible, setLookVisible] = useState(false);
   const [lookData, setLookData] = useState(false);
   const [overruleVisible, setOverruleVisible] = useState(false);
+  const [freightTemplateId, setFreightTemplateId] = useState(null);
+  const [freightTemplateDetailVisible, setFreightTemplateDetailVisible] = useState(false);
   const [form] = Form.useForm()
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
@@ -117,8 +123,9 @@ export default (props) => {
       marketPrice,
       freightTemplateId,
       sampleFreightId,
+      wsFreightId,
       wholesaleFreight,
-      wholesaleTaxRate,
+      // wholesaleTaxRate,
       wholesaleSupplyPrice,
       salePriceFloat,
       supplierHelperId,
@@ -167,6 +174,7 @@ export default (props) => {
         freightTemplateId: freightTemplateIds,
         sampleFreightId: sampleFreightIds,
         distributePrice: distributePrices,
+        wsFreightId: wsFreightIds,
         ...rests
       } = item;
       const obj = {};
@@ -200,6 +208,11 @@ export default (props) => {
       if (freightTemplateIds) {
         obj.freightTemplateId = freightTemplateIds.value;
         obj.freightTemplateName = freightTemplateIds.label;
+      }
+
+      if (wsFreightIds) {
+        obj.wsFreightId = wsFreightIds.value;
+        obj.wsFreightName = wsFreightIds.label;
       }
 
       if (sampleFreightIds) {
@@ -241,11 +254,15 @@ export default (props) => {
         gcId1: gcId[0],
         gcId2: gcId[1],
         wholesaleFreight: amountTransform(wholesaleFreight),
-        wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
+        // wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: goods.goodsSaleType,
         skuName: goods.skuName,
         operateType,
         goodsName: goodsName.replace(/\s+/, ' '),
+        invoiceType: goods.invoiceType,
+        invoiceTaxRate: goods.invoiceTaxRate,
+        supplyInvoiceType: goods.supplyInvoiceType,
+        wholesaleTaxRate: goods.wholesaleTaxRate,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -277,6 +294,11 @@ export default (props) => {
         obj.goods.wholesaleSupplyPrice = amountTransform(wholesaleSupplyPrice);
         obj.goods.wholesaleFreight = amountTransform(wholesaleFreight)
         obj.goods.distributePrice = amountTransform(distributePrice)
+      }
+
+      if (wsFreightId) {
+        obj.goods.wsFreightId = wsFreightId.value;
+        obj.goods.wsFreightName = wsFreightId.label;
       }
 
       if (sampleFreightId) {
@@ -666,6 +688,7 @@ export default (props) => {
         goodsKeywords: goods.goodsKeywords,
         goodsSaleType: goods.goodsSaleType,
         isFreeFreight: goods.isFreeFreight,
+        wsFreight: goods.wsFreight,
         isMultiSpec: detailData.isMultiSpec,
         stockNum: goods.stockNum,
         stockAlarmNum: goods.stockAlarmNum,
@@ -700,6 +723,12 @@ export default (props) => {
       if (freightTemplateId && freightTemplateName) {
         form.setFieldsValue({
           freightTemplateId: { label: freightTemplateName, value: freightTemplateId }
+        })
+      }
+
+      if (goods.wsFreightId && goods.wsFreightName) {
+        form.setFieldsValue({
+          wsFreightId: { label: goods.wsFreightName, value: goods.wsFreightId }
         })
       }
 
@@ -780,6 +809,7 @@ export default (props) => {
             // isFreeFreight: item[1].isFreeFreight,
             freightTemplateId: item[1]?.freightTemplateId !== 0 ? { label: item[1]?.freightTemplateName, value: item[1]?.freightTemplateId } : undefined,
             sampleFreightId: item[1]?.sampleFreightId !== 0 ? { label: item[1]?.sampleFreightName, value: item[1]?.sampleFreightId } : undefined,
+            wsFreightId: item[1]?.wsFreightId !== 0 ? { label: item[1]?.wsFreightName, value: item[1]?.wsFreightId } : undefined,
             key: item[1].skuId,
             imageUrl: item[1].imageUrl,
             spec1: specValuesMap[specDataKeys[0]],
@@ -964,31 +994,38 @@ export default (props) => {
                 })
               ]}
               fieldProps={{
-                maxLength: 50,
+                maxLength: 90,
               }}
             />
           )
         }}
       </ProFormDependency>
-      {goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
-        name="wholesaleFreight"
-        label="平均运费"
-        disabled
-        fieldProps={{
-          addonAfter: `元/${goods.unit}`
-        }}
-      />}
-      <ProFormText
-        name="wholesaleTaxRate"
-        label="商品开票税率(%)"
-        disabled
-      />
+      <Form.Item
+        label="商品发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.supplyInvoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="商品发票税率"
+      >
+        {amountTransform(goods.wholesaleTaxRate) || ''}{!!+goods.wholesaleTaxRate && '%'}
+      </Form.Item>
+      <Form.Item
+        label="运费发票类型"
+      >
+        {{ 1: '普通发票', 2: '专用发票' }[goods.invoiceType]}
+      </Form.Item>
+      <Form.Item
+        label="运费发票税率"
+      >
+        {amountTransform(goods.invoiceTaxRate) || ''}{!!+goods.invoiceTaxRate && '%'}
+      </Form.Item>
       <ProFormText
         name="goodsDesc"
         label="商品副标题"
         placeholder="请输入商品副标题"
         fieldProps={{
-          maxLength: 20,
+          maxLength: 90,
         }}
         rules={[
           () => ({
@@ -1233,9 +1270,6 @@ export default (props) => {
                 label="规格一"
                 placeholder="请输入规格名称"
                 rules={[{ required: true, message: '请输入规格名称' }]}
-                fieldProps={{
-                  maxLength: 18,
-                }}
                 disabled
                 extra='示例：包装、重量、尺寸等'
               />
@@ -1251,7 +1285,7 @@ export default (props) => {
                           colon={false}
                           extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
-                          <Input disabled placeholder="请输入规格属性" maxLength={18} addonAfter={
+                          <Input disabled placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
                               <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
@@ -1282,7 +1316,7 @@ export default (props) => {
                           colon={false}
                           extra='示例：盒装/袋装、200g/300g、22码/24码等'
                         >
-                          <Input disabled maxLength={18} placeholder="请输入规格属性" addonAfter={
+                          <Input disabled placeholder="请输入规格属性" addonAfter={
                             key === 0 ?
                               <Button disabled type="primary" onClick={() => { add() }}>添加</Button>
                               :
@@ -1323,6 +1357,8 @@ export default (props) => {
                           wsUnit={goods.wsUnit}
                           ladderSwitch={detailData?.ladderSwitch}
                           wholeSaleCheckPrice={+detailData?.wholeSaleCheckPrice}
+                          setFreightTemplateDetailVisible={setFreightTemplateDetailVisible}
+                          setFreightTemplateId={setFreightTemplateId}
                         />}
                     </>
                   )
@@ -1602,12 +1638,20 @@ export default (props) => {
                   </Form.Item>}
                 </>
               }
+              {goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 && <ProFormText
+                name="wholesaleFreight"
+                label="平均运费"
+                disabled
+                fieldProps={{
+                  addonAfter: `元/${goods.unit}`
+                }}
+              />}
               {
                 goods.goodsSaleType !== 2 &&
                 <>
                   <ProFormText
                     name="distributePrice"
-                    label="店主新集约价"
+                    label="店主新集约价(含平均运费)"
                     placeholder="请输入店主新集约价"
                     validateFirst
                     rules={[
@@ -1754,7 +1798,7 @@ export default (props) => {
         goods.goodsSaleType !== 1 && detailData?.isMultiSpec === 0 &&
         <ProFormRadio.Group
           name="isFreeFreight"
-          label="是否包邮"
+          label="零售是否包邮"
           rules={[{ required: true }]}
           options={[
             {
@@ -1772,10 +1816,46 @@ export default (props) => {
 
       {goods.goodsSaleType !== 1 && !goods.isFreeFreight && detailData?.isMultiSpec === 0 && <Form.Item
         name="freightTemplateId"
-        label="选择运费模板"
+        label="零售运费模板"
         rules={[{ required: true, message: '请选择运费模板' }]}
       >
-        <FreightTemplateSelect labelInValue disabled />
+        <FromWrap
+          content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
+          right={() => {}}
+          bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看零售运费模板不发货地区</a>}
+        />
+      </Form.Item>}
+
+      {
+        goods.goodsSaleType !== 2 && detailData?.isMultiSpec === 0 &&
+        <ProFormRadio.Group
+          name="wsFreight"
+          label="批发是否包邮"
+          rules={[{ required: true }]}
+          options={[
+            {
+              label: '包邮',
+              value: 1,
+            },
+            {
+              label: '不包邮',
+              value: 0,
+            },
+          ]}
+          disabled
+        />
+      }
+
+      {goods.goodsSaleType !== 2 && !goods.wsFreight && detailData?.isMultiSpec === 0 && <Form.Item
+        name="wsFreightId"
+        label="批发运费模板"
+        rules={[{ required: true, message: '请选择运费模板' }]}
+      >
+        <FromWrap
+          content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
+          right={() => {}}
+          bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看批发运费模板不发货地区</a>}
+        />
       </Form.Item>}
 
       {/* <ProFormRadio.Group
@@ -1939,6 +2019,10 @@ export default (props) => {
         setVisible={setLookVisible}
         dataList={lookData || detailData}
         callback={(text) => { console.log('callback', text) }}
+      />}
+      {freightTemplateDetailVisible && <FreightTemplateDetail
+        id={freightTemplateId}
+        setVisible={setFreightTemplateDetailVisible}
       />}
     </DrawerForm>
   );

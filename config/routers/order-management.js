@@ -18,6 +18,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'normal-order-documentary',
+      path: '/order-management/normal-order-documentary',
+      component: './order-management/normal-order',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'normal-order-detail',
       path: '/order-management/normal-order-detail/:id',
       component: './order-management/normal-order-detail',
@@ -92,6 +98,12 @@ export default {
     {
       name: 'sample-order-purchase',
       path: '/order-management/sample-order-purchase',
+      component: './order-management/sample-order',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'sample-order-documentary',
+      path: '/order-management/sample-order-documentary',
       component: './order-management/sample-order',
       wrappers: [RouteWatcher],
     },

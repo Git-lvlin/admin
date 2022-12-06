@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Space, Button, Modal, Steps, Spin,Image } from 'antd';
-import { findAdminOrderDetail, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
+import { findAdminOrderDetail, findAdminOrderDetail2, findAdminOrderDetail3 } from '@/services/order-management/normal-order-detail';
 import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
@@ -11,7 +11,7 @@ import DrawerDetail from '../after-sales-order/detail'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id } = props;
+  const { visible, setVisible, isPurchase, id, isDocumentary } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
@@ -31,7 +31,12 @@ const Detail = (props) => {
 
   const getDetailData = () => {
     setLoading(true);
-    const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    let apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+
+    if (isDocumentary) {
+      apiMethod = findAdminOrderDetail3
+    }
+
     apiMethod({
       id
     }).then(res => {
@@ -221,15 +226,15 @@ const Detail = (props) => {
                           <div>规格</div>
                           <div>{item.skuName}</div>
                         </div>
-                        <div className={styles.box}>
+                        {!isDocumentary &&<div className={styles.box}>
                           <div>{({ 2: '秒约', 3: '拼团', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
-                        </div>
+                        </div>}
                         <div className={styles.box}>
                           <div>购买数量</div>
                           <div>{item.skuNum}{item.unit}</div>
                         </div>
-                        <div className={styles.box}>
+                        {!isDocumentary &&<div className={styles.box}>
                           <div>小计</div>
                           <div>
                             {amountTransform(item.totalAmount, '/')}元  
@@ -240,8 +245,7 @@ const Detail = (props) => {
                               {item.afterSalesStatusStr}
                             </a>
                             }</div>
-
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   ))

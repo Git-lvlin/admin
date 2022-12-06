@@ -20,6 +20,26 @@ export const orderList2 = async (params = {}, options = {}) => {
   });
 }
 
+export const orderList3 = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findAdminOrderList3', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
+
+export const orderList4 = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findAdminOrderList4', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
+
 export const deliverGoods = async (params = {}, options = {}) => {
   return request('/auth/java-admin/order/deliverGoods', {
     method: 'POST',

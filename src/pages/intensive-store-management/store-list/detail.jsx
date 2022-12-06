@@ -163,7 +163,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                   </div>
                   {detailData?.isLifeHouse === 1 && <>
                     <div style={{ display: 'flex', marginBottom: 10 }}>
-                      <div>开通健康生活馆类型：{detailData.lifeHouse.lifeHouseFreeOpen === 0 ? '缴授权费开通' : '系统免费开通'}</div>
+                      <div>开通健康生活馆类型：{detailData.lifeHouse.lifeHouseFreeOpen === 0 ? '缴费开通' : '免费开通'}</div>
                     </div>
                     <div style={{ display: 'flex', marginBottom: 10 }}>
                       <div>开通健康生活馆时间：{detailData.lifeHouse.lifeHouseOpenTime}</div>

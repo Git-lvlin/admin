@@ -5,7 +5,7 @@ import { Image } from 'antd'
 
 Big.RM = 0;
 export default function EditTable(props) {
-  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType, wholeSaleCheckPrice } = props;
+  const { tableHead, tableData, goodsSaleType, settleType, isSample, unit, wsUnit, review, ladderSwitch, operateType, wholeSaleCheckPrice, setFreightTemplateDetailVisible, setFreightTemplateId } = props;
   const [columns, setColumns] = useState([])
 
   useEffect(() => {
@@ -232,17 +232,31 @@ export default function EditTable(props) {
         render: _ => `${_}元/${unit}`
       },
       {
-        title: '是否包邮',
+        title: '零售是否包邮',
         dataIndex: 'isFreeFreight',
         render: (_) => _ === 1 ? '包邮' : '不包邮',
         hideInTable: goodsSaleType === 1,
         editable: false,
       },
       {
-        title: '运费模板',
+        title: '零售运费模板',
         dataIndex: 'freightTemplateId',
-        render: (_) => _.label ? _.label : '_',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(_.value) }}>点击查看零售运费模板不发货地区</a></> : '-',
         hideInTable: goodsSaleType === 1,
+        editable: false,
+      },
+      {
+        title: '批发是否包邮',
+        dataIndex: 'wsFreight',
+        render: (_) => _ === 1 ? '包邮' : '不包邮',
+        hideInTable: goodsSaleType === 2,
+        editable: false,
+      },
+      {
+        title: '批发运费模板',
+        dataIndex: 'wsFreightId',
+        render: (_) => _.label ? <><div>{_.label}</div><a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(_.value) }}>点击查看批发运费模板不发货地区</a></> : '-',
+        hideInTable: goodsSaleType === 2,
         editable: false,
       },
       {

@@ -29,6 +29,7 @@ export default {
   // 'menu.order-management.retail-list': '零售列表',
   'menu.order-management.normal-order': '普通订单',
   'menu.order-management.normal-order-purchase': '普通订单(采购)',
+  'menu.order-management.normal-order-documentary': '普通订单(跟单)',
   'menu.order-management.normal-order-detail': '订单详情',
   'menu.order-management.normal-order-detail-purchase': '订单详情',
   'menu.order-management.intensive-order': '集约订单',
@@ -39,6 +40,7 @@ export default {
   'menu.order-management.intensive-order.supplier-order-purchase-documentary': '集约批发订单(跟单)',
   'menu.order-management.sample-order': '样品订单',
   'menu.order-management.sample-order-purchase': '样品订单(采购)',
+  'menu.order-management.sample-order-documentary': '样品订单(跟单)',
   'menu.order-management.sample-order-detail': '订单详情',
   'menu.order-management.sample-order-detail-purchase': '订单详情',
   'menu.order-management.after-sales-order': '售后订单',
@@ -364,6 +366,7 @@ export default {
   'menu.sign-activity-management.grant-detail': '发放明细',
   'menu.sign-activity-management.user-detail': '用户红包明细',
   'menu.sign-activity-management.consume-detail': '消耗明细',
+  'menu.sign-activity-management.show-configuration': '签到模块显示配置',
 
 
   'menu.blind-box-activity-management': '盲盒活动管理',
@@ -438,6 +441,10 @@ export default {
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
+
+  'menu.hydrogen-atom-generation': '氢原子市代',
+  'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
+
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
