@@ -18,6 +18,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
   const [listData, setListData] = useState<ListDataProps[]>()
   const [normalOrderVisible, setNormalOrderVisible] = useState<boolean>(false)
   const [serviceVisible, setServiceVisible] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>()
 
   useEffect(()=> {
     giftPackageOrderDetail({
@@ -37,7 +38,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
         if(r.subType === '健康服务') {
           return <a onClick={()=>{setServiceVisible(true); setListData(data?.cardItems)}}>查看服务号</a>
         } else {
-          return r.orderId ? <a onClick={()=>{setNormalOrderVisible(true)}}>{_}</a> : '-'
+          return r.orderId ? <a onClick={()=>{setNormalOrderVisible(true); setOrderId(r.orderId)}}>{_}</a> : '-'
         }
       }
     },
@@ -153,7 +154,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
       {
         normalOrderVisible &&
         <NormalOrderDetail
-          id={id}
+          id={orderId}
           visible={normalOrderVisible}
           setVisible={setNormalOrderVisible}
         />

@@ -19,3 +19,9 @@ export type ImageDetailProps = {
   storeNo?: string
   callback: () => void
 }
+
+export type SaveCardProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  data?: DataProps
+}

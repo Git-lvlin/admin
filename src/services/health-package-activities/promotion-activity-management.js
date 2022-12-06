@@ -40,3 +40,22 @@ export const delImg = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 查询会员数据
+export const searchByMoreCondition = async (params = {}, options = {}) => {
+  return await request('/auth/java-admin/memberInfo/searchByMoreCondition', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+
+// 指定送卡
+export const saveCardSendLog = async (params = {}, options = {}) => {
+  return await request('/auth/card/cardUser/saveCardSendLog', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

@@ -17,9 +17,8 @@ const StoreHealthCardManagement = () => {
   const columns: ProColumns[] = [
     {
       title: '订单号',
-      dataIndex: 'orderId',
-      align: 'center',
-      hideInSearch: true
+      dataIndex: 'payOrderSn',
+      align: 'center'
     },
     {
       title: '套餐所属店铺编号',
