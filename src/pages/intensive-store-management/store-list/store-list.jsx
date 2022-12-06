@@ -1189,7 +1189,7 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '最近购买健康卡套餐单号',
-      dataIndex: 'lastOrderSn',
+      dataIndex: 'lastOrderId',
       valueType: 'text',
       hideInSearch: true,
     },
