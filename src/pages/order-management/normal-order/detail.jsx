@@ -11,7 +11,7 @@ import DrawerDetail from '../after-sales-order/detail'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id, isDocumentary } = props;
+  const { visible, setVisible, isPurchase, id, isDocumentary,orderSn } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
@@ -38,7 +38,8 @@ const Detail = (props) => {
     }
 
     apiMethod({
-      id
+      id,
+      orderSn
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)

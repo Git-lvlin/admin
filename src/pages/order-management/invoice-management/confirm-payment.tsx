@@ -4,7 +4,8 @@ import {
   ProFormText,
   ModalForm,
   ProFormTextArea,
-  ProFormRadio
+  ProFormRadio,
+  ProFormDependency
 } from '@ant-design/pro-form';
 import { updateAdminPayInfo } from "@/services/order-management/invoice-management"
 import Upload from '@/components/upload';
@@ -78,13 +79,24 @@ export default (props) => {
         ]}
         initialValue={1}
       />
-      <ProFormText
-        label='支付金额'
-        name="payAmount"
-      />
-      <Form.Item name='payUrl' label='支付凭证图片'>
-        <Upload  multiple maxCount={1} accept="image/*" code={308} size={1 * 1024}/>
-      </Form.Item>
+      <ProFormDependency name={['payStatus']}>
+        {({ payStatus }) => { 
+          if(payStatus==1){
+            return  <>
+                    <ProFormText
+                      label='支付金额'
+                      name="payAmount"
+                    />
+                    <Form.Item name='payUrl' label='支付凭证图片'>
+                      <Upload  multiple maxCount={1} accept="image/*" code={308} size={1 * 1024}/>
+                    </Form.Item>
+                    </>
+          }
+          if(payStatus==0){
+            return null
+          }
+        }}
+      </ProFormDependency>
       <ProFormTextArea
         label='备注'
         name="payRemark"
