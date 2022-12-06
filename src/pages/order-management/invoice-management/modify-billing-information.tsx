@@ -163,15 +163,14 @@ export default (props) => {
                       label='单位电话'
                       name="invPhone"
                     />
-                    <ProFormText
-                      label='接收邮箱'
-                      name="invEmail"
-                    />
                    </>
           }
         }}
       </ProFormDependency>
-      
+      <ProFormText
+        label='接收邮箱'
+        name="invEmail"
+      />
       <ProFormText
         name="id"
         hidden

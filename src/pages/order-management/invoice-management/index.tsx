@@ -81,6 +81,7 @@ export default function GenerationManagement () {
       title: '商品',
       dataIndex: 'goodsName',
       align: 'center',
+      width: 400
     },
     {
       title: '数量',
