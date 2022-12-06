@@ -51,68 +51,82 @@ const bloodData = [
   {
     id: 2,
     name: <>
-          <div>店主（下单人）开店地址所属市办事处</div>
-          <div>管理佣金</div>
+          <div>市办事处 - 无大团长</div>
+          <div>下单店主的店铺地址所属市办事处，没有VIP推荐人，归平台</div>
+          </>
+  },
+  {
+    id: 3,
+    name: <>
+          <div>市办事处 - 有大团长</div>
+          <div>下单店主的店铺地址所属市办事处，没有VIP推荐人，归平台</div>
+          </>
+  },
+  {
+    id: 4,
+    name: <>
+          <div>市办事处 - 大团长</div>
+          <div>距离最近且具有大团长身份的下单人的推荐人</div>
           </>
   },
    {
-    id: 3,
+    id: 5,
     name:<>
         <div>培训中心</div>
         <div>管理奖励</div>
         </>
   },
   {
-    id: 4,
+    id: 6,
     name: <>
           <div>汇能科技</div>
           <div>积分/红包</div>
           </>
   },
   {
-    id: 5,
+    id: 7,
     name: <>
           <div>供应商货款</div>
           <div>批发供货价+平均运费</div>
           </>,
   },
   {
-    id: 6,
+    id: 8,
     name: <>
           <div>汇智能通省代</div>
           <div>VIP直推人开启地址所属省代收益</div>
           </>,
   },
   {
-    id: 7,
+    id: 9,
     name: <>
           <div>汇智能通市代</div>
           <div>VIP直推人开启地址所属市代收益</div>
           </>,
   },
   {
-    id: 8,
+    id: 10,
     name: <>
           <div>氢原子市代</div>
           <div>VIP直推人开启地址所属氢原子市代收益</div>
           </>,
   },
   {
-    id: 9,
+    id: 11,
     name: <>
           <div>运营中心</div>
           <div>服务费佣金</div>
           </>
   },
   {
-    id: 10,
+    id: 12,
     name:<>
           <div>汇能</div>
           <div>平台运营成本</div>
           </>
   },
   {
-    id: 11,
+    id: 13,
     name:'汇能'
   },
 ]
@@ -164,13 +178,29 @@ export default (props) => {
             {
               id: 2,
               name: <>
-                    <div>店主（下单人）开店地址所属市办事处</div>
-                    <div>管理佣金</div>
+                    <div>市办事处 - 无大团长</div>
+                    <div>下单店主的店铺地址所属市办事处，没有VIP推荐人，归平台</div>
+                    </>,
+              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
+            },
+            {
+              id: 3,
+              name: <>
+                    <div>市办事处 - 有大团长</div>
+                    <div>下单店主的店铺地址所属市办事处，没有VIP推荐人，归平台</div>
+                    </>,
+              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
+            },
+            {
+              id: 4,
+              name: <>
+                    <div>市办事处 - 大团长</div>
+                    <div>距离最近且具有大团长身份的下单人的推荐人</div>
                     </>,
               price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
             },
              {
-              id: 3,
+              id: 5,
               name:<>
                   <div>培训中心</div>
                   <div>管理奖励</div>
@@ -178,7 +208,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.trainCenterManageFee:amountTransform(findItem?.trainCenterManageFee, '/')
             },
             {
-              id: 4,
+              id: 6,
               name: <>
                     <div>汇能科技</div>
                     <div>积分/红包</div>
@@ -186,14 +216,14 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.serviceFee:amountTransform(findItem?.serviceFee, '/')
             },
             {
-              id: 5,
+              id: 7,
               name: <>
                     <div>供应商货款</div>
                     <div>批发供货价+平均运费</div>
                     </>,
             },
             {
-              id: 6,
+              id: 8,
               name: <>
                     <div>汇智能通省代</div>
                     <div>VIP直推人开启地址所属省代收益</div>
@@ -201,7 +231,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.provinceAgent:amountTransform(findItem?.provinceAgent, '/')
             },
             {
-              id: 7,
+              id: 9,
               name: <>
                     <div>汇智能通市代</div>
                     <div>VIP直推人开启地址所属市代收益</div>
@@ -209,7 +239,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.cityAgent:amountTransform(findItem?.cityAgent, '/')
             },
             {
-              id: 8,
+              id: 10,
               name: <>
                     <div>氢原子市代</div>
                     <div>VIP直推人开启地址所属氢原子市代收益</div>
@@ -217,7 +247,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.hydrogenCityAgent:amountTransform(findItem?.hydrogenCityAgent, '/')
             },
             {
-              id: 9,
+              id: 11,
               name: <>
                     <div>运营中心</div>
                     <div>服务费佣金</div>
@@ -225,7 +255,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.companyAgent:amountTransform(findItem?.companyAgent, '/')
             },
             {
-              id: 10,
+              id: 12,
               name:<>
                     <div>汇能</div>
                     <div>平台运营成本</div>
@@ -233,7 +263,7 @@ export default (props) => {
               price: findItem?.commissionType==2?findItem?.platformOperateFee:amountTransform(findItem?.platformOperateFee, '/')
             },
             {
-              id: 11,
+              id: 13,
               name:'汇能'
             },
           ]
@@ -274,13 +304,15 @@ export default (props) => {
         skuId: recordList?.skuId,
         shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
         cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
-        trainCenterManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
-        serviceFee: commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
-        provinceAgent: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
-        cityAgent: commissionType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
-        hydrogenCityAgent:commissionType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
-        companyAgent: commissionType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
-        platformOperateFee: commissionType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+        cityManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+        cityManageFee:commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+        trainCenterManageFee:commissionType==2?dataSource[4]?.price:amountTransform(dataSource[4]?.price, '*'),
+        serviceFee: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
+        provinceAgent: commissionType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
+        cityAgent: commissionType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
+        hydrogenCityAgent:commissionType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+        companyAgent: commissionType==2?dataSource[10]?.price:amountTransform(dataSource[10]?.price, '*'),
+        platformOperateFee: commissionType==2?dataSource[11]?.price:amountTransform(dataSource[11]?.price, '*'),
         dividends: 0,
         provinceManageFee: 0,
         shopperChargeFee: 0,
@@ -318,7 +350,7 @@ export default (props) => {
 
   const compute = () => {
     let sum = 0
-    for (let index = 0; index < 11; index++) {
+    for (let index = 0; index < 13; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
@@ -329,7 +361,7 @@ export default (props) => {
 
   const compute2 = () => {
     let sum = 0
-    for (let index = 0; index < 11; index++) {
+    for (let index = 0; index < 13; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
@@ -371,13 +403,15 @@ export default (props) => {
       skuId: recordList?.skuId,
       shoppervipChargeFee:commType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
       cityManageFee:commType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
-      trainCenterManageFee:commType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
-      serviceFee: commType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
-      provinceAgent: commType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
-      cityAgent: commType==2?dataSource[6]?.price:amountTransform(dataSource[6]?.price, '*'),
-      hydrogenCityAgent:commType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
-      companyAgent: commType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
-      platformOperateFee: commType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+      cityManageFee:commType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+      cityManageFee:commType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+      trainCenterManageFee:commType==2?dataSource[4]?.price:amountTransform(dataSource[4]?.price, '*'),
+      serviceFee: commType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
+      provinceAgent: commType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
+      cityAgent: commType==2?dataSource[8]?.price:amountTransform(dataSource[8]?.price, '*'),
+      hydrogenCityAgent:commType==2?dataSource[9]?.price:amountTransform(dataSource[9]?.price, '*'),
+      companyAgent: commType==2?dataSource[10]?.price:amountTransform(dataSource[10]?.price, '*'),
+      platformOperateFee: commType==2?dataSource[11]?.price:amountTransform(dataSource[11]?.price, '*'),
       dividends: 0,
       provinceManageFee: 0,
       shopperChargeFee: 0,
@@ -419,7 +453,7 @@ export default (props) => {
       hideInSearch: true,
       dataIndex: 'price',
       renderFormItem: (_,{ record }) => {
-        if (_?.entry?.id == 5) {
+        if (_?.entry?.id == 7) {
           return <>
             <p>
               {commType==1&&<span>{myToFixed(amountTransform(recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight, '/'))}{commType==1?'元':'%'}</span>}
@@ -429,7 +463,7 @@ export default (props) => {
               </p>
             <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价+平均运费）</p>
           </>
-        } else if (_?.entry?.id == 10) {
+        } else if (_?.entry?.id == 12) {
           return <FromWrap
                   content={(value, onChange) =>  <InputNumber  
                     min="0"
@@ -449,14 +483,14 @@ export default (props) => {
                   bottom={(value)=>{
                     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
-                        if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==10){
+                        if(commType==1&&editPrice&&editPrice<5&&_?.entry?.id==12){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
-                        }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==10){
+                        }else if(commType==2&&value&&parseFloat(value)<5&&_?.entry?.id==12){
                           return <p>建议平台运营成本分成不低于5% <span style={{color:'red'}}>设置的运营成本低于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
                 />
-        } else if (_?.entry?.id == 11) {
+        } else if (_?.entry?.id == 13) {
           return <>
             <p>
               {proportion4(computePrice)}{commType==1?'元':'%'}
@@ -485,9 +519,9 @@ export default (props) => {
                   bottom={(value)=>{
                     const editPrice=commType==2?amountTransform(recordList?.distributePrice,'/')*amountTransform(parseFloat(value),'/'):
                                                 amountTransform(amountTransform(value,'*')/recordList?.distributePrice,'*')
-                        if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=10){
+                        if(commType==1&&editPrice&&editPrice>5&&_?.entry?.id!=12){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
-                        }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=10){
+                        }else if(commType==2&&value&&parseFloat(value)>5&&_?.entry?.id!=12){
                           return <p>建议分佣/奖励分成不高于5% <span style={{color:'red'}}>设置的分佣/奖励成本高于商品集约价的5%！请谨慎操作</span></p>
                         }
                   }}
