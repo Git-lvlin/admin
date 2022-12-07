@@ -78,7 +78,7 @@ export default (props) => {
         label='税费'
         name="payAmount"
         fieldProps={{
-          value:`￥${msgDetail?.editInfo?.payAmount}（${msgDetail?.editInfo?.payStatus==1?'已支付':'无需支付'}）`
+          value:`${msgDetail?.editInfo?.payAmount?`￥${msgDetail?.editInfo?.payAmount}`:''}（${msgDetail?.editInfo?.payStatus==1?'已支付':'无需支付'}）`
         }}
         readonly
       />
