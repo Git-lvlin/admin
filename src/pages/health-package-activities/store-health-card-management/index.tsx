@@ -31,7 +31,7 @@ const StoreHealthCardManagement = () => {
   const columns: ProColumns[] = [
     {
       title: '所属店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'storeName',
       align: 'center',
     },
     {
@@ -74,10 +74,10 @@ const StoreHealthCardManagement = () => {
     },
     {
       title: '有效期截止日',
-      dataIndex: 'canUesTime',
+      dataIndex: 'expireTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.canUesTime ? moment(r.canUesTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.expireTime ? moment(r.expireTime * 1000).format('YYYY-MM-DD') : '-'
     },
     {
       title: '总次数',
@@ -122,12 +122,6 @@ const StoreHealthCardManagement = () => {
         'giftCodeUser6': '礼包五'
       },
       hideInTable: true
-    },
-    {
-      title: '服务所属人店铺编号',
-      dataIndex: 'storeName',
-      align: 'center',
-      hideInSearch: true
     },
     {
       title: '持有时间',
