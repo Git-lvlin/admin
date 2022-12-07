@@ -52,7 +52,8 @@ const StoreHealthCardManagement = () => {
       valueType: 'select',
       valueEnum: {
         'buy': '礼包赠送',
-        'platformSend': '平台赠送'
+        'platformSend': '平台赠送',
+        'appointSend': '指定赠送'
       }
     },
     {
@@ -124,7 +125,7 @@ const StoreHealthCardManagement = () => {
     },
     {
       title: '服务所属人店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'storeName',
       align: 'center',
       hideInSearch: true
     },
@@ -133,21 +134,21 @@ const StoreHealthCardManagement = () => {
       dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.createTime ? moment(r.createTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.createTime ? moment(r.createTime * 1000).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
       title: '最近使用时间',
       dataIndex: 'updateTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.updateTime ? moment(r.updateTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.updateTime ? moment(r.updateTime * 1000).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
       render: (_, r)=> <a onClick={()=> {setVisible(true); setDataSource(r)}}>使用明细</a>
-    },
+    }, 
   ]
 
   return (
