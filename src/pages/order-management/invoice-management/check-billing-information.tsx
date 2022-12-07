@@ -3,7 +3,8 @@ import { Form } from 'antd';
 import {
   ProFormText,
   ProFormSelect,
-  ModalForm
+  ModalForm,
+  ProFormDependency
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 
@@ -89,56 +90,94 @@ export default (props) => {
         ]}
         readonly
       />
-      <ProFormText
-        label='抬头名称'
-        name="invTitleName"
-        readonly
-      />
-      <ProFormText
-        label='单位税号'
-        name="invNumber"
-        readonly
-      />
-      <ProFormText
-        label='开户银行'
-        name="invBankName"
-        readonly
-      />
-      <ProFormText
-        label='银行账号'
-        name="invBankNo"
-        readonly
-      />
-      <ProFormText
-        label='单位地址'
-        name="invAddress"
-        readonly
-      />
-      <ProFormText
-        label='单位电话'
-        name="invPhone"
-        readonly
-      />
-      <ProFormText
-        label='接收邮箱'
-        name="invEmail"
-        readonly
-      />
-      <ProFormSelect
-        label='发过邮箱'
-        name="invSendEmail"
-        options={[
-          {
-            value: 0,
-            label: '否',
-          },
-          {
-            value: 1,
-            label: '是',
+       <ProFormDependency name={['invTitleType']}>
+        {({ invTitleType }) => { 
+          if(invTitleType==1){
+            return  <>
+                    <ProFormText
+                      label='抬头名称'
+                      name="invTitleName"
+                      readonly
+                    />
+                    <ProFormText
+                      label='接收邮箱'
+                      name="invEmail"
+                      readonly
+                    />
+                    <ProFormSelect
+                      label='发过邮箱'
+                      name="invSendEmail"
+                      options={[
+                        {
+                          value: 0,
+                          label: '否',
+                        },
+                        {
+                          value: 1,
+                          label: '是',
+                        }
+                      ]}
+                      readonly
+                    />
+                    </>
           }
-        ]}
-        readonly
-      />
+          if(invTitleType==2){
+            return <>
+                    <ProFormText
+                      label='抬头名称'
+                      name="invTitleName"
+                      readonly
+                    />
+                    <ProFormText
+                      label='单位税号'
+                      name="invNumber"
+                      readonly
+                    />
+                    <ProFormText
+                      label='开户银行'
+                      name="invBankName"
+                      readonly
+                    />
+                    <ProFormText
+                      label='银行账号'
+                      name="invBankNo"
+                      readonly
+                    />
+                    <ProFormText
+                      label='单位地址'
+                      name="invAddress"
+                      readonly
+                    />
+                    <ProFormText
+                      label='单位电话'
+                      name="invPhone"
+                      readonly
+                    />
+                    <ProFormText
+                      label='接收邮箱'
+                      name="invEmail"
+                      readonly
+                    />
+                    <ProFormSelect
+                      label='发过邮箱'
+                      name="invSendEmail"
+                      options={[
+                        {
+                          value: 0,
+                          label: '否',
+                        },
+                        {
+                          value: 1,
+                          label: '是',
+                        }
+                      ]}
+                      readonly
+                    />
+                    </>
+          }
+        }}
+      </ProFormDependency>
+     
     </ModalForm >
   );
 };

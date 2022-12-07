@@ -157,7 +157,7 @@ export default function GenerationManagement () {
       fixed: 'right',
       hideInSearch: true,
       render: (_,data)=>([
-        <Button type='default' style={{ display:data?.invoiceStatus==0?'block':'none' }} onClick={()=>{setRefuseVisible(true);setMsgDetail(data)}} key='edit'>拒绝开票</Button>,
+        <Button type='default' style={{ display:data?.invoiceStatus==0||data?.invoiceStatus==-1?'block':'none' }} onClick={()=>{setRefuseVisible(true);setMsgDetail(data)}} key='edit'>拒绝开票</Button>,
         <Button type='default' style={{ display:data?.invoiceStatus==1||data?.invoiceStatus==2?'block':'none' }} onClick={()=>{setLookVisible(true);setMsgDetail(data)}} key='edit'>查看发票</Button>,
         <Button type='primary' style={{ display:data?.invoiceStatus==-1?'block':'none' }} onClick={()=>{setConfirmVisible(true);setMsgDetail(data)}} key='reset'>确认支付</Button>,
         <Button type='primary' style={{ display:data?.invoiceStatus==0||data?.invoiceStatus==1?'block':'none' }} onClick={()=>{setUploadVisible(true);setMsgDetail(data)}} key='reset'>{data?.invoiceStatus==0?'上传发票':'更新发票'}</Button>,
