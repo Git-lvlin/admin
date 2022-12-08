@@ -95,7 +95,7 @@ export default (props) => {
             },
             {
                 label: '无需支付',
-                value: 0
+                value: 2
             },
         ]}
         initialValue={1}
@@ -114,7 +114,7 @@ export default (props) => {
                     </Form.Item>
                     </>
           }
-          if(payStatus==0){
+          if(payStatus==2){
             return null
           }
         }}
