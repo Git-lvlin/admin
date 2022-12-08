@@ -119,17 +119,17 @@ export default (props) => {
       />
       <ProFormText
         width={250}
-        label="办事处名称"
+        label="氢原子市代名称"
         name="name"
         readonly
       />
       <ProFormText
         width={250}
-        label="办事处登录账号"
+        label="氢原子市代登录账号"
         name="userName"
         placeholder='请输入登录账号'
         rules={[
-          { required: true, message: '请输入办事处登录账号' },
+          { required: true, message: '请输入氢原子市代登录账号' },
           {validator: checkConfirm2}
         ]}
         fieldProps={{
@@ -138,11 +138,11 @@ export default (props) => {
       />
       <ProFormText.Password
         width={250}
-        label="办事处登录密码"
+        label="氢原子市代登录密码"
         name="password"
         placeholder='请输入登录密码'
         rules={[
-          // { required: true, message: '请输入办事处登录密码' },
+          // { required: true, message: '请输入氢原子市代登录密码' },
           {validator: checkConfirm3}
         ]}
         fieldProps={{

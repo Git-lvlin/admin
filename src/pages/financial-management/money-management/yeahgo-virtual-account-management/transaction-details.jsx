@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import { useLocation, history } from "umi"
 import { Button, Drawer } from 'antd'
+import moment from 'moment'
 
 import { logPage } from '@/services/financial-management/yeahgo-virtual-account-management'
 import { orderTypes } from '@/services/financial-management/common'
@@ -208,7 +209,8 @@ const TransactionDetails = ({
       title: '交易时间',
       dataIndex: 'createTime',
       valueType: 'dateRange',
-      hideInTable: true
+      hideInTable: true,
+      initialValue: [moment(+new Date()).subtract(7, 'days').format('YYYY-MM-DD'), moment(+new Date()).format('YYYY-MM-DD')]
     },
     {
       title: '分账金额',
