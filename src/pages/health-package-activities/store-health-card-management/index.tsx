@@ -114,12 +114,14 @@ const StoreHealthCardManagement = () => {
       dataIndex: 'giftCodeUserN',
       valueType: 'select',
       valueEnum: {
-        'giftCodeUser1': '体验礼包',
-        'giftCodeUser2': '礼包一',
-        'giftCodeUser3': '礼包二',
-        'giftCodeUser4': '礼包三',
-        'giftCodeUser5': '礼包四',
-        'giftCodeUser6': '礼包五'
+        'giftCodeUser1': '孝爱体验礼包',
+        'giftCodeStore': '店主开店赠送',
+        'giftCodeSend': '健康卡-指定赠送',
+        'giftCodeUser2': '孝爱吸氢礼包一',
+        'giftCodeUser3': '孝爱吸氢礼包二',
+        'giftCodeUser4': '孝爱吸氢礼包三',
+        'giftCodeUser5': '孝爱吸氢礼包四',
+        'giftCodeUser6': '孝爱吸氢礼包五'
       },
       hideInTable: true
     },
