@@ -180,7 +180,6 @@ export default function GenerationManagement () {
       />
       {detailVisible &&
         <Detail
-          id={msgDetail?.orderNo}
           orderSn={msgDetail?.orderNo}
           visible={detailVisible}
           setVisible={setDetailVisible}

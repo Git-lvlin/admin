@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Space, Button, Modal, Steps, Spin,Image } from 'antd';
 import { findAdminOrderDetail, findAdminOrderDetail2 } from '@/services/order-management/normal-order-detail';
+import { findAdminOrderDetailBySubOrder } from "@/services/order-management/invoice-management"
 import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
@@ -31,7 +32,7 @@ const Detail = (props) => {
 
   const getDetailData = () => {
     setLoading(true);
-    const apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    const apiMethod = orderSn?findAdminOrderDetailBySubOrder:isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
     apiMethod({
       id,
       orderSn
