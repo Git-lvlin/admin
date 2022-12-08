@@ -75,8 +75,8 @@ export default (props) => {
         label='作废原因'
         name="cancelRemark"
         fieldProps={{
-          minLength:5,
-          placeholder:'请输入至少5个字符'
+          maxLength:20,
+          placeholder:'请输入5-20个字符'
         }}
         rules={[
           { required: true, message: '请输入作废原因' },
