@@ -7,6 +7,7 @@ export type DetailProps = {
     ownerMobile: string
     remainingNum: string
     totalNum: string
+    storeName: string
   }
 }
 

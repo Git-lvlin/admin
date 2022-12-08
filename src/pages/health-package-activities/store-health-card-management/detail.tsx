@@ -56,7 +56,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
             <div key={item.id}>
               <div className={styles.cardList}>
                 <div>{moment(item.useTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
-                <div>店铺编号：{item.useOrderNo}</div>
+                <div>店铺编号：{dataSource?.storeName}</div>
               </div>
               <div className={styles.cardListContent}>
                 <div>设备ID：{item.useDeviceNo}</div>
