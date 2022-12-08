@@ -60,7 +60,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
               </div>
               <div className={styles.cardListContent}>
                 <div>设备ID：{item.useDeviceNo}</div>
-                <div>订单号：{item.cardNo}</div>
+                <div>订单号：{item.useOrderNo}</div>
               </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>
             </div>

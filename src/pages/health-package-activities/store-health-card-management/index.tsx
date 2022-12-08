@@ -96,7 +96,7 @@ const StoreHealthCardManagement = () => {
       dataIndex: 'remainingNum',
       align: 'center',
       hideInTable: true,
-      renderFormItem: () => <RangeInput/>
+      renderFormItem: () => <RangeInput beforePlaceholder="请输入最低次数" afterPlaceholder="最高次数"/>
     },
     {
       title: '服务所属人手机号',
