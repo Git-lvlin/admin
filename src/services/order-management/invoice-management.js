@@ -94,3 +94,14 @@ export const updateAdminInvoiceInfo = async (params = {}, options = {}) => {
        code: res.code
     }
   }
+
+
+export const findAdminOrderDetailBySubOrder = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findAdminOrderDetailBySubOrder', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
