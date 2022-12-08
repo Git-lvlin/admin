@@ -110,8 +110,8 @@ export default (props) => {
           { validator: checkConfirm}
         ]}
         fieldProps={{
-          minLength:5,
-          placeholder:'请输入至少5个字符'
+          maxLength:20,
+          placeholder:'请输入5-20个字符'
         }}
       />
       <ProFormText

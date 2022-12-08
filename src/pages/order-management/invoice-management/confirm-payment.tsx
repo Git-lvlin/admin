@@ -110,7 +110,7 @@ export default (props) => {
                       rules={[ { validator: checkConfirm }]} 
                     />
                     <Form.Item name='payUrl' label='支付凭证图片'>
-                      <Upload  multiple maxCount={1} accept="image/*" code={308} size={1 * 1024}/>
+                      <Upload  multiple maxCount={1} accept=".png, .jpg, .jpeg, .pdf" code={308} size={1 * 1024}/>
                     </Form.Item>
                     </>
           }

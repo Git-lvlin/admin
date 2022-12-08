@@ -20,36 +20,17 @@ import CancellationOfInvoice from './cancellation-of-invoice'
 import ModifyBillingInformation from './modify-billing-information'
 
 export default function GenerationManagement () {
-  const [type, setType] = useState<number>(0)
   const [refusevisible, setRefuseVisible] = useState<boolean>(false)
   const [detailVisible, setDetailVisible] = useState(false);
   const isPurchase = useLocation().pathname.includes('purchase')
   const [checkVisible, setCheckVisible] = useState<boolean>(false)
-  const [editVisible, setEditVisible] = useState<boolean>(false)
   const [lookVisible, setLookVisible] = useState<boolean>(false)
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false)
   const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [cancellVisible, setCancellVisible] = useState<boolean>(false)
   const [modifyVisible, setModifyVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
-  const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState()
   const form = useRef<FormInstance>()
-
-  useEffect(() => {
-    const params={
-      agentId:time?.agentId,
-      agentName:time?.agentName,
-      startTime:time?.createTime&&time?.createTime[0],
-      endTime:time?.createTime&&time?.createTime[1]
-    }
-    // cityAgentManageStats(params).then(res=>{
-    //   if(res.code==0){
-    //     setDetailList(res.data[0])
-    //   }
-    // })
-
-  }, [time])
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
@@ -139,15 +120,21 @@ export default function GenerationManagement () {
     },
     {
       title: '开票状态',
-      dataIndex: 'invoiceStatus',
+      dataIndex: 'invoiceStatusStr',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        '-1':'待支付',
-        0: '待开票',
-        1: '已开票',
-        2: '已作废',
-        3: '拒绝开票'
+      render: (_,data)=>{
+        if(data?.invoiceStatus==2){
+          return <>
+                  <p style={{color:'red'}}>{_}</p>
+                  <p>{data?.editInfo?.cancelRemark}</p>
+                </>   
+        }if(data?.invoiceStatus==3){
+          return <span>{_}（{data?.editInfo?.rejectRemark}）</span>
+        }
+        else{
+          return _
+        }
+           
       }
     },
     {
@@ -176,9 +163,6 @@ export default function GenerationManagement () {
         request={getInvoiceList}
         columnEmptyText={false}
         actionRef={form}
-        onSubmit={(val)=>{
-          setTime(val)
-        }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         pagination={{
           pageSize: 10,
