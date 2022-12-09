@@ -32,7 +32,12 @@ const Detail = (props) => {
 
   const getDetailData = () => {
     setLoading(true);
-    const apiMethod = orderSn?findAdminOrderDetailBySubOrder:isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+    let apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
+
+    if(orderSn){
+      apiMethod =findAdminOrderDetailBySubOrder
+    }
+
     apiMethod({
       id,
       orderSn
