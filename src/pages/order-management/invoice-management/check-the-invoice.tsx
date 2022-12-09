@@ -3,6 +3,7 @@ import { Form,Image } from 'antd';
 import {
   ModalForm,
 } from '@ant-design/pro-form';
+import Upload from '@/components/upload';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -22,7 +23,7 @@ export default (props) => {
   const [form] = Form.useForm();
   useEffect(()=>{
     form.setFieldsValue({
-      ...msgDetail
+      invoiceUrl:msgDetail?.editInfo?.invoiceUrl
     })
   },[])
   return (
@@ -48,7 +49,14 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
-      <Image src={msgDetail?.editInfo?.invoiceUrl}/>
+      {
+        msgDetail?.editInfo?.invoiceUrl.split("/").pop().split(".").pop() == "pdf"?
+        <Form.Item name="invoiceUrl">
+            <Upload multiple disabled={true}/>
+        </Form.Item>
+        :
+        <Image src={msgDetail?.editInfo?.invoiceUrl}/>
+      } 
     </ModalForm >
   );
 };
