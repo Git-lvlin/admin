@@ -28,5 +28,11 @@ export default {
       component: './city-office-management/living-service-fee-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-package-performance',
+      path: '/city-office-management/health-package-performance',
+      component: './city-office-management/health-package-performance',
+      wrappers: [RouteWatcher], 
+    },
   ]
 }

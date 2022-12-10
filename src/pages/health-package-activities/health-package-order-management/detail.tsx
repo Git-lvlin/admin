@@ -32,7 +32,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
   const columns: ProColumns[] = [
     {
       title: '明细单号',
-      dataIndex: 'orderId',
+      dataIndex: 'orderSn',
       align: 'center', 
       render: (_, r) => {
         if(r.subType === '健康服务') {
@@ -91,7 +91,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
       >
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>订单号：</span>
-          {data?.orderId}
+          {data?.orderSn}
         </ProCard>
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>下单人手机：</span>

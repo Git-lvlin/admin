@@ -76,7 +76,8 @@ const StoreHealthCardManagement = () => {
         1: '未支付',
         2: '已支付',
         3: '交易关闭'
-      }
+      },
+      hideInSearch: true
     },
     {
       title: '操作',

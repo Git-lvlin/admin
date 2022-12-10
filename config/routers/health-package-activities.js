@@ -27,6 +27,12 @@ export default {
       path: '/health-package-activities/health-package-order-management',
       component: './health-package-activities/health-package-order-management',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-package-performance-statistics',
+      path: '/health-package-activities/health-package-performance-statistics',
+      component: './health-package-activities/health-package-performance-statistics',
+      wrappers: [RouteWatcher],
     }
   ]
 }

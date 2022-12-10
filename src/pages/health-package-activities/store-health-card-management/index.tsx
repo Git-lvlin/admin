@@ -51,7 +51,7 @@ const StoreHealthCardManagement = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        'buy': '礼包赠送',
+        'buy': '服务赠送',
         'platformSend': '平台赠送',
         'appointSend': '指定赠送'
       }
