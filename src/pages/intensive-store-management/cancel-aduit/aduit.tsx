@@ -107,6 +107,7 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
       {...formItemLayout}
     >
       <ProForm.Item label="店铺名称">{data.storeName}</ProForm.Item>
+      <ProForm.Item label="店铺编号">{data.shopMemberAccount}</ProForm.Item>
       <ProForm.Item label="店主手机号">{data.memberPhone}</ProForm.Item>
       <ProForm.Item label="店铺地址">
         <div>{data.provinceName}{data.cityName}{data.regionName}</div>

@@ -123,42 +123,47 @@ const Detail = (props) => {
                   </div>
                 </div>
               </div>
-              {!isDocumentary && <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
-                <div className={`${styles.box} ${styles.box_header}`}>
-                  订单金额
-                </div>
-                <div className={styles.box}>
-                  <div>商品总金额</div>
-                  <div>{amountTransform(detailData?.goodsTotalAmount, '/')}元</div>
-                </div>
-                <div className={styles.box}>
-                  <div>运费</div>
-                  <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
-                </div>
-                <div className={styles.box}>
-                  <div>红包</div>
-                  <div>
-                    {
-                      detailData?.orderType === 17
-                        ? '盲盒全额抵扣'
-                        : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
-                    }
+              <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
+                {!isDocumentary &&
+                  <>
+                  <div className={`${styles.box} ${styles.box_header}`}>
+                    订单金额
                   </div>
-                </div>
-                <div className={styles.box}>
-                  <div>用户实付</div>
-                  <div>{amountTransform(detailData?.payAmount, '/')}元</div>
-                </div>
-                {/* <div className={styles.box}>
+                  <div className={styles.box}>
+                    <div>商品总金额</div>
+                    <div>{amountTransform(detailData?.goodsTotalAmount, '/')}元</div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>运费</div>
+                    <div>+{amountTransform(detailData?.shippingFeeAmount, '/')}元</div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>红包</div>
+                    <div>
+                      {
+                        detailData?.orderType === 17
+                          ? '盲盒全额抵扣'
+                          : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
+                      }
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>用户实付</div>
+                    <div>{amountTransform(detailData?.payAmount, '/')}元</div>
+                  </div>
+                  {/* <div className={styles.box}>
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div> */}
-                {
-                  detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
-                    <div>备注</div>
-                    <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
-                  </div>
+                  {
+                    detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
+                      <div>备注</div>
+                      <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
+                    </div>
+                  }
+                  </>
                 }
+                
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
@@ -193,7 +198,7 @@ const Detail = (props) => {
                     </ProDescriptions>
                   ))
                 }
-              </div>}
+              </div>
             </div>
             <div style={{ flex: 1 }}>
               <div className={styles.box_wrap}>

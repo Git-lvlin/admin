@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Drawer, Space, Button, Modal, Steps, Spin,Image } from 'antd';
+import { Drawer, Space, Button, Modal, Steps, Spin, Image } from 'antd';
 import { findAdminOrderDetail, findAdminOrderDetail2, findAdminOrderDetail3 } from '@/services/order-management/normal-order-detail';
 import { findAdminOrderDetailBySubOrder } from "@/services/order-management/invoice-management"
 import { amountTransform } from '@/utils/utils'
@@ -134,41 +134,47 @@ const Detail = (props) => {
                 </div>
               </div>
               <div className={styles.box_wrap} style={{ marginTop: '-1px' }}>
-                <div className={`${styles.box} ${styles.box_header}`}>
-                  订单金额
-                </div>
-                <div className={styles.box}>
-                  <div>商品总金额</div>
-                  <div>{amountTransform(detailData?.goodsTotalAmount, '/')}元</div>
-                </div>
-                <div className={styles.box}>
-                  <div>运费</div>
-                  <div>{detailData.shippingType ? `+${amountTransform(detailData.shippingFeeAmount, '/')}元` : '收货时付运费'}</div>
-                </div>
-                <div className={styles.box}>
-                  <div>红包</div>
-                  <div>
-                    {
-                      detailData?.orderType === 17
-                        ? '盲盒全额抵扣'
-                        : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
-                    }
+                {!isDocumentary
+                  &&
+                  <>
+                  <div className={`${styles.box} ${styles.box_header}`}>
+                    订单金额
                   </div>
-                </div>
-                <div className={styles.box}>
-                  <div>用户实付</div>
-                  <div>{amountTransform(detailData?.payAmount, '/')}元</div>
-                </div>
-                {/* <div className={styles.box}>
+                  <div className={styles.box}>
+                    <div>商品总金额</div>
+                    <div>{amountTransform(detailData?.goodsTotalAmount, '/')}元</div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>运费</div>
+                    <div>{detailData.shippingType ? `+${amountTransform(detailData.shippingFeeAmount, '/')}元` : '收货时付运费'}</div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>红包</div>
+                    <div>
+                      {
+                        detailData?.orderType === 17
+                          ? '盲盒全额抵扣'
+                          : `-${amountTransform(detailData?.couponAmount, '/')}元${detailData?.orderType === 18 ? '（签到红包）' : ''}`
+                      }
+                    </div>
+                  </div>
+                  <div className={styles.box}>
+                    <div>用户实付</div>
+                    <div>{amountTransform(detailData?.payAmount, '/')}元</div>
+                  </div>
+                  {/* <div className={styles.box}>
                   <div>实收</div>
                   <div>{amountTransform(detailData?.incomeAmount, '/')}元</div>
                 </div> */}
-                {
-                  detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
-                    <div>备注</div>
-                    <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
-                  </div>
+                  {
+                    detailData.status != 1 && detailData.status != 5 && <div className={styles.box}>
+                      <div>备注</div>
+                      <div>买家确认收货后可提现 {detailData?.warrantyRatio * 100 + '%'}  金额,订单超过售后期可提现剩余金额。</div>
+                    </div>
+                  }
+                  </>
                 }
+                
                 <div className={`${styles.box} ${styles.box_header}`}>
                   物流信息
                 </div>
@@ -186,13 +192,13 @@ const Detail = (props) => {
                         {ele.shippingCode}
                       </ProDescriptions.Item>
                       {
-                        detailData.subType==3|| detailData.subType==4?
-                        <ProDescriptions.Item
-                          label="机器ID"
-                        >
-                          {detailData.deviceId}
-                        </ProDescriptions.Item>
-                        :null
+                        detailData.subType == 3 || detailData.subType == 4 ?
+                          <ProDescriptions.Item
+                            label="机器ID"
+                          >
+                            {detailData.deviceId}
+                          </ProDescriptions.Item>
+                          : null
                       }
                       <ProDescriptions.Item
                         label="物流进度"
@@ -232,7 +238,7 @@ const Detail = (props) => {
                           <div>规格</div>
                           <div>{item.skuName}</div>
                         </div>
-                        {!isDocumentary &&<div className={styles.box}>
+                        {!isDocumentary && <div className={styles.box}>
                           <div>{({ 2: '秒约', 3: '拼团', 4: '团约' }[detailData.orderType] || '秒约')}价</div>
                           <div>{amountTransform(item.skuSalePrice, '/')}元</div>
                         </div>}
@@ -240,16 +246,16 @@ const Detail = (props) => {
                           <div>购买数量</div>
                           <div>{item.skuNum}{item.unit}</div>
                         </div>
-                        {!isDocumentary &&<div className={styles.box}>
+                        {!isDocumentary && <div className={styles.box}>
                           <div>小计</div>
                           <div>
-                            {amountTransform(item.totalAmount, '/')}元  
-                            {item.afterSalesStatus!==0&&
-                            <a 
-                            onClick={()=>{setId(item.afterSalesApplyId);setAfterSaleVisible(true)}}
-                            className={styles.after_sale}>
-                              {item.afterSalesStatusStr}
-                            </a>
+                            {amountTransform(item.totalAmount, '/')}元
+                            {item.afterSalesStatus !== 0 &&
+                              <a
+                                onClick={() => { setId(item.afterSalesApplyId); setAfterSaleVisible(true) }}
+                                className={styles.after_sale}>
+                                {item.afterSalesStatusStr}
+                              </a>
                             }</div>
                         </div>}
                       </div>
@@ -261,20 +267,20 @@ const Detail = (props) => {
                   <div>{detailData?.note}</div>
                 </div>
                 {
-                  detailData?.subType==3||detailData?.subType==4&&<div className={styles.box}>
-                  <div>租赁合同</div>
-                  <div>
-                    <a href={detailData?.contractUrl} target="_blank">点击查看</a>
+                  detailData?.subType == 3 && <div className={styles.box}>
+                    <div>租赁合同</div>
+                    <div>
+                      <a href={detailData?.contractUrl} target="_blank">点击查看</a>
+                    </div>
                   </div>
-                </div>
                 }
                 {
-                  detailData?.subType==42&&<div className={styles.box}>
-                  <div>托管合同</div>
-                  <div>
-                    {detailData?.contractUrl?<a href={detailData?.contractUrl} target="_blank">《约购平台托管合作服务协议》</a>:'未签写'}
+                  detailData?.subType == 42 && <div className={styles.box}>
+                    <div>托管合同</div>
+                    <div>
+                      {detailData?.contractUrl ? <a href={detailData?.contractUrl} target="_blank">《约购平台托管合作服务协议》</a> : '未签写'}
+                    </div>
                   </div>
-                </div>
                 }
               </div>
             </div>
@@ -300,7 +306,7 @@ const Detail = (props) => {
         </Modal>
       </Spin>
       {
-        afterSaleVisible&&
+        afterSaleVisible &&
         <DrawerDetail
           visible={afterSaleVisible}
           setVisible={setAfterSaleVisible}
