@@ -189,7 +189,7 @@ export default (props) => {
                     <div>市办事处 - 有大团长</div>
                     <div>下单店主的店铺地址所属市办事处，没有VIP推荐人，归平台</div>
                     </>,
-              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
+              price: findItem?.commissionType==2?findItem?.cityManageTeamFee:amountTransform(findItem?.cityManageTeamFee, '/')
             },
             {
               id: 4,
@@ -197,7 +197,7 @@ export default (props) => {
                     <div>市办事处 - 大团长</div>
                     <div>距离最近且具有大团长身份的下单人的推荐人</div>
                     </>,
-              price: findItem?.commissionType==2?findItem?.cityManageFee:amountTransform(findItem?.cityManageFee, '/')
+              price: findItem?.commissionType==2?findItem?.cityTeamLeader:amountTransform(findItem?.cityTeamLeader, '/')
             },
              {
               id: 5,
@@ -304,8 +304,8 @@ export default (props) => {
         skuId: recordList?.skuId,
         shoppervipChargeFee:commissionType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
         cityManageFee:commissionType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
-        cityManageFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
-        cityManageFee:commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+        cityManageTeamFee:commissionType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+        cityTeamLeader:commissionType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
         trainCenterManageFee:commissionType==2?dataSource[4]?.price:amountTransform(dataSource[4]?.price, '*'),
         serviceFee: commissionType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
         provinceAgent: commissionType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
@@ -403,8 +403,8 @@ export default (props) => {
       skuId: recordList?.skuId,
       shoppervipChargeFee:commType==2?dataSource[0]?.price:amountTransform(dataSource[0]?.price, '*'),
       cityManageFee:commType==2?dataSource[1]?.price:amountTransform(dataSource[1]?.price, '*'),
-      cityManageFee:commType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
-      cityManageFee:commType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
+      cityManageTeamFee:commType==2?dataSource[2]?.price:amountTransform(dataSource[2]?.price, '*'),
+      cityTeamLeader:commType==2?dataSource[3]?.price:amountTransform(dataSource[3]?.price, '*'),
       trainCenterManageFee:commType==2?dataSource[4]?.price:amountTransform(dataSource[4]?.price, '*'),
       serviceFee: commType==2?dataSource[5]?.price:amountTransform(dataSource[5]?.price, '*'),
       provinceAgent: commType==2?dataSource[7]?.price:amountTransform(dataSource[7]?.price, '*'),
