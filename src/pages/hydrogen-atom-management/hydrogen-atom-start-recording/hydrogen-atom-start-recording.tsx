@@ -107,12 +107,12 @@ export default () => {
       },
       order:3
     },
-    // {
-    //   title: '社区店店铺名称',
-    //   dataIndex: 'storeName',
-    //   valueType: 'text',
-    //   hideInSearch: true
-    // },
+    {
+      title: '启用机器所属店铺编号',
+      dataIndex: 'shopMemberAccount',
+      valueType: 'text',
+      hideInSearch: true
+    },
     {
       title: '启动时间',
       dataIndex: 'dateTimeRange',
@@ -125,6 +125,19 @@ export default () => {
       dataIndex: 'createTime',
       valueType: 'text',
       hideInSearch: true
+    },
+    {
+      title: '吸氢服务号',
+      dataIndex: 'cardNo',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_) =>{
+        if(_=='null'){
+          return '-'
+        }else{
+          return _
+        }
+      }
     },
     {
       title: '启动时长(分钟)',

@@ -25,11 +25,13 @@ export type TableProps = {
 
 export type GithubIssueItem = {
   orderTime: string;
-  orderNo: string;
+  orderSn: string;
   orderType: string;
   orderTypeDesc: string;
   orderAmount: string;
-  buyerMobile: string
+  buyerMobile: string;
+  storeHouseNumber: string;
+  dateRange: Array
 };
 
 

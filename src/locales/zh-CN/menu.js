@@ -366,6 +366,7 @@ export default {
   'menu.sign-activity-management.grant-detail': '发放明细',
   'menu.sign-activity-management.user-detail': '用户红包明细',
   'menu.sign-activity-management.consume-detail': '消耗明细',
+  'menu.sign-activity-management.show-configuration': '签到模块显示配置',
 
 
   'menu.blind-box-activity-management': '盲盒活动管理',
@@ -439,6 +440,7 @@ export default {
   'menu.city-office-management.city-office-management-list': '氢原子管理',
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
+  'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
@@ -449,5 +451,10 @@ export default {
   'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',
   'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
   'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
+
+  'menu.health-package-activities': '健康套餐活动',
+  'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',
+  'menu.health-package-activities.promotion-activity-management': '推广活动管理', 
+  'menu.health-package-activities.divide-configure': '健康套餐分成配置', 
 
 };
