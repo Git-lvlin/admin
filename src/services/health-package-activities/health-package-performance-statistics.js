@@ -41,3 +41,22 @@ export const cardCityAgencyOrderPmStats = async (params = {}, options = {}) => {
       success: res.success
   }
 }
+
+// 健康套餐订单业绩详情
+export const cardCityAgencyOrderPmDetail = async (params = {}, options = {}) => {
+  const { current = 1, pageSize = 10, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPmDetail', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}

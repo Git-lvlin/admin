@@ -1,18 +1,31 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
+import { Select } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import PageContainer from "@/components/PageContainer"
 import Detail from "./detail"
-import { giftPackageOrder } from "@/services/health-package-activities/health-package-order-management"
+import { giftPackageOrder, packageSampleList } from "@/services/health-package-activities/health-package-order-management"
 import Export from "@/components/export"
 
 const StoreHealthCardManagement = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [id, setId] = useState()
+  const [list, setList] = useState()
   const form = useRef<FormInstance>()
+
+  useEffect(()=> {
+    packageSampleList().then(res=> {
+      if(res.code === 0) {
+        setList(res.data.map((item: {giftPackageTitle: string, giftPackageId: string}) => ({
+          label: item.giftPackageTitle,
+          value: item.giftPackageId
+        })))
+      }
+    })
+  }, [])
 
   const columns: ProColumns[] = [
     {
@@ -39,8 +52,15 @@ const StoreHealthCardManagement = () => {
     },
     {
       title: '套餐名称',
+      dataIndex: 'giftPackageId',
+      hideInTable: true,
+      renderFormItem: () => <Select options={list}/>
+    },
+    {
+      title: '套餐名称',
       dataIndex: 'giftPackageTitle',
       align: 'center',
+      hideInSearch: true
     },
     {
       title: '下单人店铺编号',

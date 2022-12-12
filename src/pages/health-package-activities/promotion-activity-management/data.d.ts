@@ -25,3 +25,10 @@ export type SaveCardProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: DataProps
 }
+
+export type GiftCardProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  id?: string
+  data?: DataProps
+}

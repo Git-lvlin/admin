@@ -3,18 +3,18 @@ export type DetailProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   sn?: string
   dataSource?: {
-    cardNo: string
-    ownerMobile: string
-    remainingNum: string
-    totalNum: string
-    storeName: string
+    houseNumber: string
+    memberPhone: string
+    orderNums: string
+    storeNo: string
   }
 }
 
 export type DataProps = {
-  id: string
-  useTime: number
-  useOrderNo: string
-  useDeviceNo: string
-  cardNo: string
+  packageName: string
+  payAmount: number
+  createTime: string
+  orderSn: string
+  cardNum: string
+  memberPhone: string
 }

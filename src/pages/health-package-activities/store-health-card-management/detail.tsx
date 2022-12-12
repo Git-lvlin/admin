@@ -23,7 +23,11 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
 
   useEffect(()=> {
     setLoad(true)
-    getUseCardByCardNo({cardNo: dataSource?.cardNo}).then(res => {
+    getUseCardByCardNo({
+      cardNo: dataSource?.cardNo,
+      page,
+      size: pageSize
+    }).then(res => {
       if(res.success) {
         setData(res.data)
         setPageTotal(res.total)
@@ -31,7 +35,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
     }).finally(()=> {
       setLoad(false)
     })
-  }, [])
+  }, [page, pageSize])
 
   const pageChange = (a: number, b?: number) => {
     setPage(a)

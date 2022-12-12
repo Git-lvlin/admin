@@ -11,8 +11,8 @@ import type { FC } from "react"
 import type { DetailProps, DataProps } from "./data"
 
 import styles from "./styles.less"
-import { getUseCardByCardNo } from "@/services/health-package-activities/store-health-card-management"
-import moment from "moment"
+import { cardCityAgencyOrderPmDetail } from "@/services/health-package-activities/health-package-performance-statistics"
+import { amountTransform } from "@/utils/utils"
 
 const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
   const [data, setData] = useState<DataProps[]>([])
@@ -23,7 +23,11 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
 
   useEffect(()=> {
     setLoad(true)
-    getUseCardByCardNo({cardNo: dataSource?.cardNo}).then(res => {
+    cardCityAgencyOrderPmDetail({
+      storeNo: dataSource?.storeNo,
+      page,
+      size: pageSize
+    }).then(res => {
       if(res.success) {
         setData(res.data)
         setPageTotal(res.total)
@@ -31,7 +35,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
     }).finally(()=> {
       setLoad(false)
     })
-  }, [])
+  }, [page, pageSize])
 
   const pageChange = (a: number, b?: number) => {
     setPage(a)
@@ -42,25 +46,29 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
     <Drawer
       visible={visible}
       onClose={()=>setVisible(false)}
-      title={`服务号${dataSource?.cardNo} 使用明细`}
+      title={`店铺${dataSource?.houseNumber} 绑定套餐订单明细`}
       width={700}
       destroyOnClose={true}
     >
       <Spin delay={500} spinning={load}>
         <div className={styles.cardTitle}>
-          服务所属人：{dataSource?.ownerMobile}  已用次数：{Number(dataSource?.totalNum) - Number(dataSource?.remainingNum)}，剩余{dataSource?.remainingNum}次
+          店主：{dataSource?.memberPhone}  绑定套餐订单数：{dataSource?.orderNums}单
         </div>
         {
           data?.length !== 0 ?
-          data?.map(item => (
-            <div key={item.id}>
+          data?.map((item, idx) => (
+            <div key={idx}>
               <div className={styles.cardList}>
-                <div>{moment(item.useTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
-                <div>店铺编号：{dataSource?.storeName}</div>
+                <div>{item.packageName}</div>
+                <div>订单金额：{amountTransform(item.payAmount, '/').toFixed(2)}</div>
               </div>
               <div className={styles.cardListContent}>
-                <div>设备ID：{item.useDeviceNo}</div>
-                <div>订单号：{item.useOrderNo}</div>
+                <div>{item.createTime}</div>
+                <div>订单号：{item.orderSn}</div>
+              </div>
+              <div className={styles.cardListContent}>
+                <div>{item.cardNum}次</div>
+                <div>下单人：{item.memberPhone}</div>
               </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>
             </div>

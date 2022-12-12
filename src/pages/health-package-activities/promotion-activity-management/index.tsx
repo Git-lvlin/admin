@@ -5,17 +5,19 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 import type { FC } from 'react'
 
-import PageContainer from "@/components/PageContainer"
-import { joinStore } from "@/services/health-package-activities/promotion-activity-management"
+import PageContainer from '@/components/PageContainer'
+import { joinStore } from '@/services/health-package-activities/promotion-activity-management'
 import Detail from './detail'
 import ImageDetail from './imageDetail'
 import Export from '@/components/export'
-import SaveCard from "./save_card"
+import SaveCard from './save_card'
+import GiftCard from './gift_card'
 
 const PromotionActivityManagement: FC = () => {
   const [modalVisible, setModalVisible] = useState<boolean>(false)
   const [imgModalVisible, setImgModalVisible] = useState<boolean>(false)
   const [saveCardVisible, setSaveCardVisible] = useState<boolean>(false)
+  const [giftCardVisible, setGiftCardVisible] = useState<boolean>(false)
   const [storeNo, setStoreNo] = useState<string>()
   const [data, setData] = useState()
  
@@ -96,7 +98,7 @@ const PromotionActivityManagement: FC = () => {
       hideInSearch: true,
       render: (_, r) => {
         if(r.giftCardNums) {
-          return <a>{_}次</a>
+          return <a onClick={()=> {setGiftCardVisible(true); setStoreNo(r.storeNo); setData(r)}}>{_}次</a>
         } else {
           return <span>-</span>
         }
@@ -156,6 +158,15 @@ const PromotionActivityManagement: FC = () => {
         <SaveCard
           visible={saveCardVisible}
           setVisible={setSaveCardVisible}
+          data={data}
+        />
+      }
+      {
+        giftCardVisible&&
+        <GiftCard
+          visible={giftCardVisible}
+          setVisible={setGiftCardVisible}
+          id={storeNo}
           data={data}
         />
       }

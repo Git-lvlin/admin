@@ -59,3 +59,13 @@ export const saveCardSendLog = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+
+// 指定送卡记录
+export const getCardSendLogList = async (params = {}, options = {}) => {
+  return await request('/auth/card/cardUser/getCardSendLogList', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
