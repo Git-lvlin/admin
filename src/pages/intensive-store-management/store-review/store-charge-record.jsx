@@ -38,11 +38,11 @@ export default (props) => {
       dataIndex: 'title',
       align: 'center',
     },
-    {
-      title: '开通类型',
-      dataIndex: 'renew',
-      align: 'center',
-    },
+    // {
+    //   title: '开通类型',
+    //   dataIndex: 'renew',
+    //   align: 'center',
+    // },
     {
       title: '缴费金额(元)',
       dataIndex: 'payAmount',
