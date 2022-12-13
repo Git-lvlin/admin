@@ -11,6 +11,8 @@ import { Button } from "antd"
 import moment from "moment"
 
 import Detail from '../normal-order/detail';
+import IntensiveDetail from '../intensive-order/supplier-order/detail';
+import NewShopkeeperOrderDetail from '@/pages/financial-management/common-popup/newShopkeeperOrderDetail'
 import CheckBillingInformation from './check-billing-information'
 import RefuseInvoice from './refuse-invoice'
 import CheckTheInvoice from './check-the-invoice'
@@ -22,7 +24,9 @@ import ModifyBillingInformation from './modify-billing-information'
 export default function GenerationManagement () {
   const [refusevisible, setRefuseVisible] = useState<boolean>(false)
   const [detailVisible, setDetailVisible] = useState(false);
+  const location = useLocation();
   const isPurchase = useLocation().pathname.includes('purchase')
+  const isDocumentary = location.pathname.includes('documentary')
   const [checkVisible, setCheckVisible] = useState<boolean>(false)
   const [lookVisible, setLookVisible] = useState<boolean>(false)
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false)
@@ -178,12 +182,38 @@ export default function GenerationManagement () {
         options={false}
         search={false}
       />
-      {detailVisible &&
+      {detailVisible&&msgDetail?.orderType==2 &&
         <Detail
           orderSn={msgDetail?.orderNo}
           visible={detailVisible}
           setVisible={setDetailVisible}
           isPurchase={isPurchase}
+        />
+      }
+      {detailVisible&&msgDetail?.orderType==18 &&
+        <Detail
+          id={msgDetail?.orderNo}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
+        />
+      }
+      {detailVisible&&msgDetail?.orderType==5 &&
+        <IntensiveDetail
+          id={msgDetail?.orderNo}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          isPurchase={isPurchase}
+          skuId={msgDetail?.goodsInfo[0]?.skuId}
+          isDocumentary={isDocumentary}
+        />
+      }
+      {detailVisible&&msgDetail?.orderType==30 &&
+        <NewShopkeeperOrderDetail
+          id={msgDetail?.orderNo}
+          orderType={30}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
         />
       }
       {checkVisible&&
