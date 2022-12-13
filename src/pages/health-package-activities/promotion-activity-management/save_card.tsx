@@ -17,7 +17,7 @@ const PopSubmit: FC<PopSubmitProps> = ({visible, setVisible, data, back}) => {
 
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
-      saveCardSendLog({...data}, {showSuccess: true}).then(res => {
+      saveCardSendLog({...data, expireTime: moment(data?.expireTime).unix()}, {showSuccess: true}).then(res => {
         if(res.code === 0) {
           back()
           return resolve()
@@ -77,7 +77,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
     form.current?.setFieldsValue({
       storeMobile: data?.memberPhone,
       realName: data?.realName,
-      storeNo: data?.storeHouseNumber,
+      storeNo: data?.storeNo,
       storeName: data?.storeName,
       storeMemberId: data?.memberId
     })

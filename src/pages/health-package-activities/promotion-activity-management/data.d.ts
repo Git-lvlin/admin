@@ -5,7 +5,7 @@ export type DetailProps = {
 }
 
 export type DataProps = {
-  storeHouseNumber: string
+  storeNo: string
   storeName: string
   address: string
   realName: string
@@ -40,6 +40,7 @@ export type PopSubmitProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: {
     ownerMobile: string
+    expireTime: string
   }
   back: () => void
 }
