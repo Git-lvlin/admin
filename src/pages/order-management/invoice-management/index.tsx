@@ -182,17 +182,9 @@ export default function GenerationManagement () {
         options={false}
         search={false}
       />
-      {detailVisible&&msgDetail?.orderType==2 &&
+      {detailVisible&&msgDetail?.orderType!=5 &&msgDetail?.orderType!=30 &&
         <Detail
           orderSn={msgDetail?.orderNo}
-          visible={detailVisible}
-          setVisible={setDetailVisible}
-          isPurchase={isPurchase}
-        />
-      }
-      {detailVisible&&msgDetail?.orderType==18 &&
-        <Detail
-          id={msgDetail?.orderNo}
           visible={detailVisible}
           setVisible={setDetailVisible}
           isPurchase={isPurchase}
