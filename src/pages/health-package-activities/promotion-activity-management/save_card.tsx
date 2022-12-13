@@ -1,9 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ProForm, { ModalForm, ProFormDatePicker, ProFormDigit, ProFormText } from '@ant-design/pro-form'
 import moment from 'moment'
+import { Space } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import type { FC } from 'react'
-import type { SaveCardProps } from './data'
+import type { SaveCardProps, PopSubmitProps } from './data'
 import type { FormInstance } from '@ant-design/pro-form'
 import type { RangePickerProps } from 'antd/es/date-picker'
 
@@ -11,7 +13,64 @@ import Upload from '@/components/upload'
 import styles from './styles.less'
 import { searchByMoreCondition, saveCardSendLog } from "@/services/health-package-activities/promotion-activity-management"
 
-const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
+const PopSubmit: FC<PopSubmitProps> = ({visible, setVisible, data, back}) => {
+
+  const submit = () => {
+    return new Promise<void>((resolve, reject) => {
+      saveCardSendLog({...data}, {showSuccess: true}).then(res => {
+        if(res.code === 0) {
+          back()
+          return resolve()
+        } else {
+          setVisible(false)
+          return reject()
+        }
+      })
+    })
+  }
+
+  const Title: FC = () => {
+    return (
+      <>
+        <Space>
+          <ExclamationCircleOutlined style={{color: '#FAAD14'}}/>
+          <div>请确认要为用户({data?.ownerMobile})赠送吸氢服务次数？</div>
+        </Space>
+      </>
+    )
+  }
+  
+  return (
+    <ModalForm
+      visible={visible}
+      onVisibleChange={setVisible}
+      width={450}
+      title={<Title/>}
+      onFinish={async () => {
+        await submit()
+        return true
+      }}
+      modalProps={{
+        destroyOnClose: true,
+        closable: false
+      }}
+      submitter={{
+        searchConfig: {
+          submitText: '确认转赠',
+          resetText: '取消转赠',
+        },
+      }}
+    >
+      <div style={{color: '#F04134'}}>确认后立即生效且无法取消！</div>
+      <div style={{color: '#999999'}}>你还要继续吗？</div>
+    </ModalForm>
+  )
+}
+
+const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
+  const [flag, setFlag] = useState<boolean>(false)
+  const [popVisible, setPopVisible] = useState<boolean>(false)
+  const [valueData, setValueData] = useState<any>()
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -19,7 +78,8 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
       storeMobile: data?.memberPhone,
       realName: data?.realName,
       storeNo: data?.storeHouseNumber,
-      storeName: data?.storeName
+      storeName: data?.storeName,
+      storeMemberId: data?.memberId
     })
   }, [data])
 
@@ -35,26 +95,20 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
     })
   }
 
-  const submit = (e: any) => {
-    return new Promise<void>((resolve, reject) => {
-      saveCardSendLog({...e}, {showSuccess: true}).then(res => {
-        if(res.code === 0) {
-          return resolve()
-        } else {
-          return reject()
-        }
-      })
-    })
-  }
-
   return (
     <ModalForm
       visible={visible}
       onVisibleChange={setVisible}
       title='增加吸氢服务次数'
       onFinish={async(values)=> {
-        await submit(values)
-        return true
+        setValueData(values)
+        setPopVisible(true)
+      }}
+      submitter={{
+        searchConfig: {
+          submitText: '提交',
+          resetText: '返回',
+        },
       }}
       width={700}
       modalProps={{
@@ -63,6 +117,11 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
       layout='horizontal'
       formRef={form}
     >
+      <ProFormText
+        label='店主Id'
+        name='storeMemberId'
+        hidden
+      />
       <ProFormText
         label='店主手机'
         name='storeMobile'
@@ -86,6 +145,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
       <ProFormText
         label='增加吸氢服务的用户手机'
         name='ownerMobile'
+        extra={flag ? <span className={styles.extra}>此用户已注册！</span> : ''}
         rules={[
           () => ({
             required: true,
@@ -93,10 +153,13 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
               if (/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/g.test(value)) {
                 const res = await verifyPhone(value)
                 if(res.data.records.length > 0) {
-                  return Promise.reject(new Error('该用户已注册！'))
-                } 
+                  setFlag(true)
+                } else {
+                  return Promise.reject(new Error('此手机用户还未注册，无法调整吸氢服务次数，请先让用户在平台注册！'))
+                }
                 return Promise.resolve()
               } else {
+                setFlag(false)
                 return Promise.reject(new Error('请输入正确的用户手机'))
               }
             }
@@ -118,7 +181,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
                 if((/^[1-9]\d*$/).test(value)) {
                   return Promise.resolve()
                 }
-                return Promise.reject(new Error('请输入非0整数'))
+                return Promise.reject(new Error('请输入大于0的整数'))
               }
             })
           ]}
@@ -135,7 +198,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
       <ProForm.Item
         label='上传店主申请调整吸氢服务次数凭证'
         name='url'
-        rules={[{required: true, message: '请上传店主申请调整吸氢服务次数的凭证文件'}]}
+        rules={[{message: '请上传店主申请调整吸氢服务次数的凭证文件'}]}
       >
         <Upload/>
       </ProForm.Item>
@@ -151,13 +214,26 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data}) => {
             validator: (_, value) => {
               if((/^[1-9]\d*$/).test(value)) {
                 return Promise.resolve()
+              } else {
+                if(!value) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('请输入大于0的整数'))
               }
-              return Promise.reject(new Error('请输入非0整数'))
             }
           })
         ]}
         width='md'
       />
+      {
+        popVisible &&
+        <PopSubmit
+          visible={popVisible}
+          setVisible={setPopVisible}
+          data={valueData}
+          back={callback}
+        />
+      }
     </ModalForm>
   )
 }

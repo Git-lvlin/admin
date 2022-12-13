@@ -1,105 +1,110 @@
 import { useState, useEffect } from 'react'
-import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
-import { Typography } from 'antd'
+import { Typography, Space, DatePicker  } from 'antd'
 import moment from 'moment'
 
 import type { FC } from 'react'
-import type { CardTitleProps } from './data'
+import type { Moment } from 'moment'
+import type { CardTitleProps, DataOverviewProps } from './data'
 
 import styles from './styles.less'
 import Yuan from '../components/Yuan'
 import { cityAgencyStatData } from '@/services/data-board/city-office-data'
 
 const { Text, Title } = Typography
+const { RangePicker } = DatePicker
 
-const CardTitle: FC<CardTitleProps> = ({times, setTimes}) => {
+const CardTitle: FC<CardTitleProps> = ({rangePickerValue, handleRangePickerChange}) => {
 
   return(
-    <ProForm
-      style={{ 
-        backgroundColor: '#fff', 
-        padding: 10,
-      }}
-      layout="inline"
-      onFinish={async(value) => {
-        setTimes(value?.time)
-      }}
-    >
-      <h3 className={styles.title}>运营中心数据总览</h3>
-      <ProFormDateRangePicker 
-        label="时间范围"
-        name="time"
-        initialValue={times}
-        allowClear={false}
-      />
-    </ProForm>
+    <Space>
+      <div>
+        <h3 className={styles.title}>运营中心数据总览</h3>
+      </div>
+      <div>
+        <span>时间范围：</span>
+        <RangePicker 
+          value={rangePickerValue}
+          onChange={handleRangePickerChange}
+          clearIcon={false}
+        />
+      </div>
+    </Space>
   )
 }
 
 const CityOfficeDataOverview = () => {
   const dateNow = moment(+new Date()).format('YYYY-MM-DD')
   const startTimes = moment('20200101').format('YYYY-MM-DD')
-  const [times, setTimes] = useState([startTimes, dateNow])
-  const [data, setData] = useState(null)
+  const [rangePickerValue, setRangePickerValue] = useState<Moment[]>([moment(startTimes), moment(dateNow)])
+  const [data, setData] = useState<DataOverviewProps>()
   const [loading, setLoading] = useState(false)
 
   useEffect(()=>{
     setLoading(true)
     cityAgencyStatData({
-      startTime: times?.[0],
-      endTime: times?.[1]
+      startTime: rangePickerValue?.[0].format('YYYY-MM-DD'),
+      endTime: rangePickerValue?.[1].format('YYYY-MM-DD')
     }).then(res=> {
       setData(res.data)
     }).finally(()=> {
       setLoading(false)
     })
     return ()=>{
-      setData(null)
+      setData({})
     }
-  }, [times])
+  }, [rangePickerValue])
+
+  const handleRangePickerChange = (value: Moment[]) => {
+    setRangePickerValue(value)
+  }
 
   return (
     <div className={styles.community}>
       <ProCard
         gutter={[36, 36]}
         headerBordered
-        title={<CardTitle times={times} setTimes={setTimes}/>}
+        title={
+          <CardTitle
+            rangePickerValue={rangePickerValue}
+            handleRangePickerChange={handleRangePickerChange}
+          />
+        }
       >
         <ProCard bordered loading={loading}>
           <Text>已创建的市办事处总数</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.accountNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
           <Text>已登录过的市办事处数量</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.accountLoginNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
           <Text>未登录的市办事处数量</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.accountUnloginNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
           <Text>总交易业绩金额</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.totalAmount}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
           <Text>总交易笔数</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.orderNum}</Yuan>
           </Title>
         </ProCard>
         <ProCard bordered loading={loading}>
           <Text>总交易业绩佣金</Text>
           <Title level={3}>
-            <Yuan>{}</Yuan>
+            <Yuan>{data?.totalCommission}</Yuan>
           </Title>
         </ProCard>
       </ProCard>

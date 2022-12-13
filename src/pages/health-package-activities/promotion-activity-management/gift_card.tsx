@@ -2,14 +2,14 @@ import moment from 'moment'
 import { 
   Button, 
   Modal, 
-  Image, 
-  Row, 
-  Col 
+  Image,
 } from 'antd'
 import ProTable from '@ant-design/pro-table'
+import ProDescriptions from '@ant-design/pro-descriptions'
 
 import type { FC } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { GiftCardProps } from './data'
 
 import { getCardSendLogList } from '@/services/health-package-activities/promotion-activity-management'
@@ -20,14 +20,34 @@ const GiftCard: FC<GiftCardProps> = ({visible, setVisible, id, data}) => {
     setVisible(false)
   }
 
+  const DescColumns: ProDescriptionsItemProps[] = [
+    {
+      title: '店主手机',
+      dataIndex: 'memberPhone'
+    },
+    {
+      title: '店主姓名',
+      dataIndex: 'realName'
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'storeHouseNumber'
+    },
+    {
+      title: '店铺名称',
+      dataIndex: 'storeName'
+    },
+  ]
+
   const Title = () => {
     return (
-      <Row gutter={[32, 8]}>
-        <Col span={6}>店主手机：{data?.memberPhone}</Col>
-        <Col span={6}>店主姓名：{data?.realName}</Col>
-        <Col span={6}>店铺编号：{data?.storeHouseNumber}</Col>
-        <Col span={6}>店铺名称：{data?.storeName}</Col>
-      </Row>
+      <ProDescriptions
+        columns={DescColumns}
+        column={4}
+        bordered
+        layout='vertical'
+        dataSource={data}
+      />
     )
   }
 
@@ -79,7 +99,7 @@ const GiftCard: FC<GiftCardProps> = ({visible, setVisible, id, data}) => {
       title: '操作时间',
       dataIndex: 'createTime',
       align: 'center',
-      render: (_, r) => moment(r.createTime * 1000).format('YYYY-MM-DD')
+      render: (_, r) => moment(r.createTime * 1000).format('YYYY-MM-DD HH:mm:ss')
     },
   ]
 

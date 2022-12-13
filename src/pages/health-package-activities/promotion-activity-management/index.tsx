@@ -159,6 +159,7 @@ const PromotionActivityManagement: FC = () => {
           visible={saveCardVisible}
           setVisible={setSaveCardVisible}
           data={data}
+          callback={()=> {setSaveCardVisible(false); actRef.current?.reload()}}
         />
       }
       {

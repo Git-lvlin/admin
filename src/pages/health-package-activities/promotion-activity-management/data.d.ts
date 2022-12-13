@@ -11,6 +11,7 @@ export type DataProps = {
   realName: string
   memberPhone: string
   img: [string]
+  memberId: string
 }
 
 export type ImageDetailProps = {
@@ -24,6 +25,7 @@ export type SaveCardProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: DataProps
+  callback: () => void
 }
 
 export type GiftCardProps = {
@@ -31,4 +33,13 @@ export type GiftCardProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   id?: string
   data?: DataProps
+}
+
+export type PopSubmitProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  data?: {
+    ownerMobile: string
+  }
+  back: () => void
 }
