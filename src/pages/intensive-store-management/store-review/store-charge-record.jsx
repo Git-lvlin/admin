@@ -135,6 +135,7 @@ export default (props) => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         params={{
           storeNo
         }}
@@ -145,13 +146,6 @@ export default (props) => {
         options={false}
         search={false}
       />
-      {/* {
-        visible&&
-        <Detail
-          visible={visible}
-          setVisible={setVisible}
-        />
-      } */}
     </DrawerForm>
   )
 }
