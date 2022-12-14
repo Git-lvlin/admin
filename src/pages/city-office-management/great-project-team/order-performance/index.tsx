@@ -43,22 +43,16 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '办事处名称',
+      title: '大团队长手机号',
       dataIndex: 'cityBusinessDeptName',
       align: 'center',
       order: 4,
       fieldProps:{
-        placeholder:'请输入办事处名称'
+        placeholder:'请输入大团队长手机号码'
       },
     },
     {
       title: '交易时间',
-      dataIndex: 'createTime',
-      valueType: 'dateRange',
-      hideInTable: true
-    },
-    {
-      title: '业绩类型',
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
@@ -88,7 +82,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '全款销售提成（元）',
+      title: '氢原子全款销售提成',
       dataIndex: 'totalSaleCommission',
       align: 'center',
       render: (_,data)=>{
@@ -102,7 +96,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '托管购买交易提成（元）',
+      title: '新集约批发业绩提成',
       dataIndex: 'totalBuyCommission',
       align: 'center',
       render: (_,data)=>{
@@ -115,26 +109,12 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '运营租赁服务费提成(元)',
+      title: '健康套餐订单提成',
       dataIndex: 'totalTrainingCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
-        }else{
-          return '0.00'
-        }
-
-      },
-      hideInSearch: true
-    },
-    {
-      title: '托管租赁管理费提成（元）',
-      dataIndex: 'totalLeaseCommission',
-      align: 'center',
-      render: (_,data)=>{
-        if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(5)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
@@ -177,10 +157,9 @@ export default function TransactionData () {
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
         <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalTradeCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总全款销售提成">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总托管购买交易提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总运营租赁服务费提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="托管租赁管理费提成">{amountTransform(detailList?.totalLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="健康套餐订单提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.totalBootCommission, '/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="租赁管理费提成">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
