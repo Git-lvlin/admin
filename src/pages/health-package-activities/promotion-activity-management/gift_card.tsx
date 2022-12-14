@@ -119,7 +119,10 @@ const GiftCard: FC<GiftCardProps> = ({visible, setVisible, id, data}) => {
         columns={columns}
         headerTitle={<Title/>}
         search={false}
-        pagination={false}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 5
+        }}
         params={{storeNo: id}}
         request={getCardSendLogList}
         options={false}

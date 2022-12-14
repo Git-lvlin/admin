@@ -63,9 +63,19 @@ export const saveCardSendLog = async (params = {}, options = {}) => {
 
 // 指定送卡记录
 export const getCardSendLogList = async (params = {}, options = {}) => {
-  return await request('/auth/card/cardUser/getCardSendLogList', {
+  const { current = 1, pageSize = 5, ...rest } = params
+  const res = await request('/auth/card/cardUser/getCardSendLogList', {
     method: 'POST',
-    data: params,
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
     ...options
   })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
 }
