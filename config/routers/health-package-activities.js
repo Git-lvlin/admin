@@ -33,6 +33,12 @@ export default {
       path: '/health-package-activities/health-package-performance-statistics',
       component: './health-package-activities/health-package-performance-statistics',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-package-commission',
+      path: '/health-package-activities/health-package-commission',
+      component: './health-package-activities/health-package-commission',
+      wrappers: [RouteWatcher],
     }
   ]
 }

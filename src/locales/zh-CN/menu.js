@@ -460,5 +460,6 @@ export default {
   'menu.health-package-activities.divide-configure': '健康套餐分成配置', 
   'menu.health-package-activities.health-package-order-management': '健康套餐订单管理', 
   'menu.health-package-activities.health-package-performance-statistics': '健康套餐业绩统计', 
+  'menu.health-package-activities.health-package-commission': '健康套餐推荐提成', 
 
 };
