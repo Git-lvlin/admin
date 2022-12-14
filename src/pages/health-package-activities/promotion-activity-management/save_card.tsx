@@ -202,29 +202,6 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
       >
         <Upload/>
       </ProForm.Item>
-      <ProFormDigit
-        label='店主已申请次数'
-        name='applyNum'
-        extra={<span className={styles.extra}>每次申请限增加1次吸氢服务，次数不能重复</span>}
-        fieldProps={{
-          addonAfter: '次'
-        }}
-        rules={[
-          ()=> ({
-            validator: (_, value) => {
-              if((/^[1-9]\d*$/).test(value)) {
-                return Promise.resolve()
-              } else {
-                if(!value) {
-                  return Promise.resolve()
-                }
-                return Promise.reject(new Error('请输入大于0的整数'))
-              }
-            }
-          })
-        ]}
-        width='md'
-      />
       {
         popVisible &&
         <PopSubmit

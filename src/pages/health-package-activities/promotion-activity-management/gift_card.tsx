@@ -86,11 +86,6 @@ const GiftCard: FC<GiftCardProps> = ({visible, setVisible, id, data}) => {
       }
     },
     {
-      title: '店主已申请次数',
-      dataIndex: 'applyNum',
-      align: 'center'
-    },
-    {
       title: '操作人',
       dataIndex: 'lastEditor',
       align: 'center'
