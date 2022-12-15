@@ -444,7 +444,9 @@ const StoreList = (props) => {
       valueType: 'select',
       valueEnum: {
         10: '正常申请',
+        11: 'VIP社区店',
         20: '绿色通道申请',
+        30: '健康生活馆'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -452,8 +454,13 @@ const StoreList = (props) => {
     {
       title: '申请类型',
       dataIndex: storeType === 'freshStores' ? 'applyType' : ['applyType', 'code'],
-      valueType: 'text',
-      render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        11: 'VIP社区店',
+        20: '绿色通道申请',
+        30: '健康生活馆'
+      },
       hideInSearch: true,
       hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
