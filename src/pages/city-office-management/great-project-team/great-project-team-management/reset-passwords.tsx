@@ -31,7 +31,7 @@ export default (props) => {
   },[])
   return (
     <ModalForm
-      title={`请确认要重置事业部：${msgDetail?.agencyName}（账号：${msgDetail?.accountName}）的登录密码？`}
+      title={`请确认要重置大团队长：${msgDetail?.agencyName}（账号：${msgDetail?.accountName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -45,7 +45,7 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-            <span style={{display:'inline-block',marginRight:'430px',color:'#979797'}}>重置密码将同步发送给事业部</span>,
+            <span style={{display:'inline-block',marginRight:'330px',color:'#979797'}}>重置密码将同步发送给大团队长：{msgDetail?.agencyName}</span>,
             ...defaultDoms
             ];
         },

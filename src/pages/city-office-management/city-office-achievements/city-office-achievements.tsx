@@ -59,9 +59,16 @@ export default function TransactionData () {
     },
     {
       title: '业绩类型',
-      dataIndex: 'createTime',
-      valueType: 'dateRange',
-      hideInTable: true
+      dataIndex: 'type',
+      valueType: 'select',
+      hideInTable: true,
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      fieldProps:{
+        placeholder:'请选择业绩类型'
+      }
     },
     {
       title: '累计业绩（元）',

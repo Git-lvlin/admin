@@ -119,17 +119,23 @@ export default (props) => {
       />
       <ProFormText
         width={250}
-        label="办事处名称"
+        label="姓名"
         name="name"
         readonly
       />
       <ProFormText
         width={250}
-        label="办事处登录账号"
+        label="手机号"
+        name="managerPhone"
+        readonly
+      />
+      <ProFormText
+        width={250}
+        label="登录账号"
         name="userName"
         placeholder='请输入登录账号'
         rules={[
-          { required: true, message: '请输入办事处登录账号' },
+          { required: true, message: '请输入登录账号' },
           {validator: checkConfirm2}
         ]}
         fieldProps={{
@@ -138,11 +144,11 @@ export default (props) => {
       />
       <ProFormText.Password
         width={250}
-        label="办事处登录密码"
+        label="登录密码"
         name="password"
         placeholder='请输入登录密码'
         rules={[
-          // { required: true, message: '请输入办事处登录密码' },
+          // { required: true, message: '请输入登录密码' },
           {validator: checkConfirm3}
         ]}
         fieldProps={{
@@ -152,29 +158,6 @@ export default (props) => {
           autoComplete: 'new-password'
         }}
         extra={<p style={{color:'#FFB45D'}}>未填写时保持已有的密码</p>}
-      />
-      <ProFormText
-        width={250}
-        label="负责人"
-        name="manager"
-        placeholder='请输入负责人姓名'
-        rules={[
-          { required: true, message: '请输入负责人姓名' },
-          { validator: activityName }
-        ]}
-        fieldProps={{
-          maxLength:10
-        }}
-      />
-      <ProFormText
-        width={250}
-        label="负责人手机号"
-        name="managerPhone"
-        placeholder='请输入负责人手机号'
-        rules={[
-          { required: true, message: '请输入负责人手机号' },
-          {validator: checkConfirm}
-        ]}
       />
     </DrawerForm >
   );

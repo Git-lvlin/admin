@@ -69,6 +69,18 @@ export default (props) => {
       hideInTable: true,
     },
     {
+      title: '业绩类型',
+      dataIndex: 'type',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      fieldProps:{
+        placeholder:'请选择业绩类型'
+      }
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNo',
       align: 'center',
