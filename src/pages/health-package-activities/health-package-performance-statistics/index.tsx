@@ -179,10 +179,12 @@ const HealthPackagePerformance: FC = () => {
 
   return (
     <PageContainer className={styles.desc}>
+      <div className={styles.aggregate}>
+        <Aggregate form={searchConfig}/>
+      </div>
       <ProTable
         rowKey='agencyId'
         columns={columns}
-        headerTitle={<Aggregate form={searchConfig}/>}
         params={{}}
         options={false}
         onSubmit={()=>{

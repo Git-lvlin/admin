@@ -44,6 +44,7 @@ const GiftCard: FC<GiftCardProps> = ({visible, setVisible, id, data}) => {
       <ProDescriptions
         columns={DescColumns}
         column={4}
+        style={{width: '39.5vw'}}
         bordered
         layout='vertical'
         dataSource={data}

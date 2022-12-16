@@ -5,7 +5,7 @@ export type DetailProps = {
 }
 
 export type DataProps = {
-  storeNo: string
+  storeHouseNumber: string
   storeName: string
   address: string
   realName: string

@@ -77,7 +77,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
     form.current?.setFieldsValue({
       storeMobile: data?.memberPhone,
       realName: data?.realName,
-      storeNo: data?.storeNo,
+      storeHouseNumber: data?.storeHouseNumber,
       storeName: data?.storeName,
       storeMemberId: data?.memberId
     })
@@ -134,7 +134,7 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
       />
       <ProFormText
         label='店铺编号'
-        name='storeNo'
+        name='storeHouseNumber'
         readonly
       />
       <ProFormText
