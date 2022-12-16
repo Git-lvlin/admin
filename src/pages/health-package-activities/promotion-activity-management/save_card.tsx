@@ -79,7 +79,8 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
       realName: data?.realName,
       storeHouseNumber: data?.storeHouseNumber,
       storeName: data?.storeName,
-      storeMemberId: data?.memberId
+      storeMemberId: data?.memberId,
+      storeNo: data?.storeNo
     })
   }, [data])
 
@@ -120,6 +121,11 @@ const SaveCard: FC<SaveCardProps> = ({visible, setVisible, data, callback}) => {
       <ProFormText
         label='店主Id'
         name='storeMemberId'
+        hidden
+      />
+      <ProFormText
+        label='店铺编号'
+        name='storeNo'
         hidden
       />
       <ProFormText

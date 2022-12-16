@@ -12,6 +12,7 @@ export type DataProps = {
   memberPhone: string
   img: [string]
   memberId: string
+  storeNo: string
 }
 
 export type ImageDetailProps = {
