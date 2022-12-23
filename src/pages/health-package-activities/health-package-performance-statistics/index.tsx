@@ -179,9 +179,6 @@ const HealthPackagePerformance: FC = () => {
 
   return (
     <PageContainer className={styles.desc}>
-      <div className={styles.aggregate}>
-        <Aggregate form={searchConfig}/>
-      </div>
       <ProTable
         rowKey='agencyId'
         columns={columns}
@@ -193,6 +190,7 @@ const HealthPackagePerformance: FC = () => {
         onReset={()=> {
           setSearchConfig(undefined)
         }}
+        headerTitle={<Aggregate form={searchConfig}/>}
         request={cardCityAgencyOrderPm}
         formRef={form}
         pagination={{

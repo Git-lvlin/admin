@@ -8,7 +8,8 @@ import type { Moment } from 'moment'
 import type { CardTitleProps } from './data'
 
 import styles from './styles.less'
-import { cityAgencyStatData } from '@/services/data-board/city-office-data'
+import { cityAgencyStatDataPoint } from '@/services/data-board/city-office-data'
+import PieChart from './pie-chart'
 
 const { RangePicker } = DatePicker
 
@@ -35,11 +36,20 @@ const ProportionOfficePerformance = () => {
   const dateNow = moment(+new Date()).format('YYYY-MM-DD')
   const startTimes = moment('20200101').format('YYYY-MM-DD')
   const [rangePickerValue, setRangePickerValue] = useState<Moment[]>([moment(startTimes), moment(dateNow)])
+  const [data, setData] = useState([])
 
   const handleRangePickerChange = (value: Moment[]) => {
-    
     setRangePickerValue(value)
   }
+
+  useEffect(()=> {
+    cityAgencyStatDataPoint({
+      startTime: rangePickerValue && rangePickerValue[0].format('YYYY-MM-DD HH:mm:ss'),
+      endTime: rangePickerValue && rangePickerValue[1].format('YYYY-MM-DD HH:mm:ss')
+    }).then(res => {
+      setData(res.data)
+    })
+  }, [rangePickerValue])
 
   return (
     <div className={styles.community}>
@@ -56,11 +66,11 @@ const ProportionOfficePerformance = () => {
         <ProCard colSpan="50%">
           <div className={styles.performance}>
             <h3>各业务交易业绩占比</h3>
-            222
+            <PieChart data={data}/>
           </div>
         </ProCard>
         <ProCard title="流量占用情况">
-          <div style={{ height: 360 }}>右侧内容</div>
+          <div>右侧内容</div>
         </ProCard>
         </ProCard>
     </div>

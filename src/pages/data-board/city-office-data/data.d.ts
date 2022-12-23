@@ -24,3 +24,7 @@ export type DataOverviewProps = {
   totalCommission?: string
   accountUnloginNum?: number
 }
+
+export type PieChartProps = {
+  data?: any
+}

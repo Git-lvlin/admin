@@ -34,5 +34,11 @@ export default {
       component: './city-office-management/health-package-performance',
       wrappers: [RouteWatcher], 
     },
+    {
+      name: 'goods-settlement',
+      path: '/city-office-management/goods-settlement',
+      component: './city-office-management/goods-settlement',
+      wrappers: [RouteWatcher], 
+    },
   ]
 }

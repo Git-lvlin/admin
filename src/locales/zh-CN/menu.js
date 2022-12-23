@@ -443,6 +443,7 @@ export default {
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
+  'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
