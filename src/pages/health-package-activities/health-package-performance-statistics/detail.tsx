@@ -3,8 +3,9 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProList from '@ant-design/pro-list';
-// import { queryLogPage, queryById } from "@/services/user-management/hydrogen-atom-user-management"
+import { cardCityAgencyOrderPmDetail } from '@/services/health-package-activities/health-package-performance-statistics'
 import { useEffect, useState } from 'react';
+import { amountTransform } from '@/utils/utils'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -22,17 +23,10 @@ const formItemLayout = {
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
-  const [duraMax,setDuraMax]= useState()
-  useEffect(()=>{
-    // queryById({id:msgDetail?.id}).then(res=>{
-    //   if(res?.code === 0){
-    //     setDuraMax(res.data)
-    //   }
-    // })
-  },[])
+
   return (
     <DrawerForm
-      title={` 店铺 ${msgDetail?.memberPhone}深2-012  绑定套餐订单明细`}
+      title={` 店铺 ${msgDetail?.houseNumber}  绑定套餐订单明细`}
       onVisibleChange={setVisible}
       visible={visible}
       width={1000}
@@ -54,34 +48,37 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
-      <p style={{ padding:'10px 10px',background:"#B6B6B6",color:'#fff' }}>店主：{duraMax?.freeTimes}   绑定套餐订单数： {duraMax?.usedTimes}单</p>
+      <p style={{ padding:'10px 10px',background:"#B6B6B6",color:'#fff' }}>店主：{msgDetail?.memberPhone}   绑定套餐订单数： {msgDetail?.orderNums}单</p>
       <ProList
         search={false}
         rowKey="name"
-        // request={queryLogPage}
+        request={cardCityAgencyOrderPmDetail}
         params={{
-          freeUseId:msgDetail?.id,
+          storeNo:msgDetail?.storeNo,
         }}
         pagination={{
-          pageSize: 5,
+          pageSize: 10,
           showQuickJumper: true,
         }}
         split={true}
         metas={{
           title: {
-            dataIndex: 'createTime',
+            dataIndex: 'packageName',
           },
           description: {
-            dataIndex: 'timeSum',
-            render:(_)=>{
-              return <p>200{_}次</p>
+            dataIndex: 'cardNum',
+            render:(_,data)=>{
+              return <div>
+                      <p>{data?.createTime}</p>
+                      <p>{data?.cardNum?data?.cardNum:0}次</p>
+                     </div>
             }
           },
           actions:{
             render:(text, row)=>(
             <div>
-              <p style={{float:'right',color:'#262626'}}>订单金额：{row?.imei}</p><br/>
-              <p style={{color:'#999999',float:'right'}}>订单号：{row?.memberPhone} <br/>下单人：{row?.shopMemberAccount}</p>
+              <p style={{float:'right',color:'#262626'}}>订单金额：{amountTransform(row?.payAmount,'/').toFixed(2)}</p><br/>
+              <p style={{color:'#999999',float:'right'}}>订单号：{row?.orderSn} <br/>下单人：{row?.memberPhone}</p>
             </div> 
             )
           }

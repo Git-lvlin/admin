@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect,useRef } from "react"
 import ProTable from '@ant-design/pro-table'
 import type { ProColumns } from '@ant-design/pro-table'
 import PageContainer from "@/components/PageContainer"
@@ -10,30 +10,27 @@ import AddressCascader from '@/components/address-cascader'
 import RangeInput from '@/components/range-input'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import { cardCityAgencyOrderPm,cardCityAgencyOrderPmStats } from '@/services/health-package-activities/health-package-performance-statistics'
 
 export default () => {
   const [visible, setVisible] = useState<boolean>(false)
+  const [msgDetail, setMsgDetail] = useState<boolean>(false)
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState()
   const [visit, setVisit] = useState<boolean>(false)
+  const ref=useRef()
   useEffect(() => {
-    const params={
-      agentId:time?.agentId,
-      agentName:time?.agentName,
-      startTime:time?.createTime&&time?.createTime[0],
-      endTime:time?.createTime&&time?.createTime[1]
-    }
-    // cityAgentManageStats(params).then(res=>{
-    //   if(res.code==0){
-    //     setDetailList(res.data[0])
-    //   }
-    // })
+    cardCityAgencyOrderPmStats(time).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data[0])
+      }
+    })
 
   }, [time])
   const columns: ProColumns<TableProps>[] = [
     {
       title: '店主手机',
-      dataIndex: '',
+      dataIndex: 'memberPhone',
       align: 'center',
       fieldProps: {
         placeholder:"请输入店主手机号"
@@ -43,13 +40,13 @@ export default () => {
     },
     {
       title: '店主手机号',
-      dataIndex: '',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '店铺编号',
-      dataIndex: '',
+      dataIndex: 'houseNumber',
       align: 'center',
       order:4,
       hideInTable: true,
@@ -59,7 +56,7 @@ export default () => {
     },
     {
       title: '所属店主店铺编号',
-      dataIndex: '',
+      dataIndex: 'houseNumber',
       align: 'center',
       hideInSearch: true
     },
@@ -72,65 +69,73 @@ export default () => {
     },
     {
       title: '店主店铺所在区域',
-      dataIndex: '',
+      dataIndex: 'area',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '店主店铺地址',
-      dataIndex: '',
+      dataIndex: 'address',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '店铺设备数',
-      dataIndex: '',
+      dataIndex: 'deviceNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '绑定订单数',
-      dataIndex: '',
+      dataIndex: 'orderNums',
       align: 'center',
       hideInTable: true,
-      renderFormItem: () => <RangeInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
-    },
-    {
-      title: '套餐订单数',
-      dataIndex: '',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '业绩总额',
-      dataIndex: '',
-      align: 'center',
-      hideInTable: true,
-      order:3,
       renderFormItem: () => <RangeInput beforePlaceholder='最低单数' afterPlaceholder='最高单数'/>
     },
     {
+      title: '套餐订单数',
+      dataIndex: 'orderNums',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data) =>{
+        return <a onClick={()=>{ setVisible(true),setMsgDetail(data) }}>{_}</a>
+      }
+    },
+    {
+      title: '业绩总额',
+      dataIndex: 'payAmount',
+      align: 'center',
+      hideInTable: true,
+      order:3,
+      renderFormItem: () => <RangeInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
+    },
+    {
       title: '套餐订单总金额',
-      dataIndex: '',
+      dataIndex: 'payAmount',
       align: 'center',
       hideInSearch: true,
       render: (_) =>{
-        return amountTransform(_,'/')
+        return amountTransform(_,'/').toFixed(2)
       }
     },
     {
       title: '套餐总吸氢服务次数',
-      dataIndex: '',
+      dataIndex: 'serviceNums',
       align: 'center',
       hideInSearch: true
     }
   ]
 
   const getFieldValue = (searchConfig) => {
-    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
+    const {dateTimeRange,area,payAmount,orderNums,...rest}=searchConfig.form.getFieldsValue()
     return {
-      startTime1:dateTimeRange&&dateTimeRange[0],
-      startTime2:dateTimeRange&&dateTimeRange[1],
+      provinceId: area&&area[0]?.value,
+      cityId: area&&area[1]?.value,
+      districtId: area&&area[2]?.value,
+      minPayAmount: payAmount&&payAmount?.min,
+      maxPayAmount: payAmount&&payAmount?.max,
+      minOrderNums: orderNums&&orderNums?.min,
+      maxOrderNums: orderNums&&orderNums?.max,
       ...rest,
     }
   }
@@ -138,9 +143,10 @@ export default () => {
   return (
     <PageContainer>
       <ProTable
+        actionRef={ref}
         columns={columns}
         params={{}}
-        // request={}
+        request={cardCityAgencyOrderPm}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
@@ -153,22 +159,25 @@ export default () => {
             <Export
             key='export'
             change={(e) => { setVisit(e) }}
-            type={'bind-box-use-detail-export'}
+            type={'cardCityAgencyOrderPm'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'cardCityAgencyOrderPm'}/>,
           ]
         }}
         onSubmit={(val)=>{
           setTime(val)
         }}
+        onReset={()=>{
+          setTime()
+        }}
         tableExtraRender={(_, data) => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-            <Descriptions.Item  label="绑定套餐的店铺数量">{detailList?.agentNum}  </Descriptions.Item>
-            <Descriptions.Item  label="套餐总订单数">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="套餐总订单金额">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="所有套餐总吸氢服务">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="可用吸氢服务的设备总数">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="绑定套餐的店铺数量">{detailList?.storeNums} 家</Descriptions.Item>
+            <Descriptions.Item  label="套餐总订单数">{detailList?.orderNums} 单</Descriptions.Item>
+            <Descriptions.Item  label="套餐总订单金额">{amountTransform(detailList?.payAmount,'/').toFixed(2)} 元</Descriptions.Item>
+            <Descriptions.Item  label="所有套餐总吸氢服务">{detailList?.serviceNums} 次</Descriptions.Item>
+            <Descriptions.Item  label="可用吸氢服务的设备总数">{detailList?.deviceNum} 台</Descriptions.Item>
           </Descriptions>
         )}
       />
@@ -177,6 +186,8 @@ export default () => {
         <Detail
           visible={visible}
           setVisible={setVisible}
+          msgDetail={msgDetail}
+          onClose={()=>{ ref.current.reload(); }}
         />
       }
     </PageContainer>

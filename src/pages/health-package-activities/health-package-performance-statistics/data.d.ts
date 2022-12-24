@@ -1,23 +1,22 @@
 export type DescriptionsProps = {
-  agentNum: number;
-  hydrogenAmount: number;
-  hydrogenCommission: number;
-  wholesaleCommission: number;
-  totalCommission: number;
-  hydrogenLeaseCommission: number
+  deviceNum: number;
+  payAmount: number;
+  storeNums: number;
+  orderNums: number;
+  serviceNums: number;
 }
 
 export type TableProps = {
-  hydrogenAmount: number;
-  accountId: number;
-  agentId: number;
-  manager: string;
-  accountName: string;
-  hydrogenCommission: number;
-  wholesaleCommission: number;
-  managerPhone: string;
-  agentName: string;
-  totalCommission: number;
-  wholesaleAmount: string;
-  totalAmount: string;
+  area: string;
+  deviceNum: number;
+  storeNo: string;
+  memberPhone: string;
+  payAmount: number;
+  address: string;
+  regionId: number;
+  houseNumber: string;
+  cityId: number;
+  orderNums: number;
+  provinceId: number;
+  serviceNums: number;
 }
