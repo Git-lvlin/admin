@@ -163,6 +163,22 @@ const HealthPackagePerformance: FC = () => {
       render: _ => amountTransform(_, '/'),
       hideInSearch: true
     },
+    {
+      title: '业绩类型',
+      dataIndex: 'teamLeader',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '业绩类型',
+      dataIndex: 'teamLeader',
+      valueType: 'select',
+      valueEnum: {
+        1: '有大团长',
+        0: '没有大团长'
+      },
+      hideInTable: true
+    },
   ]
 
   return (
