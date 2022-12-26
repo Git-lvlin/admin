@@ -8,7 +8,7 @@ import type { Moment } from 'moment'
 import type { CardTitleProps } from './data'
 
 import styles from './styles.less'
-import { cityAgencyStatDataPoint } from '@/services/data-board/city-office-data'
+import { cityAgencyStatDataPoint, cityAgencyStatSaleGoods } from '@/services/data-board/city-office-data'
 import PieChart from './pie-chart'
 
 const { RangePicker } = DatePicker
@@ -37,6 +37,7 @@ const ProportionOfficePerformance = () => {
   const startTimes = moment('20200101').format('YYYY-MM-DD')
   const [rangePickerValue, setRangePickerValue] = useState<Moment[]>([moment(startTimes), moment(dateNow)])
   const [data, setData] = useState([])
+  const [data2, setData2] = useState([])
 
   const handleRangePickerChange = (value: Moment[]) => {
     setRangePickerValue(value)
@@ -48,6 +49,15 @@ const ProportionOfficePerformance = () => {
       endTime: rangePickerValue && rangePickerValue[1].format('YYYY-MM-DD HH:mm:ss')
     }).then(res => {
       setData(res.data)
+    })
+  }, [rangePickerValue])
+
+  useEffect(()=> {
+    cityAgencyStatSaleGoods({
+      startTime: rangePickerValue && rangePickerValue[0].format('YYYY-MM-DD HH:mm:ss'),
+      endTime: rangePickerValue && rangePickerValue[1].format('YYYY-MM-DD HH:mm:ss')
+    }).then(res => {
+      setData2(res.data)
     })
   }, [rangePickerValue])
 
@@ -69,10 +79,13 @@ const ProportionOfficePerformance = () => {
             <PieChart data={data}/>
           </div>
         </ProCard>
-        <ProCard title="流量占用情况">
-          <div>右侧内容</div>
+        <ProCard>
+          <div className={styles.performance}>
+            <h3>生活馆产品按销售类型交易业绩占比</h3>
+            <PieChart data={data2}/>
+          </div>
         </ProCard>
-        </ProCard>
+      </ProCard>
     </div>
   )
 }

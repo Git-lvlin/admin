@@ -30,6 +30,12 @@ const RankingOffice = () => {
     3: cityAgencySortOrderTotalIncome
   }[dataType]
 
+  const code = {
+    1: 'cityAgencySortOrderTotalNum',
+    2: 'cityAgencySortOrderTotalAmount',
+    3: 'cityAgencySortOrderTotalIncome'
+  }[dataType]
+
   useEffect(()=> {
     api?.({
       startTime: rangePickerValue && rangePickerValue[0].format('YYYY-MM-DD HH:mm:ss'),
@@ -79,6 +85,8 @@ const RankingOffice = () => {
             selectDate={selectDate}
             rangePickerValue={rangePickerValue}
             handleRangePickerChange={handleRangePickerChange}
+            code={code}
+            type={purchaseOrder}
           />
         </Space>
       </div>

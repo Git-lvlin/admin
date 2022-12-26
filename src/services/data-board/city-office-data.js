@@ -9,7 +9,7 @@ export const cityAgencySortOrderTotalNum = async (params = {}, options = {}) => 
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     success: res.success
   }
 }
@@ -22,7 +22,7 @@ export const cityAgencySortOrderTotalAmount = async (params = {}, options = {}) 
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     success: res.success
   }
 }
@@ -35,7 +35,7 @@ export const cityAgencySortOrderTotalIncome = async (params = {}, options = {}) 
     ...options
   })
   return {
-    data: res.data,
+    data: res.data.records,
     success: res.success
   }
 }
@@ -56,6 +56,19 @@ export const cityAgencyStatData = async (params = {}, options = {}) => {
 // 市办事处排名-业绩占比
 export const cityAgencyStatDataPoint = async (params = {}, options = {}) => {
   const res = await request('/auth/java-admin/report/config/cityAgencyStatDataPoint', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success
+  }
+}
+
+// 业绩占比
+export const cityAgencyStatSaleGoods = async (params = {}, options = {}) => {
+  const res = await request('/auth/java-admin/report/config/cityAgencyStatSaleGoods', {
     method: 'POST',
     data: params,
     ...options

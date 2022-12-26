@@ -1,11 +1,29 @@
+import { useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
+import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import { cityAgencyStatDataOther } from '@/services/data-board/city-office-data'
 import Cascader from '@/components/address-cascader'
+import Export from '@/components/export'
 
 const OtherData = () => {
+
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { time, area, ...rest } = form.current?.getFieldsValue()
+    return {
+      province_id: area && area[0]?.value,
+      city_id: area && area[1]?.value,
+      area_id: area && area[2]?.value,
+      startTime: time && moment(time[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time && moment(time[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -98,13 +116,19 @@ const OtherData = () => {
         pageSize: 10,
         showQuickJumper: true
       }}
+      formRef={form}
       params={{}}
       request={cityAgencyStatDataOther}
       options={false}
       search={{
         labelWidth: 100,
         optionRender: (searchConfig, props, dom) => [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export
+            key='export'
+            type='cityAgencyStatDataOther'
+            conditions={getFieldsValue}
+          />
         ]
       }}
     />

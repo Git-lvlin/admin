@@ -2,14 +2,24 @@ import React, { useState } from 'react'
 import { Space, Radio, DatePicker } from 'antd'
 
 import styles from './styles.less'
+import Export from '@/components/export'
 const { RangePicker } = DatePicker
 
 const SelectDate = ({
   rangePickerValue,
   handleRangePickerChange,
-  selectDate
+  selectDate,
+  code,
+  type
 }) => {
-  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = () => {
+    return {
+      type_id: type,
+      startTime: rangePickerValue?.[0].format('YYYY-MM-DD'),
+      endTime: rangePickerValue?.[1].format('YYYY-MM-DD'),
+    }
+  }
 
   const handleChange = (v)=> {
     switch(v.target.value) {
@@ -51,6 +61,11 @@ const SelectDate = ({
             width: 256,
           }}
           allowClear={false}
+        />
+        <Export
+          key="export" 
+          type={code}
+          conditions={getFieldValue}
         />
       </Space>
     </div>
