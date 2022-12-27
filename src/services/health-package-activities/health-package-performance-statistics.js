@@ -1,19 +1,21 @@
 import request from '@/utils/request'
+import { amountTransform } from '@/utils/utils'
 
+// 健康套餐订单业绩
 export const cardCityAgencyOrderPm = async (params = {}, options = {}) => {
-  const { current = 1, pageSize = 10, area, payAmount, orderNums, ...rest } = params
+  const { area, amount, orderNum, current = 1, pageSize = 10, ...rest } = params
   const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPm', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
-      provinceId: area&&area[0]?.value,
-      cityId: area&&area[1]?.value,
-      districtId: area&&area[2]?.value,
-      minPayAmount: payAmount&&payAmount?.min,
-      maxPayAmount: payAmount&&payAmount?.max,
-      minOrderNums: orderNums&&orderNums?.min,
-      maxOrderNums: orderNums&&orderNums?.max,
+      provinceId: area?.[0].value,
+      cityId: area?.[1].value,
+      regionId: area?.[2].value,
+      minPayAmount: amount && amountTransform(amount.min, '*'),
+      maxPayAmount: amount && amountTransform(amount.max, '*'),
+      minOrderNums: orderNum && orderNum.min,
+      maxOrderNums: orderNum && orderNum.max,
       ...rest
     },
     ...options
@@ -25,44 +27,36 @@ export const cardCityAgencyOrderPm = async (params = {}, options = {}) => {
   }
 }
 
-
+// 健康套餐订单业绩统计
 export const cardCityAgencyOrderPmStats = async (params = {}, options = {}) => {
-    const { current = 1, pageSize = 10, area, payAmount, orderNums, ...rest } = params
-    const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPmStats', {
+  const { time, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPmStats', {
       method: 'POST',
-      data: {
-        provinceId: area&&area[0]?.value,
-        cityId: area&&area[1]?.value,
-        districtId: area&&area[2]?.value,
-        minPayAmount: payAmount&&payAmount?.min,
-        maxPayAmount: payAmount&&payAmount?.max,
-        minOrderNums: orderNums&&orderNums?.min,
-        maxOrderNums: orderNums&&orderNums?.max,
-        ...rest
-      },
+      data: params,
       ...options
-    })
-    return {
-      data: res.data,
-      success: res.success,
-      code: res.code
-    }
+  });
+
+  return {
+      data: res.data?.[0],
+      success: res.success
+  }
 }
 
+// 健康套餐订单业绩详情
 export const cardCityAgencyOrderPmDetail = async (params = {}, options = {}) => {
-    const { current = 1, pageSize = 10, ...rest } = params
-    const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPmDetail', {
-      method: 'POST',
-      data: {
-        page: current,
-        size: pageSize,
-        ...rest
-      },
-      ...options
-    })
-    return {
-      data: res.data.records,
-      success: res.success,
-      total: res.data.total
-    }
+  const { current = 1, pageSize = 10, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/cardCityAgencyOrderPmDetail', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
 }

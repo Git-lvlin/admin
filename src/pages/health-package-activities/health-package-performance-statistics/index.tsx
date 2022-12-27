@@ -1,195 +1,224 @@
-import { useState, useEffect,useRef } from "react"
-import ProTable from '@ant-design/pro-table'
-import type { ProColumns } from '@ant-design/pro-table'
-import PageContainer from "@/components/PageContainer"
-import Detail from "./detail"
-import { DescriptionsProps, TableProps } from "./data"
-import { Descriptions } from 'antd';
-import { amountTransform } from '@/utils/utils'
-import AddressCascader from '@/components/address-cascader'
-import RangeInput from '@/components/range-input'
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
-import { cardCityAgencyOrderPm,cardCityAgencyOrderPmStats } from '@/services/health-package-activities/health-package-performance-statistics'
+import { useState, useRef, useEffect } from "react"
+import ProTable  from "@ant-design/pro-table"
+import ProDescriptions from '@ant-design/pro-descriptions'
 
-export default () => {
-  const [visible, setVisible] = useState<boolean>(false)
-  const [msgDetail, setMsgDetail] = useState<boolean>(false)
-  const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState()
-  const [visit, setVisit] = useState<boolean>(false)
-  const ref=useRef()
-  useEffect(() => {
-    cardCityAgencyOrderPmStats(time).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data[0])
+import type { FC } from "react"
+import type { ProColumns }  from "@ant-design/pro-table"
+import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
+import type { FormInstance } from "antd"
+
+import PageContainer from "@/components/PageContainer"
+import { amountTransform } from "@/utils/utils"
+import { cardCityAgencyOrderPm, cardCityAgencyOrderPmStats } from "@/services/health-package-activities/health-package-performance-statistics"
+import styles from "./styles.less"
+import Export from "@/components/export"
+import Detail from "./detail"
+import GcCascader from "@/components/address-cascader"
+import RangeInput from "@/components/range-input"
+
+const Aggregate: FC<{form?: any}> = ({form}) => {
+  const [data, setData] = useState()
+
+  const getData = () => {
+    cardCityAgencyOrderPmStats({
+      ...form,
+      provinceId: form?.area && form?.area?.[0].value,
+      cityId: form?.area && form?.area?.[1].value,
+      regionId: form?.area && form?.area?.[2].value,
+      minPayAmount: form?.amount && amountTransform(form?.amount.min, '*'),
+      maxPayAmount: form?.amount && amountTransform(form?.amount.max, '*'),
+      minOrderNums: form?.orderNum && form?.orderNum.min,
+      maxOrderNums: form?.orderNum && form?.orderNum.max
+    }).then(res=> {
+      if(res.success) {
+        setData(res.data)
       }
     })
+  }
 
-  }, [time])
-  const columns: ProColumns<TableProps>[] = [
+  useEffect(()=> {
+    getData()
+  }, [form])
+  
+  const columns: ProDescriptionsItemProps[] = [
     {
-      title: '店主手机',
-      dataIndex: 'memberPhone',
-      align: 'center',
-      fieldProps: {
-        placeholder:"请输入店主手机号"
-      },
-      hideInTable: true,
-      order:2
+      title: '绑定套餐的店铺数量',
+      dataIndex: 'storeNums',
+      render: _ => `${_ ? _ : 0}家`
     },
+    {
+      title: '套餐总订单数',
+      dataIndex: 'orderNums',
+      render: _ => `${_ ? _ : 0}单`
+    },
+
+    {
+      title: '套餐总订单金额',
+      dataIndex: 'payAmount',
+      render: _ => `${amountTransform(_, '/')}元`
+    },
+    {
+      title: '所有套餐总吸氢服务',
+      dataIndex: 'serviceNums',
+      render: _ => `${_ ? _ : 0}次`
+    },
+    {
+      title: '可用吸氢服务的设备总数',
+      dataIndex: 'deviceNum',
+      render: _ => `${_ ? _ : 0}台`
+    }
+  ]
+
+  return (
+    <ProDescriptions
+      columns={columns}
+      column={5}
+      bordered
+      dataSource={data}
+    />
+  )
+}
+
+const HealthPackagePerformance: FC = () => {
+  const [searchConfig, setSearchConfig] = useState()
+  const [dataSource, setDataSource] = useState()
+  const [visible, setVisible] = useState<boolean>(false)
+  const form = useRef<FormInstance>()
+
+  const getFieldValue = () => {
+    const { area, amount, orderNum, ...rest } = form.current?.getFieldsValue()
+    return {
+      provinceId: area && area?.[0].value,
+      cityId: area && area?.[1].value,
+      regionId: area && area?.[2].value,
+      minPayAmount: amount && amountTransform(amount.min, '*'),
+      maxPayAmount: amount && amountTransform(amount.max, '*'),
+      minOrderNums: orderNum && orderNum.min,
+      maxOrderNums: orderNum && orderNum.max,
+      ...rest
+    }
+
+  }
+
+  const columns: ProColumns[] = [
     {
       title: '店主手机号',
       dataIndex: 'memberPhone',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '店铺编号',
-      dataIndex: 'houseNumber',
-      align: 'center',
-      order:4,
-      hideInTable: true,
-      fieldProps: {
-        placeholder:'请输入社区店编号'
-      }
+      align: 'center'
     },
     {
       title: '所属店主店铺编号',
       dataIndex: 'houseNumber',
-      align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'houseNumber',
+      hideInTable: true,
+      align: 'center'
+    },
+    {
+      title: '店主店铺所在区域',
+      dataIndex: 'area',
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '设备店铺所属省市区',
       dataIndex: 'area',
       hideInTable: true,
-      renderFormItem: () => (<AddressCascader changeOnSelect placeholder="请选择省市区" />),
-      order:5
+      renderFormItem: () => <GcCascader/>
     },
     {
-      title: '店主店铺所在区域',
-      dataIndex: 'area',
-      align: 'center',
-      hideInSearch: true
+      title: '业绩总额',
+      dataIndex: 'amount',
+      hideInTable: true,
+      renderFormItem: () => <RangeInput/>
+    },
+    {
+      title: '绑定订单数',
+      dataIndex: 'orderNum',
+      hideInTable: true,
+      renderFormItem: () => <RangeInput beforePlaceholder="请输入最低单数" afterPlaceholder="最高单数"/>
     },
     {
       title: '店主店铺地址',
       dataIndex: 'address',
-      align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '20%',
+      align: 'center'
     },
     {
       title: '店铺设备数',
       dataIndex: 'deviceNum',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '绑定订单数',
-      dataIndex: 'orderNums',
-      align: 'center',
-      hideInTable: true,
-      renderFormItem: () => <RangeInput beforePlaceholder='最低单数' afterPlaceholder='最高单数'/>
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '套餐订单数',
       dataIndex: 'orderNums',
-      align: 'center',
       hideInSearch: true,
-      render: (_,data) =>{
-        return <a onClick={()=>{ setVisible(true),setMsgDetail(data) }}>{_}</a>
-      }
-    },
-    {
-      title: '业绩总额',
-      dataIndex: 'payAmount',
       align: 'center',
-      hideInTable: true,
-      order:3,
-      renderFormItem: () => <RangeInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
+      render: (_, r) => <a onClick={()=>{setVisible(true); setDataSource(r)}}>{_}</a>
     },
     {
       title: '套餐订单总金额',
       dataIndex: 'payAmount',
-      align: 'center',
       hideInSearch: true,
-      render: (_) =>{
-        return amountTransform(_,'/').toFixed(2)
-      }
+      align: 'center',
+      render: (_) => amountTransform(_, '/')
     },
     {
       title: '套餐总吸氢服务次数',
       dataIndex: 'serviceNums',
-      align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      align: 'center'
     }
   ]
 
-  const getFieldValue = (searchConfig) => {
-    const {dateTimeRange,area,payAmount,orderNums,...rest}=searchConfig.form.getFieldsValue()
-    return {
-      provinceId: area&&area[0]?.value,
-      cityId: area&&area[1]?.value,
-      districtId: area&&area[2]?.value,
-      minPayAmount: payAmount&&payAmount?.min,
-      maxPayAmount: payAmount&&payAmount?.max,
-      minOrderNums: orderNums&&orderNums?.min,
-      maxOrderNums: orderNums&&orderNums?.max,
-      ...rest,
-    }
-  }
-
   return (
-    <PageContainer>
+    <PageContainer className={styles.desc}>
       <ProTable
-        actionRef={ref}
+        rowKey='agencyId'
         columns={columns}
         params={{}}
+        options={false}
+        onSubmit={()=>{
+          setSearchConfig(form.current?.getFieldsValue())
+        }}
+        onReset={()=> {
+          setSearchConfig(undefined)
+        }}
+        headerTitle={<Aggregate form={searchConfig}/>}
         request={cardCityAgencyOrderPm}
+        formRef={form}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
         }}
-        options={false}
         search={{
-          labelWidth: 132,
+          labelWidth: 140,
           optionRender: (searchConfig, props, dom) => [
             ...dom.reverse(),
             <Export
-            key='export'
-            change={(e) => { setVisit(e) }}
-            type={'cardCityAgencyOrderPm'}
-            conditions={()=>{return getFieldValue(searchConfig)}}
-          />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'cardCityAgencyOrderPm'}/>,
+              key='export'
+              type="cardCityAgencyOrderPm"
+              conditions={getFieldValue}
+            />
           ]
         }}
-        onSubmit={(val)=>{
-          setTime(val)
-        }}
-        onReset={()=>{
-          setTime()
-        }}
-        tableExtraRender={(_, data) => (
-          <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-            <Descriptions.Item  label="绑定套餐的店铺数量">{detailList?.storeNums} 家</Descriptions.Item>
-            <Descriptions.Item  label="套餐总订单数">{detailList?.orderNums} 单</Descriptions.Item>
-            <Descriptions.Item  label="套餐总订单金额">{amountTransform(detailList?.payAmount,'/').toFixed(2)} 元</Descriptions.Item>
-            <Descriptions.Item  label="所有套餐总吸氢服务">{detailList?.serviceNums} 次</Descriptions.Item>
-            <Descriptions.Item  label="可用吸氢服务的设备总数">{detailList?.deviceNum} 台</Descriptions.Item>
-          </Descriptions>
-        )}
       />
       {
         visible&&
         <Detail
           visible={visible}
           setVisible={setVisible}
-          msgDetail={msgDetail}
-          onClose={()=>{ ref.current.reload(); }}
+          dataSource={dataSource}
         />
       }
     </PageContainer>
   )
 }
+
+export default HealthPackagePerformance
