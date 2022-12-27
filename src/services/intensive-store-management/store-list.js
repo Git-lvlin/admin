@@ -145,3 +145,23 @@ export const getSubscribeList = (params = {}, options = {}) => {
     ...options
   });
 }
+
+
+export const memberShopPage = async (params = {}, options = {}) => {
+  const { current, pageSize, area = [], provideTime = [], auditTime = [], cancleTime = [], deposit, serviceFee, ...rest } = params;
+  const res = await request('/auth/store/memberShop/page', {
+    method: 'GET',
+    params: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
