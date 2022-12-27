@@ -6,7 +6,7 @@ import type { FC } from 'react'
 import type { ProColumns } from '@ant-design/pro-table'
 import type { DetailProps, DataProps } from './data'
 
-import { detail } from "@/services/health-package-activities/health-package-order-management"
+import { detail } from "@/services/health-package-activities/promotion-activity-management"
 
 const Detail: FC<DetailProps> = ({visible, handleCancel, storeNo}) => {
   const [tableData, setTableData] = useState([])
