@@ -22,6 +22,7 @@ export default {
   'menu.user-management.new-poster-new': '(新)海报管理',
   'menu.user-management.cancellation-application-record': '注销申请记录',
   'menu.user-management.logout-list': '注销列表',
+  'menu.user-management.hydrogen-atom-user-management': '氢原子用户管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -56,6 +57,8 @@ export default {
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
   'menu.order-management.intensive-purchase-setting': '新集约采购设置',
+  'menu.order-management.invoice-management': '开发票管理',
+
 
   'menu.product-management': '商品管理',
   'menu.product-management.supplier': '供应商商品',

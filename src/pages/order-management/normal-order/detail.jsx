@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Drawer, Space, Button, Modal, Steps, Spin,Image } from 'antd';
 import { findAdminOrderDetail, findAdminOrderDetail2, findAdminOrderDetail3 } from '@/services/order-management/normal-order-detail';
+import { findAdminOrderDetailBySubOrder } from "@/services/order-management/invoice-management"
 import { amountTransform } from '@/utils/utils'
 import ProDescriptions from '@ant-design/pro-descriptions';
 import LogisticsTrackingModel from '@/components/Logistics-tracking-model'
@@ -11,7 +12,7 @@ import DrawerDetail from '../after-sales-order/detail'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id, isDocumentary } = props;
+  const { visible, setVisible, isPurchase, id, orderSn, isDocumentary } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
@@ -33,12 +34,17 @@ const Detail = (props) => {
     setLoading(true);
     let apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
 
+    if (orderSn) {
+      apiMethod =findAdminOrderDetailBySubOrder
+    }
+
     if (isDocumentary) {
       apiMethod = findAdminOrderDetail3
     }
 
     apiMethod({
-      id
+      id,
+      orderSn
     }).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
