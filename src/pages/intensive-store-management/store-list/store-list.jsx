@@ -4,7 +4,7 @@ import ProTable from '@ant-design/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@/components/PageContainer';
-import { getStoreList, applyConditionPage } from '@/services/intensive-store-management/store-list';
+import { getStoreList, applyConditionPage, memberShopPage } from '@/services/intensive-store-management/store-list';
 import { history } from 'umi';
 import AddressCascader from '@/components/address-cascader';
 import { getAuth } from '@/components/auth';
@@ -24,6 +24,7 @@ import ContentModel from './content-model';
 import CreatePc from './create-pc';
 import moment from 'moment';
 import RangeInput from '@/components/range-input';
+import StoreChargeRecord from '../store-review/store-charge-record'
 
 const exportType = {
   normal: 'community-shopkeeper-export',
@@ -48,6 +49,7 @@ const StoreList = (props) => {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [gradeChangeVisible, setGradeChangeVisible] = useState(false);
   const [createPcVisible, setCreatePcVisible] = useState(false);
+  const [chargeRecordVisible, setChargeRecordVisible] = useState(false);
   const [attachmentImage, setAttachmentImage] = useState()
   const actionRef = useRef();
   const formRef = useRef();
@@ -90,7 +92,10 @@ const StoreList = (props) => {
       setSelectItem(data)
       setCreatePcVisible(true)
     }
-
+    if (key === '9') {
+      setSelectItem(data)
+      setChargeRecordVisible(true)
+    }
   }
 
   const menu = (data) => {
@@ -106,6 +111,7 @@ const StoreList = (props) => {
           店铺等级调整
         </Menu.Item>}
         <Menu.Item key="8">操作PC后台</Menu.Item>
+        {data.status.code === 1 &&<Menu.Item key="9">缴费记录</Menu.Item>}
       </Menu>
     )
   }
@@ -438,7 +444,9 @@ const StoreList = (props) => {
       valueType: 'select',
       valueEnum: {
         10: '正常申请',
+        11: 'VIP社区店',
         20: '绿色通道申请',
+        30: '健康生活馆'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -446,8 +454,13 @@ const StoreList = (props) => {
     {
       title: '申请类型',
       dataIndex: storeType === 'freshStores' ? 'applyType' : ['applyType', 'code'],
-      valueType: 'text',
-      render: (_) => _ === 10 ? '正常申请' : '绿色通道申请',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        11: 'VIP社区店',
+        20: '绿色通道申请',
+        30: '健康生活馆'
+      },
       hideInSearch: true,
       hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
     },
@@ -1077,6 +1090,13 @@ const StoreList = (props) => {
           setVisible={setGradeChangeVisible}
         />
       }
+      {chargeRecordVisible &&
+        <StoreChargeRecord
+          storeNo={selectItem.storeNo}
+          visible={chargeRecordVisible}
+          setVisible={setChargeRecordVisible}
+        />
+      }
     </>
   );
 };
@@ -1088,15 +1108,16 @@ const ShopHealthPackages = (props) => {
   const columns = [
     {
       title: '店铺ID',
-      dataIndex: 'id',
+      dataIndex: 'storeId',
       valueType: 'text',
       fieldProps: {
         placeholder: '请输入店铺ID'
-      }
+      },
+      order: 3
     },
     {
       title: '店主',
-      dataIndex: 'phone',
+      dataIndex: 'memberPhone',
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
@@ -1126,34 +1147,25 @@ const ShopHealthPackages = (props) => {
         placeholder: '请输入店主手机号'
       },
       hideInTable: true,
+      order: 2
     },
     {
       title: 'VIP店铺',
-      dataIndex: 'vip',
+      dataIndex: 'vipDesc',
       valueType: 'text',
-      valueEnum: {
-        0: '否',
-        1: '是'
-      },
       hideInSearch: true,
     },
     {
       title: '等级',
-      dataIndex: ['level', 'levelName'],
+      dataIndex: 'shopMemberLevelName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '提货点所在地区',
-      dataIndex: '',
+      dataIndex: 'area',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, details) => {
-        return (
-          <>
-            {details?.areaInfo?.[details?.provinceId]}{details?.areaInfo?.[details?.cityId]}{details?.areaInfo?.[details?.regionId]}
-          </>)
-      },
     },
     {
       title: '提货点详细地址',
@@ -1163,32 +1175,34 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '最近购买健康卡套餐名称',
-      dataIndex: 'lifeHouseExpireTime',
+      dataIndex: 'packageTitle',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '累计购买健康卡套餐金额',
-      dataIndex: 'serviceFee',
+      dataIndex: 'sumPayAmount',
       valueType: 'text',
-      renderFormItem: () => <RangeInput />,
+      render: (_) => {
+        return amountTransform(_,'/')
+      },
       hideInSearch: true,
     },
     {
       title: '最近购买健康卡套餐时间',
-      dataIndex: 'provideTime',
+      dataIndex: 'lastCreateTime',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '最近购买健康卡套餐单号',
-      dataIndex: 'lifeHouseRemainingDay',
+      dataIndex: 'lastOrderSn',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '购买套餐次数',
-      dataIndex: 'vipExpireTime',
+      title: '购买套餐数量',
+      dataIndex: 'orderNum',
       valueType: 'text',
       hideInSearch: true,
     }
@@ -1196,17 +1210,15 @@ const ShopHealthPackages = (props) => {
   return (
     <>
       <ProTable
-        rowKey="id"
+        rowKey="storeId"
         options={false}
         actionRef={actionRef}
         formRef={formRef}
         params={{
           operation: storeType,
         }}
-        request={
-          storeType == 'freshStores' ? applyConditionPage : getStoreList
-        }
-        // scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+        request={memberShopPage}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
           defaultCollapsed: true,
           optionRender: (searchConfig, formProps, dom) => [
@@ -1261,11 +1273,11 @@ const OverallStore = () => {
             activeKey == 'life_house' && <StoreList storeType={activeKey} />
           }
         </ProCard.TabPane>
-        {/* <ProCard.TabPane key="shop_health_packages" tab="购买健康套餐店铺">
+        <ProCard.TabPane key="purchased_gift_package_store" tab="购买健康套餐店铺">
           {
-            activeKey == 'shop_health_packages' && <ShopHealthPackages storeType={activeKey} />
+            activeKey == 'purchased_gift_package_store' && <ShopHealthPackages storeType={activeKey} />
           }
-        </ProCard.TabPane> */}
+        </ProCard.TabPane>
       </ProCard>
     </PageContainer>
   )
