@@ -22,5 +22,23 @@ export default {
       component: './health-package-activities/divide-configure',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-package-order-management',
+      path: '/health-package-activities/health-package-order-management',
+      component: './health-package-activities/health-package-order-management',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-package-performance-statistics',
+      path: '/health-package-activities/health-package-performance-statistics',
+      component: './health-package-activities/health-package-performance-statistics',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-package-commission',
+      path: '/health-package-activities/health-package-commission',
+      component: './health-package-activities/health-package-commission',
+      wrappers: [RouteWatcher],
+    }
   ]
 }

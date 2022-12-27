@@ -8,16 +8,34 @@ import {
 } from "antd"
 
 import type { FC } from "react"
-import { DetailProps } from "./data"
+import type { DetailProps, DataProps } from "./data"
 
 import styles from "./styles.less"
+import { getUseCardByCardNo } from "@/services/health-package-activities/store-health-card-management"
+import moment from "moment"
 
-const Detail: FC<DetailProps> = ({visible, setVisible, sn}) => {
-  const [data, setData] = useState([])
+const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
+  const [data, setData] = useState<DataProps[]>([])
   const [load, setLoad] = useState<boolean>(false)
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number | undefined>(10)
   const [pageTotal, setPageTotal] = useState<number>(0)
+
+  useEffect(()=> {
+    setLoad(true)
+    getUseCardByCardNo({
+      cardNo: dataSource?.cardNo,
+      page,
+      size: pageSize
+    }).then(res => {
+      if(res.success) {
+        setData(res.data)
+        setPageTotal(res.total)
+      }
+    }).finally(()=> {
+      setLoad(false)
+    })
+  }, [page, pageSize])
 
   const pageChange = (a: number, b?: number) => {
     setPage(a)
@@ -28,25 +46,25 @@ const Detail: FC<DetailProps> = ({visible, setVisible, sn}) => {
     <Drawer
       visible={visible}
       onClose={()=>setVisible(false)}
-      title={`服务号${sn} 使用明细`}
+      title={`服务号${dataSource?.cardNo} 使用明细`}
       width={700}
       destroyOnClose={true}
     >
       <Spin delay={500} spinning={load}>
         <div className={styles.cardTitle}>
-          服务所有人：{111}  已用次数：{222}，剩余{333}次
+          服务所属人：{dataSource?.ownerMobile}  已用次数：{Number(dataSource?.totalNum) - Number(dataSource?.remainingNum)}，剩余{dataSource?.remainingNum}次
         </div>
         {
           data?.length !== 0 ?
-          data?.map((item, idx) => (
-            <div key={idx}>
+          data?.map(item => (
+            <div key={item.id}>
               <div className={styles.cardList}>
-                <div>{}</div>
-                <div>店铺编号：{}</div>
+                <div>{moment(item.useTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+                <div>店铺编号：{dataSource?.storeName}</div>
               </div>
               <div className={styles.cardListContent}>
-                <div>设备ID：{}</div>
-                <div>订单号：{}</div>
+                <div>设备ID：{item.useDeviceNo}</div>
+                <div>订单号：{item.useOrderNo}</div>
               </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>
             </div>

@@ -26,7 +26,11 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
     const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
 
     if(isGoodsOrder) {
-      setId(id)
+      if(orderType === 'healthyCard'){
+        setId(billNo)
+      } else {
+        setId(id)
+      }
       setNotGoodsVisible(true)
       setTypes(orderType)
     } else {
@@ -88,7 +92,7 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
       dataIndex:'billNo',
       width: '10%',
       render: (_, records)=> {
-        if(records.orderType === 'hydrogenRent' || records.orderType === 'healthyCard') {
+        if(records.orderType === 'hydrogenRent') {
           return <span>{_}</span>
         } else {
           if(records.orderId) {
