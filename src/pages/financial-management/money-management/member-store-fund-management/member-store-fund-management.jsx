@@ -28,8 +28,8 @@ const MemberStoreFundManagement = () => {
   useEffect(()=> {
     subtotal({
       accountType: 'store',
-      page,
       ...search,
+      page,
       settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
       settleTimeEnd: search?.settleTime?.[1].format('YYYY-MM-DD'),
       registTimeBegin: search?.registTime?.[0].format('YYYY-MM-DD'),
@@ -73,8 +73,8 @@ const MemberStoreFundManagement = () => {
 
   const getValues = (form) => {
     return {
-      accountType: "store",
       ...form?.getFieldValue(),
+      accountType: "store",
       settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
       settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
       registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
@@ -249,10 +249,12 @@ const MemberStoreFundManagement = () => {
             setPage(e)
           }
         }}
+        onSubmit={()=> {
+          setSearch(formRef.current?.getFieldValue())
+        }}
         scroll={{x: "max-content"}}
         postData={
           (e)=>{
-            setSearch(formRef.current?.getFieldsValue())
             setData(e)
             return e
           }

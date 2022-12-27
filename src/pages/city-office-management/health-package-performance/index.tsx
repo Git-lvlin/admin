@@ -10,7 +10,7 @@ import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
 import { amountTransform } from "@/utils/utils"
-import { newWholesaleCityAgencyPm, newWholesaleCityAgencyPmStats } from "@/services/city-office-management/new-intensive-performance"
+import { cardCityAgencyPm, cardCityAgencyPmStats } from "@/services/city-office-management/health-package-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
@@ -19,7 +19,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
 
   const getData = () => {
-    newWholesaleCityAgencyPmStats({
+    cardCityAgencyPmStats({
       ...form
     }).then(res=> {
       if(res.success) {
@@ -45,7 +45,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
     },
     {
       title: '有业绩市办事处数量',
-      dataIndex: 'agencyNum',
+      dataIndex: 'agencyNums',
       render: _ => `${_ ? _ : 0}家`
     }
   ]
@@ -60,7 +60,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   )
 }
 
-const NewIntensivePerformance: FC = () => {
+const HealthPackagePerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [agencyId, setAgencyId] = useState<string>()
   const [visible, setVisible] = useState<boolean>(false)
@@ -87,24 +87,44 @@ const NewIntensivePerformance: FC = () => {
     },
     {
       title: '办事处名称',
-      dataIndex: 'name',
+      dataIndex: 'agencyName',
       align: 'center'
     },
     {
-      title: '业绩类型',
-      dataIndex: 'teamLeader',
-      align: 'center',
-      hideInSearch: true
+      title: '社区店数量',
+      dataIndex: 'storeNums',
+      hideInSearch: true,
+      align: 'center'
     },
     {
-      title: '业绩类型',
-      dataIndex: 'teamLeader',
-      valueType: 'select',
-      valueEnum: {
-        1: '有大团长',
-        0: '没有大团长'
-      },
-      hideInTable: true
+      title: '设备数量',
+      dataIndex: 'deviceNums',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '报名设备台数',
+      dataIndex: 'regNums',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '销售健康套餐订单数',
+      dataIndex: 'orderNums',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '吸氢服务总次数',
+      dataIndex: 'serviceNums',
+      hideInSearch: true,
+      align: 'center'
+    },
+    {
+      title: '吸氢服务可用次数',
+      dataIndex: 'serviceAvailableNums',
+      hideInSearch: true,
+      align: 'center'
     },
     {
       title: '交易时间',
@@ -127,7 +147,7 @@ const NewIntensivePerformance: FC = () => {
                 setVisible(true)
                 setAgencyId(r.agencyId)
                 setAmount(r.payAmount)
-                setName(`${r.name} 累计业绩`)
+                setName(`${r.agencyName} 累计业绩`)
               }}
             >
               {amountTransform(_, '/')}
@@ -142,6 +162,22 @@ const NewIntensivePerformance: FC = () => {
       align: 'center',
       render: _ => amountTransform(_, '/'),
       hideInSearch: true
+    },
+    {
+      title: '业绩类型',
+      dataIndex: 'teamLeader',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '业绩类型',
+      dataIndex: 'teamLeader',
+      valueType: 'select',
+      valueEnum: {
+        1: '有大团长',
+        0: '没有大团长'
+      },
+      hideInTable: true
     },
   ]
 
@@ -159,7 +195,7 @@ const NewIntensivePerformance: FC = () => {
         onReset={()=> {
           setSearchConfig(undefined)
         }}
-        request={newWholesaleCityAgencyPm}
+        request={cardCityAgencyPm}
         formRef={form}
         pagination={{
           showQuickJumper: true,
@@ -171,7 +207,7 @@ const NewIntensivePerformance: FC = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type="newWholesaleCityAgencyPm"
+              type="cardCityAgencyPm"
               conditions={getFieldValue}
             />
           ]
@@ -191,4 +227,4 @@ const NewIntensivePerformance: FC = () => {
   )
 }
 
-export default NewIntensivePerformance
+export default HealthPackagePerformance

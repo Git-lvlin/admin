@@ -31,7 +31,7 @@ const StoreHealthCardManagement = () => {
   const columns: ProColumns[] = [
     {
       title: '所属店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'storeName',
       align: 'center',
     },
     {
@@ -51,8 +51,9 @@ const StoreHealthCardManagement = () => {
       align: 'center',
       valueType: 'select',
       valueEnum: {
-        'buy': '礼包赠送',
-        'platformSend': '平台赠送'
+        'buy': '服务赠送',
+        'platformSend': '平台赠送',
+        'appointSend': '指定赠送'
       }
     },
     {
@@ -73,10 +74,10 @@ const StoreHealthCardManagement = () => {
     },
     {
       title: '有效期截止日',
-      dataIndex: 'canUesTime',
+      dataIndex: 'expireTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.canUesTime ? moment(r.canUesTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.expireTime ? moment(r.expireTime * 1000).format('YYYY-MM-DD') : '-'
     },
     {
       title: '总次数',
@@ -95,7 +96,7 @@ const StoreHealthCardManagement = () => {
       dataIndex: 'remainingNum',
       align: 'center',
       hideInTable: true,
-      renderFormItem: () => <RangeInput/>
+      renderFormItem: () => <RangeInput beforePlaceholder="请输入最低次数" afterPlaceholder="最高次数"/>
     },
     {
       title: '服务所属人手机号',
@@ -113,41 +114,37 @@ const StoreHealthCardManagement = () => {
       dataIndex: 'giftCodeUserN',
       valueType: 'select',
       valueEnum: {
-        'giftCodeUser1': '体验礼包',
-        'giftCodeUser2': '礼包一',
-        'giftCodeUser3': '礼包二',
-        'giftCodeUser4': '礼包三',
-        'giftCodeUser5': '礼包四',
-        'giftCodeUser6': '礼包五'
+        'giftCodeUser1': '孝爱体验礼包',
+        'giftCodeStore': '店主开店赠送',
+        'giftCodeSend': '健康卡-指定赠送',
+        'giftCodeUser2': '孝爱吸氢礼包一',
+        'giftCodeUser3': '孝爱吸氢礼包二',
+        'giftCodeUser4': '孝爱吸氢礼包三',
+        'giftCodeUser5': '孝爱吸氢礼包四',
+        'giftCodeUser6': '孝爱吸氢礼包五'
       },
       hideInTable: true
-    },
-    {
-      title: '服务所属人店铺编号',
-      dataIndex: 'storeNo',
-      align: 'center',
-      hideInSearch: true
     },
     {
       title: '持有时间',
       dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.createTime ? moment(r.createTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.createTime ? moment(r.createTime * 1000).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
       title: '最近使用时间',
       dataIndex: 'updateTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r)=> r.updateTime ? moment(r.updateTime * 1000).format('YYYY-MM-DD') : '-'
+      render: (_, r)=> r.updateTime ? moment(r.updateTime * 1000).format('YYYY-MM-DD HH:mm:ss') : '-'
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
       render: (_, r)=> <a onClick={()=> {setVisible(true); setDataSource(r)}}>使用明细</a>
-    },
+    }, 
   ]
 
   return (

@@ -27,3 +27,12 @@ export const giftPackageOrderDetail = async (data = {}, options = {}) => {
     ...options
   })
 }
+
+// 健康礼包套餐列表
+export const packageSampleList = async (data = {}, options = {}) => {
+  return await request('/auth/order/giftPackageOrder/packageSampleList', {
+    method: 'GET',
+    params: data,
+    ...options
+  })
+}

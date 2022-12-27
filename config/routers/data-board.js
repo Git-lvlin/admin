@@ -53,6 +53,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'city-office-data',
+      path: '/data-board/city-office-data',
+      component: './data-board/city-office-data',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'data-preview',
       path: '/data-board/data-preview',
       component: './data-board/data-preview',

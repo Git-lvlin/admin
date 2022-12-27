@@ -213,9 +213,11 @@ const OperatorFundManagement = () => {
             setPage(e)
           }
         }}
+        onSubmit={()=> {
+          setSearch(formRef.current?.getFieldsValue())
+        }}
         postData={
           (e)=>{
-            setSearch(formRef.current?.getFieldsValue())
             setData(e)
             return e
           }

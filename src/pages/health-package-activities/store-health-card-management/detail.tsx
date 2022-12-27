@@ -23,7 +23,11 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
 
   useEffect(()=> {
     setLoad(true)
-    getUseCardByCardNo({cardNo: dataSource?.cardNo}).then(res => {
+    getUseCardByCardNo({
+      cardNo: dataSource?.cardNo,
+      page,
+      size: pageSize
+    }).then(res => {
       if(res.success) {
         setData(res.data)
         setPageTotal(res.total)
@@ -31,7 +35,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
     }).finally(()=> {
       setLoad(false)
     })
-  }, [])
+  }, [page, pageSize])
 
   const pageChange = (a: number, b?: number) => {
     setPage(a)
@@ -56,11 +60,11 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
             <div key={item.id}>
               <div className={styles.cardList}>
                 <div>{moment(item.useTime * 1000).format('YYYY-MM-DD HH:mm:ss')}</div>
-                <div>店铺编号：{item.useOrderNo}</div>
+                <div>店铺编号：{dataSource?.storeName}</div>
               </div>
               <div className={styles.cardListContent}>
                 <div>设备ID：{item.useDeviceNo}</div>
-                <div>订单号：{item.cardNo}</div>
+                <div>订单号：{item.useOrderNo}</div>
               </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>
             </div>

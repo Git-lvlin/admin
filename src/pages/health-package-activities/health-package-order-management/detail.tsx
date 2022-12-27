@@ -18,6 +18,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
   const [listData, setListData] = useState<ListDataProps[]>()
   const [normalOrderVisible, setNormalOrderVisible] = useState<boolean>(false)
   const [serviceVisible, setServiceVisible] = useState<boolean>(false)
+  const [orderId, setOrderId] = useState<string>()
 
   useEffect(()=> {
     giftPackageOrderDetail({
@@ -31,13 +32,13 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
   const columns: ProColumns[] = [
     {
       title: '明细单号',
-      dataIndex: 'orderId',
+      dataIndex: 'orderSn',
       align: 'center', 
       render: (_, r) => {
         if(r.subType === '健康服务') {
           return <a onClick={()=>{setServiceVisible(true); setListData(data?.cardItems)}}>查看服务号</a>
         } else {
-          return r.orderId ? <a onClick={()=>{setNormalOrderVisible(true)}}>{_}</a> : '-'
+          return r.orderId ? <a onClick={()=>{setNormalOrderVisible(true); setOrderId(r.orderId)}}>{_}</a> : '-'
         }
       }
     },
@@ -90,7 +91,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
       >
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>订单号：</span>
-          {data?.orderId}
+          {data?.orderSn}
         </ProCard>
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>下单人手机：</span>
@@ -153,7 +154,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
       {
         normalOrderVisible &&
         <NormalOrderDetail
-          id={id}
+          id={orderId}
           visible={normalOrderVisible}
           setVisible={setNormalOrderVisible}
         />

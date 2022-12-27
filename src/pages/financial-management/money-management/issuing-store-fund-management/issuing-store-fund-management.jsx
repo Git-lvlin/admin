@@ -27,9 +27,9 @@ const IssuingStoreFundManagement = () => {
 
   useEffect(()=> {
     subtotal({
+      ...search,
       accountType: 'agentStore',
       page,
-      ...search,
       registTimeBegin: search?.registTime?.[0].format('YYYY-MM-DD'),
       registTimeEnd: search?.registTime?.[1].format('YYYY-MM-DD')
     }).then(res=> {
@@ -67,8 +67,8 @@ const IssuingStoreFundManagement = () => {
 
   const getValues = (form) => {
     return {
-      accountType: "agentStore",
       ...form?.getFieldValue(),
+      accountType: "agentStore",
       registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
       registTimeEnd: form?.getFieldValue()?.registTime?.[1].format('YYYY-MM-DD')
     }
@@ -215,9 +215,11 @@ const IssuingStoreFundManagement = () => {
             setPage(e)
           }
         }}
+        onSubmit={()=> {
+          setSearch(formRef.current?.getFieldsValue())
+        }}
         postData={
           (e)=>{
-            setSearch(formRef.current?.getFieldsValue())
             setData(e)
             return e
           }
