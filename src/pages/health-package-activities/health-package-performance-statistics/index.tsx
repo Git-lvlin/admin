@@ -132,8 +132,8 @@ export default () => {
       provinceId: area&&area[0]?.value,
       cityId: area&&area[1]?.value,
       districtId: area&&area[2]?.value,
-      minPayAmount: payAmount&&payAmount?.min,
-      maxPayAmount: payAmount&&payAmount?.max,
+      minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
+      maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
       minOrderNums: orderNums&&orderNums?.min,
       maxOrderNums: orderNums&&orderNums?.max,
       ...rest,
@@ -187,7 +187,7 @@ export default () => {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ ref.current.reload(); }}
+          onClose={()=>{ ref.current.reload();setMsgDetail(null) }}
         />
       }
     </PageContainer>
