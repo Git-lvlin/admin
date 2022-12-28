@@ -100,8 +100,8 @@ const RankingOffice = () => {
               size="large"
             >
               <Radio value=''>新集约商品 + 旧集约商品</Radio>
-              <Radio value='15'>新集约商品</Radio>
-              <Radio value='30'>旧集约商品</Radio>
+              <Radio value='30'>新集约商品</Radio>
+              <Radio value='15'>旧集约商品</Radio>
             </Radio.Group>
           </Space>
         </div>
