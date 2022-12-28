@@ -131,7 +131,7 @@ export default () => {
     return {
       provinceId: area&&area[0]?.value,
       cityId: area&&area[1]?.value,
-      districtId: area&&area[2]?.value,
+      regionId: area&&area[2]?.value,
       minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
       maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
       minOrderNums: orderNums&&orderNums?.min,
