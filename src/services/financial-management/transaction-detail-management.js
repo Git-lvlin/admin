@@ -238,3 +238,18 @@ export const operationCommissionDetail = async (params, options = {}) => {
     success: res?.success
   }
 }
+
+// 强制退款
+export const exceptionOrderRefund = async (params, options = {}) => {
+  const res = await request('/auth/java-admin/orderReturn/exceptionOrderRefund', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+
+  return {
+    data: res?.data,
+    success: res?.success,
+    code: res?.code
+  }
+}
