@@ -342,6 +342,10 @@ const TableList = () => {
         obj.createTimeEnd = moment(createTime[1]).unix();
       }
 
+      if (selectedRowKeys.length) {
+        obj.selectSpuIdArr = selectedRowKeys
+      }
+
       return {
         ...obj,
         selectType: 1,

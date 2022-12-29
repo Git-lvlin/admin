@@ -152,7 +152,7 @@ const TableList = () => {
                     type={`${isDocumentary ?'order-common-doc-export':isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`}
                     conditions={getFieldValue}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isDocumentary ? 'order-common-doc-export' : isPurchase ? 'purchase-order-common-export' : 'order-common-export'}`} />
                   {
                     isPurchase
                     &&

@@ -141,10 +141,10 @@ const TableList = () => {
                   </Button>
                   <Export
                     change={(e) => { setVisit(e) }}
-                    type={`${isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`}
+                    type={`${isDocumentary ?'order-common-sample-export':isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`}
                     conditions={getFieldValue}
                   />
-                  <ExportHistory show={visit} setShow={setVisit} type={`${isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`} />
+                  <ExportHistory show={visit} setShow={setVisit} type={`${isDocumentary ? 'order-common-sample-export' : isPurchase ? 'purchase-order-simple-export' : 'order-simple-export'}`} />
                   {
                     isPurchase
                     &&
