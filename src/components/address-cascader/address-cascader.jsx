@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Cascader } from 'antd';
 import { arrayToTree } from '@/utils/utils'
 
-const GcCascader = ({ value = [], onChange, fieldProps,areaData, ...rest }) => {
+const GcCascader = ({ value = [], onChange = () => {}, fieldProps = {},areaData = '', ...rest }) => {
   const [data, setData] = useState([]);
 
   const changeHandle = (v, selectedOptions=[]) => {

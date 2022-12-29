@@ -22,6 +22,7 @@ export default {
   'menu.user-management.new-poster-new': '(新)海报管理',
   'menu.user-management.cancellation-application-record': '注销申请记录',
   'menu.user-management.logout-list': '注销列表',
+  'menu.user-management.hydrogen-atom-user-management': '氢原子用户管理',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -56,6 +57,8 @@ export default {
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
   'menu.order-management.intensive-purchase-setting': '新集约采购设置',
+  'menu.order-management.invoice-management': '开发票管理',
+
 
   'menu.product-management': '商品管理',
   'menu.product-management.supplier': '供应商商品',
@@ -348,6 +351,7 @@ export default {
   'menu.data-board.supplier-data': '供应商数据',
   'menu.data-board.detail': '供应商数据详情',
   'menu.data-board.supplier-development-data': '供应商开发数据',
+  'menu.data-board.city-office-data': '市办事处数据',
   'menu.data-board.data-preview': '数据预览',
   'menu.data-board.intensive-data-export': '集约数据导出',
   'menu.data-board.data-sales': '销售数据',
@@ -441,6 +445,8 @@ export default {
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
+  'menu.city-office-management.health-package-performance': '健康套餐业绩',
+  'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
@@ -456,5 +462,8 @@ export default {
   'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',
   'menu.health-package-activities.promotion-activity-management': '推广活动管理', 
   'menu.health-package-activities.divide-configure': '健康套餐分成配置', 
+  'menu.health-package-activities.health-package-order-management': '健康套餐订单管理', 
+  'menu.health-package-activities.health-package-performance-statistics': '健康套餐业绩统计', 
+  'menu.health-package-activities.health-package-commission': '健康套餐推荐提成', 
 
 };

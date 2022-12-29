@@ -53,3 +53,23 @@ export const storeDetail = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+
+export const pageByStoreNo = async (params = {}, options = {}) => {
+  const { current, pageSize, area = [], provideTime = [], deposit, serviceFee, ...rest } = params;
+  const res = await request('/auth/store/storePayOrder/pageByStoreNo', {
+    method: 'GET',
+    params: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: true,
+    total: res.data.total
+  }
+}

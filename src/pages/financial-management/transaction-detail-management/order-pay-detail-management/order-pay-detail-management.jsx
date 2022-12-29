@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 
 import { amountTransform } from '@/utils/utils'
-import { orderPage } from '@/services/financial-management/transaction-detail-management'
+import { orderPage,exceptionOrderRefund } from '@/services/financial-management/transaction-detail-management'
 import Detail from '../../common-popup/order-pay-detail-popup'
 import { orderTypes } from '@/services/financial-management/common'
+import { Button, message } from 'antd'
+import Auth from '@/components/auth'
+import RefundModel from './refund-model'
 
 const OrderPayDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState({})
   const [orderType, setOrderType] = useState(null)
-
+  const [visible, setVisible] = useState(false);
+  const [msgDatail,setMsgDatail] = useState({})
+  const ref=useRef()
   useEffect(() => {
     orderTypes({}).then(res => {
       setOrderType(res.data)
@@ -77,7 +82,12 @@ const OrderPayDetailManagement = () =>{
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo'
+      dataIndex: 'orderNo',
+      render: (_, records) => (
+        records?.orderNo?
+        <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
+        <span>{_}</span>
+      )
     },
     {
       title: '平台单号',
@@ -100,6 +110,12 @@ const OrderPayDetailManagement = () =>{
       hideInSearch: true
     },
     {
+      title: '退款金额',
+      dataIndex: 'refundAmount',
+      render: (_)=> amountTransform(_, '/'),
+      hideInSearch: true
+    },
+    {
       title: '支付时间',
       dataIndex: 'payTime',
       valueType: 'dateRange',
@@ -109,11 +125,31 @@ const OrderPayDetailManagement = () =>{
       title: '支付时间',
       dataIndex: 'payTime',
       hideInSearch: true,
-    }
+    },
+    {
+      title: '操作',
+      key: 'option',
+      valueType: 'option',
+      render:(text, record, _, action)=>[
+        <Auth name="orderReturn/exceptionOrderRefund" key='refund' >
+          <Button
+          type='primary' 
+          onClick={()=>{
+            setVisible(true);
+            setMsgDatail(record)
+          }}
+          style={{ display:parseInt(record?.refundAmount)>0?'none':'block' }}
+          >
+            退款
+          </Button>
+        </Auth>
+      ],
+    }, 
   ]
   return (
     <PageContainer title={false}>
       <ProTable
+        actionRef={ref}
         rowKey='id'
         columns={columns}
         toolBarRender={false}
@@ -132,6 +168,16 @@ const OrderPayDetailManagement = () =>{
           id={selectItem}
           visible={detailVisible}
           setVisible={setDetailVisible}
+        />
+      }
+      {
+        visible &&
+        <RefundModel
+          msgDatail={msgDatail}
+          visible={visible}
+          setVisible={setVisible}
+          callback={()=>{ ref.current?.reload(), setMsgDatail(null) }}
+          onClose={()=>{ ref.current?.reload(), setMsgDatail(null) }}
         />
       }
     </PageContainer>
