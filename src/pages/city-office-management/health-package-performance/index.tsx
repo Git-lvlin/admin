@@ -174,8 +174,8 @@ const HealthPackagePerformance: FC = () => {
       dataIndex: 'teamLeader',
       valueType: 'select',
       valueEnum: {
-        1: '有大团长',
-        0: '没有大团长'
+        1: '有大团队长',
+        0: '没有大团队长'
       },
       hideInTable: true
     },
