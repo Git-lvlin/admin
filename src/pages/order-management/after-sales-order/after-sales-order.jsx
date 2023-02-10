@@ -175,7 +175,7 @@ const afterSalesOrder = () => {
       align: 'center',
       width: '5%',
       hideInSearch: true,
-      // render: (_, r) => amountTransform((r.returnNum * Number(r.retailSupplyPrice)), '/').toFixed(2)
+      render: _ => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '退款状态',
