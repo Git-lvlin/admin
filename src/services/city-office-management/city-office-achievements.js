@@ -56,7 +56,7 @@ export const cityItemOrderSum = async (params = {}, options = {}) => {
 
 
 export const cityItemOrderListPage = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange, ...rest } = params;
+    const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
     const res = await request('/auth/java-admin/financial/cityBusinessDept/cityItemOrderListPage', {
       method: 'POST',
       data: {
@@ -64,6 +64,7 @@ export const cityItemOrderListPage = async (params = {}, options = {}) => {
         size: pageSize,
         begin:dateRange&&dateRange[0],
         end:dateRange&&dateRange[1],
+        hasTeamLeader:parseInt(hasTeamLeader),
         ...rest
       },
       ...options
@@ -79,7 +80,7 @@ export const cityItemOrderListPage = async (params = {}, options = {}) => {
 
 
 export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
-  const { current, pageSize,dateRange, ...rest } = params;
+  const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
   const res = await request('/auth/java-admin/financial/cityBusinessDept/cityTotalTradeItemListPage', {
     method: 'POST',
     data: {
@@ -87,6 +88,7 @@ export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
       size: pageSize,
       begin:dateRange&&dateRange[0],
       end:dateRange&&dateRange[1],
+      hasTeamLeader:parseInt(hasTeamLeader),
       ...rest
     },
     ...options

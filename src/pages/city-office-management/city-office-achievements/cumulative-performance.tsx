@@ -49,6 +49,28 @@ const CumulativePerformance=(props:DevicesProps) => {
       hideInTable: true,
     },
     {
+      title: '业绩类型',
+      dataIndex: 'hasTeamLeader',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '业绩类型',
+      dataIndex: 'hasTeamLeader',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      hideInSearch: true,
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNo',
       align: 'center',
@@ -84,9 +106,8 @@ const CumulativePerformance=(props:DevicesProps) => {
       orderType:type,
       orderNo:time?.orderNo,
       begin:time?.dateRange?.[0],
-
-      
-      end:time?.dateRange?.[1]
+      end:time?.dateRange?.[1],
+      hasTeamLeader:parseInt(time?.hasTeamLeader)
     }
     cityTotalTradeItemSum(params).then(res=>{
       if(res.code==0){
@@ -96,12 +117,13 @@ const CumulativePerformance=(props:DevicesProps) => {
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
     return {
       cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
       orderType:type,
       begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      hasTeamLeader:parseInt(hasTeamLeader),
       ...rest,
     }
   }

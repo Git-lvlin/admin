@@ -69,6 +69,28 @@ export default (props) => {
       hideInTable: true,
     },
     {
+      title: '业绩类型',
+      dataIndex: 'hasTeamLeader',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      hideInTable: true,
+    },
+    {
+      title: '业绩类型',
+      dataIndex: 'hasTeamLeader',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      hideInSearch: true,
+    },
+    {
       title: '订单号',
       dataIndex: 'orderNo',
       align: 'center',
@@ -128,7 +150,8 @@ export default (props) => {
       orderType:time?.orderType,
       orderNo:time?.orderNo,
       begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1]
+      end:time?.dateRange?.[1],
+      hasTeamLeader:parseInt(time?.hasTeamLeader)
     }
     cityItemOrderSum(params).then(res=>{
       if(res.code==0){
@@ -138,12 +161,13 @@ export default (props) => {
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
     return {
       cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
       type:type,
       begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      hasTeamLeader:parseInt(hasTeamLeader),
       ...rest,
     }
   }
