@@ -16,7 +16,7 @@ export const cityBusinessDeptSum = async (params = {}, options = {}) => {
 }
 
 export const listPage = async (params = {}, options = {}) => {
-    const { current, pageSize,createTime, ...rest } = params;
+    const { current, pageSize,createTime,hasTeamLeader, ...rest } = params;
     const res = await request('/auth/java-admin/financial/cityBusinessDept/listPage', {
       method: 'POST',
       data: {
@@ -24,6 +24,7 @@ export const listPage = async (params = {}, options = {}) => {
         size: pageSize,
         begin:createTime&&createTime[0],
         end:createTime&&createTime[1],
+        hasTeamLeader:parseInt(hasTeamLeader),
         ...rest
       },
       ...options
