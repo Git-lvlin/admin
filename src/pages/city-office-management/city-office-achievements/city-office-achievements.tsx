@@ -68,6 +68,17 @@ export default function TransactionData () {
       hideInSearch: true,
     },
     {
+      title: '业绩类型',
+      dataIndex: 'hasTeamLeader',
+      align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        0: '没有大团队长',
+        1: '有大团队长'
+      },
+      hideInTable: true,
+    },
+    {
       title: '累计提成（元）',
       dataIndex: 'totalCommission',
       align: 'center',

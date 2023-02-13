@@ -412,6 +412,7 @@ export default {
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+  'menu.hydrogen-atom-management.assign-start-frequency': '指定可启用次数',
 
   'menu.hydrogen-atom-trusteeship': '氢原子托管',
   'menu.hydrogen-atom-trusteeship.hydrogen-atom-start-record': '启动记录',
