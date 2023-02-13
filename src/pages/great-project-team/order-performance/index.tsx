@@ -6,7 +6,7 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { listPage,cityBusinessDeptSum } from "@/services/city-office-management/city-office-achievements"
+import { listPage,cityBusinessDeptSum } from "@/services/great-project-team/order-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'

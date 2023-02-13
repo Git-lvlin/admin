@@ -441,9 +441,10 @@ export default {
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
-  'menu.city-office-management.great-project-team': '大团队',
-  'menu.city-office-management.great-project-team.great-project-team-management': '大团队长管理',
-  'menu.city-office-management.great-project-team.order-performance': '大团队业绩',
+
+  'menu.great-project-team': '大团队长',
+  'menu.great-project-team.great-project-team-management': '大团队长管理',
+  'menu.great-project-team.order-performance': '订单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',

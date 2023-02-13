@@ -6,7 +6,7 @@ import type { TableProps,DescriptionsProps } from "./data"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 
-import { agencyCityList,agencyCityCount } from "@/services/city-office-management/city-office-management-list"
+import { agencyCityList,agencyCityCount } from "@/services/great-project-team/great-project-team-management"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)

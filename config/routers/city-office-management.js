@@ -27,24 +27,6 @@ export default {
       path: '/city-office-management/living-service-fee-performance',
       component: './city-office-management/living-service-fee-performance',
       wrappers: [RouteWatcher],
-    },
-    {
-      name: 'great-project-team',
-      path: '/city-office-management/great-project-team',
-      routes:[
-        {
-          name: 'great-project-team-management',
-          path: '/city-office-management/great-project-team/great-project-team-management',
-          component: './city-office-management/great-project-team/great-project-team-management',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'order-performance',
-          path: '/city-office-management/great-project-team/order-performance',
-          component: './city-office-management/great-project-team/order-performance',
-          wrappers: [RouteWatcher],
-        },
-      ]
     }
   ]
 }
