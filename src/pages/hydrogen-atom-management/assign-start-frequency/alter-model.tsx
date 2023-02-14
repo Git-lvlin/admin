@@ -20,6 +20,16 @@ return new Promise<void>(async (resolve, reject) => {
 })
 }
 
+const checkConfirm2 = (rule, value, callback) => {
+  return new Promise(async (resolve, reject) => {
+    if (value && !/^[0-9]*[1-9][0-9]*$/.test(value)) {
+      await reject('只能输入正整数')
+    }else {
+      await resolve()
+    }
+  })
+}
+
 export default ( props: { visible: boolean; setVisible: any; callback: any; msgDetail:TableProps,onClose:any } ) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [ confirmVisible, setConfirmVisible] = useState<boolean>(false)
@@ -115,7 +125,10 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
             addonAfter:'次/日'
         }}
         labelCol={{ span: 5 }}
-        rules={[{ required: true, message: '请输入启动次数' }]}
+        rules={[
+          { required: true, message: '请输入启动次数' },
+          { validator: checkConfirm2}
+        ]}
         extra={<span style={{ color:'#E58101' }}>仅限对租赁的氢原子设备启动</span>}
       />
       <ProFormTextArea

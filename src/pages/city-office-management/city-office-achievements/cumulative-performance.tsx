@@ -34,6 +34,17 @@ const CumulativePerformance=(props:DevicesProps) => {
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
+  const doAway=()=>{
+    switch(type) {
+      case 'hydrogenAgent': 
+       return true
+      case 'operatorEquipment':
+       return true
+      case 'hydrogenAgentRent':
+       return true
+    }
+  }
+
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
@@ -69,6 +80,7 @@ const CumulativePerformance=(props:DevicesProps) => {
         1: '有大团队长'
       },
       hideInSearch: true,
+      hideInTable: doAway(),
     },
     {
       title: '订单号',

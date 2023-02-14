@@ -54,6 +54,17 @@ export default (props) => {
         return ''
     }
   }
+  const doAway=()=>{
+    switch(type) {
+      case 3: 
+       return true
+      case 4:
+       return true
+      case 5:
+       return true
+    }
+  }
+
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
@@ -89,6 +100,7 @@ export default (props) => {
         1: '有大团队长'
       },
       hideInSearch: true,
+      hideInTable: doAway()
     },
     {
       title: '订单号',
