@@ -192,6 +192,7 @@ const afterSalesOrder = () => {
       valueType: 'option',
       align: 'center',
       width: '5%',
+      fixed: 'right',
       render: (_, record) => <a onClick={ ()=> {setVisible(true); setId(record.id)} }>查看详情</a>
     }
   ]

@@ -139,7 +139,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, id}) => {
         </ProCard>
       </ProCard>
       <ProCard
-        title="套餐订单基本信息"
+        title="套餐订单明细信息"
         bordered
         className={styles.baseInfo}
       >
