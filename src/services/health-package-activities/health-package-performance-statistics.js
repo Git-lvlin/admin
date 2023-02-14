@@ -10,7 +10,7 @@ export const cardCityAgencyOrderPm = async (params = {}, options = {}) => {
       size: pageSize,
       provinceId: area&&area[0]?.value,
       cityId: area&&area[1]?.value,
-      districtId: area&&area[2]?.value,
+      regionId: area&&area[2]?.value,
       minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
       maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
       minOrderNums: orderNums&&orderNums?.min,
@@ -34,7 +34,7 @@ export const cardCityAgencyOrderPmStats = async (params = {}, options = {}) => {
       data: {
         provinceId: area&&area[0]?.value,
         cityId: area&&area[1]?.value,
-        districtId: area&&area[2]?.value,
+        regionId: area&&area[2]?.value,
         minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
         maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
         minOrderNums: orderNums&&orderNums?.min,
