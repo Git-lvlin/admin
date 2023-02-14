@@ -6,7 +6,7 @@ import type { TableProps,DescriptionsProps } from "./data"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 
-import { agencyCityList,agencyCityCount } from "@/services/great-project-team/great-project-team-management"
+import { teamLeaderManager,agencyCityCount } from "@/services/great-project-team/great-project-team-management"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -17,7 +17,7 @@ export default function TransactionData () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'agencyId',
+      dataIndex: 'accountId',
       align: 'center',
       hideInSearch: true,
     },
@@ -25,12 +25,26 @@ export default function TransactionData () {
       title: '大团队长手机号',
       dataIndex: 'managerPhone',
       align: 'center',
-      hideInSearch: true,
+      fieldProps:{
+        placeholder:'请输入大团长手机号码'
+      }
     },
     {
       title: '大团队长姓名',
-      dataIndex: 'agencyName',
+      dataIndex: 'manager',
       align: 'center',
+      fieldProps:{
+        placeholder:'请输入大团长姓名'
+      }
+    },
+    {
+      title: '大团长登录账号',
+      dataIndex: 'accountName',
+      align: 'center',
+      fieldProps:{
+        placeholder:'请输入大团长登录账号'
+      },
+      hideInTable: true
     },
     {
       title: '登录账号',
@@ -61,9 +75,9 @@ export default function TransactionData () {
     <PageContainer title={false}>
       <ProTable<TableProps>
         headerTitle='列表'
-        rowKey="agencyId"
+        rowKey="accountId"
         columns={tableColumns}
-        request={agencyCityList}
+        request={teamLeaderManager}
         columnEmptyText={false}
         actionRef={form}
         pagination={{

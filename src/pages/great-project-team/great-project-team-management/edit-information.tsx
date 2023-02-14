@@ -46,8 +46,10 @@ export default (props) => {
     accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          name:msgDetail?.agencyName,
-          ...res.data
+          ...res.data,
+          managerPhone:msgDetail?.managerPhone,
+          userName:msgDetail?.accountName,
+          manager:msgDetail?.manager
         })
       }
     })
@@ -120,7 +122,7 @@ export default (props) => {
       <ProFormText
         width={250}
         label="姓名"
-        name="name"
+        name="manager"
         readonly
       />
       <ProFormText

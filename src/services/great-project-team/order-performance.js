@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
 
-export const cityBusinessDeptSum = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/sum', {
+export const teamLeaderPmStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/java-admin/report/config/teamLeaderPmStats', {
         method: 'POST',
         data:params,
         ...options
@@ -15,9 +15,9 @@ export const cityBusinessDeptSum = async (params = {}, options = {}) => {
     }
 }
 
-export const listPage = async (params = {}, options = {}) => {
+export const teamLeaderPm = async (params = {}, options = {}) => {
     const { current, pageSize,createTime, ...rest } = params;
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/listPage', {
+    const res = await request('/auth/java-admin/report/config/teamLeaderPm', {
       method: 'POST',
       data: {
         page: current,

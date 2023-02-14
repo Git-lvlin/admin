@@ -15,10 +15,10 @@ export const agencyCityCount = async (params = {}, options = {}) => {
     }
 }
 
-//办事处列表
-export const agencyCityList = async (params = {}, options = {}) => {
+//团长-管理
+export const teamLeaderManager = async (params = {}, options = {}) => {
     const { current, pageSize, ...rest } = params;
-    const res = await request('/auth/java-admin/report/config/agencyCityList', {
+    const res = await request('/auth/java-admin/report/config/teamLeaderManager', {
       method: 'POST',
       data: {
         page: current,

@@ -6,7 +6,7 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { listPage,cityBusinessDeptSum } from "@/services/great-project-team/order-performance"
+import { teamLeaderPm,teamLeaderPmStats } from "@/services/great-project-team/order-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
@@ -27,7 +27,7 @@ export default function TransactionData () {
       begin:time?.createTime&&time?.createTime[0],
       end:time?.createTime&&time?.createTime[1]
     }
-    cityBusinessDeptSum(params).then(res=>{
+    teamLeaderPmStats(params).then(res=>{
       if(res.code==0){
         setDetailList(res.data)
       }
@@ -44,7 +44,7 @@ export default function TransactionData () {
     },
     {
       title: '大团队长手机号',
-      dataIndex: 'cityBusinessDeptName',
+      dataIndex: 'managerPhone',
       align: 'center',
       order: 4,
       fieldProps:{
@@ -167,7 +167,7 @@ export default function TransactionData () {
         rowKey="businessDeptId"
         headerTitle='列表'
         columns={tableColumns}
-        request={listPage}
+        request={teamLeaderPm}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{
