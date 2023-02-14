@@ -29,7 +29,7 @@ export default function TransactionData () {
     }
     teamLeaderPmStats(params).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data?.[0])
       }
     })
 
@@ -38,7 +38,7 @@ export default function TransactionData () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'cityBusinessDeptId',
+      dataIndex: 'agencyId',
       align: 'center',
       hideInSearch: true
     },
@@ -59,10 +59,10 @@ export default function TransactionData () {
     },
     {
       title: '累计业绩（元）',
-      dataIndex: 'totalTradeCommission',
+      dataIndex: 'totalPayAmount',
       align: 'center',
       render: (_,data)=>{
-        return <a onClick={()=>{setVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        return <a onClick={()=>{setVisible(true);setMsgDetail(data);}}>{amountTransform(_,'/').toFixed(2)}</a>
 
       },
       hideInSearch: true,
@@ -83,11 +83,11 @@ export default function TransactionData () {
     },
     {
       title: '氢原子全款销售提成',
-      dataIndex: 'totalSaleCommission',
+      dataIndex: 'hydrogenCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
@@ -97,11 +97,11 @@ export default function TransactionData () {
     },
     {
       title: '新集约批发业绩提成',
-      dataIndex: 'totalBuyCommission',
+      dataIndex: 'salesCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
@@ -110,11 +110,11 @@ export default function TransactionData () {
     },
     {
       title: '健康套餐订单提成',
-      dataIndex: 'totalTrainingCommission',
+      dataIndex: 'healthyCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(3)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
@@ -124,11 +124,11 @@ export default function TransactionData () {
     },
     {
       title: '启动费提成（元）',
-      dataIndex: 'totalBootCommission',
+      dataIndex: 'hydrogenBootCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(6)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(4)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return _
         }
@@ -138,11 +138,11 @@ export default function TransactionData () {
     },
     {
       title: '租赁管理费提成（元）',
-      dataIndex: 'totalRentCommission',
+      dataIndex: 'hydrogenRentCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
-          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(7)}}>{amountTransform(_,'/').toFixed(2)}</a>
+          return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(5)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0.00'
         }
@@ -155,13 +155,13 @@ export default function TransactionData () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalTradeCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.totalSaleCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.totalBuyCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="健康套餐订单提成">{amountTransform(detailList?.totalTrainingCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.totalBootCommission, '/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="租赁管理费提成">{amountTransform(detailList?.totalRentCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.salesCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="健康套餐订单提成">{amountTransform(detailList?.healthyCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="启动费提成">{amountTransform(detailList?.hydrogenBootCommission, '/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="租赁管理费提成">{amountTransform(detailList?.hydrogenRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="businessDeptId"
@@ -201,7 +201,6 @@ export default function TransactionData () {
           setVisible={setVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          type={type}
         />
       }
     </PageContainer>

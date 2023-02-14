@@ -1,48 +1,81 @@
 export type DescriptionsProps = {
-  totalTradeCommission: number;
+  healthyCommission: number;
+  hydrogenPayAmountDesc: string;
+  hydrogenPayAmount: number;
+  salesCommissionDesc: string;
+  agencyId: number;
+  hydrogenRentPayAmountDesc: string;
   totalCommission: number;
-  totalSaleCommission: number;
-  totalBuyCommission: number;
-  totalTrainingCommission: number;
-  totalLeaseCommission: number;
-  totalBootCommission: number;
-  totalRentCommission: number;
+  hydrogenBootPayAmount: number;
+  hydrogenBootCommissionDesc: string;
+  hydrogenCommissionDesc: string;
+  hydrogenCommission: number;
+  managerPhone: string;
+  healthyPayAmountDesc: string;
+  hydrogenRentCommissionDesc: string;
+  hydrogenRentCommission: number;
+  salesCommission: number;
+  salesPayAmount: number;
+  healthyPayAmount: number;
+  totalPayAmountDesc: string;
+  healthyCommissionDesc: string;
+  totalPayAmount: number;
+  totalCommissionDesc: string;
+  hydrogenBootCommission: number;
+  hydrogenRentPayAmount: number;
+  hydrogenBootPayAmountDesc: string;
+  salesPayAmountDesc: string;
 }
 
 export type TableProps = {
-  cityBusinessDeptId: string;
-  cityBusinessDeptName: string;
-  totalTradeCommission: string;
-  totalCommission: string;
-  totalSaleCommission: string;
-  totalBuyCommission: string;
-  totalTrainingCommission: string;
-  totalLeaseCommission: string;
+  healthyCommission: number;
+  hydrogenPayAmountDesc: string;
+  hydrogenPayAmount: number;
+  salesCommissionDesc: string;
+  agencyId: number;
+  hydrogenRentPayAmountDesc: string;
+  totalCommission: number;
+  hydrogenBootPayAmount: number;
+  hydrogenBootCommissionDesc: string;
+  hydrogenCommissionDesc: string;
+  hydrogenCommission: number;
+  managerPhone: string;
+  healthyPayAmountDesc: string;
+  hydrogenRentCommissionDesc: string;
+  hydrogenRentCommission: number;
+  salesCommission: number;
+  salesPayAmount: number;
+  healthyPayAmount: number;
+  totalPayAmountDesc: string;
+  healthyCommissionDesc: string;
+  totalPayAmount: number;
+  totalCommissionDesc: string;
+  hydrogenBootCommission: number;
+  hydrogenRentPayAmount: number;
+  hydrogenBootPayAmountDesc: string;
+  salesPayAmountDesc: string;
 }
 
 
 export type GithubIssueItem = {
-  orderTime: string;
-  orderNo: string;
   orderType: string;
-  orderTypeDesc: string;
-  orderAmount: string;
-  buyerMobile: string
+  memberPhone: string;
+  payAmount: number;
+  orderSn: string;
+  createTime: string;
+  payAmountDesc: string;
+  commission: number;
+  commissionDesc: string;
 };
 
 
 export type DevicesProps = {
-  msgDetail: {
-    cityBusinessDeptId: String;
-  }
+  msgDetail: TableProps
   type: string;
 }
 
 export type CumulativeProps = {
-  msgDetail: {
-    cityBusinessDeptId: String;
-    cityBusinessDeptName: string;
-  }
+  msgDetail: TableProps
   type: string;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;

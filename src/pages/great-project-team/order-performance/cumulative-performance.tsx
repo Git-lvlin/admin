@@ -4,7 +4,18 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityTotalTradeItemListPage,cityTotalTradeItemSum } from "@/services/city-office-management/city-office-achievements"
+import { 
+  teamHydrogen,
+  hydrogenStats,
+  wholesaleOrder,
+  wholesaleOrderStats,
+  healthyCard,
+  healthyCardStats,
+  hydrogenBoot,
+  hydrogenBootStats,
+  hydrogenRent,
+  hydrogenRentStats
+ } from "@/services/great-project-team/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -34,10 +45,61 @@ const CumulativePerformance=(props:DevicesProps) => {
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
+  const divideName=()=>{
+    switch (type) {
+      case 'teamHydrogen':
+        return teamHydrogen
+      case 'wholesaleOrder':
+        return wholesaleOrder
+      case 'healthyCard':
+        return healthyCard
+      case 'hydrogenBoot':
+        return hydrogenBoot
+      case 'hydrogenRent':
+        return hydrogenRent
+      default:
+        return ''
+    }
+  }
+
+  const hydrogenSum=()=>{
+    switch (type) {
+      case 'teamHydrogen':
+        return hydrogenStats
+      case 'wholesaleOrder':
+        return wholesaleOrderStats
+      case 'healthyCard':
+        return healthyCardStats
+      case 'hydrogenBoot':
+        return hydrogenBootStats
+      case 'hydrogenRent':
+        return hydrogenRentStats
+      default:
+        return ''
+    }
+  }
+
+  const exportCode=()=>{
+    switch (type) {
+      case 'teamHydrogen':
+        return 'tmHydrogen'
+      case 'wholesaleOrder':
+        return 'tmWholesaleOrder'
+      case 'healthyCard':
+        return 'tmHealthyCard'
+      case 'hydrogenBoot':
+        return 'tmHydrogenBoot'
+      case 'hydrogenRent':
+        return 'tmHydrogenRent'
+      default:
+        return ''
+    }
+  }
+
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -50,18 +112,27 @@ const CumulativePerformance=(props:DevicesProps) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
+      title: '客户手机',
+      dataIndex: 'memberPhone',
+      align: 'center',
+      hideInTable: true,
+      fieldProps: {
+        placeholder:'请输入当前大团队长的客户手机号码'
+      }
+    },
+    {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -80,17 +151,16 @@ const CumulativePerformance=(props:DevicesProps) => {
   ]
   useEffect(()=>{
     const params={
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:type,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-
-      
-      end:time?.dateRange?.[1]
+      agencyId:msgDetail?.agencyId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      teamPhone:time?.teamPhone
     }
-    cityTotalTradeItemSum(params).then(res=>{
+    var api=hydrogenSum()
+    api(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.totalAmount)
+        setOrderSum(res?.data?.payAmount)
       }
     })
   },[time])
@@ -107,14 +177,13 @@ const CumulativePerformance=(props:DevicesProps) => {
   }
   return (
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="agencyId"
         columns={Columns}
-        request={cityTotalTradeItemListPage}
+        request={divideName()}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          orderType:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agencyId:msgDetail?.agencyId
         }}
         pagination={{
           pageSize: 10,
@@ -133,10 +202,10 @@ const CumulativePerformance=(props:DevicesProps) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityTotalTradeItemList'}
+              type={exportCode()}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityTotalTradeItemList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={exportCode()}/>
           ],
         }}
         tableRender={(_, dom) => {
@@ -158,10 +227,10 @@ const CumulativePerformance=(props:DevicesProps) => {
 export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
-  const [activeKey, setActiveKey] = useState<string>('hydrogenAgent')
+  const [activeKey, setActiveKey] = useState<string>('teamHydrogen')
   return (
       <DrawerForm
-        title={`${msgDetail?.cityBusinessDeptName} 累计业绩 （ID:${msgDetail?.cityBusinessDeptId}）`}
+        title={`${msgDetail?.managerPhone} 累计业绩 （ID:${msgDetail?.agencyId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}
@@ -188,24 +257,19 @@ export default (props:CumulativeProps)=>{
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="hydrogenAgent" tab="托管购买订单">
+        <ProCard.TabPane key="teamHydrogen" tab="氢原子全款销售">
           {
-            activeKey=='hydrogenAgent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+            activeKey=='teamHydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="operatorEquipment" tab="缴纳培训服务费">
+        <ProCard.TabPane key="wholesaleOrder" tab="新集约商品批发订单">
           {
-            activeKey=='operatorEquipment'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+            activeKey=='wholesaleOrder'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogenAgentRent" tab="缴纳托管租赁管理费">
+        <ProCard.TabPane key="healthyCard" tab="健康套餐订单">
           {
-            activeKey=='hydrogenAgentRent'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
-          }
-        </ProCard.TabPane>
-        <ProCard.TabPane key="hydrogen" tab="全款购买订单">
-          {
-            activeKey=='hydrogen'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
+            activeKey=='healthyCard'&&<CumulativePerformance type={activeKey} msgDetail={msgDetail}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="hydrogenBoot" tab="启动费">
