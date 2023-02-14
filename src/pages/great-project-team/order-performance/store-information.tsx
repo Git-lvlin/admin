@@ -198,14 +198,14 @@ export default (props) => {
     const params={
       agencyId:msgDetail?.agencyId,
       teamPhone:time?.teamPhone,
-      agencyId:time?.agencyId,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1]
     }
     const api=hydrogenSum()
     api(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        console.log('res',res?.data)
+        setOrderSum(res?.data[0]?.commission)
       }
     })
   },[time])

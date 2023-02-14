@@ -48,7 +48,8 @@ export default function TransactionData () {
       align: 'center',
       order: 4,
       fieldProps:{
-        placeholder:'请输入大团队长手机号码'
+        placeholder:'请输入大团队长手机号码',
+        labelCol:4
       },
     },
     {

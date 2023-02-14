@@ -160,7 +160,7 @@ const CumulativePerformance=(props:DevicesProps) => {
     var api=hydrogenSum()
     api(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.payAmount)
+        setOrderSum(res?.data[0]?.payAmount)
       }
     })
   },[time])
