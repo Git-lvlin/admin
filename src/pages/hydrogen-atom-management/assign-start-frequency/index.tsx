@@ -7,22 +7,20 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { FormInstance } from "@ant-design/pro-form"
 import type { TableProps } from "./data"
 
-import { findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
+import { queryPage } from "@/services/hydrogen-atom-management/assign-start-frequency"
 import AlterModel from "./alter-model"
-import { getPageQuery } from "@/utils/utils"
 
 export default ()=> {
   const [visible, setVisible] = useState<boolean>(false)
   const form = useRef<FormInstance>()
   const ref = useRef<ActionType>()
-
+  const [msgDetail, setMsgDetail] = useState<TableProps>()
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'memberId',
+      dataIndex: 'id',
       align: 'center',
-      initialValue: getPageQuery().memberId,
       hideInSearch: true,
     },
     {
@@ -35,19 +33,19 @@ export default ()=> {
     },
     {
       title: '每日可启用次数',
-      dataIndex: 'icon',
+      dataIndex: 'times',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '修改原因',
-      dataIndex: 'nickName',
+      dataIndex: 'modifyReason',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '操作人',
-      dataIndex: 'userType',
+      dataIndex: 'creator',
       align: 'center',
       fieldProps:{
         placeholder:'请输入操作人'
@@ -55,28 +53,37 @@ export default ()=> {
     },
     {
       title: '操作时间',
-      dataIndex: 'storeNo',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '操作时间',
-      dataIndex: 'storeNo',
+      dataIndex: 'dataRange',
       valueType:'dateTimeRange',
       align: 'center',
       hideInTable: true,
       fieldProps:{
         placeholder:['开始时间','结束时间']
       }
-    }
+    },
+    {
+      title: '操作',
+      valueType:'option',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data)=>{
+        return <a onClick={() => { setVisible(true);setMsgDetail(data) }}>修改</a>
+      }
+    },
   ]
 
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="memberId"
+        rowKey="id"
         columns={tableColumns}
-        request={findMemberDevicePage}
+        request={queryPage}
         columnEmptyText={false}
         formRef={form}
         pagination={{
@@ -94,7 +101,7 @@ export default ()=> {
              }}
              type='primary'
             >
-             修改指定用户每日可启用氢原子次数
+             添加指定用户每日可启用氢原子次数
             </Button>
           ]
         }}
@@ -104,7 +111,9 @@ export default ()=> {
         <AlterModel
           visible={visible}
           setVisible={setVisible}
-          callback={()=>{ ref?.current?.reload() }}
+          callback={()=>{ ref?.current?.reload();setMsgDetail(null) }}
+          onClose={()=>{ setMsgDetail(null) }}
+          msgDetail={msgDetail}
         />
       }
     </PageContainer>
