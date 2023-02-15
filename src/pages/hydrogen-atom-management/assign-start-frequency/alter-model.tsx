@@ -20,7 +20,7 @@ return new Promise<void>(async (resolve, reject) => {
 })
 }
 
-const checkConfirm2 = (rule, value, callback) => {
+const checkConfirm2 = (rule: any, value: string, callback: any) => {
   return new Promise(async (resolve, reject) => {
     if (value && !/^[0-9]*[1-9][0-9]*$/.test(value)) {
       await reject('只能输入正整数')
@@ -34,15 +34,22 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [ confirmVisible, setConfirmVisible] = useState<boolean>(false)
   const [form] = Form.useForm();
-  const [ phone, setPhone ] = useState<string>('')
   const ref=useRef<FormInstance>()
   const user=JSON.parse(window.localStorage.getItem('user'))
 
   useEffect(()=>{
     if(msgDetail){
-      form.setFieldsValue(msgDetail)
+      queryMemberBootTimes({ memberPhone:msgDetail?.memberPhone }).then(res=>{
+        if(res.code==0){
+          form.setFieldsValue(res?.data)
+        }
+      })
+    }else{
+      form.setFieldsValue({
+        creator:user?.username
+      })
     }
-  },[msgDetail])
+  },[])
 
   return (
     <ModalForm
@@ -85,7 +92,12 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
             }
           })
         }else{
-          save(values).then(res=>{
+          const params={
+            creator:user?.username,
+            createId:user?.id,
+            ...values
+          }
+          save(params).then(res=>{
             if(res.code==0){
               setVisible(false)
               callback(true)
@@ -105,22 +117,11 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
           { required: true, message: '请输入手机号码' },
           { validator: checkConfirm}
         ]}
-        fieldProps={{
-            onChange:(val)=>{
-              setPhone(val?.target?.value)
-            },
-            onBlur:()=>{
-              queryMemberBootTimes({ memberPhone:phone }).then(res=>{
-                if(res.code==0){
-                  form.setFieldsValue(res?.data)
-                }
-              })
-            }
-        }}
+        disabled={msgDetail?true:false}
       />
       <ProFormText
         name="times"
-        label='可启动次数修改为'
+        label={msgDetail?'可启动次数修改为':'可启动次数为'}
         fieldProps={{
             addonAfter:'次/日'
         }}
@@ -133,7 +134,7 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
       />
       <ProFormTextArea
         name='modifyReason'
-        label='修改原因'
+        label={msgDetail?'修改原因':'原因'}
         fieldProps={{
             minLength:5,
             maxLength:20
@@ -160,7 +161,7 @@ export default ( props: { visible: boolean; setVisible: any; callback: any; msgD
           visible={confirmVisible}
           setVisible={setConfirmVisible}
           callback={()=>{ ref.current?.submit?.(); }}
-          msgDetail={ phone }
+          phone={ msgDetail?.memberPhone }
         />
       }
     </ModalForm >
