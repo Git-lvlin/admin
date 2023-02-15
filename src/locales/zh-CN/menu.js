@@ -471,5 +471,7 @@ export default {
   'menu.love-feedback-activities': '爱心回馈活动',
   'menu.love-feedback-activities.registration-record-love-feedback': '爱心回馈登记记录',
   'menu.love-feedback-activities.love-feedback-gift-order': '爱心回馈礼品订单',
+  'menu.love-feedback-activities.volunteer-list': '志愿者列表',
+  'menu.love-feedback-activities.recommendation-commission': '推荐提成',
 
 };
