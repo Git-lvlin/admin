@@ -444,6 +444,7 @@ export default {
   'menu.city-office-management.city-office-management-list': '氢原子管理',
   'menu.city-office-management.city-office-achievements': '氢原子业绩',
   'menu.city-office-management.new-intensive-performance': '新集约批发单业绩',
+  'menu.city-office-management.love-feedback-present-performance': '爱心回馈礼品单业绩',
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',

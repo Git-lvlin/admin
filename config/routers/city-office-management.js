@@ -23,6 +23,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'love-feedback-present-performance',
+      path: '/city-office-management/love-feedback-present-performance',
+      component: './city-office-management/love-feedback-present-performance',
+      wrappers: [RouteWatcher], 
+    },
+    {
       name: 'living-service-fee-performance',
       path: '/city-office-management/living-service-fee-performance',
       component: './city-office-management/living-service-fee-performance',
