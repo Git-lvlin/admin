@@ -68,6 +68,18 @@ export default ()=> {
       }
     },
     {
+      title: '修改人',
+      dataIndex: 'updater',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '修改时间',
+      dataIndex: 'updateTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '操作',
       valueType:'option',
       align: 'center',

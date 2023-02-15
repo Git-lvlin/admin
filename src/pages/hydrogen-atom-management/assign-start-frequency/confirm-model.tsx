@@ -5,13 +5,13 @@ import {
 } from '@ant-design/pro-form';
 import { ExclamationCircleFilled } from '@ant-design/icons'
 
-export default ( props: { visible: boolean; setVisible: any; callback: any; msgDetail: string; } ) => {
-  const { visible, setVisible, callback,msgDetail} = props;
+export default ( props: { visible: boolean; setVisible: any; callback: any; phone: string; } ) => {
+  const { visible, setVisible, callback,phone} = props;
   const [form] = Form.useForm();
   const ref=useRef()
   return (
     <ModalForm
-      title={<p><ExclamationCircleFilled style={{color:"#FAAD14"}}/> 确认给{msgDetail}修改每日可启用次数么？</p>}
+      title={<p><ExclamationCircleFilled style={{color:"#FAAD14"}}/> 确认给{phone}修改每日可启用次数么？</p>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
