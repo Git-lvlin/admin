@@ -466,4 +466,9 @@ export default {
   'menu.health-package-activities.health-package-performance-statistics': '健康套餐业绩统计', 
   'menu.health-package-activities.health-package-commission': '健康套餐推荐提成', 
 
+
+  'menu.love-feedback-activities': '爱心回馈活动',
+  'menu.love-feedback-activities.registration-record-love-feedback': '爱心回馈登记记录',
+  'menu.love-feedback-activities.love-feedback-gift-order': '爱心回馈礼品订单',
+
 };
