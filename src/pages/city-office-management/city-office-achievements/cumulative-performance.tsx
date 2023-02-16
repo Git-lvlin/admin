@@ -69,6 +69,7 @@ const CumulativePerformance=(props:DevicesProps) => {
         1: '有大团队长'
       },
       hideInTable: true,
+      hideInSearch: doAway(),
     },
     {
       title: '业绩类型',
