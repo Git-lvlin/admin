@@ -1,4 +1,4 @@
-import {  useRef } from "react"
+import {  useRef, useState } from "react"
 import ProTable  from "@ant-design/pro-table"
 
 import type { FC } from "react"
@@ -6,13 +6,18 @@ import type { ProColumns }  from "@ant-design/pro-table"
 import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
-import { newWholesaleCityAgencyPm } from "@/services/city-office-management/new-intensive-performance"
+import { queryPage } from "@/services/love-feedback-activities/recommendation-commission"
 import Export from "@/components/export"
+import { amountTransform } from "@/utils/utils"
+import Detail from "./detail"
 
 
 const RecommendationCommission:FC = ()=>  {
   const form = useRef<FormInstance>()
-  
+  const [visible, setVisible] = useState<boolean>(false)
+  const [amount, setAmount] = useState<number>(0)
+  const [name, setName] = useState<string>()
+  const [agencyId, setAgencyId] = useState<string>()
   const getFieldValue = () => {
     const { time, ...rest } = form.current?.getFieldsValue()
     return {
@@ -24,14 +29,14 @@ const RecommendationCommission:FC = ()=>  {
   const columns: ProColumns[] = [
       {
         title: '交易月度查询',
-        dataIndex: 'commission',
+        dataIndex: 'tradeMonth',
         valueType: 'select',
         hideInTable: true,
         valueEnum: {
-          1: '2022年11月',
-          2: '2022年12月',
-          3: '2023年1月',
-          4: '2023年2月'
+          '2022-11': '2022年11月',
+          '2022-12': '2022年12月',
+          '2023-01': '2023年1月',
+          '2023-02': '2023年2月'
         },
         fieldProps: {
           placeholder: '请选择月份'
@@ -39,13 +44,13 @@ const RecommendationCommission:FC = ()=>  {
       },
       {
         title: '手机号',
-        dataIndex: 'payAmount',
+        dataIndex: 'phoneNumber',
         align: 'center',
         hideInSearch: true,
       },
       {
         title: '用户手机',
-        dataIndex: 'payAmount',
+        dataIndex: 'phoneNumber',
         align: 'center',
         hideInTable: true,
         fieldProps:{
@@ -54,28 +59,48 @@ const RecommendationCommission:FC = ()=>  {
       },
       {
         title: '用户店铺编号',
-        dataIndex: 'name',
+        dataIndex: 'shopMemberAccount',
         align: 'center',
         hideInSearch: true
       },
       {
         title: '推荐订单总额',
-        dataIndex: 'time',
+        dataIndex: 'totalAmount',
         align: 'center',
         hideInSearch: true,
         render: (_,data) => {
-          return <a onClick={()=>{}}>{_}</a>
+          if(_){
+            return <a onClick={()=>{ 
+                    setVisible(true);
+                    setAgencyId(data.memberId);
+                    setAmount(data.payAmount);
+                    setName(`用户 ${data.phoneNumber} 推荐的爱心回馈礼品单交易明细`)}}
+                    >
+                    {amountTransform(_,'/').toFixed(2)}
+                  </a>
+          }else{
+            return '-'
+          }
+         
         }
       },
       {
         title: '推荐订单总提成',
-        dataIndex: 'teamLeader',
+        dataIndex: 'totalCommission',
         align: 'center',
-        hideInSearch: true
+        hideInSearch: true,
+        render: (_,data) => {
+          if(_){
+            return amountTransform(_,'/').toFixed(2)
+          }else{
+            return '-'
+          }
+          
+        }
       },
       {
         title: '直推用户数',
-        dataIndex: 'time',
+        dataIndex: 'directCount',
         align: 'center',
         hideInSearch: true
       }
@@ -83,11 +108,10 @@ const RecommendationCommission:FC = ()=>  {
     return (
       <PageContainer>
         <ProTable
-          rowKey='agencyId'
+          rowKey='memberId'
           columns={columns}
-          params={{}}
           options={false}
-          request={newWholesaleCityAgencyPm}
+          request={queryPage}
           formRef={form}
           pagination={{
             showQuickJumper: true,
@@ -105,6 +129,16 @@ const RecommendationCommission:FC = ()=>  {
             ]
           }}
         />
+      {
+        visible &&
+        <Detail
+          id={agencyId}
+          visible={visible}
+          setVisible={setVisible}
+          totalAmount={amount}
+          title={name}
+        />
+      }
       </PageContainer>
     )
   }
