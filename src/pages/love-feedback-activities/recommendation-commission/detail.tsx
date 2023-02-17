@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Drawer, Pagination, Spin, Empty, Divider, Space, Button } from "antd"
-import ProForm, { ProFormDateRangePicker, ProFormSelect, ProFormText } from '@ant-design/pro-form'
-import moment from 'moment'
+import ProForm, { ProFormSelect } from '@ant-design/pro-form'
 
 import type { FC } from "react"
 import type { FormInstance } from "antd"
