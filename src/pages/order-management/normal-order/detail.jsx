@@ -12,7 +12,7 @@ import DrawerDetail from '../after-sales-order/detail'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id, isDocumentary,orderSn } = props;
+  const { visible, setVisible, isPurchase, id, orderSn, isDocumentary } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
@@ -34,12 +34,12 @@ const Detail = (props) => {
     setLoading(true);
     let apiMethod = isPurchase ? findAdminOrderDetail2 : findAdminOrderDetail;
 
-    if (isDocumentary) {
-      apiMethod = findAdminOrderDetail3
+    if (orderSn) {
+      apiMethod =findAdminOrderDetailBySubOrder
     }
 
-    if (orderSn) {
-      apiMethod = findAdminOrderDetailBySubOrder
+    if (isDocumentary) {
+      apiMethod = findAdminOrderDetail3
     }
 
     apiMethod({

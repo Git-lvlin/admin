@@ -1,12 +1,12 @@
 import { useRef,useEffect, useState } from "react"
-import { Form,List,Divider } from 'antd';
+import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
 import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem } from "./data"
+import type { GithubIssueItem, CumulativeProps, TableProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
@@ -26,11 +26,11 @@ const formItemLayout = {
     }
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState({})
+  const [time,setTime]=useState<TableProps>()
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 

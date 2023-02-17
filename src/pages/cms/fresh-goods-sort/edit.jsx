@@ -65,8 +65,10 @@ const bloodData = [
   {
     id: 4,
     name: <>
-          <div>市办事处 - 大团长</div>
-          <div>距离最近且具有大团长身份的下单人的推荐人</div>
+          {/* <div>市办事处 - 大团长</div>
+          <div>距离最近且具有大团长身份的下单人的推荐人</div> */}
+          <div>大团队长</div>
+          {/* <div>距离最近且具有大团长身份的下单人的推荐人</div> */}
           </>
   },
    {
@@ -194,8 +196,10 @@ export default (props) => {
             {
               id: 4,
               name: <>
-                    <div>市办事处 - 大团长</div>
-                    <div>距离最近且具有大团长身份的下单人的推荐人</div>
+                    {/* <div>市办事处 - 大团长</div>
+                    <div>距离最近且具有大团长身份的下单人的推荐人</div> */}
+                    <div>大团队长</div>
+                    {/* <div>距离最近且具有大团长身份的下单人的推荐人</div> */}
                     </>,
               price: findItem?.commissionType==2?findItem?.cityTeamLeader:amountTransform(findItem?.cityTeamLeader, '/')
             },

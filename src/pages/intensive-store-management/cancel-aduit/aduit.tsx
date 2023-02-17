@@ -116,7 +116,10 @@ const Aduit: FC<aduitProps> = ({visible, setVisible, data, callback})=> {
       <ProForm.Item 
         label="当前店主账号余额"
         extra={
-          (deviceStatus === 1 || deviceStatus===2) && <span style={{ color: 'red' }}>当前店主有{orderState[deviceStatus]}，建议注销申请审核拒绝！</span>
+          <>
+            {amount >0&&<div style={{ color: 'red' }}>注销审核通过当前余额{amount}元会清空，操作会造成店主资金损失，请务必提供相关确切凭证！</div>}
+            {(deviceStatus === 1 || deviceStatus === 2) && <span style={{ color: 'red' }}>当前店主有{orderState[deviceStatus]}，建议注销申请审核拒绝！</span>}
+          </>
         }
       >
         {amount}元

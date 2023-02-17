@@ -1,22 +1,20 @@
-export type DescriptionsProps = {
-  deviceNum: number;
-  payAmount: number;
-  storeNums: number;
-  orderNums: number;
-  serviceNums: number;
+export type DetailProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  sn?: string
+  dataSource?: {
+    houseNumber: string
+    memberPhone: string
+    orderNums: string
+    storeNo: string
+  }
 }
 
-export type TableProps = {
-  area: string;
-  deviceNum: number;
-  storeNo: string;
-  memberPhone: string;
-  payAmount: number;
-  address: string;
-  regionId: number;
-  houseNumber: string;
-  cityId: number;
-  orderNums: number;
-  provinceId: number;
-  serviceNums: number;
+export type DataProps = {
+  packageName: string
+  payAmount: number
+  createTime: string
+  orderSn: string
+  cardNum: string
+  memberPhone: string
 }

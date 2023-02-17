@@ -1178,6 +1178,7 @@ const ShopHealthPackages = (props) => {
       dataIndex: 'packageTitle',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: storeType == 'love_customer_store'
     },
     {
       title: '累计购买健康卡套餐金额',
@@ -1187,25 +1188,60 @@ const ShopHealthPackages = (props) => {
         return amountTransform(_,'/')
       },
       hideInSearch: true,
+      hideInTable: storeType == 'love_customer_store'
     },
     {
       title: '最近购买健康卡套餐时间',
       dataIndex: 'lastCreateTime',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: storeType == 'love_customer_store'
     },
     {
       title: '最近购买健康卡套餐单号',
       dataIndex: 'lastOrderSn',
       valueType: 'text',
       hideInSearch: true,
+      hideInTable: storeType == 'love_customer_store'
     },
     {
       title: '购买套餐数量',
       dataIndex: 'orderNum',
       valueType: 'text',
       hideInSearch: true,
-    }
+      hideInTable: storeType == 'love_customer_store'
+    },
+    {
+      title: '最近领取回馈礼品名称',
+      dataIndex: 'packageTitle',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'purchased_gift_package_store'
+    },
+    {
+      title: '累计捐赠金额',
+      dataIndex: 'sumPayAmount',
+      valueType: 'text',
+      render: (_) => {
+        return amountTransform(_,'/')
+      },
+      hideInSearch: true,
+      hideInTable: storeType == 'purchased_gift_package_store'
+    },
+    {
+      title: '最近领取回馈时间',
+      dataIndex: 'lastCreateTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'purchased_gift_package_store'
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'lastOrderSn',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType == 'purchased_gift_package_store'
+    },
   ];
   return (
     <>
@@ -1276,6 +1312,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="purchased_gift_package_store" tab="购买健康套餐店铺">
           {
             activeKey == 'purchased_gift_package_store' && <ShopHealthPackages storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="love_customer_store" tab="爱心用户店">
+          {
+            activeKey == 'love_customer_store' && <ShopHealthPackages storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
