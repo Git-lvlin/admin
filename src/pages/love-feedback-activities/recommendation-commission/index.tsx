@@ -123,7 +123,7 @@ const RecommendationCommission:FC = ()=>  {
               ...dom.reverse(),
               <Export
                 key='export'
-                type="newWholesaleCityAgencyPm"
+                type="exportLoveGiftCommissionList"
                 conditions={getFieldValue}
               />
             ]
