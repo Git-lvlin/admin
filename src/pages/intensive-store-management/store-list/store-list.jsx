@@ -462,7 +462,7 @@ const StoreList = (props) => {
         11: 'VIP社区店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈活动'
+        33: '爱心回馈系统建店'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -476,7 +476,7 @@ const StoreList = (props) => {
         11: 'VIP社区店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈活动'
+        33: '爱心回馈系统建店'
       },
       hideInSearch: true,
       hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -1237,7 +1237,7 @@ const ShopHealthPackages = (props) => {
         11: 'VIP社区店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈活动'
+        33: '爱心回馈系统建店'
       },
       hideInTable: true,
       hideInSearch: storeType == 'purchased_gift_package_store',
@@ -1345,7 +1345,7 @@ const OverallStore = () => {
             activeKey == 'purchased_gift_package_store' && <ShopHealthPackages storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="love_customer_store" tab="爱心回馈系统建店">
+        <ProCard.TabPane key="love_customer_store" tab="爱心回馈送VIP店铺">
           {
             activeKey == 'love_customer_store' && <ShopHealthPackages storeType={activeKey} />
           }
