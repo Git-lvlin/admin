@@ -1250,9 +1250,11 @@ const ShopHealthPackages = (props) => {
         options={false}
         actionRef={actionRef}
         formRef={formRef}
-        params={{
-          operation: storeType,
-        }}
+        params={
+          storeType== 'love_customer_store'?
+          {applyType: 33}:
+          {operation: storeType}
+        }
         request={memberShopPage}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
