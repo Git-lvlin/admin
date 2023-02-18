@@ -41,7 +41,7 @@ export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState({})
+  const [time,setTime]=useState<GithubIssueItem>()
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
@@ -128,12 +128,13 @@ export default (props) => {
     },
     {
       title: '客户手机',
-      dataIndex: 'memberPhone',
+      dataIndex: 'teamPhone',
       align: 'center',
       hideInTable: true,
       fieldProps: {
         placeholder:'请输入当前大团队长的客户手机号码'
-      }
+      },
+      order: -1
     },
     {
       title: '下单人手机号',
@@ -149,22 +150,6 @@ export default (props) => {
     {
       title: '订单类型',
       dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
-        'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
       hideInSearch: true
     },
     {
@@ -199,12 +184,12 @@ export default (props) => {
       agencyId:msgDetail?.agencyId,
       teamPhone:time?.teamPhone,
       startTime:time?.dateRange?.[0],
-      endTime:time?.dateRange?.[1]
+      endTime:time?.dateRange?.[1],
+      orderSn:time?.orderSn,
     }
     const api=hydrogenSum()
     api(params).then(res=>{
       if(res.code==0){
-        console.log('res',res?.data)
         setOrderSum(res?.data[0]?.commission)
       }
     })
@@ -281,7 +266,7 @@ export default (props) => {
             { dom }
             <div className={styles.summary}>
               <div>
-                收益：
+                累积收益：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>

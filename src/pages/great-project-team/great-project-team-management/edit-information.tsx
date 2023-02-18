@@ -4,7 +4,7 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/city-office-management-list"
+import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/great-project-team/great-project-team-management"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
@@ -19,24 +19,6 @@ const formItemLayout = {
       },
     }
   };
-const checkConfirm = (rule, value, callback) => {
-  return new Promise(async (resolve, reject) => {
-    if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
-      await reject('请输入正确的手机号')
-    }else {
-      await resolve()
-    }
-  })
-}
-const activityName = (rule, value, callback) => {
-  return new Promise(async (resolve, reject) => {
-    if (value&&/[%&',;=?$\x22]/.test(value)) {
-      await reject('不可以含特殊字符')
-    } else {
-      await resolve()
-    }
-  })
-}
 
 
 export default (props) => {
@@ -46,10 +28,7 @@ export default (props) => {
     accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          ...res.data,
-          managerPhone:msgDetail?.managerPhone,
-          userName:msgDetail?.accountName,
-          manager:msgDetail?.manager
+          ...res.data
         })
       }
     })

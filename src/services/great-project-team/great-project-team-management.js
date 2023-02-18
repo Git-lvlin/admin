@@ -145,7 +145,7 @@ export const agencyOperateUser = async (params = {}, options = {}) => {
 
 
   export const accountCityDetail = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/accountCity/detail', {
+    const res = await request('/auth/agency/accountTeam/detail', {
         method: 'POST',
         data:params,
         ...options
@@ -159,7 +159,7 @@ export const agencyOperateUser = async (params = {}, options = {}) => {
   }
   
   export const accountCityEdit = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/accountCity/edit', {
+    const res = await request('/auth/agency/accountTeam/edit', {
         method: 'POST',
         data:params,
         ...options
@@ -174,7 +174,7 @@ export const agencyOperateUser = async (params = {}, options = {}) => {
   
   
   export const checkAccount = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/accountCity/checkAccount', {
+    const res = await request('/auth/agency/accountTeam/checkAccount', {
         method: 'POST',
         data:params,
         ...options
@@ -188,7 +188,7 @@ export const agencyOperateUser = async (params = {}, options = {}) => {
   }
   
   export const accountCityResetPwd = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/accountCity/resetPwd', {
+    const res = await request('/auth/agency/accountTeam/resetPwd', {
         method: 'POST',
         data:params,
         ...options

@@ -54,6 +54,7 @@ export type TableProps = {
   hydrogenRentPayAmount: number;
   hydrogenBootPayAmountDesc: string;
   salesPayAmountDesc: string;
+  createTime: Array
 }
 
 
@@ -66,6 +67,8 @@ export type GithubIssueItem = {
   payAmountDesc: string;
   commission: number;
   commissionDesc: string;
+  dateRange: Array;
+  teamPhone: string;
 };
 
 

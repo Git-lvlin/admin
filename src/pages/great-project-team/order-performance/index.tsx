@@ -1,8 +1,7 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
-import type { ProColumns } from "@ant-design/pro-table"
-import type { FormInstance } from "@ant-design/pro-form"
+import type { ProColumns, ActionType} from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
@@ -17,15 +16,14 @@ export default function TransactionData () {
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<string>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState()
-  const form = useRef<FormInstance>()
+  const [time,setTime]=useState<TableProps>()
+  const form = useRef<ActionType>()
 
   useEffect(() => {
     const params={
-      cityBusinessDeptId:time?.cityBusinessDeptId,
-      cityBusinessDeptName:time?.cityBusinessDeptName,
-      begin:time?.createTime&&time?.createTime[0],
-      end:time?.createTime&&time?.createTime[1]
+      managerPhone:time?.managerPhone,
+      startTime:time?.createTime&&time?.createTime[0],
+      endTime:time?.createTime&&time?.createTime[1]
     }
     teamLeaderPmStats(params).then(res=>{
       if(res.code==0){
@@ -165,7 +163,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="租赁管理费提成">{amountTransform(detailList?.hydrogenRentCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
-        rowKey="businessDeptId"
+        rowKey="agencyId"
         headerTitle='列表'
         columns={tableColumns}
         request={teamLeaderPm}
@@ -180,6 +178,7 @@ export default function TransactionData () {
         }}
         options={false}
         search={{
+          labelWidth: 120,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse()
           ],
@@ -191,7 +190,7 @@ export default function TransactionData () {
           visible={storeVisible}
           setVisible={setStoreVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail('')}}
           type={type}
         />
       }
@@ -201,7 +200,7 @@ export default function TransactionData () {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail('')}}
         />
       }
     </PageContainer>

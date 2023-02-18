@@ -7,8 +7,8 @@ export const teamLeaderPm = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:createTime&&createTime[0],
-      end:createTime&&createTime[1],
+      startTime:createTime&&createTime[0],
+      endTime:createTime&&createTime[1],
       ...rest
     },
     ...options
@@ -44,8 +44,8 @@ export const teamHydrogen = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
+      startTime:dateRange&&dateRange[0],
+      endTime:dateRange&&dateRange[1],
       ...rest
     },
     ...options
@@ -81,8 +81,8 @@ export const wholesaleOrder = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
+      startTime:dateRange&&dateRange[0],
+      endTime:dateRange&&dateRange[1],
       ...rest
     },
     ...options
@@ -119,8 +119,8 @@ export const healthyCard = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
+      startTime:dateRange&&dateRange[0],
+      endTime:dateRange&&dateRange[1],
       ...rest
     },
     ...options
@@ -157,8 +157,8 @@ export const hydrogenBoot = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
+      startTime:dateRange&&dateRange[0],
+      endTime:dateRange&&dateRange[1],
       ...rest
     },
     ...options
@@ -195,8 +195,8 @@ export const hydrogenRent = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
+      startTime:dateRange&&dateRange[0],
+      endTime:dateRange&&dateRange[1],
       ...rest
     },
     ...options

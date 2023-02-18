@@ -41,7 +41,7 @@ const formItemLayout = {
 const CumulativePerformance=(props:DevicesProps) => {
   const { type,msgDetail } = props
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState({})
+  const [time,setTime]=useState<GithubIssueItem>()
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
@@ -117,12 +117,13 @@ const CumulativePerformance=(props:DevicesProps) => {
     },
     {
       title: '客户手机',
-      dataIndex: 'memberPhone',
+      dataIndex: 'teamPhone',
       align: 'center',
       hideInTable: true,
       fieldProps: {
         placeholder:'请输入当前大团队长的客户手机号码'
-      }
+      },
+      order: -1
     },
     {
       title: '下单人手机号',
@@ -143,11 +144,11 @@ const CumulativePerformance=(props:DevicesProps) => {
       },
       hideInSearch: true,
     },
-    {
-      title: '店铺编号',
-      dataIndex: 'shopMemberAccount',
-      align: 'center',
-    }
+    // {
+    //   title: '店铺编号',
+    //   dataIndex: 'shopMemberAccount',
+    //   align: 'center',
+    // }
   ]
   useEffect(()=>{
     const params={
@@ -168,10 +169,9 @@ const CumulativePerformance=(props:DevicesProps) => {
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
