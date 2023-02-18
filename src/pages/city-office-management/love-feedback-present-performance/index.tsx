@@ -10,7 +10,7 @@ import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
 import { amountTransform } from "@/utils/utils"
-import { newWholesaleCityAgencyPm, newWholesaleCityAgencyPmStats } from "@/services/city-office-management/new-intensive-performance"
+import { loveGiftOrder, loveGiftOrderStats } from "@/services/city-office-management/love-feedback-present-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
@@ -19,7 +19,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
 
   const getData = () => {
-    newWholesaleCityAgencyPmStats({
+    loveGiftOrderStats({
       ...form
     }).then(res=> {
       if(res.success) {
@@ -45,7 +45,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
     },
     {
       title: '有业绩市办事处数量',
-      dataIndex: 'agencyNum',
+      dataIndex: 'agencyNums',
       render: _ => `${_ ? _ : 0}家`
     }
   ]
@@ -87,7 +87,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
     },
     {
       title: '办事处名称',
-      dataIndex: 'name',
+      dataIndex: 'agencyName',
       align: 'center'
     },
     {
@@ -98,13 +98,13 @@ const LoveFeedbackPresentPerformance: FC = () => {
     },
     {
       title: '社区店数量',
-      dataIndex: 'teamLeader',
+      dataIndex: 'storeNums',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '爱心回馈礼品订单数',
-      dataIndex: 'time',
+      dataIndex: 'orderNums',
       align: 'center',
       hideInSearch: true
     },
@@ -155,7 +155,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
         onReset={()=> {
           setSearchConfig(undefined)
         }}
-        request={newWholesaleCityAgencyPm}
+        request={loveGiftOrder}
         formRef={form}
         pagination={{
           showQuickJumper: true,
@@ -167,7 +167,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type="newWholesaleCityAgencyPm"
+              type="loveGiftOrder"
               conditions={getFieldValue}
             />
           ]
