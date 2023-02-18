@@ -449,6 +449,10 @@ export default {
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
 
+  'menu.great-project-team': '大团队长',
+  'menu.great-project-team.great-project-team-management': '大团队长管理',
+  'menu.great-project-team.order-performance': '订单业绩',
+
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
 
