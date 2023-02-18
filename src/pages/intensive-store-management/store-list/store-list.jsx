@@ -237,6 +237,21 @@ const StoreList = (props) => {
       valueType: 'text',
       hideInSearch: true,
     },
+    {
+      title: '爱心VIP状态',
+      dataIndex: 'isJoinLoveFeedback',
+      valueType: 'select',
+      hideInSearch: storeType !== 'normal',
+      hideInTable: storeType !== 'normal',
+      valueEnum: {
+        1: '爱心回馈VIP店铺',
+        2: '非爱心回馈VIP店铺'
+      },
+      fieldProps: {
+        placeholder:'请选择是否为爱心回馈VIP期限店铺'
+      },
+      order:-1
+    },
     // {
     //   title: '积分',
     //   dataIndex: 'score',
@@ -446,7 +461,8 @@ const StoreList = (props) => {
         10: '正常申请',
         11: 'VIP社区店',
         20: '绿色通道申请',
-        30: '健康生活馆'
+        30: '健康生活馆',
+        33: '爱心回馈活动'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -459,7 +475,8 @@ const StoreList = (props) => {
         10: '正常申请',
         11: 'VIP社区店',
         20: '绿色通道申请',
-        30: '健康生活馆'
+        30: '健康生活馆',
+        33: '爱心回馈活动'
       },
       hideInSearch: true,
       hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -1163,7 +1180,7 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '提货点所在地区',
-      dataIndex: 'area',
+      dataIndex: storeType == 'love_customer_store'?'areaInfoStr':'area',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -1213,31 +1230,31 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '最近领取回馈礼品名称',
-      dataIndex: 'packageTitle',
+      dataIndex: 'pgorderLastPackageTitle',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'purchased_gift_package_store'
     },
     {
       title: '累计捐赠金额',
-      dataIndex: 'sumPayAmount',
+      dataIndex: 'pgorderSumPayAmount',
       valueType: 'text',
       render: (_) => {
-        return amountTransform(_,'/')
+        return amountTransform(_,'/').toFixed(2)
       },
       hideInSearch: true,
       hideInTable: storeType == 'purchased_gift_package_store'
     },
     {
       title: '最近领取回馈时间',
-      dataIndex: 'lastCreateTime',
+      dataIndex: 'pgorderLastCreateTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'purchased_gift_package_store'
     },
     {
       title: '店铺编号',
-      dataIndex: 'lastOrderSn',
+      dataIndex: 'shopMemberAccount',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType == 'purchased_gift_package_store'
@@ -1250,11 +1267,9 @@ const ShopHealthPackages = (props) => {
         options={false}
         actionRef={actionRef}
         formRef={formRef}
-        params={
-          storeType== 'love_customer_store'?
-          {applyType: 33}:
-          {operation: storeType}
-        }
+        params={{
+          operation: storeType
+        }}
         request={memberShopPage}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
@@ -1316,7 +1331,7 @@ const OverallStore = () => {
             activeKey == 'purchased_gift_package_store' && <ShopHealthPackages storeType={activeKey} />
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="love_customer_store" tab="爱心用户店">
+        <ProCard.TabPane key="love_customer_store" tab="爱心回馈系统建店">
           {
             activeKey == 'love_customer_store' && <ShopHealthPackages storeType={activeKey} />
           }
