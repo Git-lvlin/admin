@@ -8,8 +8,8 @@ export type DetailProps = {
 
 export type DataProps = {
   payAmount: number
-  payTime: string
+  createTime: string
   memberPhone: string
   orderSn: string
-  homeNumber: string
+  houseNumber: string
 }

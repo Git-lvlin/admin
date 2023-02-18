@@ -7,7 +7,7 @@ import type { FC } from "react"
 import type { FormInstance } from "antd"
 import type { DetailProps, DataProps } from "./data"
 
-import { newWholesaleAgencyWebPm } from "@/services/city-office-management/new-intensive-performance"
+import { loveGiftOrderDetail } from "@/services/city-office-management/love-feedback-present-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
@@ -25,7 +25,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
   useEffect(()=>{
     const { time, ...rest } = form.current?.getFieldsValue()
     setLoad(true)
-    newWholesaleAgencyWebPm({
+    loveGiftOrderDetail({
       agencyId: id,
       startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
       endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
@@ -79,7 +79,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
                 <Space size={10} key='1' className={styles.search}>
                   <Button type='primary' onClick={()=>form?.submit()}>查询</Button>
                   <Button onClick={()=>{form?.resetFields(); setQuery(query + 1)}}>重置</Button>
-                  <Export type="newWholesaleCityAgencyPmDetail" conditions={getFieldsValue} key='export'/>
+                  <Export type="loveGiftOrderDetail" conditions={getFieldsValue} key='export'/>
                 </Space>
               ]
             }}
@@ -104,7 +104,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
               <div key={idx}>
                 <div className={styles.cardList}>
                   <div>{amountTransform(item.payAmount, '/')}元</div>
-                  <div>{item.payTime}</div>
+                  <div>{item.createTime}</div>
                 </div>
                 <div className={styles.cardListContent}>
                   <div>{item.memberPhone}</div>
@@ -112,7 +112,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
                 </div>
                 <div className={styles.cardListContent}>
                   <div></div>
-                  <div>店铺编号：{item.homeNumber}</div>
+                  <div>店铺编号：{item.houseNumber}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>
               </div>
