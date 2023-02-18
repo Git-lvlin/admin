@@ -1229,6 +1229,20 @@ const ShopHealthPackages = (props) => {
       hideInTable: storeType == 'love_customer_store'
     },
     {
+      title: '申请类型',
+      dataIndex: 'applyType',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        11: 'VIP社区店',
+        20: '绿色通道申请',
+        30: '健康生活馆',
+        33: '爱心回馈活动'
+      },
+      hideInTable: true,
+      hideInSearch: storeType == 'purchased_gift_package_store',
+    },
+    {
       title: '最近领取回馈礼品名称',
       dataIndex: 'pgorderLastPackageTitle',
       valueType: 'text',
