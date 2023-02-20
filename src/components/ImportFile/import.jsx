@@ -7,7 +7,7 @@ import {
 import Upload from '../upload'
 import { createImportTask } from '@/services/import-file/import-file'
 
-const Import = ({ code, change, operatorSource = 2 }) => {
+const Import = ({ code, change, operatorSource = 2, show, url = '', title = '导入' }) => {
   const user = JSON.parse(localStorage.getItem('user'))
   const uploadExcel = (v) => {
     createImportTask({
@@ -26,7 +26,7 @@ const Import = ({ code, change, operatorSource = 2 }) => {
     <ModalForm
       title="表导入"
       trigger={
-        <Button type="primary">导入</Button>
+        <Button type="primary">{title}</Button>
       }
       width={500}
       submitter={{
@@ -44,6 +44,17 @@ const Import = ({ code, change, operatorSource = 2 }) => {
       }}
       layout="inline"
     >
+      {
+        show&&
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <ProForm.Item
+            name="template"
+            label="导入模板"
+          >
+            <a href={url}>点击下载导入模板</a>
+          </ProForm.Item>
+        </div>
+      }
       <div style={{ display: "flex", justifyContent: "center" }}>
         <ProForm.Item
           name="fileUrl"
