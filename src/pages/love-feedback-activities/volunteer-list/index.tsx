@@ -6,7 +6,7 @@ import type { ProColumns }  from "@ant-design/pro-table"
 import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
-import { newWholesaleCityAgencyPm, newWholesaleCityAgencyPmStats } from "@/services/city-office-management/new-intensive-performance"
+import { newWholesaleCityAgencyPm } from "@/services/city-office-management/new-intensive-performance"
 import Export from "@/components/export"
 
 
