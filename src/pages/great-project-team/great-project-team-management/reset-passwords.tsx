@@ -4,7 +4,7 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
+import { accountCityResetPwd } from "@/services/great-project-team/great-project-team-management"
 
 const formItemLayout = {
     labelCol: { span: 4 },
