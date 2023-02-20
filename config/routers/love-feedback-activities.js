@@ -17,5 +17,17 @@ export default {
       component: './love-feedback-activities/love-feedback-gift-order',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'volunteer-list',
+      path: '/love-feedback-activities/volunteer-list',
+      component: './love-feedback-activities/volunteer-list',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'recommendation-commission',
+      path: '/love-feedback-activities/recommendation-commission',
+      component: './love-feedback-activities/recommendation-commission',
+      wrappers: [RouteWatcher],
+    }
   ]
 }
