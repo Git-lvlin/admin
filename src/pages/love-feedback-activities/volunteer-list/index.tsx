@@ -57,7 +57,7 @@ const VolunteerList: FC = ()=>  {
           },
         },
         {
-          title: '手机号',
+          // title: '手机号',
           dataIndex: 'phoneNumber',
           align: 'center',
           hideInTable: true,
@@ -73,7 +73,7 @@ const VolunteerList: FC = ()=>  {
         },
         {
           title: '注册来源',
-          dataIndex: 'sourceType',
+          dataIndex: 'sourceTypeDesc',
           align: 'center',
           hideInSearch: true
         },
@@ -101,7 +101,7 @@ const VolunteerList: FC = ()=>  {
           },
         },
         {
-          title: '捐款状态',
+          // title: '捐款状态',
           dataIndex: 'contributionStatus',
           valueType: 'select',
           hideInTable: true,
@@ -114,13 +114,13 @@ const VolunteerList: FC = ()=>  {
           }
         },
         {
-          title: '开店情况',
+          // title: '开店情况',
           dataIndex: 'storeCase',
           valueType: 'select',
           hideInTable: true,
           valueEnum: {
             1: '未开店',
-            2: '已开头社区店',
+            2: '已开通社区店',
             3: '已开通VIP店'
           },
           fieldProps: {
@@ -139,7 +139,6 @@ const VolunteerList: FC = ()=>  {
         <ProTable
           rowKey='memberId'
           columns={columns}
-          params={{}}
           options={false}
           request={volunteerPage}
           formRef={form}
@@ -153,7 +152,7 @@ const VolunteerList: FC = ()=>  {
               ...dom.reverse(),
               <Export
                 key='export'
-                type="newWholesaleCityAgencyPm"
+                type="healthy-member-volunteer"
                 conditions={getFieldValue}
               />
             ]
