@@ -7,13 +7,13 @@ import {
 import Upload from '../upload'
 import { createImportTask } from '@/services/import-file/import-file'
 
-const Import = ({ code, change, operatorSource = 2, show, url = '', title = '导入' }) => {
+const Import = ({ code, change, operatorSource = 2, show, url = '', title = '导入', operatorName = '' }) => {
   const user = JSON.parse(localStorage.getItem('user'))
   const uploadExcel = (v) => {
     createImportTask({
       code,
       ...v,
-      param: JSON.stringify({ operatorSource, operatorId: user.id, operatorName: user.username })
+      param: JSON.stringify({ operatorSource, operatorId: user.id, operatorName: operatorName || user.username })
     }).then(res => {
       if (res.success) {
         message.success("表格导入成功")

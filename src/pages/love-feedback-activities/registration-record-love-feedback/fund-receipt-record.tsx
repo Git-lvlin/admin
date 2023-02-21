@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import { PageContainer } from '@ant-design/pro-layout'
+import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import Export from '@/components/export'
 import { arrivalGetList } from '@/services/love-feedback-activities/registration-record-love-feedback'
@@ -11,6 +11,8 @@ import ImportHistory from '@/components/ImportFile/import-history'
 
 const FundReceiptRecord = () => {
   const [importVisit, setImportVisit] = useState<boolean>(false)
+  const form = useRef<FormInstance>()
+  const user = window.localStorage.getItem('nickname') as string
   
   const columns: ProColumns[] = [
     {
@@ -97,13 +99,14 @@ const FundReceiptRecord = () => {
   ]
 
   return (
-    <PageContainer title={false}>
+    <>
       <ProTable
         rowKey='id'
         columns={columns}
         options={false}
         request={arrivalGetList}
         params={{}}
+        formRef={form}
         bordered
         pagination={{
           showQuickJumper: true,
@@ -114,7 +117,7 @@ const FundReceiptRecord = () => {
             ...dom.reverse(),
             <Export
               type='donateArrivalRecord'
-              conditions={{}}
+              conditions={{...form.current?.getFieldsValue()}}
               key='export'
               text='导出记录'
             />,
@@ -124,6 +127,7 @@ const FundReceiptRecord = () => {
               change={(e: boolean) => { setImportVisit(e) }}
               show={importVisit}
               title='导入已核实专项基金到账记录'
+              operatorName={user}
             />,
             <ImportHistory
               key='importHistory'
@@ -134,7 +138,7 @@ const FundReceiptRecord = () => {
           ]
         }}
       />
-    </PageContainer>
+    </>
   )
 }
 
