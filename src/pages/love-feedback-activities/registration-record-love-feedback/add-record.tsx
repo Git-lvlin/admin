@@ -4,7 +4,8 @@ import {
   ProFormDateTimePicker,
   ProFormText,
   ProFormTextArea,
-  ProFormSelect
+  ProFormSelect,
+  ProFormDigit
 } from '@ant-design/pro-form'
 
 import type { FC  } from 'react'
@@ -22,10 +23,9 @@ const AddRecord: FC<AddRecordProps> = ({visible, setVisible, callback}) => {
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    const userObj = window.localStorage.getItem('user')
-    const user = JSON.parse(userObj as string).username
+    const name = window.localStorage.getItem('nickname')
     form.current?.setFieldsValue({
-      operator: user
+      operator: name
     })
   }, [])
 
@@ -81,7 +81,7 @@ const AddRecord: FC<AddRecordProps> = ({visible, setVisible, callback}) => {
         name='tradeTime'
         rules={[{required: true}]}
       />
-      <ProFormText
+      <ProFormDigit
         label='附言手机号'
         name='phone'
         rules={[{required: true}]}
@@ -131,12 +131,12 @@ const AddRecord: FC<AddRecordProps> = ({visible, setVisible, callback}) => {
         name='amount'
         readonly
       />
-      <ProFormText
+      <ProFormDigit
         label='付款人账号'
         name='payAccount'
         rules={[{required: true}]}
       />
-      <ProFormText
+      <ProFormDigit
         label='电子回单编号'
         name='replySlipNo'
         rules={[{required: true}]}
