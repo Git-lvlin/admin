@@ -11,6 +11,7 @@ import ImportHistory from '@/components/ImportFile/import-history'
 
 const FundReceiptRecord = () => {
   const [importVisit, setImportVisit] = useState<boolean>(false)
+  const user = window.localStorage.getItem('nickname') as string
   
   const columns: ProColumns[] = [
     {
@@ -97,7 +98,7 @@ const FundReceiptRecord = () => {
   ]
 
   return (
-    <PageContainer title={false}>
+    <>
       <ProTable
         rowKey='id'
         columns={columns}
@@ -124,6 +125,7 @@ const FundReceiptRecord = () => {
               change={(e: boolean) => { setImportVisit(e) }}
               show={importVisit}
               title='导入已核实专项基金到账记录'
+              operatorName={user}
             />,
             <ImportHistory
               key='importHistory'
@@ -134,7 +136,7 @@ const FundReceiptRecord = () => {
           ]
         }}
       />
-    </PageContainer>
+    </>
   )
 }
 

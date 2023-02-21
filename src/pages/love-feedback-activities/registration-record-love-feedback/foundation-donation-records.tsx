@@ -17,6 +17,7 @@ const FoundationDonationRecords =  () => {
   const [importVisit, setImportVisit] = useState<boolean>(false)
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType >()
+  const user = window.localStorage.getItem('nickname') as string
 
   const url = 'https://pro-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/donate_record_import.xlsx'
 
@@ -37,7 +38,7 @@ const FoundationDonationRecords =  () => {
       dataIndex: 'phone',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入下单人手机号'
+        placeholder: '请输入手机号'
       },
       hideInTable: true
     },
@@ -154,6 +155,7 @@ const FoundationDonationRecords =  () => {
                 code="donate_record_import"
                 show={true}
                 url={url}
+                operatorName={user}
               />,
               <ImportHistory 
                 key='importHistory'

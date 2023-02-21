@@ -22,10 +22,9 @@ const AddRecord: FC<AddRecordProps> = ({visible, setVisible, callback}) => {
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    const userObj = window.localStorage.getItem('user')
-    const user = JSON.parse(userObj as string).username
+    const name = window.localStorage.getItem('nickname')
     form.current?.setFieldsValue({
-      operator: user
+      operator: name
     })
   }, [])
 

@@ -92,7 +92,7 @@ const UserRegistrationRecord = () => {
   ]
 
   return (
-    <PageContainer title={false}>
+    <>
       <ProTable
         rowKey='id'
         columns={columns}
@@ -128,7 +128,7 @@ const UserRegistrationRecord = () => {
           },
         }}
       />
-    </PageContainer>
+    </>
   )
 }
 
