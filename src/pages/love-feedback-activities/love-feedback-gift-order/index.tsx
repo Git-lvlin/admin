@@ -1,16 +1,19 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import { giftPackageOrder } from '@/services/health-package-activities/health-package-order-management'
 import { amountTransform } from '@/utils/utils'
 import DetailDrawer from './detail-drawer'
+import Export from '@/components/export'
 
 const LoveFeedbackGiftOrder = ()=>  {
   const [visible, setVisible] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
+  const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
     {
@@ -103,7 +106,12 @@ const LoveFeedbackGiftOrder = ()=>  {
         request={giftPackageOrder}
         search={{
           optionRender: (search, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='exprot'
+              type='trans-export-gift-package-order'
+              conditions={{orderType: 33, ...form.current?.getFieldsValue()}}
+            />
           ]
         }}
       />
