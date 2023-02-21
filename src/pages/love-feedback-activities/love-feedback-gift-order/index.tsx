@@ -1,11 +1,12 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import { Select } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
-import { giftPackageOrder } from '@/services/health-package-activities/health-package-order-management'
+import { giftPackageOrder, packageSampleList } from '@/services/health-package-activities/health-package-order-management'
 import { amountTransform } from '@/utils/utils'
 import DetailDrawer from './detail-drawer'
 import Export from '@/components/export'
@@ -13,7 +14,19 @@ import Export from '@/components/export'
 const LoveFeedbackGiftOrder = ()=>  {
   const [visible, setVisible] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
+  const [list, setList] = useState()
   const form = useRef<FormInstance>()
+
+  useEffect(()=> {
+    packageSampleList({orderType: 33}).then(res => {
+      if(res.code === 0) {
+        setList(res.data.map((item: {giftPackageTitle: string, giftPackageId: string}) => ({
+          label: item.giftPackageTitle,
+          value: item.giftPackageId
+        })))
+      }
+    })
+  }, [])
 
   const columns: ProColumns[] = [
     {
@@ -49,11 +62,12 @@ const LoveFeedbackGiftOrder = ()=>  {
       hideInSearch: true
     },
     {
-      dataIndex: 'giftPackageTitle',
+      dataIndex: 'giftPackageId',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入礼品名称'
+        placeholder: '请选择礼品名称'
       },
+      renderFormItem: () => <Select options={list}/>,
       hideInTable: true
     },
     {
@@ -102,6 +116,7 @@ const LoveFeedbackGiftOrder = ()=>  {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         params={{orderType: 33}}
         request={giftPackageOrder}
         search={{
@@ -109,8 +124,8 @@ const LoveFeedbackGiftOrder = ()=>  {
             ...dom.reverse(),
             <Export
               key='exprot'
-              type='trans-export-gift-package-order'
-              conditions={{orderType: 33, ...form.current?.getFieldsValue()}}
+              type='trans-export-gift-package-order-love-feedback'
+              conditions={{...form.current?.getFieldsValue()}}
             />
           ]
         }}
