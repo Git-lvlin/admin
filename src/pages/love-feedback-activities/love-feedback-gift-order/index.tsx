@@ -125,7 +125,7 @@ const LoveFeedbackGiftOrder = ()=>  {
             <Export
               key='exprot'
               type='trans-export-gift-package-order-love-feedback'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={{orderType: 33, ...form.current?.getFieldsValue()}}
             />
           ]
         }}
