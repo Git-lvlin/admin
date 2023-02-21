@@ -167,6 +167,12 @@ export default function EquipmentManagement() {
         1: '租赁',
         2: '购买'
       },
+      hideInTable: true
+    },
+    {
+      title: '交易类型',
+      dataIndex: 'occupationModeStr',
+      hideInSearch: true,
       align: 'center'
     },
     {
