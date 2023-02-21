@@ -128,7 +128,7 @@ export default () => {
         valueType: 'text',
       },
       {
-        title: '7800元（三个月租金）',
+        title: '3000元（三个月租金）',
         dataIndex: 'threeMonthRent',
         valueType: 'text',
         hideInSearch: true,
@@ -137,7 +137,7 @@ export default () => {
         }
       },
       {
-        title: '15000（六个月租金）',
+        title: '7200（十二个月租金）',
         dataIndex: 'sixMonthRent',
         valueType: 'text',
         hideInSearch: true,
