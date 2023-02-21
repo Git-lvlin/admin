@@ -6,7 +6,7 @@ import type { ProColumns }  from "@ant-design/pro-table"
 import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
-import { newWholesaleCityAgencyPm } from "@/services/city-office-management/new-intensive-performance"
+import { volunteerPage } from "@/services/love-feedback-activities/volunteer-list"
 import Export from "@/components/export"
 
 
@@ -14,7 +14,7 @@ const VolunteerList: FC = ()=>  {
     const form = useRef<FormInstance>()
   
     const getFieldValue = () => {
-      const { time, ...rest } = form.current?.getFieldsValue()
+      const { ...rest } = form.current?.getFieldsValue()
       return {
         ...rest
       }
@@ -24,31 +24,41 @@ const VolunteerList: FC = ()=>  {
     const columns: ProColumns[] = [
         {
           title: '昵称',
-          dataIndex: 'name',
+          dataIndex: 'nickName',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '地区',
-          dataIndex: 'time',
+          dataIndex: 'area',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '是否已开VIP店铺',
-          dataIndex: 'teamLeader',
+          dataIndex: 'vip',
           align: 'center',
-          hideInSearch: true
+          hideInSearch: true,
+          valueType: 'select',
+          valueEnum: {
+            0: '否',
+            1: '是'
+          },
         },
         {
           title: '是否开店',
-          dataIndex: 'time',
+          dataIndex: 'userType',
           align: 'center',
-          hideInSearch: true
+          hideInSearch: true,
+          valueType: 'select',
+          valueEnum: {
+            0: '否',
+            1: '是'
+          },
         },
         {
           title: '手机号',
-          dataIndex: 'payAmount',
+          dataIndex: 'phoneNumber',
           align: 'center',
           hideInTable: true,
           fieldProps:{
@@ -57,37 +67,42 @@ const VolunteerList: FC = ()=>  {
         },
         {
           title: '手机号',
-          dataIndex: 'payAmount',
+          dataIndex: 'phoneNumber',
           align: 'center',
           hideInSearch: true,
         },
         {
           title: '注册来源',
-          dataIndex: 'commission',
+          dataIndex: 'sourceType',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '注册时间',
-          dataIndex: 'commission',
+          dataIndex: 'createTime',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '上次访问时间',
-          dataIndex: 'commission',
+          dataIndex: 'loginTime',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '捐款状态',
-          dataIndex: 'commission',
+          dataIndex: 'contributionStatus',
           align: 'center',
-          hideInSearch: true
+          hideInSearch: true,
+          valueType: 'select',
+          valueEnum: {
+            0: '未捐款',
+            1: '已捐款'
+          },
         },
         {
           title: '捐款状态',
-          dataIndex: 'commission',
+          dataIndex: 'contributionStatus',
           valueType: 'select',
           hideInTable: true,
           valueEnum: {
@@ -100,11 +115,11 @@ const VolunteerList: FC = ()=>  {
         },
         {
           title: '开店情况',
-          dataIndex: 'commission',
+          dataIndex: 'storeCase',
           valueType: 'select',
           hideInTable: true,
           valueEnum: {
-            1: '已开店',
+            1: '未开店',
             2: '已开头社区店',
             3: '已开通VIP店'
           },
@@ -114,7 +129,7 @@ const VolunteerList: FC = ()=>  {
         },
         {
           title: '备注',
-          dataIndex: 'commission',
+          dataIndex: 'remark',
           align: 'center',
           hideInSearch: true
         },
@@ -122,11 +137,11 @@ const VolunteerList: FC = ()=>  {
     return (
         <PageContainer>
         <ProTable
-          rowKey='agencyId'
+          rowKey='memberId'
           columns={columns}
           params={{}}
           options={false}
-          request={newWholesaleCityAgencyPm}
+          request={volunteerPage}
           formRef={form}
           pagination={{
             showQuickJumper: true,
