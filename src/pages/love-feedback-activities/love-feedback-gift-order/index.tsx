@@ -21,7 +21,7 @@ const LoveFeedbackGiftOrder = ()=>  {
     },
     {
       title: '领取人姓名',
-      dataIndex: 'nickName',
+      dataIndex: 'nickname',
       align: 'center',
       hideInSearch: true
     },
