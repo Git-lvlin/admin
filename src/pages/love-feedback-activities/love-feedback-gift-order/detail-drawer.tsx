@@ -46,7 +46,8 @@ const DetailDrawer: FC<DetailDrawerProps> = ({ setVisible, visible, id }) => {
     {
       title: '产品名称',
       dataIndex: 'goodsName',
-      align: 'center'
+      align: 'center',
+      width: '20%'
     },
     {
       title: '产品数量/金额',
@@ -119,7 +120,7 @@ const DetailDrawer: FC<DetailDrawerProps> = ({ setVisible, visible, id }) => {
         </ProCard>
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>礼包价值：</span>
-          {amountTransform(data?.payAmount, '/')}
+          {amountTransform(data?.totalAmount, '/')}
         </ProCard>
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>收货人联系方式：</span>
