@@ -348,7 +348,7 @@ const Detail = (props) => {
         <Form.Item
           label="申请类型"
         >
-          {{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.details?.applyType]}
+          {detailData?.applyType?.desc}
         </Form.Item>
         {detailData?.details?.applyType === 20 && <Form.Item
           label="证明文件"
