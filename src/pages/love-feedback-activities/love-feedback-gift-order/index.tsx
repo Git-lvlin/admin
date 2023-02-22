@@ -92,7 +92,7 @@ const LoveFeedbackGiftOrder = ()=>  {
     },
     {
       title: '礼包金额（元）',
-      dataIndex: 'payAmount',
+      dataIndex: 'totalAmount',
       align: 'center',
       hideInSearch: true,
       render: _ => amountTransform(_, '/')

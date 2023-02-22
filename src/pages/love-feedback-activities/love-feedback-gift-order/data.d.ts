@@ -9,7 +9,7 @@ export type DataProps = {
   memberPhone?: string
   consignee?: string
   packageTitle?: string
-  payAmount?: number
+  totalAmount?: number
   phone?: string
   createTime?: string
   remark?: string
