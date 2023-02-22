@@ -1267,6 +1267,12 @@ const ShopHealthPackages = (props) => {
       hideInTable: storeType == 'purchased_gift_package_store'
     },
     {
+      title: '营业状态',
+      dataIndex: 'statusDesc',
+      hideInTable: storeType == 'purchased_gift_package_store',
+      hideInSearch: true
+    },
+    {
       title: '店铺编号',
       dataIndex: 'shopMemberAccount',
       valueType: 'text',
