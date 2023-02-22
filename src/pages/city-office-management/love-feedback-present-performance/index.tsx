@@ -123,7 +123,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
                 setVisible(true)
                 setAgencyId(r.agencyId)
                 setAmount(r.payAmount)
-                setName(`${r.name} 累计业绩`)
+                setName(`${r.agencyName} 累计业绩`)
               }}
             >
               {amountTransform(_, '/')}
