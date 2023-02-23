@@ -64,7 +64,13 @@ const StoreReview = () => {
       dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, { details }) => `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
+      render: (_, { details }) =>{
+        if(details?.provinceName){
+          return `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
+        }else{
+          return '-'
+        }
+      } 
     },
     {
       title: '提货点详细地址',
