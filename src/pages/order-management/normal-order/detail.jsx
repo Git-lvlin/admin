@@ -114,15 +114,15 @@ const Detail = (props) => {
                 </div>
                 <div className={styles.box}>
                   <div>支付时间</div>
-                  <div>{detailData?.payTime}</div>
+                  <div>{detailData?.orderTypeStr === '爱心回馈礼包' ? '-' : detailData?.payTime}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付方式</div>
-                  <div>{detailData?.payTypeStr}</div>
+                  <div>{detailData?.orderTypeStr === '爱心回馈礼包' ? '-' : detailData?.payTypeStr}</div>
                 </div>
                 <div className={styles.box}>
                   <div>支付流水号</div>
-                  <div>{detailData?.paySn}</div>
+                  <div>{detailData?.orderTypeStr === '爱心回馈礼包' ? '-' : detailData?.paySn}</div>
                 </div>
                 <div className={styles.box}>
                   <div>收货信息</div>
