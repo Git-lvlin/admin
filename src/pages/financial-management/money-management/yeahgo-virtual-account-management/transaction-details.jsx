@@ -64,6 +64,10 @@ const TransactionDetails = ({
         if(type) {
           setId(id)
           setShopkeeperOrderVisible(true)
+        } else if (orderType === 'loveGift') {
+          setId(billNo)
+          setTypes(orderType)
+          setNormalOrderVisible(true)
         } else {
           setId(id)
           setNormalOrderVisible(true)

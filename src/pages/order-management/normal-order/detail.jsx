@@ -12,7 +12,7 @@ import DrawerDetail from '../after-sales-order/detail'
 const { Step } = Steps;
 
 const Detail = (props) => {
-  const { visible, setVisible, isPurchase, id, orderSn, isDocumentary } = props;
+  const { visible, setVisible, isPurchase, id, orderSn, isDocumentary, orderType } = props;
   const [detailData, setDetailData] = useState({});
   const [loading, setLoading] = useState(false);
   const [expressInfoState, setExpressInfoState] = useState([])
@@ -42,10 +42,18 @@ const Detail = (props) => {
       apiMethod = findAdminOrderDetail3
     }
 
-    apiMethod({
+    const params = {
       id,
-      orderSn
-    }).then(res => {
+      orderSn,
+      orderType
+    }
+
+    if (orderType === 'loveGift') {
+      delete params.id
+      params.orderSn = id
+    }
+
+    apiMethod(params).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
       }
