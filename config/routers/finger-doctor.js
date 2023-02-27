@@ -22,5 +22,11 @@ export default {
       component: './finger-doctor/health-detection-record-management',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'report-push-object-config',
+      path: '/finger-doctor/report-push-object-config',
+      component: './finger-doctor/report-push-object-config',
+      wrappers: [RouteWatcher],
+    },
   ],
 }
