@@ -82,7 +82,7 @@ const DivideDetail: FC<PropsDivide> = (props) => {
           <div>用户：{user}</div>
           <div>机器ID：{imei}</div>
         </Space>
-        <div>{type === 1 ? '租金' : '购买'}款金额: {amountTransform(totalAmount, '/').toFixed(2)}元</div>
+        <div>{type === 1 || type === 4? '租金' : '购买'}款金额: {amountTransform(totalAmount, '/').toFixed(2)}元</div>
       </div>
       <ProTable<PropsDivide>
         rowKey="objectName"
