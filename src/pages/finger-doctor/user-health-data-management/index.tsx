@@ -1,4 +1,4 @@
-import {  useRef } from "react"
+import {  useRef, useState } from "react"
 import ProTable  from "@ant-design/pro-table"
 
 import type { FC } from "react"
@@ -8,10 +8,13 @@ import type { FormInstance } from "antd"
 import PageContainer from "@/components/PageContainer"
 // import { volunteerPage } from "@/services/love-feedback-activities/volunteer-list"
 import Export from "@/components/export"
+import Detail from './detail';
 
 
 const UserHealthDataManagement: FC = ()=>  {
     const form = useRef<FormInstance>()
+    const [detailVisible, setDetailVisible] = useState<boolean>(false);
+    const [datailMsg, setDatailMsg] = useState({});
   
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
@@ -114,13 +117,14 @@ const UserHealthDataManagement: FC = ()=>  {
           dataIndex: 'remark',
           align: 'center',
           hideInSearch: true,
-          render: () => {
-            return <a onClick={()=> { }}>查看详情</a>
+          render: (_,data) => {
+            return <a onClick={()=> { setDatailMsg(data);setDetailVisible(true) }}>查看详情</a>
           }
         },
       ]
     return (
         <PageContainer>
+          <a onClick={()=> { setDatailMsg({ id:'1212' });setDetailVisible(true) }}>查看详情</a>
         <ProTable
           rowKey='memberId'
           columns={columns}
@@ -143,6 +147,13 @@ const UserHealthDataManagement: FC = ()=>  {
             ]
           }}
         />
+      {detailVisible &&
+        <Detail
+          id={datailMsg?.id}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
       </PageContainer>
     )
   }
