@@ -165,7 +165,8 @@ export default function EquipmentManagement() {
       valueType: 'select',
       valueEnum: {
         1: '租赁',
-        2: '购买'
+        2: '购买',
+        4: '爱心回馈免押金租赁'
       },
       align: 'center'
     },

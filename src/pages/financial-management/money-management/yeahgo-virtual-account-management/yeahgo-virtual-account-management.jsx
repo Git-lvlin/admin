@@ -80,7 +80,17 @@ const WithdrawalModal = ({ val, change, update, type }) => {
         <ProFormDigit
           label="提现金额"
           name="amount"
-          rules={[{ required: true }]}
+          rules={[
+            ()=> ({
+              validator(_, value) {
+                if(value > 99999) {
+                  return Promise.reject(`提现金额(${value}),不能超过最大限额99999元`)
+                }
+                return Promise.resolve();
+              },
+            }),
+            { required: true }
+          ]}
           width="md"
         />
         <span>元</span>
