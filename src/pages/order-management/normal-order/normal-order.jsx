@@ -17,6 +17,7 @@ import CloseOrder from './close-order'
 
 
 const TableList = () => {
+  const location = useLocation();
   const [data, setData] = useState([])
   const [page, setPage] = useState(1)
   const [visit, setVisit] = useState(false)
@@ -29,7 +30,6 @@ const TableList = () => {
   const [importVisit, setImportVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
-  const location = useLocation();
   const isPurchase = location.pathname.includes('purchase')
   const isDocumentary = location.pathname.includes('documentary')
   const [orderStatusType, setOrderStatusType] = useState()
@@ -78,7 +78,7 @@ const TableList = () => {
       payStartCreateTime: payTime?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       payEndCreateTime: payTime?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
-      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32] : [orderTypes],
+      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32, 33] : [orderTypes],
       exclusiveSubType: 1004,
       ...rest,
     }
@@ -240,6 +240,7 @@ const TableList = () => {
             { value: '205', label: '分享订单' },
             { value: '242', label: '氢原子托管购买订单' },
             { value: '222', label: '氢原子托管启动订单' },
+            { value: '33', label: '爱心回馈订单' },
           ]}
           fieldProps={{
             style: {
