@@ -16,5 +16,11 @@ export default {
       component: './finger-doctor/device-management-period-management',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-detection-record-management',
+      path: '/finger-doctor/health-detection-record-management',
+      component: './finger-doctor/health-detection-record-management',
+      wrappers: [RouteWatcher],
+    },
   ],
 }
