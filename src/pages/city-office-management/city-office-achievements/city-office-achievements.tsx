@@ -1,9 +1,8 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
-import type { ProColumns } from "@ant-design/pro-table"
-import type { FormInstance } from "@ant-design/pro-form"
-import type { DescriptionsProps, TableProps } from "./data"
+import type { ProColumns,ActionType } from "@ant-design/pro-table"
+import type { DescriptionsProps, TableProps, Detail } from "./data"
 import { Descriptions } from 'antd';
 
 import { listPage,cityBusinessDeptSum } from "@/services/city-office-management/city-office-achievements"
@@ -15,10 +14,10 @@ export default function TransactionData () {
   const [type, setType] = useState<number>(0)
   const [visible, setVisible] = useState<boolean>(false)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
-  const [msgDetail, setMsgDetail] = useState<string>()
+  const [msgDetail, setMsgDetail] = useState<Detail>({cityBusinessDeptId: '',cityBusinessDeptName: ''})
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState()
-  const form = useRef<FormInstance>()
+  const [time,setTime]=useState<TableProps>()
+  const form = useRef<ActionType>()
 
   useEffect(() => {
     const params={
@@ -205,7 +204,7 @@ export default function TransactionData () {
           visible={storeVisible}
           setVisible={setStoreVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail('')}}
           type={type}
         />
       }
@@ -215,7 +214,7 @@ export default function TransactionData () {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail('')}}
           type={type}
         />
       }

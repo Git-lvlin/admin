@@ -18,6 +18,10 @@ export type TableProps = {
   totalBuyCommission: string;
   totalTrainingCommission: string;
   totalLeaseCommission: string;
+  createTime:Array,
+  orderType:string,
+  orderNo:string,
+  dateRange:Array
 }
 
 
@@ -34,8 +38,14 @@ export type GithubIssueItem = {
 export type DevicesProps = {
   msgDetail: {
     cityBusinessDeptId: String;
+    cityBusinessDeptName: string;
   }
   type: string;
+}
+
+export type Detail = {
+  cityBusinessDeptId: String;
+  cityBusinessDeptName: string;
 }
 
 export type CumulativeProps = {
@@ -43,7 +53,7 @@ export type CumulativeProps = {
     cityBusinessDeptId: String;
     cityBusinessDeptName: string;
   }
-  type: string;
+  type: number;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;

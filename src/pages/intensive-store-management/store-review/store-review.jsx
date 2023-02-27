@@ -64,7 +64,13 @@ const StoreReview = () => {
       dataIndex: '',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, { details }) => `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
+      render: (_, { details }) =>{
+        if(details?.provinceName){
+          return `${details?.provinceName} ${details?.cityName} ${details?.regionName}`
+        }else{
+          return '-'
+        }
+      } 
     },
     {
       title: '提货点详细地址',
@@ -103,7 +109,8 @@ const StoreReview = () => {
         10: '正常申请',
         11: 'VIP社区店',
         20: '绿色通道申请',
-        30: '健康生活馆'
+        30: '健康生活馆',
+        33: '爱心回馈系统建店'
       },
       hideInTable: true,
     },
@@ -116,7 +123,8 @@ const StoreReview = () => {
         10: '正常申请',
         11: 'VIP社区店',
         20: '绿色通道申请',
-        30: '健康生活馆'
+        30: '健康生活馆',
+        33: '爱心回馈系统建店'
       },
       hideInSearch: true,
     },

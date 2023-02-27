@@ -37,6 +37,7 @@ import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 import productPerformanceManagement from './routers/product-performance-management'
 import healthPackageActivities from './routers/health-package-activities'
+import loveFeedbackActivities from './routers/love-feedback-activities'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -119,6 +120,7 @@ const config = {
             HydrogenAtomGeneration,
             productPerformanceManagement,
             healthPackageActivities,
+            loveFeedbackActivities,
             {
               component: '404',
             },
