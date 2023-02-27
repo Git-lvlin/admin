@@ -135,8 +135,11 @@ const AddRecord: FC<AddRecordProps> = ({visible, setVisible, callback}) => {
         label='付款人账号'
         name='payAccount'
         rules={[{required: true}]}
+        fieldProps={{
+          stringMode: true
+        }}
       />
-      <ProFormDigit
+      <ProFormText
         label='电子回单编号'
         name='replySlipNo'
         rules={[{required: true}]}
