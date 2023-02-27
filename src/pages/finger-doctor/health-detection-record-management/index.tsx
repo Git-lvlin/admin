@@ -1,11 +1,26 @@
+import { useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
+import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import { admReportList } from '@/services/finger-doctor/health-detection-record-management'
+import Export from '@/components/export'
 
 const HealthDetectionRecordManagement = () => {
+
+  const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { time, ...rest } = form.current?.getFieldsValue()
+    return {
+      startTime: time && moment(time[0]).format('YYYY-MM-DD'),
+      endTime: time && moment(time[1]).format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -21,10 +36,24 @@ const HealthDetectionRecordManagement = () => {
       hideInSearch: true
     },
     {
+      dataIndex: 'imei',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入检测设备号'
+      }
+    },
+    {
       title: '设备所属人手机号',
       dataIndex: 'storePhone',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      dataIndex: 'storePhone',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入设备所属人手机号'
+      }
     },
     {
       title: '姓名',
@@ -33,16 +62,47 @@ const HealthDetectionRecordManagement = () => {
       hideInSearch: true
     },
     {
+      dataIndex: 'name',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入用户姓名'
+      }
+    },
+    {
+      dataIndex: 'time',
+      hideInTable: true,
+      valueType: 'dateRange',
+    },
+    {
       title: '手机号',
       dataIndex: 'phone',
       align: 'center',
       hideInSearch: true
     },
     {
+      dataIndex: 'phone',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入用户手机号'
+      }
+    },
+    {
       title: '性别',
       dataIndex: 'genderDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      dataIndex: 'gender',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        'men': '男',
+        'women': '女'
+      },
+      fieldProps: {
+        placeholder: '请选择性别'
+      }
     },
     {
       title: '年龄',
@@ -84,7 +144,7 @@ const HealthDetectionRecordManagement = () => {
       title: '操作',
       valueType: 'option',
       render: (_, r) => (
-        <a onClick={()=> {}}>操作</a>
+        <a onClick={()=> {}}>查看</a>
       )
     }
   ]
@@ -100,10 +160,16 @@ const HealthDetectionRecordManagement = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         options={false}
         search={{
           optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='export'
+              type='doctorReport'
+              conditions={getFieldsValue}
+            />
           ]
         }}
       />
