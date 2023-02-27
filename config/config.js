@@ -7,6 +7,7 @@ import userManagement from './routers/user-management'
 import orderManagement from './routers/order-management'
 import productManagement from './routers/product-management'
 import setting from './routers/setting'
+import fingerDoctor from './routers/finger-doctor'
 import intensiveActivityManagement from './routers/intensive-activity-management'
 import supplierManagement from './routers/supplier-management'
 import operationManagement from './routers/operation-management'
@@ -88,6 +89,7 @@ const config = {
             orderManagement,
             productManagement,
             setting,
+            fingerDoctor,
             intensiveActivityManagement,
             supplierManagement,
             operationManagement,
