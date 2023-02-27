@@ -1,4 +1,4 @@
-import {  useRef } from "react"
+import {  useRef, useState } from "react"
 import ProTable  from "@ant-design/pro-table"
 
 import type { FC } from "react"
@@ -8,11 +8,13 @@ import type { FormInstance } from "antd"
 import PageContainer from "@/components/PageContainer"
 // import { volunteerPage } from "@/services/love-feedback-activities/volunteer-list"
 import Export from "@/components/export"
+import Detail from './detail';
 
 
 const DeviceManagementPeriodManagement: FC = ()=>  {
     const form = useRef<FormInstance>()
-  
+    const [detailVisible, setDetailVisible] = useState<boolean>(false);
+    const [datailMsg, setDatailMsg] = useState({});
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
       return {
@@ -23,13 +25,15 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
 
     const columns: ProColumns[] = [
         {
-          title: '用户编号',
+          title: '设备编号',
           dataIndex: 'nickName',
           align: 'center',
-          hideInSearch: true
+          fieldProps: {
+            placeholder: '请输入设备编号'
+          }
         },
         {
-          title: '姓名',
+          title: '设备状态',
           dataIndex: 'area',
           align: 'center',
           fieldProps: {
@@ -37,22 +41,20 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           }
         },
         {
-          title: '手机号',
           dataIndex: 'vip',
           align: 'center',
           hideInTable: true,
           fieldProps: {
-            placeholder: '请输入用户手机号'
+            placeholder: '请输入设备所属人手机号'
           }
         },
         {
-          title: '手机号',
+          title: '所属人手机号',
           dataIndex: 'vip',
           align: 'center',
           hideInSearch: true,
         },
         {
-          title: '性别',
           dataIndex: 'userType',
           align: 'center',
           hideInTable: true,
@@ -61,9 +63,12 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
             0: '女',
             1: '男'
           },
+          fieldProps: {
+            placeholder: '请选择管理期状态'
+          }
         },
         {
-          title: '性别',
+          title: '当前管理期类型',
           dataIndex: 'userType',
           align: 'center',
           hideInSearch: true,
@@ -74,48 +79,47 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           },
         },
         {
-          title: '年龄',
+          title: '当前管理期状态',
+          dataIndex: 'userType',
+          align: 'center',
+          hideInSearch: true,
+          valueType: 'select',
+          valueEnum: {
+            0: '女',
+            1: '男'
+          },
+        },
+        {
+          title: '当前管理开始日期',
           dataIndex: 'phoneNumber',
           align: 'center',
           hideInSearch  : true,
         },
         {
-          title: '生日',
+          title: '当前管理结束日期',
           dataIndex: 'phoneNumber',
           align: 'center',
           hideInSearch: true,
         },
         {
-          title: '身高（厘米）',
+          title: '当前剩余管理期(天)',
           dataIndex: 'sourceTypeDesc',
           align: 'center',
           hideInSearch: true
         },
         {
-          title: '体重（公斤）',
+          title: '当前设备管理费(元)',
           dataIndex: 'createTime',
           align: 'center',
           hideInSearch: true
-        },
-        {
-          title: '地址',
-          dataIndex: 'loginTime',
-          align: 'center',
-          hideInSearch: true
-        },
-        {
-          title: '录入时间',
-          dataIndex: 'contributionStatus',
-          align: 'center',
-          hideInSearch: true,
         },
         {
           title: '操作',
           dataIndex: 'remark',
           align: 'center',
           hideInSearch: true,
-          render: () => {
-            return <a onClick={()=> { }}>查看详情</a>
+          render: (_,data) => {
+            return <a onClick={()=> { setDatailMsg(data);setDetailVisible(true) }}>历史交管理费</a>
           }
         },
       ]
@@ -143,6 +147,13 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
             ]
           }}
         />
+      {detailVisible &&
+        <Detail
+          id={datailMsg?.id}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
       </PageContainer>
     )
   }
