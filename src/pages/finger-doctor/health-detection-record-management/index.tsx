@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
 import moment from 'moment'
@@ -8,8 +8,11 @@ import type { FormInstance } from 'antd'
 
 import { admReportList } from '@/services/finger-doctor/health-detection-record-management'
 import Export from '@/components/export'
+import Detail from './detail'
 
 const HealthDetectionRecordManagement = () => {
+  const [url, setUrl] = useState<string>()
+  const [visible, setVisible] = useState<boolean>(false)
 
   const form = useRef<FormInstance>()
 
@@ -144,7 +147,7 @@ const HealthDetectionRecordManagement = () => {
       title: '操作',
       valueType: 'option',
       render: (_, r) => (
-        <a onClick={()=> {}}>查看</a>
+        <a onClick={()=> {setUrl(r.reportUrl); setVisible(true)}}>查看</a>
       )
     }
   ]
@@ -173,6 +176,14 @@ const HealthDetectionRecordManagement = () => {
           ]
         }}
       />
+      {
+        visible&&
+        <Detail
+          url={url}
+          visible={visible}
+          setVisible={setVisible}
+        />
+      }
     </PageContainer>
   )
 }
