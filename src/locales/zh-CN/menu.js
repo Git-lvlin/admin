@@ -93,6 +93,12 @@ export default {
   'menu.setting.contract-management': '合同管理',
   'menu.setting.cancel-reason': '注销原因',
 
+  'menu.finger-doctor': '手指医生',
+  'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
+  'menu.finger-doctor.device-management-period-management': '设备管理期管理',
+  'menu.finger-doctor.health-detection-record-management': '健康检测记录管理',
+  'menu.finger-doctor.report-push-object-config': '报告推送对象配置',
+
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
