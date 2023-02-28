@@ -1,57 +1,54 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button } from 'antd';
-import { getMemberDetail } from '@/services/user-management/user-list';
+import { Drawer, Descriptions, Divider, Row, Avatar, Typography, Spin} from 'antd';
+import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
 import ProTable  from "@ant-design/pro-table"
+import type { ProColumns } from '@ant-design/pro-table'
 
 
 const { Title } = Typography;
 
-const columns = [
+const columns: ProColumns[] = [
+  {
+    dataIndex: 'createTime',
+    valueType: 'dateTimeRange',
+    hideInTable: true,
+    search: {
+      span: 8,
+      width: 200,
+    } 
+  },
   {
     title: '检测日期',
-    dataIndex: 'index',
+    dataIndex: 'createTime',
+    hideInSearch: true,
   },
   {
     title: '检测评估结果',
-    dataIndex: 'consignee',
+    dataIndex: 'checkResult',
     hideInSearch: true
   },
   {
     title: '测量值',
-    dataIndex: 'phone',
+    dataIndex: 'checkVal',
     hideInSearch: true
   },
   {
     title: '体验时间',
-    dataIndex: 'fullAddress',
+    dataIndex: 'checkTime',
     hideInSearch: true
   },
   {
     title: '操作',
-    dataIndex: 'isDefault',
+    dataIndex: 'reportUrl',
     hideInSearch: true,
-    render: (_) =><a onClick={()=> {  }}>查看</a>
+    render: (_) =><a href={_} target='_blank'>查看</a>
   },
 ];
-
-const sourceType = {
-  1: 'vivo',
-  2: '小米',
-  3: '应用宝',
-  4: '小程序',
-  5: '移动端浏览器',
-  6: '官方渠道',
-  7: '魅族',
-  8: 'oppo',
-  9: '华为',
-  10: 'appStore',
-  11: 'WEB',
-}
 
 type DetailProps = {
   visible: boolean,
   setVisible: (v: boolean) => void,
-  id: string,
+  memberId: string,
 }
 
 type DataType = {
@@ -61,7 +58,7 @@ type DataType = {
     phoneNumber: string,
     sourceType: string,
     inviteCode: string,
-    gender: number,
+    gender: string,
     userType: number,
     createTime: string,
     uId: string,
@@ -72,14 +69,13 @@ type DataType = {
 }
 
 const Detail: React.FC<DetailProps> = (props) => {
-  const { visible, setVisible, id } = props;
+  const { visible, setVisible, memberId } = props;
   const [detailData, setDetailData] = useState<DataType>({});
-  const { memberInfoToAdminResponse: info } = detailData;
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    (getMemberDetail({
-      id
+    (getUser({
+      memberId
     }) as Promise<{ data: DataType, code: number }>).then(res => {
       if (res.code === 0) {
         setDetailData(res.data)
@@ -87,7 +83,7 @@ const Detail: React.FC<DetailProps> = (props) => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [id])
+  }, [memberId])
 
   return (
     <Drawer
@@ -103,36 +99,36 @@ const Detail: React.FC<DetailProps> = (props) => {
             <Title style={{ marginBottom: -10 }} level={5}>基本信息</Title>
             <Divider />
             <div style={{ textAlign: 'center' }}>
-              <Avatar size={100} src={info?.icon} />
-              <div>{info?.nickName}</div>
+              <Avatar size={100} src={detailData?.icon} />
+              <div>{detailData?.name}</div>
             </div>
             <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 100, display: 'inline-block' }}>
-              <Descriptions.Item label="手机号码">{info?.phoneNumber}</Descriptions.Item>
-              <Descriptions.Item label="身高">{sourceType[info?.sourceType as string]}</Descriptions.Item>
+              <Descriptions.Item label="手机号码">{detailData?.phone}</Descriptions.Item>
+              <Descriptions.Item label="身高">{detailData?.height}</Descriptions.Item>
               <Descriptions.Item label="体重">
-                {info?.inviteCode}
+                {detailData?.weight}
               </Descriptions.Item>
-              <Descriptions.Item label="性别">{info?.gender === 1 ? '男' : '女'}</Descriptions.Item>
-              <Descriptions.Item label="婚姻状况">
-                {info?.userType === 1 ? '已婚' : '未婚'}
-              </Descriptions.Item>
-              <Descriptions.Item label="文化程度">
-                {info?.createTime}
-              </Descriptions.Item>
+              <Descriptions.Item label="性别">{detailData?.gender === 'men' ? '男' : '女'}</Descriptions.Item>
+              {/* <Descriptions.Item label="婚姻状况">
+                {detailData?.userType === 1 ? '已婚' : '未婚'}
+              </Descriptions.Item> */}
+              {/* <Descriptions.Item label="文化程度">
+                {detailData?.createTime}
+              </Descriptions.Item> */}
               <Descriptions.Item label="出生日期">
-                {info?.uId}
+                {detailData?.birthday}
               </Descriptions.Item>
-              <Descriptions.Item label="工作单位">
-                {info?.loginTime}
-              </Descriptions.Item>
+              {/* <Descriptions.Item label="工作单位">
+                {detailData?.loginTime}
+              </Descriptions.Item> */}
               <Descriptions.Item label="身份证号">
-                {info?.birthday}
+                {detailData?.identityNo}
               </Descriptions.Item>
               <Descriptions.Item label="联系地址">
-                {info?.job}
+                {detailData?.address}
               </Descriptions.Item>
               <Descriptions.Item label="电子邮箱">
-                {info?.education}
+                {detailData?.email}
               </Descriptions.Item>
             </Descriptions>
           </Row>
@@ -141,21 +137,23 @@ const Detail: React.FC<DetailProps> = (props) => {
             <Title style={{ marginBottom: -10 }} level={5}>检测档案</Title>
             <Divider />
             <ProTable
-              rowKey='memberId'
+              rowKey='checkVal'
               columns={columns}
               options={false}
-            //   request={volunteerPage}
-              dataSource={detailData?.memberAddressResp}
+              request={userReport}
               pagination={{
                 showQuickJumper: true,
                 pageSize: 10
               }}
+              params={{
+                memberId
+              }}
               style={{ width: '100%' }}
               search={{
+                layout: 'vertical',
                 labelWidth: 120,
                 optionRender: (searchConfig, props, dom) => [
-                  ...dom.reverse(),
-                  <Button type='primary' onClick={()=>{  }}>新增</Button>
+                  ...dom.reverse()
                 ]
               }}
             />

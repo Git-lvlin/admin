@@ -6,7 +6,7 @@ import type { ProColumns }  from "@ant-design/pro-table"
 import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
-// import { volunteerPage } from "@/services/love-feedback-activities/volunteer-list"
+import { userList } from "@/services/finger-doctor/user-health-data-management"
 import Export from "@/components/export"
 import Detail from './detail';
 
@@ -14,7 +14,7 @@ import Detail from './detail';
 const UserHealthDataManagement: FC = ()=>  {
     const form = useRef<FormInstance>()
     const [detailVisible, setDetailVisible] = useState<boolean>(false);
-    const [datailMsg, setDatailMsg] = useState({});
+    const [datailMsg, setDatailMsg] = useState<string>('');
   
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
@@ -27,88 +27,97 @@ const UserHealthDataManagement: FC = ()=>  {
     const columns: ProColumns[] = [
         {
           title: '用户编号',
-          dataIndex: 'nickName',
+          dataIndex: 'memberId',
           align: 'center',
           hideInSearch: true
         },
         {
-          title: '姓名',
-          dataIndex: 'area',
+          dataIndex: 'name',
           align: 'center',
+          hideInTable: true,
           fieldProps: {
             placeholder: '请输入用户姓名'
-          }
+          },
+          order: 2
         },
         {
-          title: '手机号',
-          dataIndex: 'vip',
+          title: '姓名',
+          dataIndex: 'name',
+          align: 'center',
+          hideInSearch: true
+        },
+        {
+          dataIndex: 'phone',
           align: 'center',
           hideInTable: true,
           fieldProps: {
             placeholder: '请输入用户手机号'
-          }
+          },
+          order: 3
         },
         {
           title: '手机号',
-          dataIndex: 'vip',
+          dataIndex: 'phone',
           align: 'center',
           hideInSearch: true,
         },
         {
-          title: '性别',
-          dataIndex: 'userType',
+          dataIndex: 'gender',
           align: 'center',
           hideInTable: true,
           valueType: 'select',
           valueEnum: {
-            0: '女',
-            1: '男'
+            'women': '女',
+            'men': '男'
           },
+          fieldProps: {
+            placeholder: '请选择性别'
+          }
         },
         {
           title: '性别',
-          dataIndex: 'userType',
+          dataIndex: 'gender',
           align: 'center',
           hideInSearch: true,
           valueType: 'select',
           valueEnum: {
-            0: '女',
-            1: '男'
+            'women': '女',
+            'men': '男'
           },
         },
         {
           title: '年龄',
-          dataIndex: 'phoneNumber',
+          dataIndex: 'age',
           align: 'center',
           hideInSearch  : true,
         },
         {
           title: '生日',
-          dataIndex: 'phoneNumber',
+          dataIndex: 'birthday',
           align: 'center',
           hideInSearch: true,
         },
         {
           title: '身高（厘米）',
-          dataIndex: 'sourceTypeDesc',
+          dataIndex: 'height',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '体重（公斤）',
-          dataIndex: 'createTime',
+          dataIndex: 'weight',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '地址',
-          dataIndex: 'loginTime',
+          dataIndex: 'address',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '录入时间',
-          dataIndex: 'contributionStatus',
+          dataIndex: 'createTime',
           align: 'center',
           hideInSearch: true,
         },
@@ -118,18 +127,17 @@ const UserHealthDataManagement: FC = ()=>  {
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            return <a onClick={()=> { setDatailMsg(data);setDetailVisible(true) }}>查看详情</a>
+            return <a onClick={()=> { setDatailMsg(data?.memberId);setDetailVisible(true) }}>查看详情</a>
           }
         },
       ]
     return (
         <PageContainer>
-          <a onClick={()=> { setDatailMsg({ id:'1212' });setDetailVisible(true) }}>查看详情</a>
         <ProTable
           rowKey='memberId'
           columns={columns}
           options={false}
-        //   request={volunteerPage}
+          request={userList}
           formRef={form}
           pagination={{
             showQuickJumper: true,
@@ -141,7 +149,7 @@ const UserHealthDataManagement: FC = ()=>  {
               ...dom.reverse(),
               <Export
                 key='export'
-                type="healthy-member-volunteer"
+                type="doctorUser"
                 conditions={getFieldValue}
               />
             ]
@@ -149,7 +157,7 @@ const UserHealthDataManagement: FC = ()=>  {
         />
       {detailVisible &&
         <Detail
-          id={datailMsg?.id}
+          memberId={datailMsg}
           visible={detailVisible}
           setVisible={setDetailVisible}
         />

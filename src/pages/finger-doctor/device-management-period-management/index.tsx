@@ -1,4 +1,4 @@
-import {  useRef, useState } from "react"
+import {  useRef } from "react"
 import ProTable  from "@ant-design/pro-table"
 
 import type { FC } from "react"
@@ -8,13 +8,10 @@ import type { FormInstance } from "antd"
 import PageContainer from "@/components/PageContainer"
 // import { volunteerPage } from "@/services/love-feedback-activities/volunteer-list"
 import Export from "@/components/export"
-import Detail from './detail';
 
 
 const DeviceManagementPeriodManagement: FC = ()=>  {
     const form = useRef<FormInstance>()
-    const [detailVisible, setDetailVisible] = useState<boolean>(false);
-    const [datailMsg, setDatailMsg] = useState({});
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
       return {
@@ -25,20 +22,24 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
 
     const columns: ProColumns[] = [
         {
-          title: '设备编号',
           dataIndex: 'nickName',
           align: 'center',
+          hideInTable: true,
           fieldProps: {
             placeholder: '请输入设备编号'
           }
         },
         {
+          title: '设备编号',
+          dataIndex: 'nickName',
+          align: 'center',
+          hideInSearch: true
+        },
+        {
           title: '设备状态',
           dataIndex: 'area',
           align: 'center',
-          fieldProps: {
-            placeholder: '请输入用户姓名'
-          }
+         hideInSearch: true
         },
         {
           dataIndex: 'vip',
@@ -119,7 +120,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            return <a onClick={()=> { setDatailMsg(data);setDetailVisible(true) }}>历史交管理费</a>
+            return <a onClick={()=> { }}>历史交管理费</a>
           }
         },
       ]
@@ -147,13 +148,6 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
             ]
           }}
         />
-      {detailVisible &&
-        <Detail
-          id={datailMsg?.id}
-          visible={detailVisible}
-          setVisible={setDetailVisible}
-        />
-      }
       </PageContainer>
     )
   }
