@@ -98,10 +98,15 @@ const LoveFeedbackGiftOrder = ()=>  {
       render: _ => amountTransform(_, '/')
     },
     {
+      title: '基金资金到账状态',
+      dataIndex: 'isArrivalDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      hideInSearch: true,
       render: (_, r) => <a onClick={()=>{setVisible(true); setOrderId(r.orderId)}}>详情</a>
     }
   ]
