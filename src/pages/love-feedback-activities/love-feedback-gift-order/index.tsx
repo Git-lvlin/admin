@@ -14,6 +14,7 @@ import Export from '@/components/export'
 const LoveFeedbackGiftOrder = ()=>  {
   const [visible, setVisible] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
+  const [arrival, setArrival] = useState<string>()
   const [list, setList] = useState()
   const form = useRef<FormInstance>()
 
@@ -107,7 +108,7 @@ const LoveFeedbackGiftOrder = ()=>  {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r) => <a onClick={()=>{setVisible(true); setOrderId(r.orderId)}}>详情</a>
+      render: (_, r) => <a onClick={()=>{setVisible(true); setArrival(r.isArrivalDesc); setOrderId(r.orderId)}}>详情</a>
     }
   ]
 
@@ -141,6 +142,7 @@ const LoveFeedbackGiftOrder = ()=>  {
           visible={visible}
           setVisible={setVisible}
           id={orderId}
+          state={arrival}
         />
       }
     </PageContainer>
