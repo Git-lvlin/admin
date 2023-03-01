@@ -1,9 +1,9 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import ProCard from '@ant-design/pro-card'
 
-import FoundationDonationRecords from './foundation-donation-records'
-import UserRegistrationRecord from './user-registration-record'
-import FundReceiptRecord from './fund-receipt-record'
+import FoundationDonationRecords from '../foundation-donation-records'
+import UserRegistrationRecord from '../user-registration-record'
+import FundReceiptRecord from '../fund-receipt-record'
 
 const RegistrationRecordLoveFeedback = ()=>  {
   return (
