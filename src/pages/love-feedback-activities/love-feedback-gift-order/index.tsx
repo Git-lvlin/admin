@@ -32,7 +32,7 @@ const LoveFeedbackGiftOrder = ()=>  {
   const columns: ProColumns[] = [
     {
       title: '订单号',
-      dataIndex: 'orderId',
+      dataIndex: 'payOrderSn',
       align: 'center',
       hideInSearch: true
     },
