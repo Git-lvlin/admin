@@ -2,6 +2,7 @@ export type DetailDrawerProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   id?: string
+  state?: string
 }
 
 export type DataProps = {

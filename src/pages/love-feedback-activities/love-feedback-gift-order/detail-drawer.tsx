@@ -12,7 +12,7 @@ import { giftPackageOrderDetail } from '@/services/health-package-activities/hea
 import { amountTransform } from '@/utils/utils'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 
-const DetailDrawer: FC<DetailDrawerProps> = ({ setVisible, visible, id }) => {
+const DetailDrawer: FC<DetailDrawerProps> = ({ setVisible, visible, id, state }) => {
   const [data, setData] = useState<DataProps>()
   const [normalOrderVisible, setNormalOrderVisible] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
@@ -137,6 +137,10 @@ const DetailDrawer: FC<DetailDrawerProps> = ({ setVisible, visible, id }) => {
         <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
           <span className={styles.cardLabel}>收货地址：</span>
           {data?.fulladdress}
+        </ProCard>
+        <ProCard colSpan={{ xs: 16, sm: 8, md: 8, lg: 8, xl: 8 }}>
+          <span className={styles.cardLabel}>基金资金到账状态：</span>
+          {state}
         </ProCard>
       </ProCard>
       <ProCard

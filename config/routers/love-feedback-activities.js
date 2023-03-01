@@ -6,9 +6,21 @@ export default {
   name: 'love-feedback-activities',
   routes: [
     {
-      name: 'registration-record-love-feedback',
-      path: '/love-feedback-activities/registration-record-love-feedback',
-      component: './love-feedback-activities/registration-record-love-feedback',
+      name: 'foundation-donation-records',
+      path: '/love-feedback-activities/foundation-donation-records',
+      component: './love-feedback-activities/foundation-donation-records',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'user-registration-record',
+      path: '/love-feedback-activities/user-registration-record',
+      component: './love-feedback-activities/user-registration-record',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'fund-receipt-record',
+      path: '/love-feedback-activities/fund-receipt-record',
+      component: './love-feedback-activities/fund-receipt-record',
       wrappers: [RouteWatcher],
     },
     {
