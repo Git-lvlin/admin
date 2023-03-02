@@ -2,75 +2,70 @@ import React, { useEffect, useState } from 'react';
 import { Drawer, Descriptions, Divider, Row, Avatar, Typography, Spin} from 'antd';
 import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
 import ProTable  from "@ant-design/pro-table"
-import type { ProColumns } from '@ant-design/pro-table'
-
+import type { TableColumn, DetailProps, DataType } from './data'
 
 const { Title } = Typography;
 
-const columns: ProColumns[] = [
+const columns: TableColumn[] = [
   {
+    title: '',
     dataIndex: 'createTime',
-    valueType: 'dateTimeRange',
+    valueType: 'dateRange',
     hideInTable: true,
     search: {
-      span: 8,
-      width: 200,
-    } 
+      transform: (value) => ({
+        startTime: value[0],
+        endTime: value[1],
+      }),
+      config: {
+        span: 8,
+        width: 200,
+      }
+    },
+    render: (_) => _
   },
   {
     title: '检测日期',
     dataIndex: 'createTime',
     hideInSearch: true,
+    valueType: 'text',
+    render: (_) => _
   },
   {
     title: '检测评估结果',
     dataIndex: 'checkResult',
-    hideInSearch: true
+    hideInSearch: true,
+    valueType: 'text',
+    render: (_) => _
   },
   {
     title: '测量值',
     dataIndex: 'checkVal',
-    hideInSearch: true
+    hideInSearch: true,
+    valueType: 'text',
+    render: (_) => _
   },
   {
     title: '体验时间',
     dataIndex: 'checkTime',
-    hideInSearch: true
+    hideInSearch: true,
+    valueType: 'text',
+    render: (_) => _
   },
   {
     title: '操作',
     dataIndex: 'reportUrl',
     hideInSearch: true,
-    render: (_) =><a href={_} target='_blank'>查看</a>
+    valueType: 'text',
+    render: (_) =>{
+      return <a href={_} target='_blank' rel='noopener noreferrer'>查看</a>
+    }
   },
 ];
 
-type DetailProps = {
-  visible: boolean,
-  setVisible: (v: boolean) => void,
-  memberId: string,
-}
-
-type DataType = {
-  memberInfoToAdminResponse?: {
-    icon: string,
-    nickName: string,
-    phoneNumber: string,
-    sourceType: string,
-    inviteCode: string,
-    gender: string,
-    userType: number,
-    createTime: string,
-    uId: string,
-    loginTime: string,
-    [x: string]: any
-  },
-  [x: string]: any
-}
-
 const Detail: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, memberId } = props;
-  const [detailData, setDetailData] = useState<DataType>({});
+  const [detailData, setDetailData] = useState<DataType>();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
