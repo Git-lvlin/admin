@@ -10,7 +10,7 @@ const columns: TableColumn[] = [
   {
     title: '',
     dataIndex: 'createTime',
-    valueType: 'dateTimeRange',
+    valueType: 'dateRange',
     hideInTable: true,
     search: {
       transform: (value) => ({
