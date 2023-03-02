@@ -46,7 +46,7 @@ const TransactionDetails = ({
   }, [])
 
   const skipToOrder = (id, type, orderType, billNo)=> {
-    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenRent' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
+    const isGoodsOrder = orderType === 'settleChargeFee' || orderType === 'hydrogenAgentRent' || orderType === 'recharge' || orderType === 'operatorEquipment' || orderType === 'experienceAuth' || orderType === 'healthyCard'
     if(isGoodsOrder) {
       if(orderType === 'healthyCard'){
         setId(billNo)
@@ -64,6 +64,10 @@ const TransactionDetails = ({
         if(type) {
           setId(id)
           setShopkeeperOrderVisible(true)
+        } else if (orderType === 'loveGift') {
+          setId(billNo)
+          setTypes(orderType)
+          setNormalOrderVisible(true)
         } else {
           setId(id)
           setNormalOrderVisible(true)
@@ -176,11 +180,18 @@ const TransactionDetails = ({
       title: '订单号',
       dataIndex:'billNo',
       width: '10%',
-      render: (_, records) => (
-        records.orderId? 
-        <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
-        <span>{_}</span>
-      )
+      render: (_, records) => {
+        const isGoodsOrder = records.orderType === 'hydrogenRent' || records.orderType === 'loveGift'
+        if(isGoodsOrder) {
+          return <span>{_}</span>
+        } else {
+          return (
+            records.orderId? 
+            <a onClick={()=>skipToOrder(records.orderId, records.isWholesale, records.orderType, records.billNo)}>{_}</a>:
+            <span>{_}</span>
+          )
+        }
+      }
     },
     {
       title: '支付单号',

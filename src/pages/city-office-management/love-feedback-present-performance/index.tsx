@@ -10,7 +10,7 @@ import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
 import { amountTransform } from "@/utils/utils"
-import { newWholesaleCityAgencyPm, newWholesaleCityAgencyPmStats } from "@/services/city-office-management/new-intensive-performance"
+import { loveGiftOrder, loveGiftOrderStats } from "@/services/city-office-management/love-feedback-present-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
@@ -19,7 +19,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
 
   const getData = () => {
-    newWholesaleCityAgencyPmStats({
+    loveGiftOrderStats({
       ...form
     }).then(res=> {
       if(res.success) {
@@ -45,7 +45,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
     },
     {
       title: '有业绩市办事处数量',
-      dataIndex: 'agencyNum',
+      dataIndex: 'agencyNums',
       render: _ => `${_ ? _ : 0}家`
     }
   ]
@@ -60,7 +60,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   )
 }
 
-const NewIntensivePerformance: FC = () => {
+const LoveFeedbackPresentPerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [agencyId, setAgencyId] = useState<string>()
   const [visible, setVisible] = useState<boolean>(false)
@@ -87,30 +87,26 @@ const NewIntensivePerformance: FC = () => {
     },
     {
       title: '办事处名称',
-      dataIndex: 'name',
+      dataIndex: 'agencyName',
       align: 'center'
-    },
-    {
-      title: '业绩类型',
-      dataIndex: 'teamLeader',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '业绩类型',
-      dataIndex: 'teamLeader',
-      valueType: 'select',
-      valueEnum: {
-        1: '有大团队长',
-        0: '没有大团队长'
-      },
-      hideInTable: true
     },
     {
       title: '交易时间',
       dataIndex: 'time',
-      valueType: 'dateRange',
-      hideInTable: true
+      hideInTable: true,
+      valueType: 'dateTimeRange'
+    },
+    {
+      title: '社区店数量',
+      dataIndex: 'storeNums',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '爱心回馈礼品订单数',
+      dataIndex: 'orderNums',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '累计业绩（元）',
@@ -127,7 +123,7 @@ const NewIntensivePerformance: FC = () => {
                 setVisible(true)
                 setAgencyId(r.agencyId)
                 setAmount(r.payAmount)
-                setName(`${r.name} 累计业绩`)
+                setName(`${r.agencyName} 累计业绩`)
               }}
             >
               {amountTransform(_, '/')}
@@ -159,7 +155,7 @@ const NewIntensivePerformance: FC = () => {
         onReset={()=> {
           setSearchConfig(undefined)
         }}
-        request={newWholesaleCityAgencyPm}
+        request={loveGiftOrder}
         formRef={form}
         pagination={{
           showQuickJumper: true,
@@ -171,7 +167,7 @@ const NewIntensivePerformance: FC = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type="newWholesaleCityAgencyPm"
+              type="loveGiftOrder"
               conditions={getFieldValue}
             />
           ]
@@ -191,4 +187,4 @@ const NewIntensivePerformance: FC = () => {
   )
 }
 
-export default NewIntensivePerformance
+export default LoveFeedbackPresentPerformance

@@ -25,7 +25,7 @@ const optType = (type, data) => {
   switch(type) {
     case 1:
     case 4:
-      return `发起了${parameterMap?.afterSalesType}申请，等待商家审核。退货原因：${parameterMap?.reason}，退款金额：¥${amountTransform(parameterMap?.returnAmount, '/').toFixed(2)}`
+      return `发起了${parameterMap?.afterSalesType}申请，等待商家审核。退货原因：${parameterMap?.reason}`
     case 2:
       return `商家拒绝了申请。拒绝原因：${data?.description}`
     case 3:

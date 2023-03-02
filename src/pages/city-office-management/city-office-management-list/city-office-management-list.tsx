@@ -25,7 +25,7 @@ export default function TransactionData () {
   const [storeVisible5, setStoreVisible5] = useState<boolean>(false)
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [type, setType] = useState<number>(0)
-  const [msgDetail, setMsgDetail] = useState<string>()
+  const [msgDetail, setMsgDetail] = useState<TableProps>()
   const form = useRef<ActionType>()
   const tableColumns: ProColumns<TableProps>[] = [
     {

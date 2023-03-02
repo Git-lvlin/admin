@@ -175,7 +175,7 @@ const afterSalesOrder = () => {
       align: 'center',
       width: '5%',
       hideInSearch: true,
-      render: (_, r) => amountTransform((r.returnNum * Number(r.retailSupplyPrice)), '/').toFixed(2)
+      render: _ => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '退款状态',
@@ -192,6 +192,7 @@ const afterSalesOrder = () => {
       valueType: 'option',
       align: 'center',
       width: '5%',
+      fixed: 'right',
       render: (_, record) => <a onClick={ ()=> {setVisible(true); setId(record.id)} }>查看详情</a>
     }
   ]

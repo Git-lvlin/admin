@@ -92,7 +92,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                 <Descriptions.Item label="缴纳服务费支付方式">{detailData?.lastServiceFee?.payType?.desc}</Descriptions.Item>
                 <Descriptions.Item label="入驻时间">{detailData?.createTime}</Descriptions.Item>
                 <Descriptions.Item label="注册时间">{detailData?.memberShop?.applyRow?.createTime}</Descriptions.Item>
-                <Descriptions.Item label="申请类型">{{ 10: '正常申请', 20: '绿色通道申请' }[detailData?.memberShop?.applyType?.code]}</Descriptions.Item>
+                <Descriptions.Item label="申请类型">{detailData?.memberShop?.applyType?.desc}</Descriptions.Item>
                 {/* <Descriptions.Item label="微信账号">{detailData?.member?.wechatBindState?.desc}</Descriptions.Item> */}
                 {/* <Descriptions.Item label="最近登录时间">{}</Descriptions.Item> */}
               </Descriptions>
