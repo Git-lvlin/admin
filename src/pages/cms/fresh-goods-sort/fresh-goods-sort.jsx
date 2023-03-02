@@ -151,6 +151,7 @@ const BannerAdmin = (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      width: 400
     },
     {
       title: '考核业绩状态',
