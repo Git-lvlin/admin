@@ -28,7 +28,11 @@ const QueryPaidOrderDetails = () => {
       dataIndex: 'orders',
       align: 'center',
       valueType: 'select',
-      valueEnum: ORDER_TYPE
+      valueEnum: () => {
+        const obj = JSON.parse(JSON.stringify(ORDER_TYPE))
+        delete obj[100]
+        return obj
+      }
     },
     {
       title: '订单支付时间',
