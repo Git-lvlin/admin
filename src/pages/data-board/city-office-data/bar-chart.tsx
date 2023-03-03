@@ -8,7 +8,7 @@ import {
 } from "bizcharts"
 import { Empty } from 'antd'
 
-import { DataProps } from './data'
+import type { DataProps } from './data'
 import type { FC } from "react"
 
 const BarChart: FC<DataProps> = ({data, type}) => {

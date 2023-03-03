@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Image } from 'antd'
 import moment from 'moment'
+import { PageContainer } from '@ant-design/pro-layout'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -91,7 +92,7 @@ const UserRegistrationRecord = () => {
   ]
 
   return (
-    <>
+    <PageContainer title={false}>
       <ProTable
         rowKey='id'
         columns={columns}
@@ -127,7 +128,7 @@ const UserRegistrationRecord = () => {
           },
         }}
       />
-    </>
+    </PageContainer>
   )
 }
 

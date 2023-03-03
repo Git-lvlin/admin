@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Button } from 'antd'
+import { PageContainer } from '@ant-design/pro-layout'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -126,7 +127,7 @@ const FoundationDonationRecords =  () => {
   ]
 
   return (
-    <>
+    <PageContainer title={false}>
       <ProTable
         rowKey='id'
         columns={columns}
@@ -182,7 +183,7 @@ const FoundationDonationRecords =  () => {
           callback={()=> actRef.current?.reload()}
         />
       }
-    </>
+    </PageContainer>
   )
 }
 

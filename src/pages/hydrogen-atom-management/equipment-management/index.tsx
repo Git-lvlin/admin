@@ -168,6 +168,12 @@ export default function EquipmentManagement() {
         2: '购买',
         4: '爱心回馈免押金租赁'
       },
+      hideInTable: true
+    },
+    {
+      title: '交易类型',
+      dataIndex: 'occupationModeStr',
+      hideInSearch: true,
       align: 'center'
     },
     {

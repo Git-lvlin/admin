@@ -77,16 +77,9 @@ const MainData = () => {
           </Tooltip>
         </Space>
       ),
-      dataIndex: 'storeNeworderTotal',
+      dataIndex: 'newOrderPer',
       align: 'center',
-      hideInSearch: true,
-      render: (_, r) => {
-        if(r.storeTotal > 0) {
-          return (Number(r.storeNeworderTotal / r.storeTotal) * 100).toFixed(2) + '%'
-        } else {
-          return Number(0).toFixed(2) + '%'
-        }
-      }
+      hideInSearch: true
     },
     {
       title: '新集约商品采购单金额',

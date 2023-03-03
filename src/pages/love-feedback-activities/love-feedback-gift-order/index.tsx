@@ -14,6 +14,7 @@ import Export from '@/components/export'
 const LoveFeedbackGiftOrder = ()=>  {
   const [visible, setVisible] = useState<boolean>(false)
   const [orderId, setOrderId] = useState<string>()
+  const [arrival, setArrival] = useState<string>()
   const [list, setList] = useState()
   const form = useRef<FormInstance>()
 
@@ -31,7 +32,7 @@ const LoveFeedbackGiftOrder = ()=>  {
   const columns: ProColumns[] = [
     {
       title: '订单号',
-      dataIndex: 'orderId',
+      dataIndex: 'payOrderSn',
       align: 'center',
       hideInSearch: true
     },
@@ -98,11 +99,16 @@ const LoveFeedbackGiftOrder = ()=>  {
       render: _ => amountTransform(_, '/')
     },
     {
+      title: '基金资金到账状态',
+      dataIndex: 'isArrivalDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      hideInSearch: true,
-      render: (_, r) => <a onClick={()=>{setVisible(true); setOrderId(r.orderId)}}>详情</a>
+      render: (_, r) => <a onClick={()=>{setVisible(true); setArrival(r.isArrivalDesc); setOrderId(r.orderId)}}>详情</a>
     }
   ]
 
@@ -136,6 +142,7 @@ const LoveFeedbackGiftOrder = ()=>  {
           visible={visible}
           setVisible={setVisible}
           id={orderId}
+          state={arrival}
         />
       }
     </PageContainer>
