@@ -93,6 +93,12 @@ export default {
   'menu.setting.contract-management': '合同管理',
   'menu.setting.cancel-reason': '注销原因',
 
+  'menu.finger-doctor': '手指医生',
+  'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
+  'menu.finger-doctor.device-management-period-management': '设备管理期管理',
+  'menu.finger-doctor.health-detection-record-management': '健康检测记录管理',
+  'menu.finger-doctor.report-push-object-config': '报告推送对象配置',
+
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
   'menu.intensive-activity-management.intensive-bulk-activity-list': '散装集约活动列表',
@@ -175,7 +181,6 @@ export default {
   'menu.intensive-store-management.fresh-shop-configuration': '生鲜店铺配置',
   'menu.intensive-store-management.cancel-aduit': '注销审核',
   'menu.intensive-store-management.share-the-subsidy': '分享补贴',
-
 
 
 
@@ -343,7 +348,7 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
-  'menu.data-board.summary-of-data': '数据概述',
+  'menu.data-board.summary-of-data': '数据概况',
   'menu.data-board.order-analysis': '订单分析',
   'menu.data-board.product-data': '商品数据',
   'menu.data-board.community-store-data': '社区店数据',
@@ -413,6 +418,7 @@ export default {
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+  'menu.hydrogen-atom-management.assign-start-frequency': '指定可启用次数',
 
   'menu.hydrogen-atom-trusteeship': '氢原子托管',
   'menu.hydrogen-atom-trusteeship.hydrogen-atom-start-record': '启动记录',
@@ -448,6 +454,10 @@ export default {
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
+
+  'menu.great-project-team': '大团队长',
+  'menu.great-project-team.great-project-team-management': '大团队长管理',
+  'menu.great-project-team.order-performance': '订单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',

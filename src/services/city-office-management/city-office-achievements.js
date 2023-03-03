@@ -16,7 +16,7 @@ export const cityBusinessDeptSum = async (params = {}, options = {}) => {
 }
 
 export const listPage = async (params = {}, options = {}) => {
-    const { current, pageSize,createTime, ...rest } = params;
+    const { current, pageSize,createTime,hasTeamLeader, ...rest } = params;
     const res = await request('/auth/java-admin/financial/cityBusinessDept/listPage', {
       method: 'POST',
       data: {
@@ -24,6 +24,7 @@ export const listPage = async (params = {}, options = {}) => {
         size: pageSize,
         begin:createTime&&createTime[0],
         end:createTime&&createTime[1],
+        hasTeamLeader:parseInt(hasTeamLeader),
         ...rest
       },
       ...options
@@ -55,7 +56,7 @@ export const cityItemOrderSum = async (params = {}, options = {}) => {
 
 
 export const cityItemOrderListPage = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange, ...rest } = params;
+    const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
     const res = await request('/auth/java-admin/financial/cityBusinessDept/cityItemOrderListPage', {
       method: 'POST',
       data: {
@@ -63,6 +64,7 @@ export const cityItemOrderListPage = async (params = {}, options = {}) => {
         size: pageSize,
         begin:dateRange&&dateRange[0],
         end:dateRange&&dateRange[1],
+        hasTeamLeader:parseInt(hasTeamLeader),
         ...rest
       },
       ...options
@@ -78,7 +80,7 @@ export const cityItemOrderListPage = async (params = {}, options = {}) => {
 
 
 export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
-  const { current, pageSize,dateRange, ...rest } = params;
+  const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
   const res = await request('/auth/java-admin/financial/cityBusinessDept/cityTotalTradeItemListPage', {
     method: 'POST',
     data: {
@@ -86,6 +88,7 @@ export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
       size: pageSize,
       begin:dateRange&&dateRange[0],
       end:dateRange&&dateRange[1],
+      hasTeamLeader:parseInt(hasTeamLeader),
       ...rest
     },
     ...options

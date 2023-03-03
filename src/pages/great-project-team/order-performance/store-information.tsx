@@ -4,9 +4,20 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { 
+  teamHydrogen,
+  hydrogenStats,
+  wholesaleOrder,
+  wholesaleOrderStats,
+  healthyCard,
+  healthyCardStats,
+  hydrogenBoot,
+  hydrogenBootStats,
+  hydrogenRent,
+  hydrogenRentStats
+ } from "@/services/great-project-team/order-performance"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem, CumulativeProps, TableProps } from "./data"
+import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
@@ -26,49 +37,85 @@ const formItemLayout = {
     }
   };
 
-export default (props:CumulativeProps) => {
+export default (props) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState<TableProps>()
+  const [time,setTime]=useState<GithubIssueItem>()
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
 
   const divideName=()=>{
     switch (type) {
       case 1:
-        return '累计业绩'
+        return '氢原子全款销售提成'
       case 2:
-        return '销售提成'
+        return '新集约批发业绩提成'
       case 3:
-        return '托管推广提成'
+        return '健康套餐订单提成'
       case 4:
-        return '运营推广提成'
-      case 5:
-        return '托管租赁管理费提成'
-      case 6:
         return '启动费提成'
-      case 7:
+      case 5:
         return '租赁管理费提成'
       default:
         return ''
     }
   }
-  const doAway=()=>{
-    switch(type) {
-      case 3: 
-       return true
+  const exportCode=()=>{
+    switch (type) {
+      case 1:
+        return 'tmHydrogen'
+      case 2:
+        return 'tmWholesaleOrder'
+      case 3:
+        return 'tmHealthyCard'
       case 4:
-       return true
+        return 'tmHydrogenBoot'
       case 5:
-       return true
+        return 'tmHydrogenRent'
+      default:
+        return ''
+    }
+  }
+
+  const requestApi=()=>{
+    switch (type) {
+      case 1:
+        return teamHydrogen
+      case 2:
+        return wholesaleOrder
+      case 3:
+        return healthyCard
+      case 4:
+        return hydrogenBoot
+      case 5:
+        return hydrogenRent
+      default:
+        return ''
+    }
+  }
+
+  const hydrogenSum=()=>{
+    switch (type) {
+      case 1:
+        return hydrogenStats
+      case 2:
+        return wholesaleOrderStats
+      case 3:
+        return healthyCardStats
+      case 4:
+        return hydrogenBootStats
+      case 5:
+        return hydrogenRentStats
+      default:
+        return ''
     }
   }
 
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -80,58 +127,34 @@ export default (props:CumulativeProps) => {
       hideInTable: true,
     },
     {
-      title: '业绩类型',
-      dataIndex: 'hasTeamLeader',
+      title: '客户手机',
+      dataIndex: 'teamPhone',
       align: 'center',
-      valueType: 'select',
-      valueEnum: {
-        0: '没有大团队长',
-        1: '有大团队长'
-      },
       hideInTable: true,
-      hideInSearch: doAway(),
+      fieldProps: {
+        placeholder:'请输入当前大团队长的客户手机号码'
+      },
+      order: -1
     },
     {
-      title: '业绩类型',
-      dataIndex: 'hasTeamLeader',
+      title: '下单人手机号',
+      dataIndex: 'memberPhone',
       align: 'center',
-      valueType: 'select',
-      valueEnum: {
-        0: '没有大团队长',
-        1: '有大团队长'
-      },
-      hideInSearch: true,
-      hideInTable: doAway()
+      hideInSearch: true
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '订单类型',
       dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
-        'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -144,7 +167,7 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -158,35 +181,32 @@ export default (props:CumulativeProps) => {
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1],
-      hasTeamLeader:parseInt(time?.hasTeamLeader)
+      agencyId:msgDetail?.agencyId,
+      teamPhone:time?.teamPhone,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      orderSn:time?.orderSn,
     }
-    cityItemOrderSum(params).then(res=>{
+    const api=hydrogenSum()
+    api(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        setOrderSum(res?.data[0]?.commission)
       }
     })
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      hasTeamLeader:parseInt(hasTeamLeader),
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -210,14 +230,13 @@ export default (props:CumulativeProps) => {
       className={styles.store_information}
     >
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="agencyId"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={requestApi()}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agencyId:msgDetail?.agencyId,
         }}
         pagination={{
           pageSize: 10,
@@ -236,10 +255,10 @@ export default (props:CumulativeProps) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              type={exportCode()}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={exportCode()}/>
           ],
         }}
         tableRender={(_, dom) => {
@@ -247,7 +266,7 @@ export default (props:CumulativeProps) => {
             { dom }
             <div className={styles.summary}>
               <div>
-                累计{type==1?'金额':'收益'}：
+                累积收益：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>
