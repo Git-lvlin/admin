@@ -114,11 +114,11 @@ const TabList =({done})=> {
         rowKey='id'
         columns={columns}
         headerTitle="数据列表"
-        options={false}x
+        options={false}
         params={{
           done
         }}
-        scroll={{ y: Math.max(window.innerHeight - 350, 500), scrollToFirstRowOnChange: true, }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         request={interventionList}
         pagination={{
           showQuickJumper: true,

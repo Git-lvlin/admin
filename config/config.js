@@ -7,6 +7,7 @@ import userManagement from './routers/user-management'
 import orderManagement from './routers/order-management'
 import productManagement from './routers/product-management'
 import setting from './routers/setting'
+import fingerDoctor from './routers/finger-doctor'
 import intensiveActivityManagement from './routers/intensive-activity-management'
 import supplierManagement from './routers/supplier-management'
 import operationManagement from './routers/operation-management'
@@ -32,6 +33,7 @@ import HydrogenAtomManagement from './routers/hydrogen-atom-management'
 import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
+import GreatProjectTeam from './routers/great-project-team'
 import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
 import productPerformanceManagement from './routers/product-performance-management'
@@ -89,6 +91,7 @@ const config = {
             orderManagement,
             productManagement,
             setting,
+            fingerDoctor,
             intensiveActivityManagement,
             supplierManagement,
             operationManagement,
@@ -115,6 +118,7 @@ const config = {
             BuriedPoint,
             OfficeManagement,
             CityOfficeManagement,
+            GreatProjectTeam,
             HydrogenAtomGeneration,
             productPerformanceManagement,
             healthPackageActivities,
