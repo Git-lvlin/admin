@@ -6,8 +6,9 @@ import type { ProColumns }  from "@ant-design/pro-table"
 import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
-import { admReportList } from "@/services/finger-doctor/device-management-period-management"
+import { findDeviceDoctorPage } from "@/services/finger-doctor/device-management-period-management"
 import Export from "@/components/export"
+import { amountTransform } from "@/utils/utils"
 
 
 const DeviceManagementPeriodManagement: FC = ()=>  {
@@ -22,7 +23,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
 
     const columns: ProColumns[] = [
         {
-          dataIndex: 'nickName',
+          dataIndex: 'imei',
           align: 'center',
           hideInTable: true,
           fieldProps: {
@@ -37,12 +38,19 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
         },
         {
           title: '设备状态',
-          dataIndex: 'area',
+          dataIndex: 'status',
           align: 'center',
-         hideInSearch: true
+          hideInSearch: true,
+          valueEnum: {
+            0: '待绑定',
+            1: '待激活',
+            2: '正常',
+            3: '已停用',
+            4: '已解绑'
+          }
         },
         {
-          dataIndex: 'vip',
+          dataIndex: 'memberPhone',
           align: 'center',
           hideInTable: true,
           fieldProps: {
@@ -51,18 +59,20 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
         },
         {
           title: '所属人手机号',
-          dataIndex: 'vip',
+          dataIndex: 'memberPhone',
           align: 'center',
           hideInSearch: true,
         },
         {
-          dataIndex: 'userType',
+          dataIndex: 'leaseStatus',
           align: 'center',
           hideInTable: true,
           valueType: 'select',
           valueEnum: {
-            0: '管理中',
-            1: '已逾期'
+            0: '无租期',
+            1: '免租期',
+            2: '管理中',
+            3: '已逾期'
           },
           fieldProps: {
             placeholder: '请选择管理期状态'
@@ -70,49 +80,46 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
         },
         {
           title: '当前管理期类型',
-          dataIndex: 'userType',
+          dataIndex: 'manageType',
           align: 'center',
           hideInSearch: true,
-          valueType: 'select',
-          valueEnum: {
-            0: '一年',
-            1: '二年'
-          },
         },
         {
           title: '当前管理期状态',
-          dataIndex: 'userType',
+          dataIndex: 'leaseStatusStr',
           align: 'center',
           hideInSearch: true,
-          valueType: 'select',
-          valueEnum: {
-            0: '管理中',
-            1: '已逾期'
-          },
         },
         {
           title: '当前管理开始日期',
-          dataIndex: 'phoneNumber',
+          dataIndex: 'activatedTime',
           align: 'center',
           hideInSearch  : true,
         },
         {
           title: '当前管理结束日期',
-          dataIndex: 'phoneNumber',
+          dataIndex: 'leaseDeadline',
           align: 'center',
           hideInSearch: true,
         },
         {
           title: '当前剩余管理期(天)',
-          dataIndex: 'sourceTypeDesc',
+          dataIndex: 'remainManageDayStr',
           align: 'center',
           hideInSearch: true
         },
         {
           title: '当前设备管理费(元)',
-          dataIndex: 'createTime',
+          dataIndex: 'manageFee',
           align: 'center',
-          hideInSearch: true
+          hideInSearch: true,
+          render: (_) => {
+            if(_){
+              return amountTransform(_,'/').toFixed(2)
+            }else{
+              return '-'
+            }
+          }
         },
         {
           title: '操作',
@@ -130,7 +137,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           rowKey='imei'
           columns={columns}
           options={false}
-          request={admReportList}
+          request={findDeviceDoctorPage}
           formRef={form}
           pagination={{
             showQuickJumper: true,
@@ -142,7 +149,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
               ...dom.reverse(),
               <Export
                 key='export'
-                type="imei_list_export"
+                type="iot-export-member-device-doctor"
                 conditions={getFieldValue}
               />
             ]
