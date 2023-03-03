@@ -26,12 +26,18 @@ export default {
         name: 'referral-commission',
         path: '/hydrogen-atom-management/referral-commission',
         component: './hydrogen-atom-management/referral-commission',
-        wrappers: [RouteWatcher],
+        wrappers: [RouteWatcher]
       },
       {
         name: 'hydrogen-atom-start-recording',
         path: '/hydrogen-atom-management/hydrogen-atom-start-recording',
         component: './hydrogen-atom-management/hydrogen-atom-start-recording',
+        wrappers: [RouteWatcher],
+      },
+      {
+        name: 'assign-start-frequency',
+        path: '/hydrogen-atom-management/assign-start-frequency',
+        component: './hydrogen-atom-management/assign-start-frequency',
         wrappers: [RouteWatcher],
       },
     ]

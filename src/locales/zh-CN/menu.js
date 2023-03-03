@@ -184,7 +184,6 @@ export default {
 
 
 
-
   'menu.single-contract-activity-management': '单约活动管理',
   'menu.single-contract-activity-management.activity-list': '活动列表',
   'menu.single-contract-activity-management.activity-detail': '活动详情',
@@ -349,7 +348,7 @@ export default {
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
 
   'menu.data-board': '数据看板',
-  'menu.data-board.summary-of-data': '数据概述',
+  'menu.data-board.summary-of-data': '数据概况',
   'menu.data-board.order-analysis': '订单分析',
   'menu.data-board.product-data': '商品数据',
   'menu.data-board.community-store-data': '社区店数据',
@@ -419,6 +418,7 @@ export default {
   'menu.hydrogen-atom-management.transaction-data': '交易数据',
   'menu.hydrogen-atom-management.referral-commission': '推荐提成',
   'menu.hydrogen-atom-management.hydrogen-atom-start-recording': '氢原子启动记录',
+  'menu.hydrogen-atom-management.assign-start-frequency': '指定可启用次数',
 
   'menu.hydrogen-atom-trusteeship': '氢原子托管',
   'menu.hydrogen-atom-trusteeship.hydrogen-atom-start-record': '启动记录',
@@ -454,6 +454,10 @@ export default {
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
+
+  'menu.great-project-team': '大团队长',
+  'menu.great-project-team.great-project-team-management': '大团队长管理',
+  'menu.great-project-team.order-performance': '订单业绩',
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
