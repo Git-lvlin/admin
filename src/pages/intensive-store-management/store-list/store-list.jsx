@@ -1318,14 +1318,14 @@ const ShopHealthPackages = (props) => {
       }
     },
     {
-      title: '最近捐赠49800元领取回馈礼包时间',
+      title: '最近捐赠3980元领取回馈礼包时间',
       dataIndex: 'packageOrderLastCreateTime',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType != 'station_manager'
     },
     {
-      title: '最近领取49800元礼包订单号',
+      title: '最近领取3980元礼包订单号',
       dataIndex: 'packageOrderLastOrderSn',
       valueType: 'text',
       hideInSearch: true,
