@@ -134,7 +134,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
     return (
         <PageContainer>
         <ProTable
-          rowKey='imei'
+          rowKey='id'
           columns={columns}
           options={false}
           request={findDeviceDoctorPage}
