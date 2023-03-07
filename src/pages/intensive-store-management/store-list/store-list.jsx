@@ -1305,7 +1305,7 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '最近购买手指医生订单号',
-      dataIndex: 'purchaseOrderLastOrderSn',
+      dataIndex: 'purchaseOrderLastSubOrderSn',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType != 'station_manager',
