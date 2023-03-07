@@ -454,6 +454,7 @@ export default {
   'menu.city-office-management.living-service-fee-performance': '生活馆服务费业绩',
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
+  'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',
@@ -485,5 +486,11 @@ export default {
   'menu.love-feedback-activities.love-feedback-gift-order': '爱心回馈礼品订单',
   'menu.love-feedback-activities.volunteer-list': '志愿者列表',
   'menu.love-feedback-activities.recommendation-commission': '志愿者奖励',
+
+  'menu.health-gift-package-activities': '健康礼包活动',
+  'menu.health-gift-package-activities.health-package-order-management': '健康礼包订单管理', 
+  'menu.health-gift-package-activities.health-package-performance-statistics': '健康礼包业绩统计', 
+  'menu.health-gift-package-activities.health-package-commission': '健康礼包推荐提成', 
+  'menu.health-gift-package-activities.divide-configure': '健康礼包分成配置', 
 
 };
