@@ -78,7 +78,7 @@ const TableList = () => {
       payStartCreateTime: payTime?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       payEndCreateTime: payTime?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
-      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32, 33] : [orderTypes],
+      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32, 33, 34] : [orderTypes],
       exclusiveSubType: 1004,
       ...rest,
     }
@@ -241,6 +241,7 @@ const TableList = () => {
             { value: '242', label: '氢原子托管购买订单' },
             { value: '222', label: '氢原子托管启动订单' },
             { value: '33', label: '爱心回馈订单' },
+            { value: '34', label: '健康礼包订单' },
             { value: '333', label: '健康检测启动单' },
           ]}
           fieldProps={{
