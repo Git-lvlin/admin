@@ -8,6 +8,7 @@ import { detailListProps } from './data'
 import { amountTransform } from '@/utils/utils'
 import AddressCascader from '@/components/address-cascader'
 import RangeInput from '@/components/range-input'
+import RangeNumberInput from '@/components/range-number-input'
 import Export from '@/components/export'
 import { healthPkgOrderPm, healthPkgOrderPmStats } from '@/services/health-gift-package-activities/health-package-performance-statistics'
 
@@ -105,7 +106,7 @@ export default () => {
       align: 'center',
       hideInTable: true,
       order:3,
-      renderFormItem: () => <RangeInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
+      renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
     },
     {
       title: '礼包订单总金额',
@@ -124,10 +125,10 @@ export default () => {
       provinceId: area&&area[0]?.value,
       cityId: area&&area[1]?.value,
       regionId: area&&area[2]?.value,
-      minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
-      maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
-      minOrderNums: orderNums&&orderNums?.min,
-      maxOrderNums: orderNums&&orderNums?.max,
+      minPayAmount: payAmount && amountTransform(payAmount?.min,'*'),
+      maxPayAmount: payAmount && amountTransform(payAmount?.max,'*'),
+      minOrderNums: orderNums && orderNums?.min,
+      maxOrderNums: orderNums && orderNums?.max,
       ...rest,
     }
   }

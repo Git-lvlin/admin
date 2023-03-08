@@ -46,7 +46,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
     <Drawer
       visible={visible}
       onClose={()=>setVisible(false)}
-      title={`店铺${dataSource?.houseNumber} 绑定套餐订单明细`}
+      title={`店铺${dataSource?.houseNumber} 绑定礼包订单明细`}
       width={700}
       destroyOnClose={true}
     >
@@ -67,7 +67,7 @@ const Detail: FC<DetailProps> = ({visible, setVisible, dataSource}) => {
                 <div>订单号：{item.orderSn}</div>
               </div>
               <div className={styles.cardListContent}>
-                <div>{item.cardNum}次</div>
+                <div></div>
                 <div>下单人：{item.memberPhone}</div>
               </div>
               <Divider style={{margin: '10px 0 24px 0'}}/>

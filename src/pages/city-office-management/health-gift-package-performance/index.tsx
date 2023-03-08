@@ -10,15 +10,16 @@ import type { FormInstance } from "antd"
 
 import PageContainer from "@/components/PageContainer"
 import { amountTransform } from "@/utils/utils"
-import { cardCityAgencyPm, cardCityAgencyPmStats } from "@/services/city-office-management/health-package-performance"
+import { sum, listPage } from "@/services/city-office-management/health-gift-package-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
+import Detail from "./detail"
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
 
   const getData = () => {
-    cardCityAgencyPmStats({
+    sum({
       ...form
     }).then(res=> {
       if(res.success) {
@@ -34,17 +35,17 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const columns: ProDescriptionsItemProps[] = [
     {
       title: '总业绩金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'totalAmount',
       render: _ => `${amountTransform(_, '/')}元`
     },
     {
       title: '总提成',
-      dataIndex: 'commission',
+      dataIndex: 'totalCommission',
       render: _ => `${amountTransform(_, '/')}元`
     },
     {
       title: '有业绩市办事处数量',
-      dataIndex: 'agencyNums',
+      dataIndex: 'totalCityOffice',
       render: _ => `${_ ? _ : 0}家`
     }
   ]
@@ -61,6 +62,10 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
 
 const HealthGiftPackagePerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
+  const [visible, setVisible] = useState<boolean>(false)
+  const [agencyId, setAgencyId] = useState<string>()
+  const [amount, setAmount] = useState<number>(0)
+  const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
@@ -76,39 +81,63 @@ const HealthGiftPackagePerformance: FC = () => {
   const columns: ProColumns[] = [
     {
       title: 'ID',
-      dataIndex: 'agencyId',
+      dataIndex: 'cityOfficeId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '办事处名称',
-      dataIndex: 'agencyName',
+      dataIndex: 'cityOfficeName',
       align: 'center'
     },
     {
       title: '社区店数量',
-      dataIndex: 'storeNums',
+      dataIndex: 'totalStore',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '销售健康礼包订单数',
-      dataIndex: 'orderNums',
+      dataIndex: 'totalOrder',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '累计业绩（元）',
-      dataIndex: 'payAmount',
+      dataIndex: 'totalAmount',
       align: 'center',
+      render: (_, r) => {
+        if(_ === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> {
+                setVisible(true)
+                setAgencyId(r.cityOfficeId)
+                setAmount(r.totalAmount)
+                setName(`${r.cityOfficeName} 累计业绩`)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
       hideInSearch: true
     },
     {
       title: '累计提成（元）',
-      dataIndex: 'commission',
+      dataIndex: 'totalCommission',
       align: 'center',
       render: _ => amountTransform(_, '/'),
       hideInSearch: true
+    },
+    {
+      title: '交易时间',
+      dataIndex: 'time',
+      valueType: 'dateRange',
+      hideInTable: true
     }
   ]
 
@@ -126,7 +155,7 @@ const HealthGiftPackagePerformance: FC = () => {
         onReset={()=> {
           setSearchConfig(undefined)
         }}
-        request={cardCityAgencyPm}
+        request={listPage}
         formRef={form}
         pagination={{
           showQuickJumper: true,
@@ -138,12 +167,22 @@ const HealthGiftPackagePerformance: FC = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type="cardCityAgencyPm"
+              type="exportHealthyGiftCityOfficeList"
               conditions={getFieldValue}
             />
           ]
         }}
       />
+      {
+        visible &&
+        <Detail
+          id={agencyId}
+          visible={visible}
+          setVisible={setVisible}
+          totalAmount={amount}
+          title={name}
+        />
+      }
     </PageContainer>
   )
 }

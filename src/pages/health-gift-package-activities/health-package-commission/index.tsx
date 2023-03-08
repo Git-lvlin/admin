@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { DatePicker } from 'antd'
 import moment from 'moment'
@@ -8,11 +8,14 @@ import type { FC } from 'react'
 import type { FormInstance } from 'antd'
 
 import PageContainer from '@/components/PageContainer'
-import { cardRecomCommission } from '@/services/health-package-activities/health-package-commission'
-import { amountTransform } from '@/utils/utils'
+import { queryPage } from '@/services/health-gift-package-activities/health-package-commission'
 import Export from '@/components/export'
+import Detail from './detail'
 
 const HealthPackageCommission: FC = () => {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [memberId, setMemberId] = useState<string>()
+  const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
@@ -27,7 +30,7 @@ const HealthPackageCommission: FC = () => {
   const columns: ProColumns[] = [
     {
       title: '交易月度查询',
-      dataIndex: 'time',
+      dataIndex: 'tradeMonth',
       hideInTable: true,
       renderFormItem: () =>  <DatePicker picker="month"/>
     },
@@ -43,69 +46,51 @@ const HealthPackageCommission: FC = () => {
       hideInTable: true
     },
     {
-      title: '佣金类型',
-      dataIndex: 'commissionTypeDesc',
+      title: '推荐礼包订单总额',
+      dataIndex: 'totalAmountDesc',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => <a onClick={()=> { setVisible(true); setMemberId(r.memberId); setName(r.phoneNumber) }}>{_}</a>
+    },
+    {
+      title: '推荐礼包订单总提成',
+      dataIndex: 'totalCommissionDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '佣金类型',
-      dataIndex: 'commissionType',
-      valueType: 'select',
-      valueEnum: {
-        1: '销售佣金',
-        2: '管理佣金'
-      },
-      hideInTable: true
-    },
-    {
-      title: '订单总额',
-      dataIndex: 'payAmount',
-      align: 'center',
-      render: (_) => amountTransform(_, '/'),
-      hideInSearch: true
-    },
-    {
-      title: '佣金金额',
-      dataIndex: 'commission',
-      align: 'center',
-      render: (_) => amountTransform(_, '/'),
-      hideInSearch: true
-    },
-    {
-      title: '套餐名称',
-      dataIndex: 'pkgName',
+      title: '直推用户数',
+      dataIndex: 'directCount',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '套餐名称',
-      dataIndex: 'pkgId',
-      valueType: 'select',
-      valueEnum: {
-        2001: '健康体验礼包',
-        2002: '健康礼包一',
-        2003: '健康礼包二',
-        2004: '健康礼包三',
-        2005: '健康礼包四', 
-        2006: '健康礼包五',
-      },
-      hideInTable: true
-    },
-    {
-      title: '套餐单号',
-      dataIndex: 'orderSn',
+      title: '直推礼包总单金额',
+      dataIndex: 'directTotalAmountDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '下单人',
-      dataIndex: 'memberPhone',
-      align: 'center'
+      title: '直推礼包总提成金额',
+      dataIndex: 'directTotalCommissionDesc',
+      align: 'center',
+      hideInSearch: true
     },
     {
-      title: '下单时间',
-      dataIndex: 'createTime',
+      title: '间推用户数',
+      dataIndex: 'indirectCount',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '间推礼包总单金额',
+      dataIndex: 'indirectTotalAmountDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '间推礼包总提成金额',
+      dataIndex: 'indirectTotalCommissionDesc',
       align: 'center',
       hideInSearch: true
     },
@@ -114,9 +99,10 @@ const HealthPackageCommission: FC = () => {
   return (
     <PageContainer>
       <ProTable
+        rowKey='memberId'
         columns={columns}
         params={{}}
-        request={cardRecomCommission}
+        request={queryPage}
         formRef={form}
         pagination={{
           showQuickJumper: true,
@@ -128,13 +114,22 @@ const HealthPackageCommission: FC = () => {
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
             <Export
-              type='cardRecomCommission'
+              type='exportHealthyGiftCommissionList'
               key='export'
               conditions={getFieldsValue}
             />
           ]
         }}
       />
+      {
+        visible &&
+        <Detail
+          id={memberId}
+          visible={visible}
+          setVisible={setVisible}
+          title={name}
+        />
+      }
     </PageContainer>
   )
 }
