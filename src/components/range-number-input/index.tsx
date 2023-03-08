@@ -23,7 +23,7 @@ const RangeNumberInput: React.FC<RangeInputProps> = ({
         bordered={false}
         controls={false}
         onChange={(e: number) => {
-          if(e !== 0 && e) min.current = e;
+          min.current = e;
           onChange({ min: e, max: max.current })
         }} />
       ~
@@ -32,7 +32,7 @@ const RangeNumberInput: React.FC<RangeInputProps> = ({
         bordered={false}
         controls={false}
         onChange={(e: number) => {
-          if(e !== 0 && e) max.current = e;
+          max.current = e;
           onChange({ max: e, min: min.current })
         }} />
     </div>

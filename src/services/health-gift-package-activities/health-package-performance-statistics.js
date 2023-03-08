@@ -4,7 +4,6 @@ import { amountTransform } from '@/utils/utils'
 // 健康营销套餐订单业绩
 export const healthPkgOrderPm = async (params = {}, options = {}) => {
   const { current = 1, pageSize = 10, area, payAmount, orderNums, ...rest } = params
-  console.log(payAmount);
   const res = await request('/auth/java-admin/report/config/healthPkgOrderPm', {
     method: 'POST',
     data: {
@@ -13,8 +12,8 @@ export const healthPkgOrderPm = async (params = {}, options = {}) => {
       provinceId: area&&area[0]?.value,
       cityId: area&&area[1]?.value,
       regionId: area&&area[2]?.value,
-      minPayAmount: amountTransform(payAmount?.min, '*'),
-      maxPayAmount: amountTransform(payAmount?.max, '*'),
+      minPayAmount: payAmount?.min ? amountTransform(payAmount?.min, '*') : '',
+      maxPayAmount: payAmount?.max ? amountTransform(payAmount?.max, '*') : '',
       minOrderNums: orderNums && orderNums?.min,
       maxOrderNums: orderNums && orderNums?.max,
       ...rest
@@ -37,8 +36,8 @@ export const healthPkgOrderPmStats = async (params = {}, options = {}) => {
         provinceId: area&&area[0]?.value,
         cityId: area&&area[1]?.value,
         regionId: area&&area[2]?.value,
-        minPayAmount: payAmount&& amountTransform(payAmount?.min,'*'),
-        maxPayAmount: payAmount&& amountTransform(payAmount?.max,'*'),
+        minPayAmount: payAmount?.min ? amountTransform(payAmount?.min,'*') : '',
+        maxPayAmount: payAmount?.max ? amountTransform(payAmount?.max,'*') : '',
         minOrderNums: orderNums&&orderNums?.min,
         maxOrderNums: orderNums&&orderNums?.max,
         ...rest
