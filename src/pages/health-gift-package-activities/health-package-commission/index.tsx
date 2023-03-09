@@ -46,6 +46,12 @@ const HealthPackageCommission: FC = () => {
       hideInTable: true
     },
     {
+      title: '店铺编号',
+      dataIndex: 'shopMemberAccount',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '推荐礼包订单总额',
       dataIndex: 'totalAmountDesc',
       align: 'center',
