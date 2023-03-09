@@ -1,21 +1,22 @@
 import { useState, useEffect, useRef } from "react"
 import { Drawer, Pagination, Spin, Empty, Divider, Space, Button } from "antd"
-import ProForm, { ProFormDateRangePicker, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ProFormDateTimeRangePicker, ProFormText } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import type { FC } from "react"
 import type { FormInstance } from "antd"
 import type { DetailProps, DataProps } from "./data"
 
-import { cityAgencyLifeHouseWebPm } from "@/services/city-office-management/living-service-fee-performance"
+import { itemSum, listItemPage } from "@/services/city-office-management/health-gift-package-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
 
-const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) => {
+const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number | undefined>(10)
   const [pageTotal, setPageTotal] = useState<number>(0)
+  const [totalAmount, setTotalAmount] = useState<number>(0)
   const [load, setLoad] = useState<boolean>(false)
   const [data, setData] = useState<DataProps[]>([])
   const [query, setQuery] = useState<number>(0)
@@ -25,10 +26,10 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
   useEffect(()=>{
     const { time, ...rest } = form.current?.getFieldsValue()
     setLoad(true)
-    cityAgencyLifeHouseWebPm({
-      agencyId: id,
-      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
-      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+    listItemPage({
+      cityOfficeId: id,
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       page,
       pageSize,
       ...rest
@@ -40,6 +41,20 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
     })
     
   }, [pageSize, page, query])
+
+  useEffect(()=> {
+    const { time, ...rest } = form.current?.getFieldsValue()
+    itemSum({
+      cityOfficeId: id,
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    }).then(res => {
+      if(res.code === 0) {
+        setTotalAmount(res.data.totalAmount)
+      }
+    })
+  }, [])
 
   const getFieldsValue = () => {
     const { time, ...rest } = form.current?.getFieldsValue()
@@ -84,11 +99,11 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
               ]
             }}
           >
-            <ProFormDateRangePicker
+            <ProFormDateTimeRangePicker
               name='time'
             />
             <ProFormText
-              name='orderSn'
+              name='orderNo'
               placeholder='请输入订单号'
             />
           </ProForm>
@@ -103,16 +118,16 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
             data?.map((item, idx) => (
               <div key={idx}>
                 <div className={styles.cardList}>
-                  <div>{amountTransform(item.payAmount, '/')}元</div>
+                  <div>{amountTransform(item.amount, '/')}元</div>
                   <div>{item.payTime}</div>
                 </div>
                 <div className={styles.cardListContent}>
-                  <div>{item.memberPhone}</div>
-                  <div>订单号：{item.orderSn}</div>
+                  <div>{item.buyerMobile}</div>
+                  <div>订单号：{item.orderNo}</div>
                 </div>
                 <div className={styles.cardListContent}>
                   <div></div>
-                  <div>店铺编号：{item.homeNumber}</div>
+                  <div>店铺编号：{item.shopMemberAccount}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>
               </div>

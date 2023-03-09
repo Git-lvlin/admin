@@ -64,15 +64,14 @@ const HealthGiftPackagePerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [visible, setVisible] = useState<boolean>(false)
   const [agencyId, setAgencyId] = useState<string>()
-  const [amount, setAmount] = useState<number>(0)
   const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
     const { time, ...rest } = form.current?.getFieldsValue()
     return {
-      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
-      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }
 
@@ -115,7 +114,6 @@ const HealthGiftPackagePerformance: FC = () => {
               onClick={()=> {
                 setVisible(true)
                 setAgencyId(r.cityOfficeId)
-                setAmount(r.totalAmount)
                 setName(`${r.cityOfficeName} 累计业绩`)
               }}
             >
@@ -136,7 +134,7 @@ const HealthGiftPackagePerformance: FC = () => {
     {
       title: '交易时间',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     }
   ]
@@ -179,7 +177,6 @@ const HealthGiftPackagePerformance: FC = () => {
           id={agencyId}
           visible={visible}
           setVisible={setVisible}
-          totalAmount={amount}
           title={name}
         />
       }
