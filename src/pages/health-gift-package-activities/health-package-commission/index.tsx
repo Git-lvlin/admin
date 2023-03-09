@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { DatePicker } from 'antd'
-import moment from 'moment'
 
 import type {ProColumns} from '@ant-design/pro-table'
 import type { FC } from 'react'
 import type { FormInstance } from 'antd'
+import moment from 'moment'
 
 import PageContainer from '@/components/PageContainer'
 import { queryPage } from '@/services/health-gift-package-activities/health-package-commission'
@@ -19,10 +19,9 @@ const HealthPackageCommission: FC = () => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const {time, ...rest} = form.current?.getFieldsValue()
+    const {tradeMonth, ...rest} = form.current?.getFieldsValue()
     return {
-      startTime: time && moment(time).startOf('month').format('YYYY-MM-DD'),
-      endTime: time && moment(time).endOf('month').format('YYYY-MM-DD'),
+      tradeMonth: tradeMonth && moment(tradeMonth).format('YYYY-MM'),
       ...rest
     }
   }

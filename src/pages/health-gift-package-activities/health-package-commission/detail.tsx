@@ -65,6 +65,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
               render: ({form})=> [
                 <Space size={10} key='1'>
                   <Button type='primary' onClick={()=>form?.submit()}>查询</Button>
+                  <Button onClick={()=>{form?.resetFields(); form?.submit()}}>重置</Button>
                 </Space>
               ]
             }}

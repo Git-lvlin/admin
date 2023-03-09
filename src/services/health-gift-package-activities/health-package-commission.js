@@ -1,11 +1,13 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 推荐提成分页列表
 export const queryPage = async (params = {}, options = {}) => {
-  const { current = 1, pageSize = 10, ...rest } = params
+  const { tradeMonth, current = 1, pageSize = 10, ...rest } = params
   const res = await request('/auth/java-admin/financial/healthyGiftCommission/queryPage', {
     method: 'POST',
     data: {
+      tradeMonth: tradeMonth && moment(tradeMonth).format("YYYY-MM"),
       page: current,
       size: pageSize,
       ...rest
