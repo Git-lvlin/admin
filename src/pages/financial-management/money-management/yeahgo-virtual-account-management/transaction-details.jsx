@@ -15,7 +15,6 @@ import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 import NotGoodsOrderDetail from '../../common-popup/notGoodsOrderDetail'
 import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
-import { slice } from 'lodash'
 
 const TransactionDetails = ({
   visible,
