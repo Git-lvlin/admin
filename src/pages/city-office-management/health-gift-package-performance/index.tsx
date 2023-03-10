@@ -142,7 +142,7 @@ const HealthGiftPackagePerformance: FC = () => {
   return (
     <PageContainer className={styles.desc}>
       <ProTable
-        rowKey='agencyId'
+        rowKey='cityOfficeId'
         columns={columns}
         headerTitle={<Aggregate form={searchConfig}/>}
         params={{}}

@@ -59,7 +59,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
   const getFieldsValue = () => {
     const { time, ...rest } = form.current?.getFieldsValue()
     return {
-      agencyId: id,
+      cityOfficeId: id,
       startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
