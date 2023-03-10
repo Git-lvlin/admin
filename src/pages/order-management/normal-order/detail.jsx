@@ -48,7 +48,7 @@ const Detail = (props) => {
       orderType
     }
 
-    if (orderType === 'loveGift') {
+    if (orderType === 'loveGift' || orderType === 'healthyGift') {
       delete params.id
       params.orderSn = id
     }
