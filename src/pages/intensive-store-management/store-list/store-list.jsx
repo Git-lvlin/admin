@@ -5,7 +5,7 @@ import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@/components/PageContainer';
 import { getStoreList, applyConditionPage, memberShopPage } from '@/services/intensive-store-management/store-list';
-import { history } from 'umi';
+import { history, useLocation } from 'umi';
 import AddressCascader from '@/components/address-cascader';
 import { getAuth } from '@/components/auth';
 import Form from './form';
@@ -25,6 +25,10 @@ import RangeInput from '@/components/range-input';
 import CreatePc from './create-pc';
 import moment from 'moment';
 import StoreChargeRecord from '../store-review/store-charge-record'
+import DetailDrawer from '@/pages/love-feedback-activities/love-feedback-gift-order/detail-drawer';
+import IntensiveOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail';
+
+
 
 const exportType = {
   normal: 'community-shopkeeper-export',
@@ -1120,8 +1124,14 @@ const StoreList = (props) => {
 
 const ShopHealthPackages = (props) => {
   const { storeType } = props
+  const location = useLocation();
   const actionRef = useRef();
   const formRef = useRef();
+  const [visible, setVisible] = useState(false);
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [selectItem, setSelectItem] = useState({});
+  const isPurchase = location.pathname.includes('purchase')
+  const isDocumentary = location.pathname.includes('documentary')
   const columns = [
     {
       title: '店铺ID',
@@ -1180,7 +1190,7 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '提货点所在地区',
-      dataIndex: storeType == 'love_customer_store'?'areaInfoStr':'area',
+      dataIndex: storeType == 'purchased_gift_package_store'?'area':'areaInfoStr',
       valueType: 'text',
       hideInSearch: true,
     },
@@ -1195,7 +1205,7 @@ const ShopHealthPackages = (props) => {
       dataIndex: 'packageTitle',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'love_customer_store'
+      hideInTable: storeType != 'purchased_gift_package_store'
     },
     {
       title: '累计购买健康卡套餐金额',
@@ -1205,28 +1215,28 @@ const ShopHealthPackages = (props) => {
         return amountTransform(_,'/')
       },
       hideInSearch: true,
-      hideInTable: storeType == 'love_customer_store'
+      hideInTable: storeType != 'purchased_gift_package_store'
     },
     {
       title: '最近购买健康卡套餐时间',
       dataIndex: 'lastCreateTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'love_customer_store'
+      hideInTable: storeType != 'purchased_gift_package_store'
     },
     {
       title: '最近购买健康卡套餐单号',
       dataIndex: 'lastOrderSn',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'love_customer_store'
+      hideInTable: storeType != 'purchased_gift_package_store'
     },
     {
       title: '购买套餐数量',
       dataIndex: 'orderNum',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'love_customer_store'
+      hideInTable: storeType != 'purchased_gift_package_store'
     },
     {
       title: '申请类型',
@@ -1240,14 +1250,14 @@ const ShopHealthPackages = (props) => {
         33: '爱心回馈系统建店'
       },
       hideInTable: true,
-      hideInSearch: storeType == 'purchased_gift_package_store',
+      hideInSearch: storeType != 'love_customer_store',
     },
     {
       title: '最近领取回馈礼品名称',
       dataIndex: 'pgorderLastPackageTitle',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'purchased_gift_package_store'
+      hideInTable: storeType != 'love_customer_store'
     },
     {
       title: '累计捐赠金额',
@@ -1257,19 +1267,19 @@ const ShopHealthPackages = (props) => {
         return amountTransform(_,'/').toFixed(2)
       },
       hideInSearch: true,
-      hideInTable: storeType == 'purchased_gift_package_store'
+      hideInTable: storeType != 'love_customer_store'
     },
     {
       title: '最近领取回馈时间',
       dataIndex: 'pgorderLastCreateTime',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'purchased_gift_package_store'
+      hideInTable: storeType != 'love_customer_store'
     },
     {
       title: '营业状态',
       dataIndex: 'statusDesc',
-      hideInTable: storeType == 'purchased_gift_package_store',
+      hideInTable: storeType != 'love_customer_store',
       hideInSearch: true
     },
     {
@@ -1277,7 +1287,56 @@ const ShopHealthPackages = (props) => {
       dataIndex: 'shopMemberAccount',
       valueType: 'text',
       hideInSearch: true,
-      hideInTable: storeType == 'purchased_gift_package_store'
+      hideInTable: storeType != 'love_customer_store'
+    },
+    {
+      title: '最近购买手指医生时间',
+      dataIndex: 'purchaseOrderLastCreateTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'station_manager'
+    },
+    {
+      title: '购买手指医生数量',
+      dataIndex: 'purchaseOrderNum',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'station_manager'
+    },
+    {
+      title: '最近购买手指医生订单号',
+      dataIndex: 'purchaseOrderLastSubOrderSn',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'station_manager',
+      render: (_,data) => {
+        if(!isNaN(_)){
+          return <a onClick={()=>{ setSelectItem(data); setVisible(true); }}>{_}</a>
+        }else{
+          return '-'
+        }
+      }
+    },
+    {
+      title: '最近捐赠3980元领取回馈礼包时间',
+      dataIndex: 'packageOrderLastCreateTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'station_manager'
+    },
+    {
+      title: '最近领取3980元礼包订单号',
+      dataIndex: 'packageOrderLastOrderSn',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'station_manager',
+      render: (_,data) => {
+        if(!isNaN(_)){
+          return <a onClick={()=>{ setSelectItem(data); setDetailVisible(true); }}>{_}</a>
+        }else{
+          return '-'
+        }
+      }
     },
   ];
   return (
@@ -1305,6 +1364,25 @@ const ShopHealthPackages = (props) => {
         }}
         className={styles.store_list}
       />
+      {
+        visible &&
+        <IntensiveOrderDetail
+          id={selectItem?.purchaseOrderLastSubOrderSn}
+          visible={visible}
+          setVisible={setVisible}
+          isPurchase={isPurchase}
+          skuId={selectItem?.purchaseOrderLastSkuId}
+          isDocumentary={isDocumentary}
+        />
+      }
+      {
+        detailVisible&&
+        <DetailDrawer
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+          id={selectItem?.packageOrderLastOrderId}
+        />
+      }
     </>
   );
 }
@@ -1354,6 +1432,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="love_customer_store" tab="爱心回馈送VIP店铺">
           {
             activeKey == 'love_customer_store' && <ShopHealthPackages storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="station_manager" tab="健康服务站长">
+          {
+            activeKey == 'station_manager' && <ShopHealthPackages storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>
