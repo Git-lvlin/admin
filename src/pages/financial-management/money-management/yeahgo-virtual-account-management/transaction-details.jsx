@@ -64,7 +64,7 @@ const TransactionDetails = ({
         if(type) {
           setId(id)
           setShopkeeperOrderVisible(true)
-        } else if (orderType === 'loveGift') {
+        } else if (orderType === 'loveGift' || orderType === 'healthyGift') {
           setId(billNo)
           setTypes(orderType)
           setNormalOrderVisible(true)
@@ -181,7 +181,7 @@ const TransactionDetails = ({
       dataIndex:'billNo',
       width: '10%',
       render: (_, records) => {
-        const isGoodsOrder = records.orderType === 'hydrogenRent' || records.orderType === 'loveGift'
+        const isGoodsOrder = records.orderType === 'hydrogenRent'
         if(isGoodsOrder) {
           return <span>{_}</span>
         } else {
