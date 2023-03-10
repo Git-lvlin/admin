@@ -39,7 +39,7 @@ export const listPage = async (params = {}, options = {}) => {
   return {
     data: res.data.records,
     success: true,
-    total: res.data.totale
+    total: res.data.total
   }
 }
 
@@ -70,6 +70,6 @@ export const listItemPage = async (params = {}, options = {}) => {
   return {
     data: res.data.records,
     success: true,
-    total: res.data.totale
+    total: res.data.total
   }
 }
