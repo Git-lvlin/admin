@@ -1381,6 +1381,7 @@ const ShopHealthPackages = (props) => {
           visible={detailVisible}
           setVisible={setDetailVisible}
           id={selectItem?.packageOrderLastOrderId}
+          state={selectItem?.isArrivalDesc}
         />
       }
     </>
