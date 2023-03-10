@@ -95,7 +95,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
                   <div>订单号：{item.orderNo}</div>
                 </div>
                 <div className={styles.cardListContent}>
-                  <div>销售佣金：{amountTransform(item?.commission,'/')}元</div>
+                  <div>{item?.tradeTypeDesc}：{amountTransform(item?.commission,'/')}元</div>
                   <div>下单人：{item.buyerMobile}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>

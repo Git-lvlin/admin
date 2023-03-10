@@ -6,11 +6,12 @@ export type DetailProps = {
 }
 
 export type DataProps = {
-  buyerId: number;
-  buyerMobile: string;
-  orderNo: string;
-  payTime: string;
-  packageName: string;
-  amount: number;
-  commission: number;
+  buyerId: number
+  buyerMobile: string
+  orderNo: string
+  payTime: string
+  packageName: string
+  amount: number
+  commission: number
+  tradeTypeDesc: string
 }
