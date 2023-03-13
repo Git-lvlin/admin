@@ -9,6 +9,7 @@ import debounce from 'lodash/debounce';
 import DeleteModel from './delete-model'
 
 
+
 type ThematicEventItem={
     deviceImei: string;
     id: string;
@@ -27,8 +28,8 @@ type ThematicEventItem={
     occupationModeStr: string;
 }
 
-export default (props) => {
-  const { id,detailList,callback,detailData }=props
+const Associated0Goods= (props) => {
+  const { id,detailList,callback }=props
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
   const [delectVisible, setDelectVisible] = useState(false)
@@ -286,3 +287,4 @@ export default (props) => {
   </>
   )
 }
+export default Associated0Goods;

@@ -18,3 +18,37 @@ export const findDeviceDoctorPage = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 手指医生-获取检测报告封面
+export const fingerDoctorCover = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/healthy/fingerDoctor/cover', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+// 手指医生-编辑检测报告封面
+export const fingerDoctorEditCover = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/healthy/fingerDoctor/editCover', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}

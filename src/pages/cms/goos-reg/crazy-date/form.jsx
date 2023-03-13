@@ -4,13 +4,15 @@ import ProForm, {
   ProFormText,
   ProFormRadio,
   DrawerForm,
-  ProFormDateTimePicker
+  ProFormDateTimePicker,
+  ProFormCheckbox
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { seckillingClassSub, seckillingClassDetail, seckillingClassEdit } from '@/services/cms/member/goos-reg';
 import Associated0Goods from './associated0-goods'
 import moment from 'moment';
 import { amountTransform } from '@/utils/utils'
+import ProCard from '@ant-design/pro-card';
 
 const formItemLayout = {
   labelCol: { span: 4 },
@@ -29,13 +31,20 @@ export default (props) => {
   const { setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
-  const [detailList,setDetailList]=useState()
+  const [detailList1,setDetailList1]=useState()
+  const [detailList2,setDetailList2]=useState()
+  const [detailList3,setDetailList3]=useState()
+  const [detailList4,setDetailList4]=useState()
+  const [detailList5,setDetailList5]=useState()
+  const [detailList6,setDetailList6]=useState()
+  const [detailList7,setDetailList7]=useState()
   const [detailData,setDetailData]=useState()
+  const [activeKey, setActiveKey] = useState('monday')
 
   const waitTime = (values) => {
     const { ...rest } = values
     const param = {
-      goodsInfo:detailList.map(ele=>{
+      goodsInfo:detailList1.map(ele=>{
         return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
       }),
       ...rest
@@ -70,7 +79,7 @@ export default (props) => {
     if (id) {
       seckillingClassDetail({id:id,pageSize:10}).then(res=>{
         if(res.code==0){
-          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          setDetailList1(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           setDetailData(res.data)
           pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
           form.setFieldsValue({
@@ -88,7 +97,7 @@ export default (props) => {
         if(res.code==0){
           arr.push(...res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           if(arr.length==data?.total){
-            setDetailList(arr)
+            setDetailList1(arr)
           }
         }
       })
@@ -178,9 +187,60 @@ export default (props) => {
             },
           ]}
         />
-      <Associated0Goods detailList={detailList} detailData={detailData} id={id}  callback={(data)=>{
-        setDetailList(data)
-      }}/>
+      <div style={{ marginLeft:'225px' }}>
+        <ProFormCheckbox.Group
+          name="checkbox"
+          options={[
+            {
+              label: '有效期内循环秒杀（第七天过后，自动从第一天的商品开始秒杀,过了活动结束时间，活动自动结束）',
+              value: 1,
+            }
+          ]}
+        />
+      </div>
+       <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="monday" tab="星期一">
+          {
+            activeKey == 'monday' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="tuesday" tab="星期二">
+          {
+            activeKey == 'tuesday' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="wednesday" tab="星期三">
+          {
+            activeKey == 'wednesday' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="thursday" tab="星期四">
+          {
+            activeKey == 'thursday' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="friday" tab="星期五">
+          {
+            activeKey == 'friday' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="saturday" tab="星期六">
+          {
+            activeKey == 'saturday' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="sunday" tab="星期日">
+          {
+            activeKey == 'sunday' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data) }}/>
+          }
+        </ProCard.TabPane>
+      </ProCard>
     </DrawerForm>
   );
 };
