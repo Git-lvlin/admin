@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Divider, Image } from 'antd';
 import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
 import ProTable  from "@ant-design/pro-table"
@@ -62,7 +62,11 @@ const columns: ProColumns[] = [
     title: '可调整凭证',
     dataIndex: 'reportUrl',
     valueType: 'text',
-    render: (_) => <Image src={_} width={50} height={50}/>,
+    render: (text) => (
+      text
+        ? `<Image src="${text}" width="50" height="50" />`
+        : ''
+    ),
     align: 'center',
     hideInSearch: true
   },
@@ -86,18 +90,16 @@ const columns: ProColumns[] = [
 
 const HistoricalManagement: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, onClose } = props;
-  const [detailData, setDetailData] = useState<DataType>();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (getUser({
       imei:datailMsg?.imei
     }) as Promise<{ data: DataType, code: number }>).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data)
+        
       }
     }).finally(() => {
-      setLoading(false);
+      
     })
   }, [datailMsg])
 

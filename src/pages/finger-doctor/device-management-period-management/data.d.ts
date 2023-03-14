@@ -93,3 +93,9 @@ export type DataType = {
   phone: string;
   name: string;
 }
+
+export type DetailType = {
+  imei: string;
+  memberPhone: string;
+  remainManageDays: string;
+}

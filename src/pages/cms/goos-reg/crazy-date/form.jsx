@@ -39,15 +39,58 @@ export default (props) => {
   const [detailList6,setDetailList6]=useState()
   const [detailList7,setDetailList7]=useState()
   const [detailData,setDetailData]=useState()
-  const [activeKey, setActiveKey] = useState('monday')
+  const [activeKey, setActiveKey] = useState('1')
+
+  const date = () => {
+    switch (activeKey) {
+      case '1':
+        return detailList1
+      case '2':
+        return detailList2
+      case '3':
+        return detailList3
+      case '4':
+        return detailList4
+      case '5':
+        return detailList5
+      case '6':
+        return detailList6
+      case '7':
+        return detailList7
+      default:
+        return []
+    }
+  }
+
+  const setDate = () => {
+    switch (activeKey) {
+      case '1':
+        return setDetailList1
+      case '2':
+        return setDetailList2
+      case '3':
+        return setDetailList3
+      case '4':
+        return setDetailList4
+      case '5':
+        return setDetailList5
+      case '6':
+        return setDetailList6
+      case '7':
+        return setDetailList7
+      default:
+        return []
+    }
+  }
 
   const waitTime = (values) => {
     const { ...rest } = values
+    const detailList=date()
     const param = {
-      goodsInfo:detailList1.map(ele=>{
-        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
+      goodsInfo:detailList.map(ele=>{
+        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort,weekDay:parseInt(activeKey)}
       }),
-      ...rest
+      ...rest,
     }
     if(id&&!copy){
       return new Promise((resolve, reject) => {
@@ -77,9 +120,10 @@ export default (props) => {
 
   useEffect(() => {
     if (id) {
-      seckillingClassDetail({id:id,pageSize:10}).then(res=>{
+      const setDetailList=setDate()
+      seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
         if(res.code==0){
-          setDetailList1(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           setDetailData(res.data)
           pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
           form.setFieldsValue({
@@ -88,16 +132,17 @@ export default (props) => {
         }
       })
     }
-  }, [])
+  }, [activeKey])
 
   const pageSum=(data)=>{
     const arr=[]
+    const setDetailList=setDate()
     for (let index = 1; index <= data?.page; index++) {
-      seckillingClassDetail({id:id,pageSize:10,page:index}).then(res=>{
+      seckillingClassDetail({id:id,pageSize:10,page:index,weekDay:parseInt(activeKey)}).then(res=>{
         if(res.code==0){
           arr.push(...res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           if(arr.length==data?.total){
-            setDetailList1(arr)
+            setDetailList(arr)
           }
         }
       })
@@ -187,17 +232,7 @@ export default (props) => {
             },
           ]}
         />
-      <div style={{ marginLeft:'225px' }}>
-        <ProFormCheckbox.Group
-          name="checkbox"
-          options={[
-            {
-              label: '有效期内循环秒杀（第七天过后，自动从第一天的商品开始秒杀,过了活动结束时间，活动自动结束）',
-              value: 1,
-            }
-          ]}
-        />
-      </div>
+      <p style={{ marginLeft:'225px' }}>有效期内循环秒杀（第七天过后，自动从第一天的商品开始秒杀,过了活动结束时间，活动自动结束）</p>
        <ProCard
         tabs={{
           type: 'card',
@@ -205,39 +240,39 @@ export default (props) => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="monday" tab="星期一">
+        <ProCard.TabPane key="1" tab="星期一">
           {
-            activeKey == 'monday' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data) }}/>
+            activeKey == '1' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="tuesday" tab="星期二">
+        <ProCard.TabPane key="2" tab="星期二">
           {
-            activeKey == 'tuesday' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data) }}/>
+            activeKey == '2' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="wednesday" tab="星期三">
+        <ProCard.TabPane key="3" tab="星期三">
           {
-            activeKey == 'wednesday' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data) }}/>
+            activeKey == '3' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="thursday" tab="星期四">
+        <ProCard.TabPane key="4" tab="星期四">
           {
-            activeKey == 'thursday' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data) }}/>
+            activeKey == '4' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="friday" tab="星期五">
+        <ProCard.TabPane key="5" tab="星期五">
           {
-            activeKey == 'friday' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data) }}/>
+            activeKey == '5' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="saturday" tab="星期六">
+        <ProCard.TabPane key="6" tab="星期六">
           {
-            activeKey == 'saturday' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data) }}/>
+            activeKey == '6' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data) }}/>
           }
         </ProCard.TabPane>
-        <ProCard.TabPane key="sunday" tab="星期日">
+        <ProCard.TabPane key="7" tab="星期日">
           {
-            activeKey == 'sunday' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data) }}/>
+            activeKey == '7' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data) }}/>
           }
         </ProCard.TabPane>
       </ProCard>

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Button, Divider } from 'antd';
 import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
 import ProTable  from "@ant-design/pro-table"
-import type { TableColumn, DetailProps, DataType } from './data'
+import type { DetailProps, DataType } from './data'
 import { DrawerForm } from '@ant-design/pro-form';
+import type { ProColumns }  from "@ant-design/pro-table"
 
-const columns: TableColumn[] = [
+const columns: ProColumns[] = [
   {
     title: '序号',
     dataIndex: 'id',
@@ -66,18 +67,16 @@ const columns: TableColumn[] = [
 
 const HistoricalManagement: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, onClose } = props;
-  const [detailData, setDetailData] = useState<DataType>();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (getUser({
       imei:datailMsg?.imei
     }) as Promise<{ data: DataType, code: number }>).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data)
+        
       }
     }).finally(() => {
-      setLoading(false);
+      
     })
   }, [datailMsg])
 

@@ -137,7 +137,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
         },
         {
           title: '启动费金额(元)',
-          dataIndex: 'manageFee',
+          dataIndex: 'startFee',
           align: 'center',
           hideInSearch: true,
           render: (_) => {

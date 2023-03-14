@@ -10,16 +10,18 @@ import AddressCascader from '@/components/address-cascader'
 
 const formItemLayout = {
     labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
+    wrapperCol: { span: 14 }
   };
+
+const checkConfirm = (rule: any, value: string) => {
+  return new Promise<void>(async (resolve, reject) => {
+    if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
+      await reject('请输入正确的手机号')
+    }else {
+      await resolve()
+    }
+  })
+}
 
 const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, callback,onClose } = props;
@@ -31,7 +33,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
     }) as Promise<{ data: DataType, code: number }>).then(res => {
       if (res.code === 0) {
         form.setFieldsValue({
-          area:[
+          area:res.data.provinceId?[
             {
               label: res.data.provinceName,
               value: res.data.provinceId,
@@ -43,18 +45,21 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
               label: res.data.areaName,
               value: res.data.areaId,
             }
-          ],
+          ]:null,
           memberPhone: datailMsg?.memberPhone,
-          ...res.data
+          ...res.data,
+          imei:datailMsg?.imei
         })
       }
     }).finally(() => {
+
     })
   }, [datailMsg])
 
   return (
     <DrawerForm
-      title="设备启动费配置"
+      layout="horizontal"
+      title="设备检测报告封面信息配置"
       onVisibleChange={setVisible}
       visible={visible}
       width={1200}
@@ -111,6 +116,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
         placeholder:"请输入报告联系人姓名，16个汉字以内",
         maxLength: 16
        }}
+       rules={[{ pattern: /^[\u4e00-\u9fa5]{1,16}$/, message: '请输入16个汉字以内的姓名' }]}
        width={400}
       />
       <ProFormText
@@ -119,6 +125,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
        fieldProps={{
         placeholder:"请输入",
        }}
+       rules={[{ validator: checkConfirm }]}
        width={400}
       />
       <ProForm.Item
@@ -132,7 +139,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
        width={400}
        name='detailAddress'
        fieldProps={{
-        placeholder:"请输入详细地址，60个汉字以内",
+        placeholder:"请输入详细地址，60个字以内",
         maxLength: 60
        }}
       />

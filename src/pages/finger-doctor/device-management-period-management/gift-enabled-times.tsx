@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Divider, Space } from 'antd';
 import { getUser } from "@/services/finger-doctor/user-health-data-management"
 import type {  DetailProps, DataType } from './data'
@@ -10,19 +10,11 @@ import Upload from '@/components/upload';
 
 const formItemLayout = {
     labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
+    wrapperCol: { span: 14 }
   };
 
-const checkConfirm = (rule, value, callback) => {
-    return new Promise(async (resolve, reject) => {
+const checkConfirm = (rule: any, value: string) => {
+    return new Promise<void>(async (resolve, reject) => {
       if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
         await reject('请输入正确的手机号')
       }else {
@@ -33,8 +25,6 @@ const checkConfirm = (rule, value, callback) => {
 
 const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, onClose } = props;
-  const [detailData, setDetailData] = useState<DataType>();
-  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -42,15 +32,20 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
       imei:datailMsg?.imei
     }) as Promise<{ data: DataType, code: number }>).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data)
+        form.setFieldsValue({
+          memberPhone: datailMsg?.memberPhone,
+          ...res.data,
+          imei:datailMsg?.imei
+        })
       }
     }).finally(() => {
-      setLoading(false);
+
     })
   }, [datailMsg])
 
   return (
     <DrawerForm
+      layout="horizontal"
       title="赠送启用服务次数"
       onVisibleChange={setVisible}
       visible={visible}
@@ -107,7 +102,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
         { required: true, message: '请输入用户手机号' },
         { validator: checkConfirm }
        ]}
-       labelCol={6}
+       labelCol={{ span: 6 }}
        width={400}
       />
       <Space>
@@ -119,7 +114,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
          }}
          rules={[{ required: true, message: '请输入启用服务次数' }]}
          width={400}
-         labelCol={6}
+         labelCol={{ span: 6 }}
         />
         <ProFormText
          label='有效期'

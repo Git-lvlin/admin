@@ -52,3 +52,39 @@ export const fingerDoctorEditCover = async (params = {}, options = {}) => {
     code: res.code
   }
 }
+
+
+// 手指医生-查询设备信息
+export const queryMemberDevice = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/iot/memberDevice/queryMemberDevice', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+// 手指医生-修改启动费价格
+export const modifyStartFee = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/iot/memberDevice/modifyStartFee', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}

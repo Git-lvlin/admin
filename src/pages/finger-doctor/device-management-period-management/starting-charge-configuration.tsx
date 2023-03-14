@@ -1,45 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Divider } from 'antd';
-import { getUser } from "@/services/finger-doctor/user-health-data-management"
-import type {  DetailProps, DataType } from './data'
+import { queryMemberDevice, modifyStartFee } from "@/services/finger-doctor/device-management-period-management"
+import type {  DetailProps, DetailType } from './data'
 import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
+import { amountTransform } from '@/utils/utils';
 
 const formItemLayout = {
     labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
+    wrapperCol: { span: 14 }
   };
 
 const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
-  const { visible, setVisible, datailMsg, onClose } = props;
-  const [detailData, setDetailData] = useState<DataType>();
-  const [loading, setLoading] = useState(false);
+  const { visible, setVisible, datailMsg,callback, onClose } = props;
   const [form] = Form.useForm();
 
   useEffect(() => {
-    (getUser({
+    (queryMemberDevice({
       imei:datailMsg?.imei
-    }) as Promise<{ data: DataType, code: number }>).then(res => {
+    }) as Promise<{ data: DetailType, code: number }>).then(res => {
       if (res.code === 0) {
-        setDetailData(res.data)
+        if (res.code === 0) {
+          form.setFieldsValue({
+            startFee:amountTransform(datailMsg?.startFee,'/'),
+            ...res.data
+          })
+        }
       }
     }).finally(() => {
-      setLoading(false);
+
     })
   }, [datailMsg])
 
   return (
     <DrawerForm
+      layout="horizontal"
       title="设备启动费配置"
       onVisibleChange={setVisible}
       visible={visible}
@@ -59,16 +56,16 @@ const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
         }
       }}
       onFinish={async (values) => {
-        // const params={
-        //   ...values,
-        //   password:values?.password&&md5(values?.password)
-        // }
-        // accountEdit(params).then(res=>{
-        //   if(res.code==0){
-        //     setVisible(false)
-        //     callback(true)
-        //   }
-        // })
+        const params={
+          ...values,
+          startFee:amountTransform(values?.startFee,'*')
+        }
+        modifyStartFee(params).then(res=>{
+          if(res.code==0){
+            setVisible(false)
+            callback()
+          }
+        })
       }}
       {...formItemLayout}
     >
@@ -76,21 +73,31 @@ const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
       <Divider />
       <ProFormText
        label='设备编号'
-       name=''
+       name='imei'
        readonly 
       />
       <ProFormText
        label='设备所属人手机号'
-       name=''
+       name='memberPhone'
        readonly 
       />
       <ProFormText
        label='设备启动费金额'
-       name=''
+       name='startFee'
        fieldProps={{
         placeholder:"请输入手指医生扫码启用费金额，最低1.00元，最高9999.99元",
         addonAfter: '元'
        }}
+       rules={[
+        () => ({
+          validator(_, value) {
+            if (value&&!/^\d+\.?\d*$/g.test(value) || value <1 || value > 9999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
+              return Promise.reject(new Error('请输入1.00-999999.99,保留2位小数'));
+            }
+            return Promise.resolve();
+          },
+        })
+      ]}
       />
     </DrawerForm>
   )
