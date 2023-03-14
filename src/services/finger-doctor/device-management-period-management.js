@@ -88,3 +88,43 @@ export const modifyStartFee = async (params = {}, options = {}) => {
     code: res.code
   }
 }
+
+
+// 手指医生-赠送启用服务次数
+export const saveDeviceDoctor = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/deviceFreeUse/saveDeviceDoctor', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}
+
+
+// 手指医生-赠送启用次数日志记录
+export const deviceDoctorPage = async (params = {}, options = {}) => {
+  const { current = 1, pageSize = 10, dateTimeRange, ...rest } = params
+  const res = await request('/auth/java-admin/deviceFreeUse/deviceDoctorPage', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      startTime: dateTimeRange&&dateTimeRange[0],
+      endTime: dateTimeRange&&dateTimeRange[1],
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}

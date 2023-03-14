@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { Form, Divider, Space } from 'antd';
-import { getUser } from "@/services/finger-doctor/user-health-data-management"
-import type {  DetailProps, DataType } from './data'
+import { saveDeviceDoctor } from "@/services/finger-doctor/device-management-period-management"
+import type {  DetailProps } from './data'
 import ProForm,{
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
+import moment from 'moment';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -24,22 +25,16 @@ const checkConfirm = (rule: any, value: string) => {
 }
 
 const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
-  const { visible, setVisible, datailMsg, onClose } = props;
+  const { visible, setVisible, datailMsg, callback, onClose } = props;
   const [form] = Form.useForm();
+  const userInfo = window.localStorage.getItem('user') as string;
+  const user = userInfo && JSON.parse(userInfo);
 
   useEffect(() => {
-    (getUser({
-      imei:datailMsg?.imei
-    }) as Promise<{ data: DataType, code: number }>).then(res => {
-      if (res.code === 0) {
-        form.setFieldsValue({
-          memberPhone: datailMsg?.memberPhone,
-          ...res.data,
-          imei:datailMsg?.imei
-        })
-      }
-    }).finally(() => {
-
+    form.setFieldsValue({
+      storeMobile: datailMsg?.memberPhone,
+      imei:datailMsg?.imei,
+      storeName:datailMsg?.storeName
     })
   }, [datailMsg])
 
@@ -65,16 +60,16 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
         }
       }}
       onFinish={async (values) => {
-        // const params={
-        //   ...values,
-        //   password:values?.password&&md5(values?.password)
-        // }
-        // accountEdit(params).then(res=>{
-        //   if(res.code==0){
-        //     setVisible(false)
-        //     callback(true)
-        //   }
-        // })
+        const params={
+          operater: user?.username,
+          ...values
+        }
+        saveDeviceDoctor(params).then(res=>{
+          if(res.code==0){
+            setVisible(false)
+            callback()
+          }
+        })
       }}
       {...formItemLayout}
     >
@@ -82,22 +77,22 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
       <Divider />
       <ProFormText
        label='设备所属人手机号'
-       name=''
+       name='storeMobile'
        readonly 
       />
       <ProFormText
        label='设备编号'
-       name=''
+       name='imei'
        readonly 
       />
       <ProFormText
        label='设备所属人店铺名称'
-       name=''
+       name='storeName'
        readonly 
       />
       <ProFormText
        label='赠送手指医生启用服务的用户手机'
-       name=''
+       name='memberPhone'
        rules={[
         { required: true, message: '请输入用户手机号' },
         { validator: checkConfirm }
@@ -108,30 +103,71 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
       <Space>
         <ProFormText
          label='赠送手指医生启用服务次数'
-         name=''
+         name='freeTimes'
          fieldProps={{
             addonAfter: '次'
          }}
-         rules={[{ required: true, message: '请输入启用服务次数' }]}
+         rules={[
+          {
+            required: true,
+            message: '请输入启用服务次数'
+          },
+          {
+            pattern: /^[1-9]\d*$/, // 正则表达式，只允许输入数字（整数）
+            message: '请输入正确的数字'
+          }
+        ]}
          width={400}
-         labelCol={{ span: 6 }}
+         labelCol={{ span: 8 }}
         />
         <ProFormText
          label='有效期'
-         name=''
+         name='effectiveDate'
          fieldProps={{
             placeholder: '年/月/日',
             addonAfter: '前可用'
          }}
-         rules={[{ required: true, message: '请输入有效期' }]}
+         rules={[
+          {
+            required: true,
+            message: '请输入有效期'
+          },
+          {
+            validator: (rule, value) => {
+              const reg = /^(\d{4})-(\d{1,2})-(\d{1,2})$/; // 正则表达式
+              if (reg.test(value)) { // 如果符合日期格式
+                const date = moment(value, 'YYYY-MM-DD'); // 使用 moment 处理日期
+                if (date.isSameOrAfter(moment().startOf('day')) && date.isBefore(moment('2034-01-01'))) { // 如果大于或等于今天，且不超过2033年12月31日
+                  return Promise.resolve();
+                } else {
+                  return Promise.reject('有效期需大于或等于当前日期，且不能超过2033年12月31日');
+                }
+              } else {
+                return Promise.reject('请输入正确的日期格式，如 2023-01-01');
+              }
+            }
+          }
+        ]}
          width={400}
         />
       </Space>
       <ProForm.Item
-        name='area'
+        name='givenVoucher'
         label='上传申请调整启用次数凭证'
+        rules={[
+          {
+            required: true,
+            validator: (rule, value) => {
+              if (!value || value.length < 1) { // 如果文件列表为空
+                return Promise.reject('请上传申请调整启用次数的凭证文件');
+              } else {
+                return Promise.resolve();
+              }
+            }
+          }
+        ]}
       >
-        <Upload multiple maxCount={1} accept="image/*" dimension="1:1" size={500} />
+        <Upload multiple maxCount={1} accept="image/*" />
       </ProForm.Item>
     </DrawerForm>
   )

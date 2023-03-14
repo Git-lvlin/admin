@@ -150,11 +150,11 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
         },
         {
           title: '累计赠送启用次数(次)',
-          dataIndex: 'manageFee',
+          dataIndex: 'totalGivenTimes',
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            if(_){
+            if(typeof _ === 'number'){
               return <a onClick={()=>{ setRecordVisible(true); setDatailMsg(data) }}>{_}</a>
             }else{
               return '-'
@@ -167,12 +167,12 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            return <>
-              <a onClick={()=> { setHistoryVisible(true); setDatailMsg(data) }}>历史交管理费</a>&nbsp;
-              <a onClick={()=> { setStartVisible(true); setDatailMsg(data) }}>启动费配置</a><br />
-              <a onClick={()=> { setDetectionVisible(true); setDatailMsg(data) }}>检测报告封面配置</a>&nbsp;
-              <a onClick={()=> { setPresentedVisible(true); setDatailMsg(data) }}>赠送启用次数</a>
-            </>
+            return [
+              <a key="history" onClick={()=> { setHistoryVisible(true); setDatailMsg(data) }}>历史交管理费&nbsp;</a>,
+              <a key="start" onClick={()=> { setStartVisible(true); setDatailMsg(data) }}>启动费配置<br/></a>,
+              <a key="detection" onClick={()=> { setDetectionVisible(true); setDatailMsg(data) }}>检测报告封面配置&nbsp;</a>,
+              <a key="presented" onClick={()=> { setPresentedVisible(true); setDatailMsg(data) }}>赠送启用次数</a>
+            ]
           }
         },
       ]

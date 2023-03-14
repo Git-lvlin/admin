@@ -66,6 +66,7 @@ export type Record = {
   status: number;
   statusStr: string;
   storeNo: string;
+  storeName: string;
   traceId: string;
   updateId?: any;
   updateTime: string;

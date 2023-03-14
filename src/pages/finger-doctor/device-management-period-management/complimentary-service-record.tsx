@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Divider, Image } from 'antd';
-import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
+import { deviceDoctorPage } from "@/services/finger-doctor/device-management-period-management"
 import ProTable  from "@ant-design/pro-table"
-import type { DetailProps, DataType } from './data'
+import type { DetailProps } from './data'
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ProColumns }  from "@ant-design/pro-table"
 
 const columns: ProColumns[] = [
   {
     title: '',
-    dataIndex: 'id',
+    dataIndex: 'memberPhone',
     valueType: 'text',
-    render: (_) => _,
     align: 'center',
     hideInTable: true,
     fieldProps: {
@@ -20,51 +19,51 @@ const columns: ProColumns[] = [
   },
   {
     title: '',
-    dataIndex: 'id',
+    dataIndex: 'dateTimeRange',
     valueType: 'dateTimeRange',
-    render: (_) => _,
     align: 'center',
-    hideInTable: true
+    hideInTable: true,
+    fieldProps: {
+      style: {
+        width: 400 
+      }
+    }
   },
   {
     title: '序号',
     dataIndex: 'id',
     valueType: 'text',
-    render: (_) => _,
     align: 'center',
     hideInSearch: true
   },
   {
     title: '获赠人手机',
-    dataIndex: 'checkResult',
+    dataIndex: 'memberPhone',
     valueType: 'text',
-    render: (_) => _,
     align: 'center',
     hideInSearch: true
   },
   {
     title: '获赠次数',
-    dataIndex: 'checkVal',
+    dataIndex: 'freeTimes',
     valueType: 'text',
-    render: (_) => _,
     align: 'center',
     hideInSearch: true
   },
   {
     title: '获赠次数有效截止日',
-    dataIndex: 'checkTime',
+    dataIndex: 'effectiveDate',
     valueType: 'text',
-    render: (_) => _,
     align: 'center',
     hideInSearch: true
   },
   {
     title: '可调整凭证',
-    dataIndex: 'reportUrl',
+    dataIndex: 'givenVoucher',
     valueType: 'text',
     render: (text) => (
-      text
-        ? `<Image src="${text}" width="50" height="50" />`
+      text&&typeof text==='string'
+        ? <Image src={text} width={50} height={50} />
         : ''
     ),
     align: 'center',
@@ -72,7 +71,7 @@ const columns: ProColumns[] = [
   },
   {
     title: '操作人',
-    dataIndex: 'reportUrl',
+    dataIndex: 'operater',
     valueType: 'text',
     render: (_) => _,
     align: 'center',
@@ -80,7 +79,7 @@ const columns: ProColumns[] = [
   },
   {
     title: '操作时间',
-    dataIndex: 'reportUrl',
+    dataIndex: 'createTime',
     valueType: 'text',
     render: (_) => _,
     align: 'center',
@@ -90,19 +89,6 @@ const columns: ProColumns[] = [
 
 const HistoricalManagement: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, onClose } = props;
-
-  useEffect(() => {
-    (getUser({
-      imei:datailMsg?.imei
-    }) as Promise<{ data: DataType, code: number }>).then(res => {
-      if (res.code === 0) {
-        
-      }
-    }).finally(() => {
-      
-    })
-  }, [datailMsg])
-
   return (
     <DrawerForm
       title="赠送启用服务记录"
@@ -127,10 +113,10 @@ const HistoricalManagement: React.FC<DetailProps> = (props) => {
     <p style={{ marginBottom: -10, color:'#8D8D8D' }}>用户手机号：{datailMsg?.memberPhone}  &nbsp; 设备编号：{datailMsg?.imei}    &nbsp; 当前剩余管理期{datailMsg?.remainManageDayStr}天</p>
       <Divider />
       <ProTable
-        rowKey='checkVal'
+        rowKey='id'
         columns={columns}
         options={false}
-        request={userReport}
+        request={deviceDoctorPage}
         pagination={{
         showQuickJumper: true,
         pageSize: 10
