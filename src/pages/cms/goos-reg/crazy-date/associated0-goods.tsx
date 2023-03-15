@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef,useMemo } from 'react'
 import { EditableProTable } from '@ant-design/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
@@ -28,7 +28,7 @@ type ThematicEventItem={
     occupationModeStr: string;
 }
 
-const Associated0Goods= (props) => {
+const Associated0Goods= (props: { id: string; detailList: any; callback: any; }) => {
   const { id,detailList,callback }=props
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
@@ -36,7 +36,7 @@ const Associated0Goods= (props) => {
   const [editableKeys, setEditableKeys] = useState([])
   const [deleteGoos, setDeleteGoos] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const ref=useRef()
+  const ref= useRef<ActionType>()
   useEffect(()=>{
     setDataSource(detailList)
     if(detailList){
@@ -193,9 +193,9 @@ const Associated0Goods= (props) => {
     },  
   ];
   // 删除商品
-  const  delGoods=val=>{
+  const  delGoods=(val:string)=>{
     const arr=dataSource.filter(ele=>(
-          ele.id!=val
+      ele.id!=val
     ))
     setDataSource(arr) 
     callback(arr)

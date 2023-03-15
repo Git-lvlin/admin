@@ -122,7 +122,7 @@ const HistoricalManagement: React.FC<DetailProps> = (props) => {
         pageSize: 10
         }}
         params={{
-          iemi:datailMsg?.imei
+          imei:datailMsg?.imei
         }}
         style={{ width: '100%' }}
         search={{

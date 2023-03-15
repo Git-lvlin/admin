@@ -154,7 +154,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            if(typeof _ === 'number'){
+            if(typeof _ === 'string' && /^\d+$/.test(_)){
               return <a onClick={()=>{ setRecordVisible(true); setDatailMsg(data) }}>{_}</a>
             }else{
               return '-'
@@ -243,7 +243,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           visible={recordVisible}
           setVisible={setRecordVisible}
           onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
-          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ }}
         />
       }
       </PageContainer>

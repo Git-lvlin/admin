@@ -62,8 +62,8 @@ export default (props) => {
     }
   }
 
-  const setDate = () => {
-    switch (activeKey) {
+  const setDate = (key) => {
+    switch (key) {
       case '1':
         return setDetailList1
       case '2':
@@ -120,23 +120,38 @@ export default (props) => {
 
   useEffect(() => {
     if (id) {
-      const setDetailList=setDate()
-      seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
-        if(res.code==0){
-          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
-          setDetailData(res.data)
-          pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
-          form.setFieldsValue({
-            ...res.data
+      if(copy){
+        for (let index = 1; index < 8; index++) {
+          seckillingClassDetail({id:id,pageSize:9999,weekDay:index}).then(res=>{
+            if(res.code==0){
+              setDate(`${index}`)(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+              setDetailData(res.data)
+              form.setFieldsValue({
+                ...res.data
+              })
+            }
           })
         }
-      })
+      }else{
+        const setDetailList=setDate(activeKey)
+        seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
+          if(res.code==0){
+            setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+            setDetailData(res.data)
+            pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
+            form.setFieldsValue({
+              ...res.data
+            })
+          }
+        })
+      }
+     
     }
   }, [activeKey])
 
   const pageSum=(data)=>{
     const arr=[]
-    const setDetailList=setDate()
+    const setDetailList=setDate(activeKey)
     for (let index = 1; index <= data?.page; index++) {
       seckillingClassDetail({id:id,pageSize:10,page:index,weekDay:parseInt(activeKey)}).then(res=>{
         if(res.code==0){
