@@ -14,9 +14,8 @@ import { goodsSpu } from '@/services/finger-doctor/health-detection-condition'
 
 const { Option } = AutoComplete
 
-const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | undefined>}> = ({formRef}) => {
+const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | undefined>}> = ({formRef,fieldsName}) => {
   const [result, setResult] = useState<ListProps[]>([])
-
   const debounceFetcher =  useMemo(() => {
     const loadOptions = (value: string) => {
       goodsSpu({
@@ -40,7 +39,6 @@ const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | unde
   const checkedValue = (e: string) => {
     const arr = result.filter(item=> item.id === parseInt(e))
     const list = formRef?.current?.getFieldsValue().list
-    console.log(list);
     
     const newArr: string[] = []
     list.forEach((item: any) => {
@@ -58,7 +56,7 @@ const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | unde
 
   return (
     <ProFormList
-      name={`list`}
+      name={fieldsName}
       label="调理症状的产品方案"
       itemRender={({ listDom, action }, { record }) => ({listDom})}
       creatorButtonProps={false}

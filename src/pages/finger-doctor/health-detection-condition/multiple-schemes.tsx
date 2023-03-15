@@ -28,7 +28,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
               <>
                 <ProForm.Group>
                   <ProFormText
-                    name='name'
+                    name={[res.name, 'name']}
                     width='md'
                     fieldProps={{
                       addonBefore: `${idx + 1}、`,
@@ -36,7 +36,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                     }}
                   />
                   <ProFormText
-                    name='solution'
+                    name={[res.name, 'solution']}
                     width='xl'
                     fieldProps={{
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
@@ -53,7 +53,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                         <Button onClick={()=> remove(res.name)} type='primary' danger>删除</Button>
                       }
                     </Space>
-                    <SingeScheme formRef={formRef}/>
+                    <SingeScheme fieldsName={[res.name, 'list']} formRef={formRef}/>
                   </div>
                   
                 </ProForm.Group>
