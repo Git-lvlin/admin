@@ -31,13 +31,13 @@ export default (props) => {
   const { setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
-  const [detailList1,setDetailList1]=useState()
-  const [detailList2,setDetailList2]=useState()
-  const [detailList3,setDetailList3]=useState()
-  const [detailList4,setDetailList4]=useState()
-  const [detailList5,setDetailList5]=useState()
-  const [detailList6,setDetailList6]=useState()
-  const [detailList7,setDetailList7]=useState()
+  const [detailList1,setDetailList1]=useState([])
+  const [detailList2,setDetailList2]=useState([])
+  const [detailList3,setDetailList3]=useState([])
+  const [detailList4,setDetailList4]=useState([])
+  const [detailList5,setDetailList5]=useState([])
+  const [detailList6,setDetailList6]=useState([])
+  const [detailList7,setDetailList7]=useState([])
   const [detailData,setDetailData]=useState()
   const [activeKey, setActiveKey] = useState('1')
 
@@ -84,43 +84,46 @@ export default (props) => {
   }
 
   const waitTime = (values) => {
-    const { ...rest } = values
-    const detailList=date()
-    const param = {
-      goodsInfo:detailList.map(ele=>{
-        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort,weekDay:parseInt(activeKey)}
-      }),
-      ...rest,
+    try {
+      const { ...rest } = values
+      const detailList=[...detailList1,...detailList2,...detailList3,...detailList4,...detailList5,...detailList6,...detailList7]
+      const param = {
+        goodsInfo:detailList.map(ele=>{
+          return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort,weekDay:ele?.weekDay}
+        }),
+        ...rest,
+      }
+      if(id&&!copy){
+        return new Promise((resolve, reject) => {
+          seckillingClassEdit({...param,id:id}).then((res) => {
+            if (res.code === 0) {
+              callBack()
+              resolve(true);
+            } else {
+              reject(false);
+            }
+          })
+        });
+      }else{
+        return new Promise((resolve, reject) => {
+          seckillingClassSub(param).then((res) => {
+            if (res.code === 0) {
+              callBack()
+              resolve(true);
+            } else {
+              reject(false);
+            }
+          })
+        });
+      }
+    } catch (error) {
+      console.log('error',error)
     }
-    if(id&&!copy){
-      return new Promise((resolve, reject) => {
-        seckillingClassEdit({...param,id:id}).then((res) => {
-          if (res.code === 0) {
-            callBack()
-            resolve(true);
-          } else {
-            reject(false);
-          }
-        })
-      });
-    }else{
-      return new Promise((resolve, reject) => {
-        seckillingClassSub(param).then((res) => {
-          if (res.code === 0) {
-            callBack()
-            resolve(true);
-          } else {
-            reject(false);
-          }
-        })
-      });
-    }
-
   };
 
   useEffect(() => {
     if (id) {
-      if(copy){
+      // if(copy){
         for (let index = 1; index < 8; index++) {
           seckillingClassDetail({id:id,pageSize:9999,weekDay:index}).then(res=>{
             if(res.code==0){
@@ -132,22 +135,22 @@ export default (props) => {
             }
           })
         }
-      }else{
-        const setDetailList=setDate(activeKey)
-        seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
-          if(res.code==0){
-            setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
-            setDetailData(res.data)
-            pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
-            form.setFieldsValue({
-              ...res.data
-            })
-          }
-        })
-      }
+      // }else{
+      //   const setDetailList=setDate(activeKey)
+      //   seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
+      //     if(res.code==0){
+      //       setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+      //       setDetailData(res.data)
+      //       pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
+      //       form.setFieldsValue({
+      //         ...res.data
+      //       })
+      //     }
+      //   })
+      // }
      
     }
-  }, [activeKey])
+  }, [])
 
   const pageSum=(data)=>{
     const arr=[]
@@ -257,37 +260,37 @@ export default (props) => {
       >
         <ProCard.TabPane key="1" tab="星期一">
           {
-            activeKey == '1' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data) }}/>
+            activeKey == '1' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="2" tab="星期二">
           {
-            activeKey == '2' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data) }}/>
+            activeKey == '2' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="3" tab="星期三">
           {
-            activeKey == '3' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data) }}/>
+            activeKey == '3' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="4" tab="星期四">
           {
-            activeKey == '4' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data) }}/>
+            activeKey == '4' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="5" tab="星期五">
           {
-            activeKey == '5' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data) }}/>
+            activeKey == '5' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="6" tab="星期六">
           {
-            activeKey == '6' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data) }}/>
+            activeKey == '6' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
         <ProCard.TabPane key="7" tab="星期日">
           {
-            activeKey == '7' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data) }}/>
+            activeKey == '7' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
           }
         </ProCard.TabPane>
       </ProCard>
