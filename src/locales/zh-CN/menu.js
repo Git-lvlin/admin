@@ -95,9 +95,11 @@ export default {
 
   'menu.finger-doctor': '手指医生',
   'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
-  'menu.finger-doctor.device-management-period-management': '设备管理期管理',
+  'menu.finger-doctor.device-management-period-management': '设备管理',
   'menu.finger-doctor.health-detection-record-management': '健康检测记录管理',
   'menu.finger-doctor.report-push-object-config': '报告推送对象配置',
+  'menu.finger-doctor.health-detection-condition-push': '健康检测调理推送',
+  'menu.finger-doctor.health-detection-condition': '健康检测调理配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
