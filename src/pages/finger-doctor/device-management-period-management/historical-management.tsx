@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button, Divider } from 'antd';
-import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
+import { manageOrderList } from "@/services/finger-doctor/device-management-period-management"
 import ProTable  from "@ant-design/pro-table"
-import type { DetailProps, DataType } from './data'
+import type { DetailProps } from './data'
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ProColumns }  from "@ant-design/pro-table"
+import { amountTransform } from '@/utils/utils';
 
 const columns: ProColumns[] = [
   {
@@ -16,49 +17,61 @@ const columns: ProColumns[] = [
   },
   {
     title: '缴费时设备状态',
-    dataIndex: 'checkResult',
-    valueType: 'text',
-    render: (_) => _,
+    dataIndex: 'memberDeviceStatus',
+    valueType: 'select',
+    valueEnum: {
+      0: '待绑定',
+      2: '正常',
+      3: '停用'
+    },
     align: 'center'
   },
   {
     title: '缴费单号',
-    dataIndex: 'checkVal',
+    dataIndex: 'orderSn',
     valueType: 'text',
     render: (_) => _,
     align: 'center'
   },
   {
     title: '当前管理期类型',
-    dataIndex: 'checkTime',
+    dataIndex: 'manageType',
     valueType: 'text',
     render: (_) => _,
     align: 'center'
   },
   {
     title: '支付方式',
-    dataIndex: 'reportUrl',
-    valueType: 'text',
-    render: (_) => _,
+    dataIndex: 'payType',
+    valueType: 'select',
+    valueEnum: {
+      0: '模拟支付'
+    },
     align: 'center'
   },
   {
     title: '缴费时间',
-    dataIndex: 'reportUrl',
+    dataIndex: 'payTime',
     valueType: 'text',
     render: (_) => _,
     align: 'center'
   },
   {
     title: '支付金额（元）',
-    dataIndex: 'reportUrl',
+    dataIndex: 'payAmount',
     valueType: 'text',
-    render: (_) => _,
+    render: (_) => {
+      if(typeof _ === 'string' && /^\d+$/.test(_)){
+        return amountTransform(_,'/').toFixed(2)
+      }else{
+        return '-'
+      }
+    },
     align: 'center'
   },
   {
     title: '缴费管理期时段',
-    dataIndex: 'reportUrl',
+    dataIndex: 'endTime',
     valueType: 'text',
     render: (_) => _,
     align: 'center'
@@ -67,18 +80,6 @@ const columns: ProColumns[] = [
 
 const HistoricalManagement: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, onClose } = props;
-
-  useEffect(() => {
-    (getUser({
-      imei:datailMsg?.imei
-    }) as Promise<{ data: DataType, code: number }>).then(res => {
-      if (res.code === 0) {
-        
-      }
-    }).finally(() => {
-      
-    })
-  }, [datailMsg])
 
   return (
     <DrawerForm
@@ -104,16 +105,16 @@ const HistoricalManagement: React.FC<DetailProps> = (props) => {
     <p style={{ marginBottom: -10, color:'#8D8D8D' }}>用户手机号：{datailMsg?.memberPhone}  &nbsp; 设备编号：{datailMsg?.imei}    &nbsp; 当前剩余管理期{datailMsg?.remainManageDayStr}天</p>
       <Divider />
       <ProTable
-        rowKey='checkVal'
+        rowKey='id'
         columns={columns}
         options={false}
-        request={userReport}
+        request={manageOrderList}
         pagination={{
         showQuickJumper: true,
         pageSize: 10
         }}
         params={{
-          iemi:datailMsg?.imei
+          memberDeviceId:datailMsg?.id
         }}
         style={{ width: '100%' }}
         search={false}

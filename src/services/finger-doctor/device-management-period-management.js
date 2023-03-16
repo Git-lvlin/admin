@@ -128,3 +128,25 @@ export const deviceDoctorPage = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+// 手指医生-历史缴纳管理费记录
+export const manageOrderList = async (params = {}, options = {}) => {
+  const { current = 1, pageSize = 10, dateTimeRange, ...rest } = params
+  const res = await request('/auth/java-admin/iot/manageOrder/list', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      startTime: dateTimeRange&&dateTimeRange[0],
+      endTime: dateTimeRange&&dateTimeRange[1],
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
+}
