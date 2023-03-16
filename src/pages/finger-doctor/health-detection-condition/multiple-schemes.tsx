@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import ProForm, { 
   ProFormList,
-  ProFormText
+  ProFormText,
+  ProFormTextArea
 } from '@ant-design/pro-form'
 import { Button, Space } from 'antd'
 
@@ -60,17 +61,16 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                       placeholder: `方案${idx + 1}名称，前端展示，10个汉字以内`
                     }}
                   />
-                  <ProFormText
+                  <ProFormTextArea
                     name={[res.name, 'solution']}
                     width='xl'
                     fieldProps={{
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
                       onFocus: () => {
                         const multipleList = formRef?.current?.getFieldsValue().multipleList
-                        setTableData(multipleList[res.name].solutionId)
-                        setVisible(true); 
-                        setIdx(res.name);
-
+                        multipleList[res.name].solutionId && setTableData(multipleList[res.name].solutionId)
+                        setVisible(true)
+                        setIdx(res.name)
                       },
                       allowClear: false
                     }}

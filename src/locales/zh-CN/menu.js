@@ -457,6 +457,7 @@ export default {
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
+  'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',
