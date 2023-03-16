@@ -71,9 +71,11 @@ const columns: ProColumns[] = [
   },
   {
     title: '缴费管理期时段',
-    dataIndex: 'endTime',
+    dataIndex: 'startTime',
     valueType: 'text',
-    render: (_) => _,
+    render: (_,data) => {
+      return `${data?.startTime}——${data?.endTime}`
+    },
     align: 'center'
   },
 ];
