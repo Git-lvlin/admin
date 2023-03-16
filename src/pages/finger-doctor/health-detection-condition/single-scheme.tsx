@@ -74,51 +74,49 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
           
           return(
           fields.map((res) => (
-            <ProForm.Item
-              name={[res.name, 'priceDesc']}
-              key={res.name}
-              extra={(
-                <Space size='small'>
-                  <Button 
-                    style={{position: 'absolute', left: '410px', top: 0}}
-                    type='primary'
-                    onClick={() => add()}
-                  >
-                    增加调理产品
-                  </Button>
-                  {
-                    fields.length !== 1 && 
-                    <Button 
-                      style={{position: 'absolute', left: '530px', top: 0}}
-                      type='primary'
-                      danger
-                      onClick={() => remove(res.name)}
-                    >
-                      删除
-                    </Button>
-                  }
-                </Space>
-              )}
-            >
-              <AutoComplete
-                style={{width: '400px', position: 'relative'}}
-                placeholder='输入调理症状的商品名称或spuID搜索'
-                onSearch={debounceFetcher}
-                onSelect={(e: any)=>checkedValue(e, res.name)}
-                notFoundContent={<Empty/>}
+            <ProForm.Group>
+              <ProForm.Item
+                name={[res.name, 'priceDesc']}
+                key={res.name}
               >
+                <AutoComplete
+                  style={{width: '400px', position: 'relative'}}
+                  placeholder='输入调理症状的商品名称或spuID搜索'
+                  onSearch={debounceFetcher}
+                  onSelect={(e: any)=>checkedValue(e, res.name)}
+                  notFoundContent={<Empty/>}
+                >
+                  {
+                    result.map(item => (
+                      <Option key={item.id}>
+                        <div className={styles.option}>
+                          <div>spuID：{item.spuId}  {item.goodsName}</div>
+                          <div>零售价（元）：{item.isMultiSpec ? `${item.goodsSaleMinPriceDisplay} ~ ${item.goodsSaleMaxPriceDisplay}` :  `${item.goodsSaleMinPriceDisplay}`}</div>
+                        </div>
+                      </Option>
+                    ))
+                  }
+                </AutoComplete>
+              </ProForm.Item>
+              <Space size='small'>
+                <Button 
+                  type='primary'
+                  onClick={() => add()}
+                >
+                  增加调理产品
+                </Button>
                 {
-                  result.map(item => (
-                    <Option key={item.id}>
-                      <div className={styles.option}>
-                        <div>spuID：{item.spuId}  {item.goodsName}</div>
-                        <div>零售价（元）：{item.isMultiSpec ? `${item.goodsSaleMinPriceDisplay} ~ ${item.goodsSaleMaxPriceDisplay}` :  `${item.goodsSaleMinPriceDisplay}`}</div>
-                      </div>
-                    </Option>
-                  ))
+                  fields.length !== 1 && 
+                  <Button 
+                    type='primary'
+                    danger
+                    onClick={() => remove(res.name)}
+                  >
+                    删除
+                  </Button>
                 }
-              </AutoComplete>
-            </ProForm.Item>
+              </Space>
+            </ProForm.Group>
           ))
         )}
       }
