@@ -43,7 +43,7 @@ const NewIntensivePerformance = (props:propsType) => {
   }, [data])
 
   const getFieldsValue = () => {
-    const {payTime, area, ...rest} = form.current?.getFieldsValue()
+    const {payTime,...rest} = form.current?.getFieldsValue()
     return {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
@@ -235,7 +235,7 @@ const NewIntensivePerformance = (props:propsType) => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type='wholesalePm'
+              type='exportBuyDoctorCommissionList'
               conditions={getFieldsValue}
             />
           ]
