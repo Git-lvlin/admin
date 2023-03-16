@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Divider } from 'antd';
 import { queryMemberDevice, modifyStartFee } from "@/services/finger-doctor/device-management-period-management"
 import type {  DetailProps, DetailType } from './data'
@@ -7,15 +7,25 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils';
+import ConfirmModal from './confirm-modal'
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 }
   };
 
+type paramsItem = {
+  imei: string;
+  memberPhone: string;
+  startFee: number;
+}
+
 const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg,callback, onClose } = props;
   const [form] = Form.useForm();
+  const [confirmVisible, setConfirmVisible] = useState<boolean>()
+  const [params, setParams] = useState<paramsItem | undefined>()
 
   useEffect(() => {
     (queryMemberDevice({
@@ -32,7 +42,7 @@ const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
     }).finally(() => {
 
     })
-  }, [datailMsg])
+  }, [])
 
   return (
     <DrawerForm
@@ -60,12 +70,8 @@ const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
           ...values,
           startFee:amountTransform(values?.startFee,'*')
         }
-        modifyStartFee(params).then(res=>{
-          if(res.code==0){
-            setVisible(false)
-            callback()
-          }
-        })
+        setConfirmVisible(true)
+        setParams(params)
       }}
       {...formItemLayout}
     >
@@ -92,13 +98,25 @@ const StartingChargeConfiguration: React.FC<DetailProps> = (props) => {
         () => ({
           validator(_, value) {
             if (value&&!/^\d+\.?\d*$/g.test(value) || value <1 || value > 9999.99 || `${value}`?.split?.('.')?.[1]?.length > 2) {
-              return Promise.reject(new Error('请输入1.00-999999.99,保留2位小数'));
+              return Promise.reject(new Error('请输入1.00-9999.99,保留2位小数'));
             }
             return Promise.resolve();
           },
         })
       ]}
       />
+      {confirmVisible &&
+        <ConfirmModal
+          visible={confirmVisible}
+          setVisible={setConfirmVisible}
+          title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/> 请确认要修改设备（编号：{datailMsg?.imei}）启动费么？</p>}
+          params={params}
+          callback={()=>{  setVisible(false); callback() }}
+          api={ modifyStartFee }
+          resetText={'取消修改'}
+          submitText={'确认修改'}
+        />
+      }
     </DrawerForm>
   )
 }

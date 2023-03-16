@@ -7,18 +7,20 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { wholesalePm } from "@/services/product-performance-management/new-intensive-performance"
+import { commissionPage, commissionSum, buyDoctorPage, buyDoctorSum } from "@/services/product-performance-management/finger-doctor-performance"
 import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
 import ProCard from '@ant-design/pro-card';
 import { Descriptions } from 'antd'
 
 type detailListProps = {
-  storeNums: number
-  orderNums: number
-  payAmount: number
+  totalAmount: number
+  totalStores: number
+  totalBootTimes: number
   serviceNums: number
   deviceNum: number
+  totalOrder: number
+  totalCount: number
 }
 
 type propsType = {
@@ -32,11 +34,12 @@ const NewIntensivePerformance = (props:propsType) => {
   const [data,setData]=useState({})
 
   useEffect(() => {
-    // healthPkgOrderPmStats(time).then(res=>{
-    //   if(res.code==0){
-    //     setDetailList(res.data[0])
-    //   }
-    // })
+    const api=orderType == 'finger_doctor_purchase_trading_performance'? buyDoctorSum:commissionSum
+    api(data).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
   }, [data])
 
   const getFieldsValue = () => {
@@ -44,9 +47,6 @@ const NewIntensivePerformance = (props:propsType) => {
     return {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area && area?.[0]?.value,
-      cityId: area && area?.[1]?.value,
-      regionId: area && area?.[2]?.value,
       ...rest
     }
   }
@@ -54,7 +54,7 @@ const NewIntensivePerformance = (props:propsType) => {
   const columns: ProColumns[] = [
     {
       title: '下单人手机',
-      dataIndex: 'memberPhone',
+      dataIndex: 'buyerMobile',
       align: 'center',
       hideInTable: true,
       fieldProps: {
@@ -63,7 +63,7 @@ const NewIntensivePerformance = (props:propsType) => {
     },
     {
       title: '下单人手机号码',
-      dataIndex: 'memberPhone',
+      dataIndex: 'buyerMobile',
       align: 'center',
       hideInSearch: true
     },
@@ -77,28 +77,37 @@ const NewIntensivePerformance = (props:propsType) => {
       title: '支付时间',
       dataIndex: 'payTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
     },
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true,
       fieldProps: {
-        placeholder: ['开始时间','结束时间']
+        placeholder: ['开始时间','结束时间'],
+        style: {
+          width: 330
+        }
       }
     },
     {
       title: '订单金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'amount',
       align: 'center',
       hideInSearch: true,
-      render: _ => amountTransform(_, '/')
+      render: _ => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '订单状态',
-      dataIndex: 'orderStatusDesc',
+      dataIndex: 'orderStatus',
       align: 'center',
+      valueType: 'select',
+      valueEnum: {
+        2: '待发货',
+        3: '待收货',
+        5: '已完成（已确认收到货）'
+      },
       hideInSearch: true,
       hideInTable: orderType != 'finger_doctor_purchase_trading_performance'
     },
@@ -107,37 +116,37 @@ const NewIntensivePerformance = (props:propsType) => {
       dataIndex: 'orderStatus',
       valueType: 'select',
       valueEnum: {
-        '2': '待发货',
-        '3': '待收货',
-        '5': '已完成（已确认收到货）'
+        2: '待发货',
+        3: '待收货',
+        5: '已完成（已确认收到货）'
       },
       hideInTable: true,
       hideInSearch: orderType != 'finger_doctor_purchase_trading_performance'
     },
     {
       title: '数量',
-      dataIndex: 'storeMemberPhone',
+      dataIndex: 'purchaseCount',
       align: 'center',
       hideInSearch: true,
       hideInTable: orderType != 'finger_doctor_purchase_trading_performance'
     },
     {
       title: '下单人店铺编号',
-      dataIndex: 'storeHomeNumber',
+      dataIndex: 'shopMemberAccount',
       align: 'center',
       hideInTable: orderType != 'finger_doctor_purchase_trading_performance',
       hideInSearch: true
     },
     {
       title: '下单人店铺所在区域',
-      dataIndex: 'storeArea',
+      dataIndex: 'area',
       align: 'center',
       hideInSearch: true,
       hideInTable: orderType != 'finger_doctor_purchase_trading_performance'
     },
     {
       title: '下单人店铺地址',
-      dataIndex: 'storeAddress',
+      dataIndex: 'address',
       align: 'center',
       width: '10%',
       hideInSearch: true,
@@ -145,37 +154,37 @@ const NewIntensivePerformance = (props:propsType) => {
     },
     {
       title: '所属人收益',
-      dataIndex: 'payAmount',
+      dataIndex: 'storeAmount',
       align: 'center',
       hideInSearch: true,
-      render: _ => amountTransform(_, '/'),
+      render: _ => amountTransform(_, '/').toFixed(2),
       hideInTable: orderType != 'finger_doctor_activation_fee_performance'
     },
     {
       title: '平台分成总额',
-      dataIndex: 'payAmount',
+      dataIndex: 'platformAmount',
       align: 'center',
       hideInSearch: true,
-      render: _ => amountTransform(_, '/'),
+      render: _ => amountTransform(_, '/').toFixed(2),
       hideInTable: orderType != 'finger_doctor_activation_fee_performance'
     },
     {
       title: '所属人店铺编号',
-      dataIndex: 'storeHomeNumber',
+      dataIndex: 'shopMemberAccount',
       align: 'center',
       hideInTable: orderType != 'finger_doctor_activation_fee_performance',
       hideInSearch: true
     },
     {
       title: '所属人店铺所在区域',
-      dataIndex: 'storeArea',
+      dataIndex: 'area',
       align: 'center',
       hideInSearch: true,
       hideInTable: orderType != 'finger_doctor_activation_fee_performance'
     },
     {
       title: '所属人店铺地址',
-      dataIndex: 'storeAddress',
+      dataIndex: 'address',
       align: 'center',
       width: '10%',
       hideInSearch: true,
@@ -183,7 +192,7 @@ const NewIntensivePerformance = (props:propsType) => {
     },
     {
       title: '市办事处',
-      dataIndex: 'cityAgencyName',
+      dataIndex: 'cityOfficeName',
       align: 'center',
       fieldProps: {
         placeholder: '请输入市办事处名称'
@@ -195,25 +204,22 @@ const NewIntensivePerformance = (props:propsType) => {
 
   return (
       <ProTable
-        rowKey='id'
+        rowKey='orderSn'
         columns={columns}
-        params={{
-          orderType
-        }}
-        request={wholesalePm}
+        request={orderType == 'finger_doctor_purchase_trading_performance'?buyDoctorPage:commissionPage}
         tableExtraRender={() => (
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',margin:'0 30px'}} column={5} layout="horizontal" bordered>
-            <Descriptions.Item  label="总业绩金额"><strong>{amountTransform(detailList?.orderNums, '/')} 元</strong></Descriptions.Item>
-            <Descriptions.Item  label="总下单店铺数量"><strong>{detailList?.orderNums} 家</strong></Descriptions.Item>
+            <Descriptions.Item  label="总业绩金额"><strong>{amountTransform(detailList?.totalAmount, '/')} 元</strong></Descriptions.Item>
+            <Descriptions.Item  label="总下单店铺数量"><strong>{detailList?.totalStores} 家</strong></Descriptions.Item>
             {orderType == 'finger_doctor_purchase_trading_performance'&&
             <>
-              <Descriptions.Item  label="总销售订单数"><strong>{detailList?.payAmount} 单</strong></Descriptions.Item>
-              <Descriptions.Item  label="销量数量"><strong>{detailList?.deviceNum} 台</strong></Descriptions.Item>
+              <Descriptions.Item  label="总销售订单数"><strong>{detailList?.totalOrder} 单</strong></Descriptions.Item>
+              <Descriptions.Item  label="销量数量"><strong>{detailList?.totalCount} 台</strong></Descriptions.Item>
             </>
             }
            
             {orderType == 'finger_doctor_activation_fee_performance'&&
-            <Descriptions.Item  label="总启动次数"><strong>{detailList?.deviceNum} 款</strong></Descriptions.Item>
+            <Descriptions.Item  label="总启动次数"><strong>{detailList?.totalBootTimes} 款</strong></Descriptions.Item>
             }
           </Descriptions>
         )}

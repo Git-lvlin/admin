@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Divider, Space } from 'antd';
 import { saveDeviceDoctor } from "@/services/finger-doctor/device-management-period-management"
 import type {  DetailProps } from './data'
@@ -8,6 +8,8 @@ import ProForm,{
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import moment from 'moment';
+import ConfirmModal from './confirm-modal'
+import { ExclamationCircleFilled } from '@ant-design/icons';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -29,6 +31,8 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const [form] = Form.useForm();
   const userInfo = window.localStorage.getItem('user') as string;
   const user = userInfo && JSON.parse(userInfo);
+  const [confirmVisible, setConfirmVisible] = useState<boolean>()
+  const [params, setParams] = useState()
 
   useEffect(() => {
     form.setFieldsValue({
@@ -64,12 +68,8 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
           operater: user?.username,
           ...values
         }
-        saveDeviceDoctor(params).then(res=>{
-          if(res.code==0){
-            setVisible(false)
-            callback()
-          }
-        })
+        setConfirmVisible(true)
+        setParams(params)
       }}
       {...formItemLayout}
     >
@@ -154,21 +154,34 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
       <ProForm.Item
         name='givenVoucher'
         label='上传申请调整启用次数凭证'
-        rules={[
-          {
-            required: true,
-            validator: (rule, value) => {
-              if (!value || value.length < 1) { // 如果文件列表为空
-                return Promise.reject('请上传申请调整启用次数的凭证文件');
-              } else {
-                return Promise.resolve();
-              }
-            }
-          }
-        ]}
+        // rules={[
+        //   {
+        //     required: true,
+        //     validator: (rule, value) => {
+        //       if (!value || value.length < 1) { // 如果文件列表为空
+        //         return Promise.reject('请上传申请调整启用次数的凭证文件');
+        //       } else {
+        //         return Promise.resolve();
+        //       }
+        //     }
+        //   }
+        // ]}
       >
         <Upload multiple maxCount={1} accept="image/*" />
       </ProForm.Item>
+
+      {confirmVisible &&
+        <ConfirmModal
+          visible={confirmVisible}
+          setVisible={setConfirmVisible}
+          title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/> 请确认要为用户（{datailMsg?.memberPhone}）赠送启用服务次数？</p>}
+          params={params}
+          callback={()=>{  setVisible(false); callback() }}
+          api={ saveDeviceDoctor }
+          resetText={'取消赠送'}
+          submitText={'确认赠送'}
+        />
+      }
     </DrawerForm>
   )
 }
