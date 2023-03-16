@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import ProForm, { 
   ProFormList
 } from '@ant-design/pro-form'
@@ -6,15 +6,14 @@ import { AutoComplete, Button, Space, Empty } from 'antd'
 import { debounce } from 'lodash'
 
 import type { FC } from 'react'
-import type { FormInstance } from 'antd'
-import type { ListProps } from './data'
+import type { ListProps, singleSchemeProps } from './data'
 
 import styles from './styles.less'
 import { goodsSpu } from '@/services/finger-doctor/health-detection-condition'
 
 const { Option } = AutoComplete
 
-const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | undefined>}> = ({formRef}) => {
+const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0}) => {
   const [result, setResult] = useState<ListProps[]>([])
 
   const debounceFetcher =  useMemo(() => {
@@ -37,28 +36,34 @@ const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | unde
     return debounce(loadOptions, 800)
   }, [])
 
-  const checkedValue = (e: string) => {
+  const checkedValue = (e: string, j: number) => {
     const arr = result.filter(item=> item.id === parseInt(e))
-    const list = formRef?.current?.getFieldsValue().list
-    console.log(list);
-    
-    const newArr: string[] = []
-    list.forEach((item: any) => {
-      if(arr[0].id == item.goods) {
-        newArr.push({...item, ...arr[0], goods: `spuID：${arr[0].spuId} ${arr[0].goodsName}`})
-      } else {
-        newArr.push({...item})
-      }
-    })
-    formRef?.current?.setFieldsValue({
-      list: newArr
-    })
-    
+    const desc = `spuID：${arr[0].spuId} ${arr[0].goodsName} ${arr[0].isMultiSpec ? `零售价(元):${arr[0].goodsSaleMinPriceDisplay}元 ~ ${arr[0].goodsSaleMaxPriceDisplay}元` : `零售价(元):${arr[0].goodsSaleMinPriceDisplay}元`}`
+    if(type === 'single') {
+      const list = formRef?.current?.getFieldsValue().list
+      const newArr: string[] = []
+      list.forEach((item: any) => {
+        if(arr[0].id == item.priceDesc) {
+          newArr.push({...item, ...arr[0], priceDesc: desc})
+        } else {
+          newArr.push({...item})
+        }
+      })
+      formRef?.current?.setFieldsValue({
+        list: newArr
+      })
+    } else {
+      const multipleList = formRef?.current?.getFieldsValue().multipleList
+      multipleList[idx].list[j] = { ...arr[0], priceDesc: desc}
+      formRef?.current?.setFieldsValue({
+        multipleList
+      })
+    }
   }
 
   return (
     <ProFormList
-      name={`list`}
+      name={fieldsName}
       label="调理症状的产品方案"
       itemRender={({ listDom, action }, { record }) => ({listDom})}
       creatorButtonProps={false}
@@ -70,7 +75,7 @@ const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | unde
           return(
           fields.map((res) => (
             <ProForm.Item
-              name={[res.name, 'goods']}
+              name={[res.name, 'priceDesc']}
               key={res.name}
               extra={(
                 <Space size='small'>
@@ -99,7 +104,7 @@ const SingleScheme: FC<{formRef: React.MutableRefObject<FormInstance<any> | unde
                 style={{width: '400px', position: 'relative'}}
                 placeholder='输入调理症状的商品名称或spuID搜索'
                 onSearch={debounceFetcher}
-                onSelect={checkedValue}
+                onSelect={(e: any)=>checkedValue(e, res.name)}
                 notFoundContent={<Empty/>}
               >
                 {
