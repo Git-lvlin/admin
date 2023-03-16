@@ -42,13 +42,15 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
       title: '健康风险',
       dataIndex: 'risk',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_) => <pre>{_}</pre>
     },
     {
       title: '健康建议',
       dataIndex: 'suggest',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render:(_) => <pre>{_}</pre>
     },
     {
       title: '检测结果',

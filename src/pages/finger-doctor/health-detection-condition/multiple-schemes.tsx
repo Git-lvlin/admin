@@ -68,7 +68,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
                       onFocus: () => {
                         const multipleList = formRef?.current?.getFieldsValue().multipleList
-                        multipleList[res.name].solutionId && setTableData(multipleList[res.name].solutionId)
+                        multipleList[res.name].solutionId ? setTableData(multipleList[res.name].solutionId) : setTableData([])
                         setVisible(true)
                         setIdx(res.name)
                       },
