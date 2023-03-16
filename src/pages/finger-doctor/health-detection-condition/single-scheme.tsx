@@ -74,10 +74,9 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
           
           return(
           fields.map((res) => (
-            <ProForm.Group>
+            <ProForm.Group key={res.name}>
               <ProForm.Item
                 name={[res.name, 'priceDesc']}
-                key={res.name}
               >
                 <AutoComplete
                   style={{width: '400px', position: 'relative'}}

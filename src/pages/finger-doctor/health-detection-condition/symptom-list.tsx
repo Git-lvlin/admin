@@ -24,39 +24,38 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
       fieldProps: {
         placeholder: '请输入总检或健康风险关键字'
       },
-      hideInTable: true
+      hideInTable: true,
+      render: (_)=> <span style={{fontSize: "12px"}}>{_}</span>
     },
     {
       title: '检测项',
       dataIndex: 'checkItem',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '10%',
+      render: (_)=> <span style={{fontSize: "12px"}}>{_}</span>
     },
     {
       title: '总检',
       dataIndex: 'name',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '10%',
+      render: (_)=> <span style={{fontSize: "12px"}}>{_}</span>
     },
     {
       title: '健康风险',
       dataIndex: 'risk',
       align: 'center',
       hideInSearch: true,
-      render:(_) => <pre>{_}</pre>
+      render:(_) => <pre style={{fontSize: "12px"}}>{_}</pre>
     },
     {
       title: '健康建议',
       dataIndex: 'suggest',
       align: 'center',
       hideInSearch: true,
-      render:(_) => <pre>{_}</pre>
-    },
-    {
-      title: '检测结果',
-      dataIndex: 'result',
-      align: 'center',
-      hideInSearch: true
+      render:(_) => <pre style={{fontSize: "12px"}}>{_}</pre>
     }
   ]
 
@@ -75,7 +74,7 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
         rowKey='id'
         options={false}
         columns={columns}
-        scroll={{y: 400}}
+        scroll={{y: 430}}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),

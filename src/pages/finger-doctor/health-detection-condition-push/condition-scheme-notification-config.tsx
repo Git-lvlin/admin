@@ -39,7 +39,6 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
           resolve()
           callback()
         } else {
-          message.error('操作失败')
           reject()
         }
       })

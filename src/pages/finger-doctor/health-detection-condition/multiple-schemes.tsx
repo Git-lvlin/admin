@@ -51,7 +51,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
           (fields, { add, remove }) => (
             fields.map((res, idx) => {
             return(
-              <>
+              <div key={res.name}>
                 <ProForm.Group>
                   <ProFormText
                     name={[res.name, 'name']}
@@ -88,7 +88,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                     <SingeScheme formRef={formRef} fieldsName={[res.name, 'list']} type='multiple' idx={res.name}/>
                   </div>
                 </ProForm.Group>
-              </>
+              </div>
             )}
           ))
         }

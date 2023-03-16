@@ -57,14 +57,16 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
 
 
   const submit = (v: any) => {
+    const arr: string[] = []
     v['gender'] = gender
     if(v.type === 1) {
-      v['list'] = v.list.map((res: ListProps)=> ({
-        goods: [res.id]
-      }))
+      v.list.forEach((res: ListProps)=> (
+        arr.push(res.spuId.toString())
+      ))
+      v['list'] = {goods: arr}
     } else {
       v['list'] = v.multipleList.map((res: ListProps)=>({
-        goods: res.list.map(item => item.spuId),
+        goods: res.list.map(item => item.spuId.toString()),
         name: res.name,
         solution: res.solutionId.map(item => item.id)
       }))
