@@ -166,7 +166,15 @@ const HealthDetectionConditionPush = () => {
       dataIndex: 'goodsNums',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <a onClick={()=>{setGoodsVisible(true); setId(r.id); setData(r)}}>{_}</a>
+      render: (_, r) => {
+        if(r.goodsNums !== 0) {
+          return (
+            <a onClick={()=>{setGoodsVisible(true); setId(r.id); setData(r)}}>{_}</a>
+          )
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
   ]
 
