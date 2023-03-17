@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { DrawerForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
+import { DrawerForm, ProFormText, ProFormDigit, ProFormTextArea } from '@ant-design/pro-form'
 
 import type { FC } from 'react'
 import type { FormInstance } from 'antd'
@@ -72,7 +72,7 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
         name='title'
         width='md'
       />
-      <ProFormText
+      <ProFormTextArea
         label='推送消息文案'
         name='content'
         width='md'
