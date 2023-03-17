@@ -4,7 +4,7 @@ export type goodsProps = {
     phone: string
     id: string
     packageName: string
-    createTime: string
+    pushTime: string
   }
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   visible: boolean

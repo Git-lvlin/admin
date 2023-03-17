@@ -56,7 +56,7 @@ const PushGoods: FC<goodsProps> = ({id, title, setVisible, visible}) => {
 
   return (
     <Drawer
-      title={`用户手机号：${title?.phone} 检测报告编号：${title?.id}调理方案名称：${title?.packageName} 推送时间：${title?.createTime}`}
+      title={`用户手机号：${title?.phone}  检测报告编号：${title?.id}  推送时间：${title?.pushTime}`}
       width={1200}
       footer={<Button type='primary' onClick={()=> setVisible(false)}>返回</Button>}
       visible={visible}
