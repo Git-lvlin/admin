@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Drawer, Button, Image } from 'antd'
 
@@ -6,8 +7,11 @@ import type { ProColumns } from '@ant-design/pro-table'
 import { goodsProps } from './data'
 
 import { pushReportGoods } from '@/services/finger-doctor/health-detection-condition-push'
+import Detail from '../health-detection-record-management/detail'
 
 const PushGoods: FC<goodsProps> = ({id, title, setVisible, visible}) => {
+  const [url, setUrl] = useState<string>()
+  const [detailVisible, setDetailVisible] = useState<boolean>(false)
 
   const columns: ProColumns[] = [
     {
@@ -55,23 +59,40 @@ const PushGoods: FC<goodsProps> = ({id, title, setVisible, visible}) => {
   ]
 
   return (
-    <Drawer
-      title={`用户手机号：${title?.phone}  检测报告编号：${title?.id}  推送时间：${title?.pushTime}`}
-      width={1200}
-      footer={<Button type='primary' onClick={()=> setVisible(false)}>返回</Button>}
-      visible={visible}
-      onClose={()=> setVisible(false)}
-    >
-      <ProTable
-        rowKey='id'
-        columns={columns}
-        search={false}
-        options={false}
-        pagination={false}
-        params={{reportId: id}}
-        request={pushReportGoods}
-      />
-    </Drawer>
+    <>
+      <Drawer
+        title={
+          <div> 
+            <span>用户手机号：{title?.phone}</span> 
+            <span>检测报告编号：
+              <a onClick={()=> {setDetailVisible(true); setUrl(title?.reportUrl)}}>{title?.id}</a>
+            </span>  
+            <span>推送时间：{title?.pushTime}</span>
+          </div>}
+        width={1200}
+        footer={<Button type='primary' onClick={()=> setVisible(false)}>返回</Button>}
+        visible={visible}
+        onClose={()=> setVisible(false)}
+      >
+        <ProTable
+          rowKey='id'
+          columns={columns}
+          search={false}
+          options={false}
+          pagination={false}
+          params={{reportId: id}}
+          request={pushReportGoods}
+        />
+      </Drawer>
+      {
+        detailVisible&&
+        <Detail
+          url={url}
+          visible={detailVisible}
+          setVisible={setDetailVisible}
+        />
+      }
+    </>
   )
 }
 

@@ -22,7 +22,7 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
     {
       dataIndex: 'name',
       fieldProps: {
-        placeholder: '请输入总检或健康风险关键字'
+        placeholder: '请输入检测项或总检'
       },
       hideInTable: true,
       render: (_)=> <span style={{fontSize: "12px"}}>{_}</span>

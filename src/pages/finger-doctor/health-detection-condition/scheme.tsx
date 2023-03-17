@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import ProForm, { 
   ProFormRadio, 
   ProFormDependency
@@ -12,8 +12,11 @@ import { editSolutions, solutions } from '@/services/finger-doctor/health-detect
 import SingleScheme from './single-scheme'
 import MultipleSchemes from './multiple-schemes'
 import styles from './styles.less'
+import SubmitModal from '../health-detection-condition-push/submit-modal'
 
 const Scheme: FC<{gender: string}> = ({gender}) => {
+  const [submitVisible, setSubmitVisible] = useState<boolean>(false)
+  const [dataSoure, setDataSoure] = useState<ListProps>()
   const formRef = useRef<FormInstance>()
 
   useEffect(()=>{
@@ -63,7 +66,7 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
       v.list.forEach((res: ListProps)=> (
         arr.push(res.spuId.toString())
       ))
-      v['list'] = {goods: arr}
+      v['list'] = [{goods: arr}]
     } else {
       v['list'] = v.multipleList.map((res: ListProps)=>({
         goods: res.list.map(item => item.spuId.toString()),
@@ -72,57 +75,63 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
       }))
       delete v.multipleList
     }
-    return new Promise<void>((resolve, reject) => {
-      editSolutions(v, {showSuccess: true}).then(res=> {
-        if(res.code === 0) {
-          resolve()
-        } else {
-          reject()
-        }
-      })
-    })
+    setSubmitVisible(true)
+    setDataSoure(v)
   }
 
   return (
-    <ProForm
-      layout='horizontal'
-      style={{background: '#fff', padding: '20px', marginTop: '10px'}}
-      onFinish={async (v)=> {
-        await submit(v)
-      }}
-      submitter={{
-        searchConfig: {
-          submitText: '确定'
-        }
-      }}
-      formRef={formRef}
-      className={styles.form}
-    >
-      <ProFormRadio.Group
-        name="type"
-        label="调理方案类型"
-        initialValue={1}
-        options={[
-          {
-            label: '单个调理方案',
-            value: 1,
-          },
-          {
-            label: '多个调理方案',
-            value: 2,
-          }
-        ]}
-      />
-      <ProFormDependency name={['type']}>
-        {({ type }) => {
-          if(type === 1) {
-            return <SingleScheme formRef={formRef} fieldsName="list" type="single"/>
-          } else {
-            return <MultipleSchemes formRef={formRef} gender={gender}/>
+    <>
+      <ProForm
+        layout='horizontal'
+        style={{background: '#fff', padding: '20px', marginTop: '10px'}}
+        onFinish={async (v)=> {
+          submit(v)
+        }}
+        submitter={{
+          searchConfig: {
+            submitText: '确定'
           }
         }}
-      </ProFormDependency>
-    </ProForm>
+        formRef={formRef}
+        className={styles.form}
+      >
+        <ProFormRadio.Group
+          name="type"
+          label="调理方案类型"
+          initialValue={1}
+          options={[
+            {
+              label: '单个调理方案',
+              value: 1,
+            },
+            {
+              label: '多个调理方案',
+              value: 2,
+            }
+          ]}
+        />
+        <ProFormDependency name={['type']}>
+          {({ type }) => {
+            if(type === 1) {
+              return <SingleScheme formRef={formRef} fieldsName="list" type="single"/>
+            } else {
+              return <MultipleSchemes formRef={formRef} gender={gender}/>
+            }
+          }}
+        </ProFormDependency>
+      </ProForm>
+      {
+        submitVisible &&
+        <SubmitModal
+          visible={submitVisible}
+          setVisible={setSubmitVisible}
+          title="请确认要修改调理方案么？"
+          data={dataSoure}
+          callback={()=> setSubmitVisible(false)}
+          api={editSolutions}
+        />
+      }
+    </>
   )
 }
 
