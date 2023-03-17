@@ -58,7 +58,8 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                     width='md'
                     fieldProps={{
                       addonBefore: `${idx + 1}、`,
-                      placeholder: `方案${idx + 1}名称，前端展示，10个汉字以内`
+                      placeholder: `方案${idx + 1}名称，前端展示，10个汉字以内`,
+                      maxLength: 10
                     }}
                   />
                   <ProFormTextArea
