@@ -235,7 +235,7 @@ const NewIntensivePerformance = (props:propsType) => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type='exportBuyDoctorCommissionList'
+              type={orderType == 'finger_doctor_purchase_trading_performance'?'exportBuyDoctorCommissionList':'exportDoctorBootCommissionList'}
               conditions={getFieldsValue}
             />
           ]
