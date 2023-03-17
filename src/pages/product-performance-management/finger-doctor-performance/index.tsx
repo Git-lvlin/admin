@@ -219,7 +219,7 @@ const NewIntensivePerformance = (props:propsType) => {
             }
            
             {orderType == 'finger_doctor_activation_fee_performance'&&
-            <Descriptions.Item  label="总启动次数"><strong>{detailList?.totalBootTimes} 款</strong></Descriptions.Item>
+            <Descriptions.Item  label="总启动次数"><strong>{detailList?.totalBootTimes} 次</strong></Descriptions.Item>
             }
           </Descriptions>
         )}
