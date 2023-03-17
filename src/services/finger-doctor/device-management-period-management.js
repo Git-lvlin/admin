@@ -150,3 +150,21 @@ export const manageOrderList = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+// 手指医生-开启设备缴费入口
+export const closeLimitPay = async (params = {}, options = {}) => {
+  const { ...rest } = params
+  const res = await request('/auth/java-admin/iot/member/device/closeLimitPay', {
+    method: 'POST',
+    data: {
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data,
+    success: res.success,
+    code: res.code
+  }
+}

@@ -15,6 +15,7 @@ import StartingChargeConfiguration from './starting-charge-configuration'
 import CheckReportConfiguration from './check-report-configuration'
 import GiftEnabledTimes from './gift-enabled-times'
 import ComplimentaryServiceRecord from './complimentary-service-record'
+import PaymentModal from './payment-modal'
 
 
 
@@ -26,6 +27,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
     const [detectionVisible, setDetectionVisible] = useState<boolean>(false);
     const [presentedVisible, setPresentedVisible] = useState<boolean>(false);
     const [recordVisible, setRecordVisible] = useState<boolean>(false);
+    const [paymentVisible, setPaymentVisible] = useState<boolean>(false);
     const [datailMsg, setDatailMsg] = useState<Record>();
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
@@ -170,6 +172,7 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
             return [
               <a key="history" onClick={()=> { setHistoryVisible(true); setDatailMsg(data) }}>历史交管理费&nbsp;</a>,
               <a key="start" onClick={()=> { setStartVisible(true); setDatailMsg(data) }}>启动费配置<br/></a>,
+              <a key="payment" style={{ display:data?.limitPayLease == 1? 'block': 'none' }} onClick={()=> { setPaymentVisible(true); setDatailMsg(data) }}>开启缴费<br/></a>,
               <a key="detection" onClick={()=> { setDetectionVisible(true); setDatailMsg(data) }}>检测报告封面配置&nbsp;</a>,
               <a key="presented" onClick={()=> { setPresentedVisible(true); setDatailMsg(data) }}>赠送启用次数</a>
             ]
@@ -244,6 +247,15 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           setVisible={setRecordVisible}
           onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
           callback={()=>{ }}
+        />
+      }
+       {paymentVisible &&
+        <PaymentModal
+          datailMsg={datailMsg}
+          visible={paymentVisible}
+          setVisible={setPaymentVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
         />
       }
       </PageContainer>
