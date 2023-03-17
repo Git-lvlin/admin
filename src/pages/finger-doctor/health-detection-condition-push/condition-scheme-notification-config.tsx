@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { DrawerForm, ProFormText, ProFormDigit } from '@ant-design/pro-form'
-import { message } from 'antd'
 
 import type { FC } from 'react'
 import type { FormInstance } from 'antd'

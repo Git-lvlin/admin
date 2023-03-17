@@ -1,13 +1,11 @@
 import { useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import { Button, FormInstance } from 'antd'
 
 import { pushReportList } from '@/services/finger-doctor/health-detection-condition-push'
-import Export from '@/components/export'
 import Detail from '../health-detection-record-management/detail'
 import PushGoods from './push-goods'
 import ConditionSchemeNotificationConfig from './condition-scheme-notification-config'
@@ -20,15 +18,6 @@ const HealthDetectionConditionPush = () => {
   const [notificationConfigVisible, setNotificationConfigVisible] = useState<boolean>(false)
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
-
-  const getFieldsValue = () => {
-    const { createTime, ...rest } = form.current?.getFieldsValue()
-    return {
-      startTime: createTime && moment(createTime?.[0]).format("YYYY-MM-DD"),
-      endTime: createTime && moment(createTime?.[1]).format("YYYY-MM-DD"),
-      ...rest
-    }
-  }
 
   const columns: ProColumns[] = [
     {
@@ -194,11 +183,6 @@ const HealthDetectionConditionPush = () => {
         search={{
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
-            <Export
-              key='export'
-              type='pushReportList'
-              conditions={getFieldsValue}
-            />,
             <Button
               key='btn' 
               onClick={()=>{setNotificationConfigVisible(true)}}
