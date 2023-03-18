@@ -79,7 +79,7 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
                 name={[res.name, 'priceDesc']}
               >
                 <AutoComplete
-                  style={{width: '400px', position: 'relative'}}
+                  style={{width: '600px', position: 'relative'}}
                   placeholder='输入调理症状的商品名称或spuID搜索'
                   onSearch={debounceFetcher}
                   onSelect={(e: any)=>checkedValue(e, res.name)}
