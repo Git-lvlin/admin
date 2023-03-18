@@ -16,16 +16,6 @@ const formItemLayout = {
     wrapperCol: { span: 14 }
   };
 
-const checkConfirm = (rule: any, value: string) => {
-    return new Promise<void>(async (resolve, reject) => {
-      if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
-        await reject('请输入正确的手机号')
-      }else {
-        await resolve()
-      }
-    })
-}
-
 const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, callback, onClose } = props;
   const [form] = Form.useForm();
@@ -33,6 +23,18 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const user = userInfo && JSON.parse(userInfo);
   const [confirmVisible, setConfirmVisible] = useState<boolean>()
   const [params, setParams] = useState()
+  const [memberPhone, setMemberPhone] = useState()
+
+  const checkConfirm = (rule: any, value: string) => {
+    return new Promise<void>(async (resolve, reject) => {
+      if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
+        await reject('请输入正确的手机号')
+      }else {
+        setMemberPhone(value)
+        await resolve()
+      }
+    })
+}
 
   useEffect(() => {
     form.setFieldsValue({
@@ -174,7 +176,7 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
         <ConfirmModal
           visible={confirmVisible}
           setVisible={setConfirmVisible}
-          title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/> 请确认要为用户（{datailMsg?.memberPhone}）赠送启用服务次数？</p>}
+          title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/> 请确认要为用户（{memberPhone}）赠送启用服务次数？</p>}
           params={params}
           callback={()=>{  setVisible(false); callback() }}
           api={ saveDeviceDoctor }
