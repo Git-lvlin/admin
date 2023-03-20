@@ -7,20 +7,20 @@ import ProForm, {
 import { Button, Space } from 'antd'
 
 import type { FC } from 'react'
-import type { FormInstance } from 'antd'
-import type{ data } from './data'
+import type{ dataProps, multipleSchemesProps } from './data'
 
 import SingeScheme from './single-scheme'
 import SymptomList from './symptom-list'
 import styles from './styles.less'
+import GiftList from './gift-list'
 
-const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | undefined>, gender: string}> = ({formRef, gender}) => {
+const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name, giftData}) => {  
   const [visible, setVisible] = useState<boolean>(false)
-  const [tableData, setTableData] = useState<data[]>([])
+  const [tableData, setTableData] = useState<dataProps[]>([])
   const [idx, setIdx] = useState(0)
 
   useEffect(()=> {
-    const multipleList = formRef?.current?.getFieldsValue().multipleList
+    const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
     const str = tableData.map(res=> {
       return res.name
     }).join(' ,  ')
@@ -34,7 +34,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
       multipleList[idx].solution = str
       multipleList[idx].solutionId = id
       formRef.current?.setFieldsValue({
-        multipleList
+        [`multipleList${type}`]: multipleList
       })
     }
   }, [tableData])
@@ -42,10 +42,10 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
   return (
     <>
       <ProFormList
-        name='multipleList'
+        name={name}
         label='调理症状的产品方案'
         initialValue={[{}]}
-        itemRender={({ listDom, action }, { record }) => ({listDom})}
+        itemRender={({ listDom }) => ({listDom})}
       >
         {
           (fields, { add, remove }) => (
@@ -68,7 +68,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                     fieldProps={{
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
                       onFocus: () => {
-                        const multipleList = formRef?.current?.getFieldsValue().multipleList
+                        const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
                         multipleList[res.name].solutionId ? setTableData(multipleList[res.name].solutionId) : setTableData([])
                         setVisible(true)
                         setIdx(res.name)
@@ -86,7 +86,17 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
                         <Button onClick={()=> remove(res.name)} type='primary' danger>删除</Button>
                       }
                     </Space>
-                    <SingeScheme formRef={formRef} fieldsName={[res.name, 'list']} type='multiple' idx={res.name}/>
+                    {
+                      type === 3 ?
+                      <GiftList fieldsName={[res.name, 'goods']} data={giftData}/>:
+                      <SingeScheme 
+                        formRef={formRef} 
+                        fieldsName={[res.name, 'list']}
+                        type='multiple'
+                        idx={res.name}
+                        listType={type}
+                      />
+                    }
                   </div>
                 </ProForm.Group>
               </div>
@@ -100,7 +110,7 @@ const MultipleSchemes: FC<{formRef: React.MutableRefObject<FormInstance<any> | u
           visible={visible}
           setVisible={setVisible}
           gender={gender}
-          callback={(v: data[]) => {
+          callback={(v: dataProps[]) => {
             setTableData(v.map(item => {
               return { ...item }
             }))
