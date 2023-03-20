@@ -81,7 +81,7 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
           label='推送消息时间'
           name='time'
           fieldProps={{
-            addonBefore:'调整方案设置完成后',
+            addonBefore:'检测报告生成后',
             addonAfter:"分钟推送",
             controls: false
           }}
