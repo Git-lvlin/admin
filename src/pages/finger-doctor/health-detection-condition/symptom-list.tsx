@@ -61,7 +61,7 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
 
   return (
     <ModalForm
-      title='请勾选要调理的症状：'
+      title='请勾选要调理的症状（至少选择一项）：'
       onVisibleChange={setVisible}
       visible={visible}
       width={1200}
