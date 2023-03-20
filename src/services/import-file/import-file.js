@@ -2,8 +2,7 @@ import request from '@/utils/request';
 
 // 创建导入任务
 export const createImportTask = async (params, options = {}) => {
-  const { code } = params;
-  const res = await request(`/auth/java-admin/importTask/createImportTask/${code}`, {
+  const res = await request('/auth/java-admin/importTask/createImportTask', {
     method: 'POST',
     data: {
       ...params
@@ -18,9 +17,7 @@ export const createImportTask = async (params, options = {}) => {
 
 // 导入查询任务分页
 export const findPage = async (params, options = {}) => {
-  const { code } = params;
-
-  const res = await request(`/auth/java-admin/importTask/findPage/${code}`, {
+  const res = await request('/auth/java-admin/importTask/findPage', {
     method: 'POST',
     data: {
       ...params
