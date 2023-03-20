@@ -27,6 +27,12 @@ export default {
       path: '/product-performance-management/brand-authorization-fee',
       component: './product-performance-management/brand-authorization-fee',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'finger-doctor-performance',
+      path: '/product-performance-management/finger-doctor-performance',
+      component: './product-performance-management/finger-doctor-performance',
+      wrappers: [RouteWatcher],
     }
   ]
 }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef,useMemo } from 'react'
 import { EditableProTable } from '@ant-design/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
 import { Button,Input} from 'antd';
 import debounce from 'lodash/debounce';
 import DeleteModel from './delete-model'
+
 
 
 type ThematicEventItem={
@@ -27,15 +28,15 @@ type ThematicEventItem={
     occupationModeStr: string;
 }
 
-export default (props) => {
-  const { id,detailList,callback,detailData }=props
+const Associated0Goods= (props: { id: string; detailList: any; callback: any; }) => {
+  const { id,detailList,callback }=props
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
   const [delectVisible, setDelectVisible] = useState(false)
   const [editableKeys, setEditableKeys] = useState([])
   const [deleteGoos, setDeleteGoos] = useState([])
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const ref=useRef()
+  const ref= useRef<ActionType>()
   useEffect(()=>{
     setDataSource(detailList)
     if(detailList){
@@ -192,9 +193,9 @@ export default (props) => {
     },  
   ];
   // 删除商品
-  const  delGoods=val=>{
+  const  delGoods=(val:string)=>{
     const arr=dataSource.filter(ele=>(
-          ele.id!=val
+      ele.id!=val
     ))
     setDataSource(arr) 
     callback(arr)
@@ -286,3 +287,4 @@ export default (props) => {
   </>
   )
 }
+export default Associated0Goods;

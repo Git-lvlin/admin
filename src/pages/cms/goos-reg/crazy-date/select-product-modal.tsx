@@ -14,14 +14,6 @@ export default (props) => {
     const formItemLayout = {
       labelCol: { span: 2 },
       wrapperCol: { span: 14 },
-      layout: {
-        labelCol: {
-          span: 4,
-        },
-        wrapperCol: {
-          span: 14,
-        },
-      }
     };
   
   
@@ -123,6 +115,7 @@ export default (props) => {
   
     return (
       <ModalForm
+        layout="horizontal"
         title={title}
         modalProps={{
         }}

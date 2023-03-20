@@ -4,13 +4,15 @@ import ProForm, {
   ProFormText,
   ProFormRadio,
   DrawerForm,
-  ProFormDateTimePicker
+  ProFormDateTimePicker,
+  ProFormCheckbox
 } from '@ant-design/pro-form';
 import CrazyAddActivityReg from '@/components/crazy-add-activity-reg';
 import { seckillingClassSub, seckillingClassDetail, seckillingClassEdit } from '@/services/cms/member/goos-reg';
 import Associated0Goods from './associated0-goods'
 import moment from 'moment';
 import { amountTransform } from '@/utils/utils'
+import ProCard from '@ant-design/pro-card';
 
 const formItemLayout = {
   labelCol: { span: 4 },
@@ -29,62 +31,132 @@ export default (props) => {
   const { setVisible, setFlag, visible,callBack,onClose,id,copy } = props;
   const formRef = useRef();
   const [form] = Form.useForm()
-  const [detailList,setDetailList]=useState()
+  const [detailList1,setDetailList1]=useState([])
+  const [detailList2,setDetailList2]=useState([])
+  const [detailList3,setDetailList3]=useState([])
+  const [detailList4,setDetailList4]=useState([])
+  const [detailList5,setDetailList5]=useState([])
+  const [detailList6,setDetailList6]=useState([])
+  const [detailList7,setDetailList7]=useState([])
   const [detailData,setDetailData]=useState()
+  const [activeKey, setActiveKey] = useState('1')
+
+  const date = () => {
+    switch (activeKey) {
+      case '1':
+        return detailList1
+      case '2':
+        return detailList2
+      case '3':
+        return detailList3
+      case '4':
+        return detailList4
+      case '5':
+        return detailList5
+      case '6':
+        return detailList6
+      case '7':
+        return detailList7
+      default:
+        return []
+    }
+  }
+
+  const setDate = (key) => {
+    switch (key) {
+      case '1':
+        return setDetailList1
+      case '2':
+        return setDetailList2
+      case '3':
+        return setDetailList3
+      case '4':
+        return setDetailList4
+      case '5':
+        return setDetailList5
+      case '6':
+        return setDetailList6
+      case '7':
+        return setDetailList7
+      default:
+        return []
+    }
+  }
 
   const waitTime = (values) => {
-    const { ...rest } = values
-    const param = {
-      goodsInfo:detailList.map(ele=>{
-        return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort}
-      }),
-      ...rest
+    try {
+      const { ...rest } = values
+      const detailList=[...detailList1,...detailList2,...detailList3,...detailList4,...detailList5,...detailList6,...detailList7]
+      const param = {
+        goodsInfo:detailList.map(ele=>{
+          return {spuId:ele?.spuId,skuId:ele?.skuId,activityPrice:amountTransform(ele?.activityPrice,'*'),sort:ele?.sort,weekDay:ele?.weekDay}
+        }),
+        ...rest,
+      }
+      if(id&&!copy){
+        return new Promise((resolve, reject) => {
+          seckillingClassEdit({...param,id:id}).then((res) => {
+            if (res.code === 0) {
+              callBack()
+              resolve(true);
+            } else {
+              reject(false);
+            }
+          })
+        });
+      }else{
+        return new Promise((resolve, reject) => {
+          seckillingClassSub(param).then((res) => {
+            if (res.code === 0) {
+              callBack()
+              resolve(true);
+            } else {
+              reject(false);
+            }
+          })
+        });
+      }
+    } catch (error) {
+      console.log('error',error)
     }
-    if(id&&!copy){
-      return new Promise((resolve, reject) => {
-        seckillingClassEdit({...param,id:id}).then((res) => {
-          if (res.code === 0) {
-            callBack()
-            resolve(true);
-          } else {
-            reject(false);
-          }
-        })
-      });
-    }else{
-      return new Promise((resolve, reject) => {
-        seckillingClassSub(param).then((res) => {
-          if (res.code === 0) {
-            callBack()
-            resolve(true);
-          } else {
-            reject(false);
-          }
-        })
-      });
-    }
-
   };
 
   useEffect(() => {
     if (id) {
-      seckillingClassDetail({id:id,pageSize:10}).then(res=>{
-        if(res.code==0){
-          setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
-          setDetailData(res.data)
-          pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
-          form.setFieldsValue({
-            ...res.data
+      // if(copy){
+        for (let index = 1; index < 8; index++) {
+          seckillingClassDetail({id:id,pageSize:9999,weekDay:index}).then(res=>{
+            if(res.code==0){
+              setDate(`${index}`)(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+              setDetailData(res.data)
+              form.setFieldsValue({
+                ...res.data
+              })
+            }
           })
         }
-      })
+      // }else{
+      //   const setDetailList=setDate(activeKey)
+      //   seckillingClassDetail({id:id,pageSize:10,weekDay:parseInt(activeKey)}).then(res=>{
+      //     if(res.code==0){
+      //       setDetailList(res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
+      //       setDetailData(res.data)
+      //       pageSum({page:res.data?.skuList?.totalPage,total:res.data?.skuList?.total})
+      //       form.setFieldsValue({
+      //         ...res.data
+      //       })
+      //     }
+      //   })
+      // }
+     
     }
   }, [])
 
   const pageSum=(data)=>{
     const arr=[]
+    const setDetailList=setDate(activeKey)
     for (let index = 1; index <= data?.page; index++) {
-      seckillingClassDetail({id:id,pageSize:10,page:index}).then(res=>{
+      seckillingClassDetail({id:id,pageSize:10,page:index,weekDay:parseInt(activeKey)}).then(res=>{
         if(res.code==0){
           arr.push(...res.data?.skuList?.records.map(ele=>({...ele,activityPrice:amountTransform(ele?.activityPrice,'/')})))
           if(arr.length==data?.total){
@@ -178,9 +250,50 @@ export default (props) => {
             },
           ]}
         />
-      <Associated0Goods detailList={detailList} detailData={detailData} id={id}  callback={(data)=>{
-        setDetailList(data)
-      }}/>
+      <p style={{ marginLeft:'225px' }}>有效期内循环秒杀（第七天过后，自动从第一天的商品开始秒杀,过了活动结束时间，活动自动结束）</p>
+       <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
+        }}
+      >
+        <ProCard.TabPane key="1" tab="星期一">
+          {
+            activeKey == '1' && <Associated0Goods  detailList={detailList1}  id={id}  callback={(data)=>{ setDetailList1(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="2" tab="星期二">
+          {
+            activeKey == '2' && <Associated0Goods  detailList={detailList2}  id={id}  callback={(data)=>{ setDetailList2(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="3" tab="星期三">
+          {
+            activeKey == '3' && <Associated0Goods  detailList={detailList3}  id={id}  callback={(data)=>{ setDetailList3(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="4" tab="星期四">
+          {
+            activeKey == '4' && <Associated0Goods  detailList={detailList4}  id={id}  callback={(data)=>{ setDetailList4(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="5" tab="星期五">
+          {
+            activeKey == '5' && <Associated0Goods  detailList={detailList5}  id={id}  callback={(data)=>{ setDetailList5(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="6" tab="星期六">
+          {
+            activeKey == '6' && <Associated0Goods  detailList={detailList6}  id={id}  callback={(data)=>{ setDetailList6(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="7" tab="星期日">
+          {
+            activeKey == '7' && <Associated0Goods  detailList={detailList7}  id={id}  callback={(data)=>{ setDetailList7(data.map(ele=>({...ele,weekDay:parseInt(activeKey)}))) }}/>
+          }
+        </ProCard.TabPane>
+      </ProCard>
     </DrawerForm>
   );
 };
