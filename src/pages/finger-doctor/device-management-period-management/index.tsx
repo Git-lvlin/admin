@@ -1,18 +1,34 @@
-import {  useRef } from "react"
+import {  useRef, useState } from "react"
 import ProTable  from "@ant-design/pro-table"
 
 import type { FC } from "react"
-import type { ProColumns }  from "@ant-design/pro-table"
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from "antd"
+import type {  Record } from './data'
 
 import PageContainer from "@/components/PageContainer"
 import { findDeviceDoctorPage } from "@/services/finger-doctor/device-management-period-management"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
+import HistoricalManagement from './historical-management'
+import StartingChargeConfiguration from './starting-charge-configuration'
+import CheckReportConfiguration from './check-report-configuration'
+import GiftEnabledTimes from './gift-enabled-times'
+import ComplimentaryServiceRecord from './complimentary-service-record'
+import PaymentModal from './payment-modal'
+
 
 
 const DeviceManagementPeriodManagement: FC = ()=>  {
     const form = useRef<FormInstance>()
+    const ref= useRef<ActionType>()
+    const [historyVisible, setHistoryVisible] = useState<boolean>(false);
+    const [startVisible, setStartVisible] = useState<boolean>(false);
+    const [detectionVisible, setDetectionVisible] = useState<boolean>(false);
+    const [presentedVisible, setPresentedVisible] = useState<boolean>(false);
+    const [recordVisible, setRecordVisible] = useState<boolean>(false);
+    const [paymentVisible, setPaymentVisible] = useState<boolean>(false);
+    const [datailMsg, setDatailMsg] = useState<Record>();
     const getFieldValue = () => {
       const { ...rest } = form.current?.getFieldsValue()
       return {
@@ -122,39 +138,126 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           }
         },
         {
+          title: '启动费金额(元)',
+          dataIndex: 'startFee',
+          align: 'center',
+          hideInSearch: true,
+          render: (_) => {
+            if(_){
+              return amountTransform(_,'/').toFixed(2)
+            }else{
+              return '-'
+            }
+          }
+        },
+        {
+          title: '累计赠送启用次数(次)',
+          dataIndex: 'totalGivenTimes',
+          align: 'center',
+          hideInSearch: true,
+          render: (_,data) => {
+            if(typeof _ === 'string' && /^\d+$/.test(_)){
+              return <a onClick={()=>{ setRecordVisible(true); setDatailMsg(data) }}>{_}</a>
+            }else{
+              return '-'
+            }
+          }
+        },
+        {
           title: '操作',
           dataIndex: 'remark',
           align: 'center',
           hideInSearch: true,
           render: (_,data) => {
-            return <a onClick={()=> { }}>历史交管理费</a>
+            return [
+              <a key="history" onClick={()=> { setHistoryVisible(true); setDatailMsg(data) }}>历史交管理费&nbsp;</a>,
+              <a key="start" onClick={()=> { setStartVisible(true); setDatailMsg(data) }}>启动费配置<br/></a>,
+              <a key="payment" style={{ display:data?.limitPayLease == 1? 'block': 'none' }} onClick={()=> { setPaymentVisible(true); setDatailMsg(data) }}>开启缴费<br/></a>,
+              <a key="detection" onClick={()=> { setDetectionVisible(true); setDatailMsg(data) }}>检测报告封面配置&nbsp;</a>,
+              <a key="presented" onClick={()=> { setPresentedVisible(true); setDatailMsg(data) }}>赠送启用次数</a>
+            ]
           }
         },
       ]
     return (
-        <PageContainer>
-        <ProTable
-          rowKey='id'
-          columns={columns}
-          options={false}
-          request={findDeviceDoctorPage}
-          formRef={form}
-          pagination={{
-            showQuickJumper: true,
-            pageSize: 10
-          }}
-          search={{
-            labelWidth: 120,
-            optionRender: (searchConfig, props, dom) => [
-              ...dom.reverse(),
-              <Export
-                key='export'
-                type="iot-export-member-device-doctor"
-                conditions={getFieldValue}
-              />
-            ]
-          }}
+      <PageContainer>
+      <ProTable
+        rowKey='id'
+        columns={columns}
+        options={false}
+        request={findDeviceDoctorPage}
+        formRef={form}
+        actionRef={ref}
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        search={{
+          labelWidth: 120,
+          optionRender: (searchConfig, props, dom) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              type="iot-export-member-device-doctor"
+              conditions={getFieldValue}
+            />
+          ]
+        }}
+      />
+      {historyVisible &&
+        <HistoricalManagement
+          datailMsg={datailMsg}
+          visible={historyVisible}
+          setVisible={setHistoryVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{}}
         />
+      }
+      {startVisible &&
+        <StartingChargeConfiguration
+          datailMsg={datailMsg}
+          visible={startVisible}
+          setVisible={setStartVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+        />
+      }
+      {detectionVisible &&
+        <CheckReportConfiguration
+          datailMsg={datailMsg}
+          visible={detectionVisible}
+          setVisible={setDetectionVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+        />
+      }
+      {presentedVisible &&
+        <GiftEnabledTimes
+          datailMsg={datailMsg}
+          visible={presentedVisible}
+          setVisible={setPresentedVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+        />
+      }
+      {recordVisible &&
+        <ComplimentaryServiceRecord
+          datailMsg={datailMsg}
+          visible={recordVisible}
+          setVisible={setRecordVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ }}
+        />
+      }
+       {paymentVisible &&
+        <PaymentModal
+          datailMsg={datailMsg}
+          visible={paymentVisible}
+          setVisible={setPaymentVisible}
+          onClose={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+          callback={()=>{ref.current?.reload();setDatailMsg(undefined)}}
+        />
+      }
       </PageContainer>
     )
   }
