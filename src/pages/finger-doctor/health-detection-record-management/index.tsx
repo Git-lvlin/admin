@@ -114,12 +114,6 @@ const HealthDetectionRecordManagement = () => {
       hideInSearch: true
     },
     {
-      title: '生日',
-      dataIndex: 'birthday',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
       title: '身高（厘米）',
       dataIndex: 'height',
       align: 'center',

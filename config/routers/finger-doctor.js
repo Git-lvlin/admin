@@ -28,5 +28,17 @@ export default {
       component: './finger-doctor/report-push-object-config',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-detection-condition-push',
+      path: '/finger-doctor/health-detection-condition-push',
+      component: './finger-doctor/health-detection-condition-push',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-detection-condition',
+      path: '/finger-doctor/health-detection-condition',
+      component: './finger-doctor/health-detection-condition',
+      wrappers: [RouteWatcher],
+    },
   ],
 }

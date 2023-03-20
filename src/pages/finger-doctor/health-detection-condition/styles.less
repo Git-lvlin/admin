@@ -1,0 +1,26 @@
+.option {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.form {
+  :global {
+    .ant-input-group-addon {
+      background-color: transparent;
+      border: 0;
+    }
+    .ant-space-align-center {
+      align-items: start;
+    }
+  }
+}
+
+.multipleBtn {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  .space {
+    margin-right: 20px;
+  }
+}
