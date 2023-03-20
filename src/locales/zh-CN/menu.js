@@ -98,6 +98,8 @@ export default {
   'menu.finger-doctor.device-management-period-management': '设备管理',
   'menu.finger-doctor.health-detection-record-management': '健康检测记录管理',
   'menu.finger-doctor.report-push-object-config': '报告推送对象配置',
+  'menu.finger-doctor.health-detection-condition-push': '健康检测调理推送',
+  'menu.finger-doctor.health-detection-condition': '健康检测调理配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -455,6 +457,7 @@ export default {
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
+  'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',

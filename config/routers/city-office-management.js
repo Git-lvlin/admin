@@ -52,5 +52,11 @@ export default {
       component: './city-office-management/health-gift-package-performance',
       wrappers: [RouteWatcher], 
     },
+    {
+      name: 'finger-doctors-achievement',
+      path: '/city-office-management/finger-doctors-achievement',
+      component: './city-office-management/finger-doctors-achievement',
+      wrappers: [RouteWatcher], 
+    },
   ]
 }
