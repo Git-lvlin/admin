@@ -107,25 +107,25 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           hideInSearch: true,
         },
         {
-          title: '当前管理开始日期',
+          title: '管理开始日期',
           dataIndex: 'activatedTime',
           align: 'center',
           hideInSearch  : true,
         },
         {
-          title: '当前管理结束日期',
+          title: '管理结束日期',
           dataIndex: 'leaseDeadline',
           align: 'center',
           hideInSearch: true,
         },
         {
-          title: '当前剩余管理期(天)',
+          title: '剩余管理期(天)',
           dataIndex: 'remainManageDayStr',
           align: 'center',
           hideInSearch: true
         },
         {
-          title: '当前设备管理费(元)',
+          title: '累计设备管理费(元)',
           dataIndex: 'manageFee',
           align: 'center',
           hideInSearch: true,
