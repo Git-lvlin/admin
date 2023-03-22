@@ -50,3 +50,9 @@ export type multipleSchemesProps = {
   name: (string | number)[] | string
   giftData: giftListProps[]
 }
+
+export type schemeNameProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  title?: string
+}

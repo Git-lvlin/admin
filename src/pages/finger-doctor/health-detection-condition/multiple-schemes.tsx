@@ -13,9 +13,12 @@ import SingeScheme from './single-scheme'
 import SymptomList from './symptom-list'
 import styles from './styles.less'
 import GiftList from './gift-list'
+import SchemeName from './scheme-name'
 
 const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name, giftData}) => {  
   const [visible, setVisible] = useState<boolean>(false)
+  const [disposeVisible, setDisposeVisible] = useState<boolean>(false)
+  const [schemeName, setSchemeName] = useState<string>()
   const [tableData, setTableData] = useState<dataProps[]>([])
   const [idx, setIdx] = useState(0)
 
@@ -38,6 +41,7 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
       })
     }
   }, [tableData])
+
   
   return (
     <>
@@ -85,6 +89,16 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
                         fields.length !== 1 && 
                         <Button onClick={()=> remove(res.name)} type='primary' danger>删除</Button>
                       }
+                      
+                      <a 
+                        className={styles.confirm}
+                        onClick={()=> { 
+                          const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
+                          multipleList[res.name].name ? setSchemeName(multipleList[res.name].name) : setSchemeName('')
+                          setDisposeVisible(true);  
+                        }}
+                      >
+                        配置通知</a>
                     </Space>
                     {
                       type === 3 ?
@@ -116,6 +130,14 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
             }))
           }}
           skuData={tableData}
+        />
+      }
+      {
+        disposeVisible &&
+        <SchemeName
+          visible={disposeVisible}
+          setVisible={setDisposeVisible}
+          title={schemeName}
         />
       }
     </>
