@@ -243,6 +243,7 @@ const TableList = () => {
             { value: '33', label: '爱心回馈订单' },
             { value: '34', label: '健康礼包订单' },
             { value: '333', label: '健康检测启动单' },
+            { value: '', label: 'AED课程订单' },
           ]}
           fieldProps={{
             style: {
