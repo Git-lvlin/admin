@@ -171,7 +171,8 @@ export default () => {
       valueType: 'option',
       render: (_, record) => [
         <a key='edit' onClick={() => { setDetailData(record);setFormVisible(true) }}>修改</a>,
-        <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>删除</a>
+        <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>删除</a>,
+        <span key='status'>{{ 0:'禁用(下架修改) ', 1:'应用', 2:'手动禁用' }[record?.status]}</span>
       ],
       fixed: 'right'
     },
