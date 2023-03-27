@@ -33,6 +33,18 @@ export default {
       path: '/product-performance-management/finger-doctor-performance',
       component: './product-performance-management/finger-doctor-performance',
       wrappers: [RouteWatcher],
-    }
+    },
+    {
+      name: 'AED-program-performance',
+      path: '/product-performance-management/AED-program-performance',
+      component: './product-performance-management/AED-program-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'AED-course-list',
+      path: '/product-performance-management/AED-course-list',
+      component: './product-performance-management/AED-course-list',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
