@@ -65,23 +65,6 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
             goodsType: res.data.list[0].goodsType,
             goods: newArr
           })
-        } else if(res.data.type === 3) {
-          formRef.current?.setFieldsValue({
-            type: res.data.type,
-            [`multipleList${res.data.type}`]: res?.data?.list.map((item: ListProps) => {
-              const str = item.solution.map(res => {
-                return res.name
-              }).join(' ,  ')
-              const id = item.solution.map(res => {
-                return {
-                  id: Number(res.id),
-                  name: res.name
-                }
-              })
-              obj['goods'] = item.goods.map(item => parseInt(item.spuId))
-              return { ...item, ...obj, solution: str, solutionId: id }
-            })
-          })
         } else {
           formRef.current?.setFieldsValue({
             type: res.data.type,
@@ -95,7 +78,11 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
                   name: res.name
                 }
               })
-              obj['list'] = item.goods
+              if(res.data.type === 3) {
+                obj['goods'] = item.goods.map(item => parseInt(item.spuId))
+              } else {
+                obj['list'] = item.goods
+              }
               return { ...item, ...obj, solution: str, solutionId: id }
             })
           })
