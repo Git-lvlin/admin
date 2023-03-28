@@ -35,6 +35,8 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
       form.current?.setFieldsValue({
         title: data.title,
         content: data.content,
+        isSms: data.isSms,
+        smsContent: data.smsContent,
         time: data.time
       })
     }
@@ -42,7 +44,9 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
 
   const submit = (v: any) => {
     setSubmitVisible(true)
-    setDataSoure(v)
+    const dataSource = JSON.parse(JSON.stringify(v))
+    dataSource['isSms'] = v.isSms ? Number(!!v.isSms[0]) : 0
+    setDataSoure(dataSource)
   }
 
   return (
@@ -81,7 +85,7 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
         />
         <ProFormCheckbox.Group
           label='是否要短信推送'
-          name='isPush'
+          name='isSms'
           options={[{label:'需要推送短信通知', value: true}]}
           fieldProps={{
             onChange: (e) => setMsgVisible(e[0] as boolean)
@@ -102,7 +106,7 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
               })
             ]}
             label='短信内容'
-            name=''
+            name='smsContent'
             fieldProps={{
               maxLength: 50,
               minLength: 8,

@@ -20,6 +20,7 @@ export type ListProps = {
   goods: ListProps[]
   list: ListProps[]
   name: string
+  sms: string
 }
 
 export type symptomListProps = {
@@ -55,4 +56,7 @@ export type schemeNameProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   title?: string
+  index: number
+  formRef: React.MutableRefObject<FormInstance<any> | undefined>
+  type: number
 }

@@ -79,9 +79,7 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
                 }
               })
               obj['goods'] = item.goods.map(item => parseInt(item.spuId))
-              return {
-                ...item, ...obj, solution: str, solutionId: id
-              }
+              return { ...item, ...obj, solution: str, solutionId: id }
             })
           })
         } else {
@@ -98,9 +96,7 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
                 }
               })
               obj['list'] = item.goods
-              return {
-                ...item, ...obj, solution: str, solutionId: id
-              }
+              return { ...item, ...obj, solution: str, solutionId: id }
             })
           })
         }
@@ -128,14 +124,16 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
       v['list'] = v[`multipleList${v.type}`].map((res: ListProps)=>({
         goods: res.goods,
         name: res.name,
-        solution: res.solutionId.map(item => item.id)
+        solution: res.solutionId.map(item => item.id),
+        sms: res.sms
       }))
       delete v[`multipleList${v.type}`]
     } else {
       v['list'] = v[`multipleList${v.type}`].map((res: ListProps)=>({
         goods: res.list.map(item => item.spuId),
         name: res.name,
-        solution: res.solutionId.map(item => item.id)
+        solution: res.solutionId.map(item => item.id),
+        sms: res.sms
       }))
       delete v[`multipleList${v.type}`]
     }

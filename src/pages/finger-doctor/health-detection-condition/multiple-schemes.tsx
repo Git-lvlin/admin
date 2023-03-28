@@ -22,8 +22,9 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
   const [tableData, setTableData] = useState<dataProps[]>([])
   const [idx, setIdx] = useState(0)
 
+  const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
+
   useEffect(()=> {
-    const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
     const str = tableData.map(res=> {
       return res.name
     }).join(' ,  ')
@@ -72,7 +73,7 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
                     fieldProps={{
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
                       onFocus: () => {
-                        const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
+                        
                         multipleList[res.name].solutionId ? setTableData(multipleList[res.name].solutionId) : setTableData([])
                         setVisible(true)
                         setIdx(res.name)
@@ -93,12 +94,13 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
                       <a 
                         className={styles.confirm}
                         onClick={()=> { 
-                          const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
                           multipleList[res.name].name ? setSchemeName(multipleList[res.name].name) : setSchemeName('')
-                          setDisposeVisible(true);  
+                          setIdx(res.name)
+                          setDisposeVisible(true)
                         }}
                       >
-                        配置通知</a>
+                        配置通知
+                      </a>
                     </Space>
                     {
                       type === 3 ?
@@ -138,6 +140,9 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
           visible={disposeVisible}
           setVisible={setDisposeVisible}
           title={schemeName}
+          formRef={formRef}
+          index={idx}
+          type={type}
         />
       }
     </>
