@@ -73,8 +73,8 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
                     fieldProps={{
                       placeholder: '请点击并选择检测列表勾选一个或多个调理的症状，已勾选症状将展示在此',
                       onFocus: () => {
-                        
-                        multipleList[res.name].solutionId ? setTableData(multipleList[res.name].solutionId) : setTableData([])
+                        const list = formRef?.current?.getFieldsValue()[`multipleList${type}`]
+                        list[res.name].solutionId ? setTableData(list[res.name].solutionId) : setTableData([])
                         setVisible(true)
                         setIdx(res.name)
                       },
