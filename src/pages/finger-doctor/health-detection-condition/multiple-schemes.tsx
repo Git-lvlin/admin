@@ -94,6 +94,7 @@ const MultipleSchemes: FC<multipleSchemesProps> = ({formRef, gender, type, name,
                       <a 
                         className={styles.confirm}
                         onClick={()=> { 
+                          const multipleList = formRef?.current?.getFieldsValue()[`multipleList${type}`]
                           multipleList[res.name].name ? setSchemeName(multipleList[res.name].name) : setSchemeName('')
                           setIdx(res.name)
                           setDisposeVisible(true)
