@@ -32,7 +32,7 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
 
   useEffect(()=> {
     form.current?.setFieldsValue({
-      title
+      schemeName: title
     })
   }, [title])
 
@@ -50,6 +50,7 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
       onFinish={async (v)=> {
         const dataSource = JSON.parse(JSON.stringify(v))
         dataSource['isSms'] = v.isSms ? Number(!!v.isSms[0]) : 0
+        delete dataSource['schemeName']
         multipleList[index].sms = dataSource
         formRef.current?.setFieldsValue({
           [`multipleList${type}`]: multipleList
@@ -59,10 +60,30 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
       className={styles.schemeForm}
     >
       <ProFormText
+        label='调理方案名称'
+        name='schemeName'
+        width='md'
+        readonly
+      />
+      <ProFormText
         label='推送消息标题'
         name='title'
         width='md'
-        readonly
+        fieldProps={{
+          maxLength: 30,
+          minLength: 5,
+          placeholder: '请输入5-30个字'
+        }}
+        rules={[
+          () => ({
+            validator(_, value) {
+              if (value&&value.length < 5) {
+                return Promise.reject(new Error('不少于5个字符'))
+              }
+              return Promise.resolve()
+            }
+          })
+        ]}
       />
       <ProFormTextArea
         label='推送消息文案'
