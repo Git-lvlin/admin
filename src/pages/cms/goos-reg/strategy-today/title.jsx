@@ -6,12 +6,12 @@ import { tagSortSub, tagSortInfo } from '@/services/cms/member/member'
 const Title = ({actRef}) => {
   const [value, setValue] = useState(1)
   
-  useEffect(() => {
-    tagSortSub({
-      tagType: 2,
-      sortType: value
-    })
-  }, [value])
+  // useEffect(() => {
+  //   tagSortSub({
+  //     tagType: 2,
+  //     sortType: value
+  //   })
+  // }, [value])
 
   useEffect(() => {
     tagSortInfo({
@@ -23,11 +23,19 @@ const Title = ({actRef}) => {
 
   const randomSort = () => {
     setValue(1)
+    tagSortSub({
+      tagType: 2,
+      sortType: 1
+    })
     actRef?.current?.reload()
   }
 
   const manualSort = () => {
     setValue(2)
+    tagSortSub({
+      tagType: 2,
+      sortType: 2
+    })
     actRef?.current?.reload()
   }
 
