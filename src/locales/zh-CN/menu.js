@@ -95,9 +95,11 @@ export default {
 
   'menu.finger-doctor': '手指医生',
   'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
-  'menu.finger-doctor.device-management-period-management': '设备管理期管理',
+  'menu.finger-doctor.device-management-period-management': '设备管理',
   'menu.finger-doctor.health-detection-record-management': '健康检测记录管理',
   'menu.finger-doctor.report-push-object-config': '报告推送对象配置',
+  'menu.finger-doctor.health-detection-condition-push': '健康检测调理推送',
+  'menu.finger-doctor.health-detection-condition': '健康检测调理配置',
 
   'menu.intensive-activity-management': '集约活动管理',
   'menu.intensive-activity-management.intensive-activity-list': '集约活动列表',
@@ -455,6 +457,11 @@ export default {
   'menu.city-office-management.health-package-performance': '健康套餐业绩',
   'menu.city-office-management.goods-settlement': '指定商品结算单业绩',
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
+  'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
+
+  'menu.aed-subsidiary-corporation': 'AED子公司',
+  'menu.aed-subsidiary-corporation.subsidiary-corporation-management': '子公司管理',
+  // 'menu.aed-subsidiary-corporation.order-performance': '订单业绩',
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',
@@ -469,6 +476,7 @@ export default {
   'menu.product-performance-management.VIP-hydrogen': ' VIP店主购买氢原子业绩',
   'menu.product-performance-management.hydrogen-start-fee': ' 氢原子启动费业绩',
   'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
+  'menu.product-performance-management.finger-doctor-performance': ' 手指医生业绩',
 
   'menu.health-package-activities': '健康套餐活动',
   'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',
