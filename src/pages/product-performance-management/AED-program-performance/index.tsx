@@ -9,7 +9,7 @@ import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
 import PageContainer from '@/components/PageContainer'
-import { storeLifePm, storeLifePmStats } from "@/services/product-performance-management/brand-authorization-fee"
+import { aedCoursesSum, aedCoursesPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
 import styles from "../styles.less"
 import Export from '@/components/export'
@@ -18,7 +18,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
   
   const getData = async () => {
-    await storeLifePmStats({
+    await aedCoursesSum({
       ...form
     }).then(res => {
       setData(res.data)
@@ -32,30 +32,35 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const columns: ProDescriptionsItemProps[] = [
     {
       title: '总业绩金额',
-      dataIndex: '',
+      dataIndex: 'totalAmount',
       render: (_) => `${amountTransform(_, '/')}元`
     },
     {
       title: '总下单用户数量',
-      dataIndex: '',
+      dataIndex: 'totalUsers',
       render: _ => `${_ ? _ : 0}家`
     },
     {
       title: '总销售订单数',
-      dataIndex: '',
+      dataIndex: 'totalOrder',
       render: _ => `${_ ? _ : 0}单`
     },
     {
       title: '销量数量',
-      dataIndex: '',
+      dataIndex: 'totalCount',
       render: _ => `${_ ? _ : 0}台`
+    },
+    {
+      title: '团长人数',
+      dataIndex: 'totalTeamLeaders',
+      render: _ => `${_ ? _ : 0}人`
     }
   ]
 
   return (
     <ProDescriptions
       columns={columns}
-      column={4}
+      column={5}
       bordered
       dataSource={data}
     />
@@ -67,13 +72,10 @@ const AEDProgramPerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState<FormInstance>()
 
   const getFieldsValue = () => {
-    const {payTime, area, ...rest} = form.current?.getFieldsValue()
+    const {payTime, ...rest} = form.current?.getFieldsValue()
     return {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area && area?.[0]?.value,
-      cityId: area && area?.[1]?.value,
-      regionId: area && area?.[2]?.value,
       ...rest
     }
   }
@@ -81,7 +83,7 @@ const AEDProgramPerformance: FC = () => {
   const columns: ProColumns[] = [
     {
       title: '下单人手机号码',
-      dataIndex: 'memberPhone',
+      dataIndex: 'buyerMobile',
       align: 'center'
     },
     {
@@ -104,41 +106,56 @@ const AEDProgramPerformance: FC = () => {
     },
     {
       title: '订单金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'amount',
       align: 'center',
       hideInSearch: true,
       render: _ => amountTransform(_, '/')
     },
     {
       title: '订单状态',
-      dataIndex: '',
+      dataIndex: 'orderStatusDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '数量',
-      dataIndex: '',
+      dataIndex: 'purchaseCount',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '推荐人手机号',
-      dataIndex: 'storeMemberPhone',
+      dataIndex: 'memberMobile',
       align: 'center'
     },
     {
-      title: '子公司手机',
-      dataIndex: '',
+      title: '团长手机号',
+      dataIndex: 'teamLeaderMobile',
       align: 'center',
+    },
+    {
+      title: '团长类型',
+      dataIndex: 'teamLeaderTypeDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '团长类型',
+      dataIndex: 'teamLeaderType',
+      valueType: 'select',
+      valueEnum: {
+        1: '子公司团长',
+        2: '非子公司团长'
+      },
+      hideInTable: true
     },
   ]
 
   return (
     <PageContainer className={styles.desc}>
       <ProTable
-        rowKey='id'
         columns={columns}
-        // request={storeLifePm}
+        request={aedCoursesPage}
         formRef={form}   
         pagination={{
           showQuickJumper: true,
@@ -158,7 +175,7 @@ const AEDProgramPerformance: FC = () => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type=''
+              type='exportAEDCoursesCommissionList'
               conditions={getFieldsValue}
             />
           ]
