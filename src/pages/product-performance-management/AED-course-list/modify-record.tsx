@@ -74,7 +74,7 @@ const ModifyRecord:FC<modifyRecordProps> = ({visible, setVisible, data}) => {
         }}
         options={false}
         request={bankCardInfoLogPage}
-        params={{}}
+        params={{orderNo: data?.orderSn}}
       />
     </Drawer>
   )
