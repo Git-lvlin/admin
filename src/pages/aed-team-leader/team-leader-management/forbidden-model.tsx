@@ -5,21 +5,14 @@ import {
   ModalForm
 } from '@ant-design/pro-form';
 import { delSubsidiary, openSubsidiary } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
@@ -29,6 +22,7 @@ export default (props) => {
   },[])
   return (
     <ModalForm
+      layout="horizontal"
       title={`确认要${msgDetail?.status?'禁用':'启用'} ${msgDetail?.phone} 的业绩状态么?`}
       onVisibleChange={setVisible}
       visible={visible}

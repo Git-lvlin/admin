@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
 
-export const cityBusinessDeptSum = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/sum', {
+export const AEDOrderPmStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/java-admin/report/config/AEDOrderPmStats', {
         method: 'POST',
         data:params,
         ...options
@@ -15,16 +15,15 @@ export const cityBusinessDeptSum = async (params = {}, options = {}) => {
     }
 }
 
-export const listPage = async (params = {}, options = {}) => {
-    const { current, pageSize,createTime,hasTeamLeader, ...rest } = params;
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/listPage', {
+export const AEDOrderPm = async (params = {}, options = {}) => {
+    const { current, pageSize, dateRange, ...rest } = params;
+    const res = await request('/auth/java-admin/report/config/AEDOrderPm', {
       method: 'POST',
       data: {
         page: current,
         size: pageSize,
-        begin:createTime&&createTime[0],
-        end:createTime&&createTime[1],
-        hasTeamLeader:parseInt(hasTeamLeader),
+        startTime:dateRange&&dateRange[0],
+        endTime:dateRange&&dateRange[1],
         ...rest
       },
       ...options
@@ -40,8 +39,8 @@ export const listPage = async (params = {}, options = {}) => {
 
 
 
-export const cityItemOrderSum = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/cityItemOrderSum', {
+export const AEDOrderStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/stats/subsidiary/AEDOrderStats', {
         method: 'POST',
         data:params,
         ...options
@@ -55,16 +54,15 @@ export const cityItemOrderSum = async (params = {}, options = {}) => {
 }
 
 
-export const cityItemOrderListPage = async (params = {}, options = {}) => {
-    const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
-    const res = await request('/auth/java-admin/financial/cityBusinessDept/cityItemOrderListPage', {
+export const AEDOrder = async (params = {}, options = {}) => {
+    const { current, pageSize, dateRange, ...rest } = params;
+    const res = await request('/auth/stats/subsidiary/AEDOrder', {
       method: 'POST',
       data: {
         page: current,
         size: pageSize,
-        begin:dateRange&&dateRange[0],
-        end:dateRange&&dateRange[1],
-        hasTeamLeader:parseInt(hasTeamLeader),
+        startTime:dateRange&&dateRange[0],
+        endTime:dateRange&&dateRange[1],
         ...rest
       },
       ...options
@@ -77,42 +75,3 @@ export const cityItemOrderListPage = async (params = {}, options = {}) => {
       code: res.code
     }
   }
-
-
-export const cityTotalTradeItemListPage = async (params = {}, options = {}) => {
-  const { current, pageSize,dateRange,hasTeamLeader, ...rest } = params;
-  const res = await request('/auth/java-admin/financial/cityBusinessDept/cityTotalTradeItemListPage', {
-    method: 'POST',
-    data: {
-      page: current,
-      size: pageSize,
-      begin:dateRange&&dateRange[0],
-      end:dateRange&&dateRange[1],
-      hasTeamLeader:parseInt(hasTeamLeader),
-      ...rest
-    },
-    ...options
-  });
-
-  return {
-    data: res.data.records,
-    success: true,
-    total: res.data.total,
-    code: res.code
-  }
-}
-
-
-export const cityTotalTradeItemSum = async (params = {}, options = {}) => {
-  const res = await request('/auth/java-admin/financial/cityBusinessDept/cityTotalTradeItemSum', {
-      method: 'POST',
-      data:params,
-      ...options
-  });
-
-  return {
-      data: res.data,
-      success: true,
-      code: res.code
-  }
-}

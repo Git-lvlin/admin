@@ -7,22 +7,15 @@ import {
 import { logList } from "@/services/aed-team-leader/team-leader-management"
 import type { ProColumns } from "@ant-design/pro-table"
 import ProTable from "@ant-design/pro-table"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
@@ -35,7 +28,6 @@ export default (props) => {
     {
       title: '序号',
       dataIndex:'id',
-      valueType: 'borderIndex',
       hideInSearch: true,
       valueType: 'indexBorder'
     },
@@ -67,6 +59,7 @@ export default (props) => {
   ]
   return (
     <DrawerForm
+      layout="horizontal"
       title='操作记录'
       onVisibleChange={setVisible}
       visible={visible}
@@ -109,7 +102,7 @@ export default (props) => {
         request={logList}
         columnEmptyText={false}
         params={{
-          agencyId: msgDetail?.agencyId
+          agencyId: msgDetail?.id
         }}
         pagination={{
           pageSize: 10,

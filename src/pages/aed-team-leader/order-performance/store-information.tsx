@@ -4,10 +4,10 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { AEDOrder,AEDOrderStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem, CumulativeProps, TableProps } from "./data"
-import type { ProColumns } from "@ant-design/pro-table"
+import type { CumulativeProps, DrtailItem } from "./data"
+import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -16,22 +16,14 @@ import moment from "moment";
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 export default (props:CumulativeProps) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState<TableProps>()
-  const ref = useRef()
+  const [time,setTime]=useState<DrtailItem>({})
+  const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
 
   const divideName=()=>{
@@ -45,10 +37,10 @@ export default (props:CumulativeProps) => {
     }
   }
 
-  const Columns: ProColumns<GithubIssueItem>[] = [
+  const Columns: ProColumns[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -61,12 +53,12 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
@@ -82,75 +74,74 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(parseFloat(_)){
+        if(_&&_>0){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '-'
         }
       },
       hideInSearch: true,
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(parseFloat(_)){
+        if(_&&_>0){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '-'
         }
       },
+      hideInTable: type==1
     },
     {
       title: '扣除通道费后收益',
-      dataIndex: 'amount',
+      dataIndex: 'reduceFeeCom',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(parseFloat(_)){
+        if(_&&_>0){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '-'
         }
       },
+      hideInTable: type==1
     }
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1],
-      hasTeamLeader:parseInt(time?.hasTeamLeader)
+      agencyId:msgDetail?.agencyId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      teamPhone:time?.teamPhone
     }
-    cityItemOrderSum(params).then(res=>{
+    AEDOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        type==1? setOrderSum(res?.data?.payAmount):setOrderSum(res?.data?.commssion)
       }
     })
   },[time])
 
-  const getFieldValue = (searchConfig) => {
-    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
+  const getFieldValue = (searchConfig: any) => {
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      hasTeamLeader:parseInt(hasTeamLeader),
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      layout="horizontal"
+      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -167,21 +158,17 @@ export default (props:CumulativeProps) => {
             return []
         }
       }}
-      onFinish={()=>{
-        return false
-      }}
       {...formItemLayout}
       className={styles.store_information}
     >
-       <ProTable<GithubIssueItem>
+       <ProTable
         rowKey="date"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={AEDOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agencyId:msgDetail?.agencyId,
         }}
         pagination={{
           pageSize: 10,
@@ -191,7 +178,7 @@ export default (props:CumulativeProps) => {
           setTime(val)
         }}
         onReset={()=>{
-          setTime()
+          setTime({})
         }}
         options={false}
         search={{
@@ -199,11 +186,11 @@ export default (props:CumulativeProps) => {
             ...dom.reverse(),
             <Export
               key='export'
-              change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'AEDOrderAdm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderAdm'}/>
           ],
         }}
         tableRender={(_, dom) => {

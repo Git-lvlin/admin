@@ -118,6 +118,65 @@ export const logList = async (params = {}, options = {}) => {
 }
 
 
+export const accountCityDetail = async (params = {}, options = {}) => {
+  const res = await request('/auth/agency/subsidiary/detail', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}
+
+export const accountCityEdit = async (params = {}, options = {}) => {
+  const res = await request('/auth/agency/subsidiary/edit', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}
+
+
+export const checkAccount = async (params = {}, options = {}) => {
+  const res = await request('/auth/agency/subsidiary/checkAccount', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}
+
+export const accountCityResetPwd = async (params = {}, options = {}) => {
+  const res = await request('/auth/agency/subsidiary/resetPwd', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}
+
+
+
 
 
 

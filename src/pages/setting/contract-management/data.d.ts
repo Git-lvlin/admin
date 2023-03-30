@@ -102,3 +102,14 @@ export type HealthyLivingPavilionProps = {
   contractId: string
   contractUrl: string
 }
+
+export type AedVolunteerServiceAgreementContract = {
+  buyerId: string;
+  contractId: string;
+  contractUrl: string;
+  createTime: string;
+  orderSn: string;
+  phoneNumber: string;
+  signTime: string;
+  sumOrderId: string;
+}

@@ -6,18 +6,11 @@ import {
   ProFormRadio
 } from '@ant-design/pro-form';
 import { addSubsidiary } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 const checkConfirm = (rule: any, value: string) => {
@@ -30,18 +23,19 @@ const checkConfirm = (rule: any, value: string) => {
   })
 }
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
       form.setFieldsValue({
         accountId:msgDetail?.accountId,
-        agencyId:msgDetail?.agencyId
+        agencyId:msgDetail?.id
       })
   },[])
   return (
     <ModalForm
-      title={<p><strong>录入子公司</strong> <span style={{ color:'#B5B2B2',fontSize:'10px' }}>辅助信息</span></p>}
+      layout="horizontal"
+      title={<p><strong>录入团长</strong> <span style={{ color:'#B5B2B2',fontSize:'10px' }}>辅助信息</span></p>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -86,6 +80,7 @@ export default (props) => {
         width={250}
         label="团长名称"
         name="name"
+        placeholder='请输入团长名称'
       />
       <ProFormRadio.Group
         name="type"

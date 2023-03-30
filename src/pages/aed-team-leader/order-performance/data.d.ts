@@ -1,58 +1,37 @@
 export type DescriptionsProps = {
-  totalTradeCommission: number;
   totalCommission: number;
-  totalSaleCommission: number;
-  totalBuyCommission: number;
-  totalTrainingCommission: number;
-  totalLeaseCommission: number;
-  totalBootCommission: number;
-  totalRentCommission: number;
+  totalPayAmount: number;
 }
 
 export type TableProps = {
-  cityBusinessDeptId: string;
-  cityBusinessDeptName: string;
-  totalTradeCommission: string;
-  totalCommission: string;
-  totalSaleCommission: string;
-  totalBuyCommission: string;
-  totalTrainingCommission: string;
-  totalLeaseCommission: string;
-  createTime:Array,
-  orderType:string,
-  orderNo:string,
+  agencyId: string | undefined;
+  totalCommission: number;
+  totalPayAmount: number;
+  totalCommissionDesc: string;
+  managerPhone: string;
   dateRange:Array
 }
 
-
-export type GithubIssueItem = {
-  orderTime: string;
-  orderNo: string;
-  orderType: string;
-  orderTypeDesc: string;
-  orderAmount: string;
-  buyerMobile: string
-};
-
-
-export type DevicesProps = {
-  msgDetail: {
-    cityBusinessDeptId: String;
-    cityBusinessDeptName: string;
-  }
-  type: string;
+export type Refer = {
+  managerPhone: string;
+  dateRange: Array;
 }
 
-export type Detail = {
-  cityBusinessDeptId: String;
-  managerPhone: string;
+export type DrtailItem = {
+  orderSn?: string; 
+  dateRange?: [string, string]; 
+  teamPhone?: string;
 }
 
 export type CumulativeProps = {
   msgDetail: {
-    cityBusinessDeptId: String;
-    cityBusinessDeptName: string;
-  }
+    agencyId: string | undefined;
+    totalCommission: number;
+    totalPayAmount: number;
+    totalCommissionDesc: string;
+    managerPhone: string;
+    dateRange:Array
+  } | undefined;
   type: number;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;

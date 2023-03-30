@@ -2,25 +2,17 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import {
   ProFormText,
-  DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
+import { accountCityResetPwd } from "@/services/aed-team-leader/team-leader-management"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
@@ -31,6 +23,7 @@ export default (props) => {
   },[])
   return (
     <ModalForm
+      layout="horizontal"
       title={`请确认要重置团长：${msgDetail?.name}（账号：${msgDetail?.accountName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
