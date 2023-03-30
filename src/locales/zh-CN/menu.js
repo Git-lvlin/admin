@@ -463,6 +463,10 @@ export default {
   'menu.aed-subsidiary-corporation.subsidiary-corporation-management': '子公司管理',
   // 'menu.aed-subsidiary-corporation.order-performance': '订单业绩',
 
+  'menu.aed-team-leader': 'AED团长',
+  'menu.aed-team-leader.team-leader-management': '团长管理',
+  'menu.aed-team-leader.order-performance': '订单业绩',
+
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',
   'menu.great-project-team.order-performance': '订单业绩',
