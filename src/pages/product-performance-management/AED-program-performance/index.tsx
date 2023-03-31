@@ -101,7 +101,7 @@ const AEDProgramPerformance: FC = () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     },
     {
