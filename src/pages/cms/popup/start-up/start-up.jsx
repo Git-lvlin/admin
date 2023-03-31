@@ -6,7 +6,7 @@ import ProForm, { ProFormText, ProFormDigit, ProFormRadio, ProFormDateTimePicker
 import { adimgUpdate,adimgAdd } from '@/services/cms/member/member';
 import moment from 'moment';
 
-const HomePopup = ({visible, setVisible, callback, msgDatail}) => {
+const HomePopup = ({visible, setVisible, callback, msgDatail, onclose}) => {
   const [form] = Form.useForm();
   const formRef = useRef();
 
@@ -35,7 +35,7 @@ const HomePopup = ({visible, setVisible, callback, msgDatail}) => {
      <Drawer
       placement="right"
       width={1200}
-      onClose={() => setVisible(false)}
+      onClose={() =>{setVisible(false); onclose()}}
       visible={visible}
       footer={false}
       >

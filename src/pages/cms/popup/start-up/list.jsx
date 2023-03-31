@@ -166,6 +166,7 @@ const columns = [
           setVisible={setVisible}
           msgDatail={msgDatail}
           callback={()=>{ ref.current.reload(); setMsgDatail('') }}
+          onclose={()=>{ setMsgDatail('') }}
         />
       }
     </PageContainer>
