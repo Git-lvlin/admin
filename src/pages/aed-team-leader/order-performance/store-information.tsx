@@ -124,7 +124,7 @@ export default (props:CumulativeProps) => {
     }
     AEDOrderStats(params).then(res=>{
       if(res.code==0){
-        type==1? setOrderSum(res?.data?.payAmount):setOrderSum(res?.data?.commssion)
+        type==1? setOrderSum(res?.data?.[0]?.totalPayAmount):setOrderSum(res?.data?.[0]?.totalCommission)
       }
     })
   },[time])

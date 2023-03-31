@@ -1,39 +1,30 @@
-import React, { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Button, Form, message, Drawer } from 'antd';
-import { PageContainer } from '@/components/PageContainer';
 import ProCard from '@ant-design/pro-card';
 import Upload from '@/components/upload';
 import ProForm, { ProFormText, ProFormDigit, ProFormRadio, ProFormDateTimePicker } from '@ant-design/pro-form';
-import { getStartUp, homePopupUpdate } from '@/services/cms/member/member';
+import { adimgUpdate,adimgAdd } from '@/services/cms/member/member';
 import moment from 'moment';
 
 const HomePopup = ({visible, setVisible, callback, msgDatail}) => {
   const [form] = Form.useForm();
   const formRef = useRef();
-  const [popupInfo, setPopupInfo] = useState(false);
 
   useEffect(() => {
-    if (!popupInfo) {
-      getStartUp().then((res) => {
-        if (res.code === 0 && res.data) {
-          const { img, link, status, stayTime, id } = res.data
-          form.setFieldsValue({
-            stayTime,
-            img,
-            link,
-            status,
-            id,
-          })
-        }
+    if(msgDatail?.id){
+      form.setFieldsValue({
+        ...msgDatail
       })
     }
   }, [])
 
   const submit = (param) => {
-    homePopupUpdate(param).then(res => {
+    const api=msgDatail?.id?adimgUpdate:adimgAdd
+    api({...param,type:1}).then(res => {
       if (res.code === 0) {
-        message.success('保存成功');
+        message.success(msgDatail?.id?'修改成功':'保存成功');
         setVisible(false)
+        callback()
       }
     })
   }
@@ -53,16 +44,7 @@ const HomePopup = ({visible, setVisible, callback, msgDatail}) => {
         form={form}
         onFinish={
           (res) => {
-            console.log('submit', res)
-            const { id, img, link, status, stayTime } = res
-            const param = {
-              id,
-              img,
-              link,
-              status,
-              stayTime
-            }
-            submit(param)
+            submit(res)
           }
         }
         submitter={{
@@ -182,7 +164,7 @@ const HomePopup = ({visible, setVisible, callback, msgDatail}) => {
                 rules={[{ required: true, message: '请选择状态' }]}
                 options={[
                   {
-                    label: '开启',
+                    label: '启用',
                     value: 1,
                   },
                   {

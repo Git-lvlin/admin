@@ -1,60 +1,54 @@
-import { useState } from 'react';
+import { useState,useRef } from 'react';
 import { Button, Image, Modal } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import ProTable from '@ant-design/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import StartUp from './start-up'
+import { adimgList, adimgDeleteByIds, adimgEnableByIds } from '@/services/cms/member/member';
 
 const { confirm } = Modal;
 
-const dataSource = [
-  {
-    id: '1',
-    name: 'Ant Design Pro',
-    image: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-    startTime: '2022-01-01',
-    endTime: '2022-02-01',
-    url: 'https://pro.ant.design',
-    status: 'enabled',
-    operator: 'admin',
-  },
-  {
-    id: '2',
-    name: 'Ant Design Pro Table',
-    image: 'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png',
-    startTime: '2022-02-01',
-    endTime: '2022-03-01',
-    url: 'https://protable.ant.design',
-    status: 'enabled',
-    operator: 'admin',
-  },
-];
 
 export default ()=> {
 const [selectedRowKeys, setSelectedRowKeys] = useState([])
 const [visible, setVisible] = useState(false)
 const [msgDatail, setMsgDatail] = useState()
+const ref=useRef()
 
-const handleEnable = () => {  };
-
-const handleDisable = () => {  };
-    
-const handleDelete = () => {  };
+const handleEnable = (ids,status) => { 
+  adimgEnableByIds({ ids,status }).then((res) => {
+    if(res.code===0){
+      Modal.destroyAll();
+      ref.current.reload();
+      setSelectedRowKeys([])
+    }
+  });
+ };
 
 // 定义showDeleteConfirm方法，弹出确认删除弹窗
 const showDeleteConfirm = (ids) => {
+    if(typeof ids === 'string') ids = [ids];
     confirm({
       title: '确定要执行该操作吗？',
       okText: '删除',
       okType: 'danger',
       cancelText: '取消',
       onOk() {
-        console.log('ids',ids)
-        // 执行删除操作的接口请求
-        // deleteItem(id).then(() => {
-        //   // 接口请求成功后关闭弹窗
-        //   Modal.destroyAll();
-        // });
+        return new Promise((resolve, reject) => {
+          // 执行删除操作的接口请求
+          adimgDeleteByIds({ ids:ids }).then((res) => {
+            // 接口请求成功后关闭弹窗，resolve Promise
+            if(res.code===0){
+              Modal.destroyAll();
+              ref.current.reload();
+              setSelectedRowKeys([])
+              resolve();
+            } else {
+              // 接口请求失败，reject Promise
+              reject();
+            }
+          });
+        });
       },
     });
   };
@@ -79,7 +73,7 @@ const columns = [
   },
   {
     title: '缩略图',
-    dataIndex: 'image',
+    dataIndex: 'img',
     render: (text, record) => (
       <Image src={text} style={{ width: 60 }} />
     ),
@@ -100,7 +94,7 @@ const columns = [
   },
   {
     title: '跳转链接',
-    dataIndex: 'url',
+    dataIndex: 'link',
     render: (text, record) => (
       <a href={text} target="_blank" rel="noopener noreferrer">
         {text}
@@ -113,8 +107,8 @@ const columns = [
     title: '状态',
     dataIndex: 'status', 
     render: (text, record) => ( 
-      <span style={{ color: text === 'enabled' ? '#52c41a' : '#f5222d', fontWeight: 'bold', }} > 
-        {text === 'enabled' ? '启用' : '关闭'}
+      <span> 
+        {text === 1 ? '正常' : '隐藏'}
       </span>
      ),
      align: 'center',
@@ -145,10 +139,11 @@ const columns = [
         rowKey='id'
         options={false}
         columns={columns}
+        actionRef={ref}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
-            <Button key='close' style={{ marginLeft: 8 }} onClick={handleDisable} > 关闭 </Button>,
-            <Button key='start' style={{ marginLeft: 8 }} onClick={handleEnable} > 启用 </Button>,
+            <Button key='close' style={{ marginLeft: 8 }} onClick={()=>{selectedRowKeys.length&&handleEnable(selectedRowKeys,2)}} > 关闭 </Button>,
+            <Button key='start' style={{ marginLeft: 8 }} onClick={()=>{selectedRowKeys.length&&handleEnable(selectedRowKeys,1)}} > 启用 </Button>,
             <Button key='delete' style={{ marginLeft: 8 }} onClick={()=>{ selectedRowKeys.length&&showDeleteConfirm(selectedRowKeys) }} > 批量删除</Button>,
             <Button key='addStartup' type="primary" icon={<PlusOutlined />} onClick={()=>{ setVisible(true) }}> 添加启动页</Button>
           ]
@@ -156,8 +151,7 @@ const columns = [
         pagination={{
           pageSize: 10
         }}
-        dataSource={dataSource}
-        // request={symptom}
+        request={adimgList}
         rowSelection={{
           selectedRowKeys,
           preserveSelectedRowKeys: true,
@@ -171,6 +165,7 @@ const columns = [
           visible={visible}
           setVisible={setVisible}
           msgDatail={msgDatail}
+          callback={()=>{ ref.current.reload(); setMsgDatail('') }}
         />
       }
     </PageContainer>
