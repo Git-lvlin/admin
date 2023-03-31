@@ -21,8 +21,6 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
       form.current?.setFieldsValue({
         title: multipleList[index].sms.title,
         content: multipleList[index].sms.content,
-        isSms: [Boolean(multipleList[index].sms.isSms)],
-        smsContent: multipleList[index].sms.smsContent,
         time: multipleList[index].sms.time
       })
     }

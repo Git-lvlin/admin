@@ -107,17 +107,9 @@ const Scheme: FC<{gender: string}> = ({gender}) => {
       ))
       v['list'] = [{ goods: arr, goodsType: v.goodsType }]
       delete v.goodsType
-    } else if(v.type === 3) {
-      v['list'] = v[`multipleList${v.type}`].map((res: ListProps)=>({
-        goods: res.goods,
-        name: res.name,
-        solution: res.solutionId.map(item => item.id),
-        sms: res.sms
-      }))
-      delete v[`multipleList${v.type}`]
     } else {
       v['list'] = v[`multipleList${v.type}`].map((res: ListProps)=>({
-        goods: res.list.map(item => item.spuId),
+        goods: v.type === 3 ? res.goods : res.list.map(item => item.spuId),
         name: res.name,
         solution: res.solutionId.map(item => item.id),
         sms: res.sms
