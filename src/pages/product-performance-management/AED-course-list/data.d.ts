@@ -15,4 +15,8 @@ export declare type dataProps = {
   orderSn: string
   payTime: string
   orderStatusDesc: string
+  realName: string
+  cardNo: string
+  bankName: string
+  bankBranchName: string
 }

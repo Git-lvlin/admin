@@ -31,6 +31,17 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
     }
   }, [data])
 
+  useEffect(()=>{
+    const obj: {bankCode: string, bankName: string}[] = bankList.filter((res: {bankName: string}) => res.bankName === data?.bankName)
+    form.current?.setFieldsValue({
+      realName: data?.realName,
+      cardNo: data?.cardNo,
+      bankCode: obj[0]?.bankCode,
+      bankName: data?.bankName,
+      bankBranchName: data?.bankBranchName
+    })
+  }, [bankList])
+
   useEffect(()=> {
     const obj: {bankCode: string, bankName: string}[] = bankList.filter((res: {bankCode: string}) => res.bankCode === code)
     form.current?.setFieldsValue({
@@ -53,6 +64,8 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
         ...v,
         operateId: id,
         operator: name
+      },{
+        showSuccess: true
       }).then(res => {
         if(res.code === 0) {
           resolve()
@@ -80,6 +93,7 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
       onVisibleChange={setVisible}
       onFinish={async (values: dataProps)=> {
         await submit(values)
+        return true
       }}
     >
       <ProFormText
