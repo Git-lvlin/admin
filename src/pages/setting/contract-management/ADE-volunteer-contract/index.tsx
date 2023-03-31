@@ -6,52 +6,43 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from "antd"
 import type { TableProps } from "../data"
 
-import { contractPage } from "@/services/setting/contract-management"
+import { contractList } from "@/services/setting/contract-management"
 
 const ADEVolunteerContract: FC = () => {
   const form = useRef<FormInstance>()
 
   const columns: ProColumns<TableProps>[] = [
     {
-      dataIndex: '',
-      hideInTable: true,
-      fieldProps: {
-        placeholder: '请输入姓名或地址'
-      }
-    },
-    {
       title: '序号',
       valueType: 'indexBorder'
     },
     {
       title: '下单时间',
-      dataIndex: '',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '下单人手机',
-      dataIndex: '',
-      align: 'center',
-      hideInSearch: true
+      dataIndex: 'phoneNumber',
+      align: 'center'
     },
     {
       title: '订单号',
-      dataIndex: '',
+      dataIndex: 'orderSn',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '签订时间',
-      dataIndex: '',
+      dataIndex: 'signTime',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '合同ID',
-      dataIndex: '',
+      title: '法大大合同ID',
+      dataIndex: 'contractId',
       align: 'center',
-      hideInSearch: true,
       render: (_, r)=> {
         if(r.contractUrl !== '') {
           return <a target="blank" href={`${r.contractUrl}`}>{_}</a>
@@ -63,26 +54,26 @@ const ADEVolunteerContract: FC = () => {
   ]
 
   return (
-    <>
-      <ProTable<TableProps>
-        rowKey='id'
-        columns={columns}
-        params={{}}
-        // request={}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true
-        }}
-        formRef={form}
-        options={false}
-        search={{
-          labelWidth: 120,
-          optionRender: (searchConfig, props, dom)=> [
-            ...dom.reverse()
-          ]
-        }}
-      />
-    </>
+    <ProTable<TableProps>
+      columns={columns}
+      params={{
+        orderType: 2,
+        subType: 25
+      }}
+      request={contractList}
+      pagination={{
+        pageSize: 10,
+        showQuickJumper: true
+      }}
+      formRef={form}
+      options={false}
+      search={{
+        labelWidth: 120,
+        optionRender: (searchConfig, props, dom)=> [
+          ...dom.reverse()
+        ]
+      }}
+    />
   )
 }
 
