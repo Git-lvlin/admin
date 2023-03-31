@@ -5,6 +5,7 @@ import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from "antd"
+import type { ActionType } from '@ant-design/pro-table'
 
 import PageContainer from '@/components/PageContainer'
 import Export from '@/components/export'
@@ -17,6 +18,7 @@ export default () => {
   const [modifyRecordVisible, setModifyRecordVisible] = useState<boolean>(false)
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldsValue = () => {
     const {payTime, ...rest} = form.current?.getFieldsValue()
@@ -146,6 +148,7 @@ export default () => {
           pageSize: 10
         }}
         options={false}
+        actionRef={actRef}
         search={{
           labelWidth: 160,
           optionRender: (searchConfig, props, dom) => [
@@ -164,6 +167,7 @@ export default () => {
           visible={paymentVisible}
           setVisible={setPaymentVisible}
           data={data}
+          callback={()=> actRef.current?.reload()}
         />
       }
       {

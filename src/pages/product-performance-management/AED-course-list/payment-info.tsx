@@ -12,7 +12,7 @@ import type { paymentInfoProps, dataProps } from './data'
 import { bankCardInfoModify } from '@/services/product-performance-management/AED-course-list'
 import { findAllBanks } from '@/services/financial-management/yeahgo-virtual-account-management'
 
-const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
+const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}) => {
   const [bankList, setBankList] = useState([])
   const [code, setCode] = useState<string>()
   const form = useRef<FormInstance>()
@@ -93,6 +93,7 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
       onVisibleChange={setVisible}
       onFinish={async (values: dataProps)=> {
         await submit(values)
+        callback()
         return true
       }}
     >

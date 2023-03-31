@@ -2,6 +2,7 @@ export type paymentInfoProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: dataProps
+  callback: ()=> void
 }
 
 export type modifyRecordProps = {
