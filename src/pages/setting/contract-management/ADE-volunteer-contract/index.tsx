@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useRef } from "react"
 import ProTable from "@ant-design/pro-table"
 
 import type { FC } from "react"

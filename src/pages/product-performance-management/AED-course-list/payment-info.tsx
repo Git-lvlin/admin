@@ -1,7 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { 
   ModalForm,
-  ProFormText
+  ProFormText,
+  ProFormSelect
 } from '@ant-design/pro-form'
 
 import type { FC } from 'react'
@@ -9,9 +10,11 @@ import type { FormInstance } from 'antd'
 import type { paymentInfoProps, dataProps } from './data'
 
 import { bankCardInfoModify } from '@/services/product-performance-management/AED-course-list'
+import { findAllBanks } from '@/services/financial-management/yeahgo-virtual-account-management'
 
 const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
-
+  const [bankList, setBankList] = useState([])
+  const [code, setCode] = useState<string>()
   const form = useRef<FormInstance>()
   const user = window.localStorage.getItem('user') as string
   const id = JSON.parse(user).id
@@ -27,6 +30,22 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
       })
     }
   }, [data])
+
+  useEffect(()=> {
+    const obj: {bankCode: string, bankName: string}[] = bankList.filter((res: {bankCode: string}) => res.bankCode === code)
+    form.current?.setFieldsValue({
+      bankName: obj[0]?.bankName
+    })
+  }, [code]) 
+
+  useEffect(()=> {
+    findAllBanks().then(res=> {
+      setBankList(res?.data)
+    })
+    return ()=> {
+      setBankList([])
+    }
+  },[])
 
   const submit = (v: dataProps) => {
     return new Promise<void>((resolve, reject) => {
@@ -99,13 +118,21 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data}) => {
            placeholder: '请输入银行卡号'
          }}
       />
+      <ProFormSelect
+        width="md"
+        label="开户银行"
+        name="bankCode"
+        options={bankList?.map((item: {bankName: string, bankCode: string}) => (
+          {label: item.bankName, value: item.bankCode}
+        ))}
+        fieldProps={{
+          placeholder: '请选择开户行',
+          onSelect: (e: string) => setCode(e)
+        }}
+      />
       <ProFormText
-         label='开户行'
-         name='bankName'
-         width='md'
-         fieldProps={{
-           placeholder: '请输入开户行'
-         }}
+        name='bankName'
+        hidden
       />
       <ProFormText
          label='支行名称'
