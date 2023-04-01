@@ -187,10 +187,10 @@ export default (props:CumulativeProps) => {
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'AEDOrderAdm'}
+              type={'AEDOrderPm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderAdm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderPm'}/>
           ],
         }}
         tableRender={(_, dom) => {
