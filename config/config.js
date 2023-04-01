@@ -33,7 +33,6 @@ import HydrogenAtomManagement from './routers/hydrogen-atom-management'
 import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
-import AedSubsidiaryCorporation from './routers/aed-subsidiary-corporation'
 import AedTeamLeader from './routers/aed-team-leader'
 import GreatProjectTeam from './routers/great-project-team'
 import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
@@ -121,7 +120,6 @@ const config = {
             BuriedPoint,
             OfficeManagement,
             CityOfficeManagement,
-            AedSubsidiaryCorporation,
             AedTeamLeader,
             GreatProjectTeam,
             HydrogenAtomGeneration,
