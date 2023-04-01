@@ -101,7 +101,8 @@ const columns = [
       </a>
     ),
     align: 'center',
-    hideInSearch: true
+    hideInSearch: true,
+    ellipsis: true,
   },
   { 
     title: '状态',
