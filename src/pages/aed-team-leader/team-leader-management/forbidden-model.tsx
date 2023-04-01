@@ -4,7 +4,7 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { delSubsidiary, openSubsidiary } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import { delSubsidiary, openSubsidiary } from "@/services/aed-team-leader/team-leader-management"
 import type { CumulativeProps } from "./data"
 
 const formItemLayout = {

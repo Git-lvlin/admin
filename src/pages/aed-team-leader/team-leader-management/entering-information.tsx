@@ -5,7 +5,7 @@ import {
   ModalForm,
   ProFormRadio
 } from '@ant-design/pro-form';
-import { addSubsidiary } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import { addSubsidiary } from "@/services/aed-team-leader/team-leader-management"
 import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
