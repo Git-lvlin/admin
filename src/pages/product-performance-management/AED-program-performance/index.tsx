@@ -93,6 +93,22 @@ const AEDProgramPerformance: FC = () => {
       hideInSearch: true
     }, 
     {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      align: 'center',
+      hideInSearch: true
+    }, 
+    {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      valueType: 'select',
+      valueEnum: {
+        25: 'AED课程订单',
+        26: 'AED区县培训订单'
+      },
+      hideInTable: true
+    }, 
+    {
       title: '支付时间',
       dataIndex: 'payTime', 
       align: 'center',

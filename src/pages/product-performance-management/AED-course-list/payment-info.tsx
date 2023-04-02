@@ -23,7 +23,8 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}
   useEffect(()=> {
     if(data) {
       form.current?.setFieldsValue({
-        mobile: data.buyerMobile,
+        mobile: data.mobile,
+        buyerMobile: data.buyerMobile,
         orderNo: data.orderSn,
         payTime: data.payTime,
         orderStatus: data.orderStatusDesc
@@ -99,7 +100,7 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}
     >
       <ProFormText
         label='下单人手机号'
-        name='mobile'
+        name='buyerMobile'
         readonly
       />
       <ProFormText
@@ -155,6 +156,14 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}
          name='bankBranchName'
          fieldProps={{
            placeholder: '请输入支行名称'
+         }}
+      />
+      <ProFormText
+         label='手机号码'
+         width='md'
+         name='mobile'
+         fieldProps={{
+           placeholder: '请输入手机号码'
          }}
       />
     </ModalForm>

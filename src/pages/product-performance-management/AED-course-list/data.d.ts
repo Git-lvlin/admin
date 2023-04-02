@@ -13,6 +13,7 @@ export type modifyRecordProps = {
 
 export declare type dataProps = {
   buyerMobile: string
+  mobile: string
   orderSn: string
   payTime: string
   orderStatusDesc: string
