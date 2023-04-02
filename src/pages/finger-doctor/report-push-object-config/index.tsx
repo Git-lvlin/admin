@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import ProForm, { ProFormCheckbox } from '@ant-design/pro-form'
+import ProForm, { ProFormCheckbox, ProFormRadio } from '@ant-design/pro-form'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button, message, Spin } from 'antd'
 
@@ -15,43 +15,21 @@ const ReportPushObjectConfig = () => {
   useEffect(()=> {
     setFlag(true)
     getConfig().then(res=> {
-      const data: string[] = []
+     
       if(res.code === 0) {
-        if(res.data.store === 1 && res.data.user === 1) {
-          data.push('推给检测设备所属人', '推给检测人')
-        } else if(res.data.store === 1 && res.data.user === 0) {
-          data.push('推给检测设备所属人')
-        } else if(res.data.store === 0 && res.data.user === 1) {
-          data.push('推给检测人')
-        }
+        form.current?.setFieldsValue({
+          pushUser: res.data?.pushUser
+        })
       }
-      form.current?.setFieldsValue({
-        type: data
-      })
+     
     }).finally(()=> {
       setFlag(false)
     })
   }, [])
 
   const commit = (v: string | any) => {
-    const data = {}
-    if(v.type[0] === '推给检测设备所属人' && v.type[1] === '推给检测人') {
-      data['user'] = 1,
-      data['store'] = 1
-    } else if(v.type[0] === '推给检测设备所属人' && v.type[1] === undefined) {
-      data['store'] = 1,
-      data['user'] = 0
-    } else if(v.type[0] === '推给检测人' && v.type[1] === undefined) {
-      data['store'] = 0,
-      data['user'] = 1
-    } else {
-      data['store'] = 0,
-      data['user'] = 0
-    }
     return new Promise<void>((resolve, reject) => {
-      editConfig({
-        ...data
-      }).then(res => {
+      editConfig({ ...v }).then(res => {
         if(res.code === 0) {
           message.success('提交成功')
           resolve()
@@ -83,11 +61,21 @@ const ReportPushObjectConfig = () => {
               )
             }}
           >
-            <ProFormCheckbox.Group
+            <ProFormRadio.Group
               label='报告推送类型'
-              name='type'
+              name='pushUser'
+              initialValue={1}
               layout='vertical'
-              options={['推给检测设备所属人', '推给检测人']}
+              options={[
+                {
+                  label: '所属人',
+                  value: 1,
+                },
+                {
+                  label: '检测人和所属人',
+                  value: 2,
+                }
+              ]}
             />
           </ProForm>
         </div>
