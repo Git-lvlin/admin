@@ -57,6 +57,17 @@ export default (props:CumulativeProps) => {
       align: 'center',
     },
     {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        'aedCourses': 'AED课程订单',
+        'aedTrain': 'AED区县培训订单',
+      },
+      hideInTable: true
+    },
+    {
       title: '下单人手机号',
       dataIndex: 'memberPhone',
       align: 'center',
@@ -120,7 +131,8 @@ export default (props:CumulativeProps) => {
       orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone
+      teamPhone:time?.teamPhone,
+      orderType:time?.orderType
     }
     AEDOrderStats(params).then(res=>{
       if(res.code==0){
