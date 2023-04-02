@@ -109,7 +109,8 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
         fieldProps={{
           addonBefore:'检测报告生成后',
           addonAfter:"分钟推送",
-          controls: false
+          controls: false,
+          max: 300
         }}
       />
     </ModalForm>

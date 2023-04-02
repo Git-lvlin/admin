@@ -95,7 +95,8 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
           fieldProps={{
             addonBefore:'检测报告生成后',
             addonAfter:"分钟推送",
-            controls: false
+            controls: false,
+            max: 300
           }}
         />
       </DrawerForm>
