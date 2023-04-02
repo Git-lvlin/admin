@@ -123,7 +123,18 @@ export default (props:CumulativeProps) => {
         }
       },
       hideInTable: type==1
-    }
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        'aedCourses': 'AED课程订单',
+        'aedTrain': 'AED区县培训订单',
+      },
+      hideInSearch: true
+    },
   ]
   useEffect(()=>{
     const params={
@@ -199,10 +210,10 @@ export default (props:CumulativeProps) => {
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'AEDOrderPm'}
+              type={type==1?'AEDOrderPm':'AEDOrderAdm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderPm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==1?'AEDOrderPm':'AEDOrderAdm'}/>
           ],
         }}
         tableRender={(_, dom) => {
