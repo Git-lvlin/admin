@@ -3,8 +3,7 @@ import {
   DrawerForm,
   ProFormText, 
   ProFormDigit, 
-  ProFormTextArea,
-  ProFormCheckbox
+  ProFormTextArea
 } from '@ant-design/pro-form'
 
 import type { FC } from 'react'
@@ -76,11 +75,19 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
           label='推送消息标题'
           name='title'
           width='md'
+          rules={[{
+            required: true,
+            message: '请输入推送消息标题'
+          }]}
         />
         <ProFormTextArea
           label='推送消息文案'
           name='content'
           width='md'
+          rules={[{
+            required: true,
+            message: '请输入推送消息文案'
+          }]}
         />
         <ProFormDigit
           label='推送消息时间'

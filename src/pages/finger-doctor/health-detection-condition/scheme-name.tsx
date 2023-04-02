@@ -71,6 +71,7 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
           placeholder: '请输入5-30个字'
         }}
         rules={[
+          {required: true},
           () => ({
             validator(_, value) {
               if (value&&value.length < 5) {
@@ -90,6 +91,7 @@ const SchemeName: FC<schemeNameProps> = ({visible, setVisible, title, index, for
           placeholder: '请输入8-50个字'
         }}
         rules={[
+          {required: true},
           () => ({
             validator(_, value) {
               if (value&&value.length < 8) {
