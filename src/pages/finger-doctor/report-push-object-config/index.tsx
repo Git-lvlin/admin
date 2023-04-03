@@ -68,11 +68,11 @@ const ReportPushObjectConfig = () => {
               layout='vertical'
               options={[
                 {
-                  label: '所属人',
+                  label: '检测设备所属人',
                   value: 1,
                 },
                 {
-                  label: '检测人和所属人',
+                  label: '检测人和设备所属人',
                   value: 2,
                 }
               ]}
