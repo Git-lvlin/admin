@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import ProForm, { ProFormCheckbox, ProFormRadio } from '@ant-design/pro-form'
+import ProForm, { ProFormRadio } from '@ant-design/pro-form'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button, message, Spin } from 'antd'
 
