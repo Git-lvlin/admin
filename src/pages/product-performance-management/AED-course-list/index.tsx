@@ -147,6 +147,7 @@ export default () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        formRef={form}
         options={false}
         actionRef={actRef}
         search={{
