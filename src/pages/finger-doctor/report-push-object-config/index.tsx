@@ -72,7 +72,7 @@ const ReportPushObjectConfig = () => {
                   value: 1,
                 },
                 {
-                  label: '检测人和设备所属人',
+                  label: '检测人和检测设备所属人',
                   value: 2,
                 }
               ]}
