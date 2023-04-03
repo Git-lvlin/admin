@@ -555,7 +555,7 @@ const TableList = () => {
                           <a onClick={() => { setSelectItem(it); setDetailVisible(true); }}>详情</a>
                           {item.businessType !== 30 && !isDocumentary && <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>}
                           {
-                            (orderType === 2&&item.auditStatus === 0) &&
+                            (orderType === 2 && item.auditStatus === 0 && item.wholesaleType === 5) &&
                             <Auth name="order/auditRecord/apply5">
                               <Popconfirm
                                 title="确认操作?"
@@ -575,7 +575,7 @@ const TableList = () => {
                             </Auth>
                           }
                           {
-                            (orderType === 2&&item.auditStatus === 3) &&
+                            (orderType === 2 && item.auditStatus === 3 && item.wholesaleType === 5) &&
                             <Auth name="order/auditRecord/audit5">
                               <Popconfirm
                                 title="确认操作?"
