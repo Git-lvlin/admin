@@ -294,7 +294,7 @@ const Detail = (props) => {
                   detailData?.subType == 25 && <div className={styles.box}>
                     <div>《AED应急救援志愿者服务协议》</div>
                     <div className={detailData?.contractUrl ?'':styles.make}>
-                      {detailData?.contractUrl ? <a href={detailData?.contractUrl} target="_blank">点击查看</a> : '未签写'}
+                      {detailData?.contractUrl ? <a href={detailData?.contractUrl} target="_blank">{detailData?.contractId}</a> : '未签写'}
                     </div>
                   </div>
                 }
