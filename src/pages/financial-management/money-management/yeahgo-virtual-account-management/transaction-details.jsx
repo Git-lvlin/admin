@@ -181,7 +181,7 @@ const TransactionDetails = ({
       dataIndex:'billNo',
       width: '10%',
       render: (_, records) => {
-        const isGoodsOrder = records.orderType === 'hydrogenRent'
+        const isGoodsOrder = records.orderType === 'hydrogenRent' || records.orderType === 'manageFee'
         if(isGoodsOrder) {
           return <span>{_}</span>
         } else {
