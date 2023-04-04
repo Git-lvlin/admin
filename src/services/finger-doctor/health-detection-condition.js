@@ -45,3 +45,12 @@ export const symptom = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 礼包列表
+export const giftPackage = async (params = {}, options = {}) => {
+  return await request('/auth/healthy/fingerDoctor/giftPackage', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

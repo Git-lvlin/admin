@@ -145,12 +145,6 @@ const HealthDetectionConditionPush = () => {
       hideInSearch: true
     },
     {
-      title: '是否推送调理方案',
-      dataIndex: 'isPush',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
       title: '调理商品（款）',
       dataIndex: 'goodsNums',
       align: 'center',
