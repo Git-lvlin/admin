@@ -33,6 +33,8 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
       form.current?.setFieldsValue({
         title: data.title,
         content: data.content,
+        isSms: data.isSms,
+        smsContent: data.smsContent,
         time: data.time
       })
     }
@@ -40,7 +42,9 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
 
   const submit = (v: any) => {
     setSubmitVisible(true)
-    setDataSoure(v)
+    const dataSource = JSON.parse(JSON.stringify(v))
+    dataSource['isSms'] = v.isSms ? Number(!!v.isSms[0]) : 0
+    setDataSoure(dataSource)
   }
 
   return (
@@ -71,19 +75,28 @@ const ConditionSchemeNotificationConfig: FC<NotificationConfigProps> = ({visible
           label='推送消息标题'
           name='title'
           width='md'
+          rules={[{
+            required: true,
+            message: '请输入推送消息标题'
+          }]}
         />
         <ProFormTextArea
           label='推送消息文案'
           name='content'
           width='md'
+          rules={[{
+            required: true,
+            message: '请输入推送消息文案'
+          }]}
         />
         <ProFormDigit
           label='推送消息时间'
           name='time'
           fieldProps={{
-            addonBefore:'调整方案设置完成后',
+            addonBefore:'检测报告生成后',
             addonAfter:"分钟推送",
-            controls: false
+            controls: false,
+            max: 300
           }}
         />
       </DrawerForm>

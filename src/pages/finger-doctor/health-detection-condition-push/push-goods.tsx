@@ -66,8 +66,7 @@ const PushGoods: FC<goodsProps> = ({id, title, setVisible, visible}) => {
             <span>用户手机号：{title?.phone}</span> 
             <span>检测报告编号：
               <a onClick={()=> {setDetailVisible(true); setUrl(title?.reportUrl)}}>{title?.id}</a>
-            </span>  
-            <span>推送时间：{title?.pushTime}</span>
+            </span>
           </div>}
         width={1200}
         footer={<Button type='primary' onClick={()=> setVisible(false)}>返回</Button>}

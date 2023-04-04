@@ -415,7 +415,7 @@ export default (props) => {
                 }}>
                   {detailData?.id?'保存':'提交'}并立即应用
                 </Button>,
-                <Button  type="primary" key="submit" onClick={() => {
+                <Button style={{ display:'none' }}  type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(2)
                 }}>

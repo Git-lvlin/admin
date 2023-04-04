@@ -20,6 +20,8 @@ export type NotificationConfigProps = {
 export type dataProps = {
   title: string
   content: string
+  isSms: boolean,
+  smsContent: string,
   time: string
 }
 
