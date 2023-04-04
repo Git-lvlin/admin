@@ -1,67 +1,50 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { Button, Form, message } from 'antd';
-import { PageContainer } from '@/components/PageContainer';
+import { useRef, useEffect, useState } from 'react';
+import { Button, Form, message, Drawer } from 'antd';
 import ProCard from '@ant-design/pro-card';
 import Upload from '@/components/upload';
-import ProForm, { ProFormText, ProFormDigit, ProFormRadio } from '@ant-design/pro-form';
-import { getStartUp, homePopupUpdate } from '@/services/cms/member/member';
+import ProForm, { ProFormText, ProFormDigit, ProFormRadio, ProFormDateTimePicker } from '@ant-design/pro-form';
+import { adimgUpdate,adimgAdd } from '@/services/cms/member/member';
+import moment from 'moment';
 
-const HomePopup = () => {
+const HomePopup = ({visible, setVisible, callback, msgDatail, onclose}) => {
   const [form] = Form.useForm();
   const formRef = useRef();
-  const [popupInfo, setPopupInfo] = useState(false);
 
   useEffect(() => {
-    if (!popupInfo) {
-      getStartUp().then((res) => {
-        if (res.code === 0 && res.data) {
-          const { img, link, status, stayTime, id } = res.data
-          form.setFieldsValue({
-            stayTime,
-            img,
-            link,
-            status,
-            id,
-          })
-        }
+    if(msgDatail?.id){
+      form.setFieldsValue({
+        ...msgDatail
       })
     }
   }, [])
 
   const submit = (param) => {
-    homePopupUpdate(param).then(res => {
+    const api=msgDatail?.id?adimgUpdate:adimgAdd
+    api({...param,type:1}).then(res => {
       if (res.code === 0) {
-        message.success('保存成功');
+        message.success(msgDatail?.id?'修改成功':'保存成功');
+        setVisible(false)
+        callback()
       }
     })
   }
+  const disabledDate=(current)=>{
+    return current && current < moment().startOf('day');
+  }
   return (
-    <PageContainer
-      header={{
-        title: null,
-        ghost: true,
-      }}
-      footer={[
-        <Button key="1" type="primary" onClick={form.submit}>
-          保存
-        </Button>,
-      ]}
-    >
+     <Drawer
+      placement="right"
+      width={1200}
+      onClose={() =>{setVisible(false); onclose()}}
+      visible={visible}
+      footer={false}
+      >
       <ProForm
         formRef={formRef}
         form={form}
         onFinish={
           (res) => {
-            console.log('submit', res)
-            const { id, img, link, status, stayTime } = res
-            const param = {
-              id,
-              img,
-              link,
-              status,
-              stayTime
-            }
-            submit(param)
+            submit(res)
           }
         }
         submitter={{
@@ -115,32 +98,65 @@ const HomePopup = () => {
             </ProCard>
 
             <ProCard layout="" bordered>
-              <ProForm.Group>
-                <ProFormDigit
-                  name="stayTime"
-                  label="停留时间(秒)"
-                  rules={[{ required: true, message: '请输入1-15之间的停留秒数 整数' }]}
-                  placeholder="请输入1-15之间的停留秒数 整数"
-                />
-              </ProForm.Group>
-              <ProForm.Group>
-                <ProFormText
-                  name="link"
-                  label="跳转链接"
-                  placeholder="请输入点击弹窗跳转的链接地址，不超过80个字符"
-                  rules={[
-                    () => ({
-                      required: false,
-                      validator(_, value) {
-                        if (/\s/g.test(value)) {
-                          return Promise.reject(new Error('链接不能包含空格'));
-                        }
-                        return Promise.resolve();
-                      },
-                    })
-                  ]}
-                />
-              </ProForm.Group>
+              <ProFormDigit
+                name="stayTime"
+                width={350}
+                label="停留时间(秒)"
+                rules={[{ 
+                  required: true, 
+                  message: '请输入1-15之间的停留秒数 整数',
+                  pattern: /^[1-9]$|^1[0-5]$/,
+                }]}
+                placeholder="请输入1-15之间的停留秒数 整数"
+              />
+              <ProFormText
+                width={350}
+                name="link"
+                label="跳转链接"
+                placeholder="请输入点击弹窗跳转的链接地址，不超过80个字符"
+                rules={[
+                  () => ({
+                    required: false,
+                    validator(_, value) {
+                      if (/\s/g.test(value)) {
+                        return Promise.reject(new Error('链接不能包含空格'));
+                      }
+                      return Promise.resolve();
+                    },
+                  })
+                ]}
+                fieldProps={{
+                  maxLength: 80
+                }}
+              />
+              <ProFormText
+                name="name"
+                width={350}
+                label="名称"
+                placeholder="输入名称，最多可输入8个字"
+                rules={[{ required: true, message: '请输入名称' }]}
+                fieldProps={{
+                  maxLength: 8
+                }}
+              />
+              <ProFormDateTimePicker
+                label='开始时间'
+                rules={[{ required: true, message: '请选择限领时间' }]}
+                name="startTime"
+                width={350}
+                fieldProps={{
+                  disabledDate:(current)=>disabledDate(current)
+                }}
+              />
+              <ProFormDateTimePicker
+                label='结束时间'
+                rules={[{ required: true, message: '请选择限领时间' }]}
+                name="endTime"
+                width={350}
+                fieldProps={{
+                  disabledDate:(current)=>disabledDate(current)
+                }}
+              />
               <ProFormRadio.Group
                 name="status"
                 label="状态"
@@ -148,7 +164,7 @@ const HomePopup = () => {
                 rules={[{ required: true, message: '请选择状态' }]}
                 options={[
                   {
-                    label: '开启',
+                    label: '启用',
                     value: 1,
                   },
                   {
@@ -159,19 +175,21 @@ const HomePopup = () => {
               />
 
               <ProForm.Group>
-                开启后才会在用户端显示
+                要设置启用状态才会在指定的时间内生效
               </ProForm.Group>
               <ProFormText
                 name="id"
                 label="id"
                 hidden
               />
+              <Button key="1" type="primary" onClick={form.submit} style={{ marginTop:'20px' }}>
+                保存
+              </Button>
             </ProCard>
           </ProCard>
         </ProCard>
       </ProForm>
-
-    </PageContainer>
+    </Drawer>
   )
 }
 

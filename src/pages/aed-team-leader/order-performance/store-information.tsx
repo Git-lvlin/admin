@@ -4,10 +4,10 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { AEDOrder,AEDOrderStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem, CumulativeProps, TableProps } from "./data"
-import type { ProColumns } from "@ant-design/pro-table"
+import type { CumulativeProps, DrtailItem } from "./data"
+import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -16,22 +16,14 @@ import moment from "moment";
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 export default (props:CumulativeProps) => {
   const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState<TableProps>()
-  const ref = useRef()
+  const [time,setTime]=useState<DrtailItem>({})
+  const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
 
   const divideName=()=>{
@@ -39,36 +31,16 @@ export default (props:CumulativeProps) => {
       case 1:
         return '累计业绩'
       case 2:
-        return '销售提成'
-      case 3:
-        return '托管推广提成'
-      case 4:
-        return '运营推广提成'
-      case 5:
-        return '托管租赁管理费提成'
-      case 6:
-        return '启动费提成'
-      case 7:
-        return '租赁管理费提成'
+        return '提成'
       default:
         return ''
     }
   }
-  const doAway=()=>{
-    switch(type) {
-      case 3: 
-       return true
-      case 4:
-       return true
-      case 5:
-       return true
-    }
-  }
 
-  const Columns: ProColumns<GithubIssueItem>[] = [
+  const Columns: ProColumns[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -80,32 +52,8 @@ export default (props:CumulativeProps) => {
       hideInTable: true,
     },
     {
-      title: '业绩类型',
-      dataIndex: 'hasTeamLeader',
-      align: 'center',
-      valueType: 'select',
-      valueEnum: {
-        0: '没有大团队长',
-        1: '有大团队长'
-      },
-      hideInTable: true,
-      hideInSearch: doAway(),
-    },
-    {
-      title: '业绩类型',
-      dataIndex: 'hasTeamLeader',
-      align: 'center',
-      valueType: 'select',
-      valueEnum: {
-        0: '没有大团队长',
-        1: '有大团队长'
-      },
-      hideInSearch: true,
-      hideInTable: doAway()
-    },
-    {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
@@ -114,79 +62,109 @@ export default (props:CumulativeProps) => {
       align: 'center',
       valueType: 'select',
       valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
-        'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
+        'aedCourses': 'AED课程订单',
+        'aedTrain': 'AED区县培训订单',
       },
       hideInTable: true
     },
     {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
+      title: '下单人手机号',
+      dataIndex: 'memberPhone',
+      align: 'center',
       hideInSearch: true
     },
     {
+      title: '客户手机',
+      dataIndex: 'teamPhone',
+      align: 'center',
+      hideInTable: true,
+      fieldProps: {
+        placeholder:'请输入当前大团队长的客户手机号码'
+      },
+      order: -1
+    },
+    {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(parseFloat(_)){
+        if(_&&_>0){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '-'
         }
       },
       hideInSearch: true,
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(parseFloat(_)){
+        if(_&&_>0){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
-          return _
+          return '-'
         }
       },
-    }
+      hideInTable: type==1
+    },
+    {
+      title: '扣除通道费后收益',
+      dataIndex: 'reduceFeeCom',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInTable: type==1
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        'aedCourses': 'AED课程订单',
+        'aedTrain': 'AED区县培训订单',
+      },
+      hideInSearch: true
+    },
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1],
-      hasTeamLeader:parseInt(time?.hasTeamLeader)
+      agencyId:msgDetail?.agencyId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
+      teamPhone:time?.teamPhone,
+      orderType:time?.orderType
     }
-    cityItemOrderSum(params).then(res=>{
+    AEDOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        type==1? setOrderSum(res?.data?.[0]?.totalPayAmount):setOrderSum(res?.data?.[0]?.totalCommission)
       }
     })
   },[time])
 
-  const getFieldValue = (searchConfig) => {
-    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
+  const getFieldValue = (searchConfig: any) => {
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      hasTeamLeader:parseInt(hasTeamLeader),
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      layout="horizontal"
+      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -203,21 +181,17 @@ export default (props:CumulativeProps) => {
             return []
         }
       }}
-      onFinish={()=>{
-        return false
-      }}
       {...formItemLayout}
       className={styles.store_information}
     >
-       <ProTable<GithubIssueItem>
+       <ProTable
         rowKey="date"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={AEDOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agencyId:msgDetail?.agencyId,
         }}
         pagination={{
           pageSize: 10,
@@ -227,7 +201,7 @@ export default (props:CumulativeProps) => {
           setTime(val)
         }}
         onReset={()=>{
-          setTime()
+          setTime({})
         }}
         options={false}
         search={{
@@ -235,11 +209,11 @@ export default (props:CumulativeProps) => {
             ...dom.reverse(),
             <Export
               key='export'
-              change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={type==1?'AEDOrderPm':'AEDOrderAdm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==1?'AEDOrderPm':'AEDOrderAdm'}/>
           ],
         }}
         tableRender={(_, dom) => {

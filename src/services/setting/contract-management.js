@@ -156,6 +156,8 @@ export const MemberLifeHouse = async (params, options = {}) => {
     success: res.success,
     total: res.data?.total
   }
+<<<<<<< HEAD
+=======
 }
 
 // AED志愿者服务协议合同
@@ -175,4 +177,5 @@ export const contractList = async (params, options = {}) => {
     success: res.success,
     total: res.data?.total
   }
+>>>>>>> 1d10324af09345961cdf1124207f37abc84f7d2c
 }

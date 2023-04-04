@@ -3,19 +3,23 @@ import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps } from "./data"
-// import EditInformation from './edit-information'
-// import ResetPasswords from './reset-passwords'
+import EditInformation from './edit-information'
+import ResetPasswords from './reset-passwords'
 import EnteringInformation from './entering-information'
 import ForbiddenModel from './forbidden-model'
+import OnOffModel from './on-off-model'
+import OperatingRecord from './operating-record'
 
-import { subsidiaryList } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import { subsidiaryList } from "@/services/aed-team-leader/team-leader-management"
 import { Button } from "antd"
 
 export default function TransactionData () {
-  // const [visible, setVisible] = useState<boolean>(false)
-  // const [resetVisible, setResetVisible] = useState<boolean>(false)
+  const [visible, setVisible] = useState<boolean>(false)
+  const [resetVisible, setResetVisible] = useState<boolean>(false)
   const [enteringVisible, setEnteringVisible] = useState<boolean>(false)
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
+  const [onOffVisible, setOnOffVisible] = useState<boolean>(false)
+  const [recordVisible, setRecordVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
   const form = useRef<ActionType>()
   const tableColumns: ProColumns<TableProps>[] = [
@@ -26,20 +30,26 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '子公司手机号',
+      title: '团长手机号',
       dataIndex: 'phone',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入子公司手机号码'
+        placeholder: '请输入团长手机号码'
       }
     },
     {
-      title: '子公司姓名',
+      title: '团长姓名',
       dataIndex: 'name',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入子公司姓名'
+        placeholder: '请输入团长姓名'
       }
+    },
+    {
+      title: '团长类型',
+      dataIndex: 'typeDesc',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '录入时间',
@@ -63,30 +73,42 @@ export default function TransactionData () {
         1: '已启用'
       }
     },
-    // {
-    //   title: '子公司登录账号',
-    //   dataIndex: 'userName',
-    //   align: 'center',
-    //   hideInTable: true,
-    //   fieldProps: {
-    //     placeholder: '请输入子公司登录账号'
-    //   }
-    // },
-    // {
-    //   title: '登录账号',
-    //   dataIndex: 'manager',
-    //   align: 'center',
-    //   hideInSearch: true,
-    // },
+    {
+      title: '登录状态',
+      dataIndex: 'loginStatus',
+      align: 'center',
+      hideInSearch: true,
+      valueEnum: {
+        0: '已禁用',
+        1: '已启用'
+      }
+    },
+    {
+      title: '团长登录账号',
+      dataIndex: 'accountName',
+      align: 'center',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入团长登录账号'
+      }
+    },
+    {
+      title: '登录账号',
+      dataIndex: 'accountName',
+      align: 'center',
+      hideInSearch: true,
+    },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>([
+        <a onClick={()=>{setVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
+        <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>,
         <a onClick={()=>{setForbiddenVisible(true);setMsgDetail(data)}} key='forbidden'>{data?.status?'禁用业绩计算':'启用业绩计算'}</a>,
-        // <a onClick={()=>{setVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
-        // <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>
+        <a onClick={()=>{setOnOffVisible(true);setMsgDetail(data)}} key='onOff'>{data?.loginStatus?'禁用登录':'启用登录'}</a>,
+        <a onClick={()=>{setRecordVisible(true);setMsgDetail(data)}} key='record'>操作记录</a>,
       ])
     },
   ]
@@ -113,7 +135,7 @@ export default function TransactionData () {
           ],
         }}
       />
-      {/* {
+      {
         visible&&
         <EditInformation
           visible={visible}
@@ -132,7 +154,7 @@ export default function TransactionData () {
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
-      } */}
+      }
       {
         enteringVisible&&
         <EnteringInformation
@@ -148,6 +170,26 @@ export default function TransactionData () {
         <ForbiddenModel
           visible={forbiddenVisible}
           setVisible={setForbiddenVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+        />
+      }
+      {
+        onOffVisible&&
+        <OnOffModel
+          visible={onOffVisible}
+          setVisible={setOnOffVisible}
+          msgDetail={msgDetail}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+        />
+      }
+      {
+        recordVisible&&
+        <OperatingRecord
+          visible={recordVisible}
+          setVisible={setRecordVisible}
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}

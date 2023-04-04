@@ -1,3 +1,3 @@
-import StartUp from './start-up';
+import List from './list'
 
-export default StartUp;
+export default List

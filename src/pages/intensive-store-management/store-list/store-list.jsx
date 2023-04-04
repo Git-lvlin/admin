@@ -30,6 +30,7 @@ import IntensiveOrderDetail from '@/pages/order-management/intensive-order/suppl
 
 
 
+
 const exportType = {
   normal: 'community-shopkeeper-export',
   cancelled: 'community-shopkeeper-cancelled-export',
@@ -1128,6 +1129,7 @@ const ShopHealthPackages = (props) => {
   const actionRef = useRef();
   const formRef = useRef();
   const [visible, setVisible] = useState(false);
+  const [sampleOrdervisible, setSampleOrderVisible] = useState(false);
   const [detailVisible, setDetailVisible] = useState(false);
   const [selectItem, setSelectItem] = useState({});
   const isPurchase = location.pathname.includes('purchase')
@@ -1311,7 +1313,7 @@ const ShopHealthPackages = (props) => {
       hideInTable: storeType != 'station_manager',
       render: (_,data) => {
         if(!isNaN(_)){
-          return <a onClick={()=>{ setSelectItem(data); setVisible(true); }}>{_}</a>
+          return <a onClick={()=>{ setSelectItem(data); data?.purchaseOrderType==33?setVisible(true):setSampleOrderVisible(true); }}>{_}</a>
         }else{
           return '-'
         }
@@ -1372,6 +1374,16 @@ const ShopHealthPackages = (props) => {
           setVisible={setVisible}
           isPurchase={isPurchase}
           skuId={selectItem?.purchaseOrderLastSkuId}
+          isDocumentary={isDocumentary}
+        />
+      }
+      {
+        sampleOrdervisible &&
+        <OrderDetail
+          id={selectItem?.purchaseOrderLastSubOrderId}
+          visible={sampleOrdervisible}
+          setVisible={setSampleOrderVisible}
+          isPurchase={isPurchase}
           isDocumentary={isDocumentary}
         />
       }

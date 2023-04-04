@@ -2,36 +2,29 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import {
   ProFormText,
-  DrawerForm,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/city-office-management/city-office-management-list"
+import { accountSwitch } from "@/services/aed-team-leader/team-leader-management"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
       form.setFieldsValue({
-        accountId:msgDetail?.accountId,
-        agencyId:msgDetail?.agencyId
+        ...msgDetail,
+        agencyId: msgDetail?.id
       })
   },[])
   return (
     <ModalForm
-      title={`请确认要重置事业部：${msgDetail?.agencyName}（账号：${msgDetail?.accountName}）的登录密码？`}
+      layout="horizontal"
+      title={`确认要${msgDetail?.loginStatus?'禁用':'启用'} ${msgDetail?.phone} 的登录状态么?`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -43,15 +36,13 @@ export default (props) => {
         }
       }}
       submitter={{
-        render: (props, defaultDoms) => {
-            return [
-            <span style={{display:'inline-block',marginRight:'430px',color:'#979797'}}>重置密码将同步发送给事业部</span>,
-            ...defaultDoms
-            ];
+        searchConfig: {
+          submitText: msgDetail?.loginStatus?'禁用登录':'启用登录',
+          resetText: msgDetail?.loginStatus?'不禁用':'不启用',
         },
       }}
       onFinish={async (values) => {
-        accountCityResetPwd(values).then(res=>{
+        accountSwitch(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -68,7 +59,7 @@ export default (props) => {
         name="agencyId"
         hidden
       />
-      <p style={{padding:'80px 0 80px 40px'}}>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
+      <p><span style={{ color:'red' }}>{msgDetail?.loginStatus?'禁用':'启用'}后此用户即可登录</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
     </ModalForm >
   );
 };

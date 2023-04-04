@@ -4,38 +4,30 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/city-office-management-list"
+import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/aed-team-leader/team-leader-management"
 import md5 from 'blueimp-md5';
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 
-export default (props) => {
+export default (props: CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
+    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.id}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          name:msgDetail?.agencyName,
-          ...res.data
+          ...res.data,
         })
       }
     })
   },[])
-  const checkConfirm2 = (rule, value, callback) => {
-    return new Promise(async (resolve, reject) => {
+  const checkConfirm2 = (rule: any, value: any) => {
+    return new Promise<void>(async (resolve, reject) => {
       checkAccount({userName:value,accountId:msgDetail?.accountId}).then(async res=>{
         if (res.code==0) {
           await resolve()
@@ -47,8 +39,8 @@ export default (props) => {
     })
   }
 
-  const checkConfirm3 = (rule, value, callback) => {
-    return new Promise(async (resolve, reject) => {
+  const checkConfirm3 = (rule: any, value: string | any[]) => {
+    return new Promise<void>(async (resolve, reject) => {
       if (value && value.length<6) {
         await reject('不少于6个字符')
       }else {
@@ -58,6 +50,7 @@ export default (props) => {
   }
   return (
     <DrawerForm
+      layout="horizontal"
       title='基本信息'
       onVisibleChange={setVisible}
       visible={visible}
@@ -100,8 +93,8 @@ export default (props) => {
         hidden
       />
       <ProFormText
-        label="姓名"
-        name="name"
+        label="团长姓名"
+        name="manager"
         readonly
       />
       <ProFormText

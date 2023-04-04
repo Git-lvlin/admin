@@ -4,32 +4,27 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { delSubsidiary, openSubsidiary } from "@/services/aed-subsidiary-corporation/subsidiary-corporation-management"
+import { accountCityResetPwd } from "@/services/aed-team-leader/team-leader-management"
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
       form.setFieldsValue({
-        id:msgDetail?.id,
+        accountId:msgDetail?.accountId,
+        agencyId:msgDetail?.id
       })
   },[])
   return (
     <ModalForm
-      title={`确认要${msgDetail?.status?'禁用':'启用'} ${msgDetail?.phone} 的业绩状态么?`}
+      layout="horizontal"
+      title={`请确认要重置团长：${msgDetail?.name}（账号：${msgDetail?.accountName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -41,14 +36,15 @@ export default (props) => {
         }
       }}
       submitter={{
-        searchConfig: {
-          submitText: msgDetail?.status?'禁用业绩计算':'启用业绩计算',
-          resetText: msgDetail?.status?'不禁用业绩计算':'不启用业绩计算',
+        render: (props, defaultDoms) => {
+            return [
+            <span style={{display:'inline-block',marginRight:'430px',color:'#979797'}}>重置密码将同步发送给团长</span>,
+            ...defaultDoms
+            ];
         },
       }}
       onFinish={async (values) => {
-        const api=msgDetail?.status?delSubsidiary: openSubsidiary
-        api(values).then(res=>{
+        accountCityResetPwd(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -58,10 +54,14 @@ export default (props) => {
       {...formItemLayout}
     >
       <ProFormText
-        name="id"
+        name="accountId"
         hidden
       />
-      <p><span style={{ color:'red' }}>{msgDetail?.status?'禁用':'启用'}后将不计算业绩</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
+      <ProFormText
+        name="agencyId"
+        hidden
+      />
+      <p style={{padding:'80px 0 80px 40px'}}>注意：重置密码后，新密码将立即生效，原密码无法继续使用！</p>
     </ModalForm >
   );
 };
