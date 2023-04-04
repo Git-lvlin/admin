@@ -3,7 +3,7 @@ import type { FormInstance } from 'antd'
 declare const ListTypes: ["single", "multiple"]
 declare type ListType = typeof ListTypes[number]
 
-export type data = {
+export type dataProps = {
   name: string
   id: number
 }
@@ -15,11 +15,12 @@ export type ListProps = {
   isMultiSpec: boolean
   goodsSaleMinPriceDisplay: string
   goodsSaleMaxPriceDisplay: string
-  solution: data[]
-  solutionId: data[]
+  solution: dataProps[]
+  solutionId: dataProps[]
   goods: ListProps[]
   list: ListProps[]
   name: string
+  sms: string
 }
 
 export type symptomListProps = {
@@ -27,7 +28,7 @@ export type symptomListProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   callback: (v: data[])=> void
   gender: string
-  skuData: data[]
+  skuData: dataProps[]
 }
 
 export type singleSchemeProps = {
@@ -35,4 +36,27 @@ export type singleSchemeProps = {
   fieldsName: (string | number)[] | string
   type: ListType
   idx?: number
+  listType?: number
+}
+
+export type giftListProps = {
+  label: string
+  value: number
+}
+
+export type multipleSchemesProps = {
+  formRef: React.MutableRefObject<FormInstance<any> | undefined>
+  gender: string
+  type: number
+  name: (string | number)[] | string
+  giftData: giftListProps[]
+}
+
+export type schemeNameProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  title?: string
+  index: number
+  formRef: React.MutableRefObject<FormInstance<any> | undefined>
+  type: number
 }

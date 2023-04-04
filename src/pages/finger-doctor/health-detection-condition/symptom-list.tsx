@@ -64,6 +64,7 @@ const SymptomList: FC<symptomListProps> = ({visible, setVisible, gender, skuData
       title='请勾选要调理的症状（至少选择一项）：'
       onVisibleChange={setVisible}
       visible={visible}
+      layout='horizontal'
       width={1200}
       onFinish={async() => {
         callback(selectItems)

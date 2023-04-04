@@ -13,7 +13,7 @@ import { goodsSpu } from '@/services/finger-doctor/health-detection-condition'
 
 const { Option } = AutoComplete
 
-const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0}) => {
+const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0, listType}) => {
   const [result, setResult] = useState<ListProps[]>([])
 
   const debounceFetcher =  useMemo(() => {
@@ -28,7 +28,8 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
             goodsName: item.goodsName,
             isMultiSpec: !!Number(item.isMultiSpec),
             goodsSaleMinPriceDisplay: item.goodsSaleMinPriceDisplay,
-            goodsSaleMaxPriceDisplay: item.goodsSaleMaxPriceDisplay
+            goodsSaleMaxPriceDisplay: item.goodsSaleMaxPriceDisplay,
+
           })))
         }
       })
@@ -53,10 +54,10 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
         list: newArr
       })
     } else {
-      const multipleList = formRef?.current?.getFieldsValue().multipleList
+      const multipleList = formRef?.current?.getFieldsValue()[`multipleList${listType}`]
       multipleList[idx].list[j] = { ...arr[0], priceDesc: desc}
       formRef?.current?.setFieldsValue({
-        multipleList
+        [`multipleList${listType}`]: multipleList
       })
     }
   }
@@ -65,7 +66,7 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
     <ProFormList
       name={fieldsName}
       label="调理症状的产品方案"
-      itemRender={({ listDom, action }, { record }) => ({listDom})}
+      itemRender={({ listDom }) => ({listDom})}
       creatorButtonProps={false}
       initialValue={[{}]}
     >
