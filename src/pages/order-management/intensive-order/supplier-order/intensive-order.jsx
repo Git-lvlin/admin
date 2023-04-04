@@ -6,7 +6,7 @@ import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';
 import styles from './style.less';
-import { orderList, refundAllRetailOrders, getPurchaseOrderList, refundOrder, getFollowOrderList } from '@/services/order-management/supplier-order';
+import { orderList, refundAllRetailOrders, getPurchaseOrderList, refundOrder, getFollowOrderList, apply5, audit5 } from '@/services/order-management/supplier-order';
 import { amountTransform } from '@/utils/utils'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -554,23 +554,58 @@ const TableList = () => {
                           {/* <a onClick={() => { history.push(`/order-management/intensive-order/supplier-order-detail${isPurchase ? '-purchase' : ''}/${item.orderId}`) }}>详情</a> */}
                           <a onClick={() => { setSelectItem(it); setDetailVisible(true); }}>详情</a>
                           {item.businessType !== 30 && !isDocumentary && <div><a target="_blank" href={`/order-management/intensive-order/shopkeeper-order?objectId=${item.orderId}`}>查看零售订单</a></div>}
-                          {orderType === 2 && <Auth name="wholesale/storeOrder/refundOrder">
-                            <Popconfirm
-                              title="确认操作?"
-                              onConfirm={() => {
-                                refundOrder({
-                                  orderId: item.orderId
-                                }, { showSuccess: true })
-                                  .then(res => {
-                                    if (res.code === 0) {
-                                      setSearch(search + 1)
-                                    }
-                                  })
-                              }}
-                            >
-                              <a>退款</a>
-                            </Popconfirm>
-                          </Auth>}
+                          {
+                            (orderType === 2 && item.auditStatus === 0 && item.wholesaleType === 5) &&
+                            <Auth name="order/auditRecord/apply5">
+                              <Popconfirm
+                                title="确认操作?"
+                                onConfirm={() => {
+                                  apply5({
+                                    objectId: item.orderId
+                                  }, { showSuccess: true })
+                                    .then(res => {
+                                      if (res.code === 0) {
+                                        setSearch(search + 1)
+                                      }
+                                    })
+                                }}
+                              >
+                                <a>退款申请</a>
+                              </Popconfirm>
+                            </Auth>
+                          }
+                          {
+                            (orderType === 2 && item.auditStatus === 3 && item.wholesaleType === 5) &&
+                            <Auth name="order/auditRecord/audit5">
+                              <Popconfirm
+                                title="确认操作?"
+                                onConfirm={() => {
+                                  audit5({
+                                    objectId: item.orderId,
+                                    action: 'approve'
+                                  }, { showSuccess: true })
+                                    .then(res => {
+                                      if (res.code === 0) {
+                                        setSearch(search + 1)
+                                      }
+                                    })
+                                }}
+                                onCancel={() => {
+                                  audit5({
+                                    objectId: item.orderId,
+                                    action: 'refuse'
+                                  }, { showSuccess: true })
+                                    .then(res => {
+                                      if (res.code === 0) {
+                                        setSearch(search + 1)
+                                      }
+                                    })
+                                }}
+                              >
+                                <a>退款审核</a>
+                              </Popconfirm>
+                            </Auth>
+                          }
                         </div>
                       ))
                     }
