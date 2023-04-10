@@ -135,6 +135,83 @@ export default (props:CumulativeProps) => {
       },
       hideInSearch: true
     },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
+      hideInSearch: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      hideInSearch: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      hideInSearch: true
+    },
   ]
   useEffect(()=>{
     const params={
@@ -143,7 +220,10 @@ export default (props:CumulativeProps) => {
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
       teamPhone:time?.teamPhone,
-      orderType:time?.orderType
+      orderType:time?.orderType,
+      contractStatus:time?.contractStatus,
+      learnStatus:time?.learnStatus,
+      examStatus:time?.examStatus,
     }
     AEDOrderStats(params).then(res=>{
       if(res.code==0){
@@ -205,6 +285,7 @@ export default (props:CumulativeProps) => {
         }}
         options={false}
         search={{
+          labelWidth:120,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Export
@@ -223,6 +304,7 @@ export default (props:CumulativeProps) => {
               <div>
                 累计{type==1?'金额':'收益'}：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
+                <span style={{ marginLeft:'570px', display:type==1? 'none':'inline-block' }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span>
               </div>
             </div>
           </>

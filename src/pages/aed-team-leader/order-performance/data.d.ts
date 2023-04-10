@@ -21,7 +21,10 @@ export type DrtailItem = {
   orderSn?: string; 
   dateRange?: [string, string]; 
   teamPhone?: string;
-  orderType?: string
+  orderType?: string;
+  examStatus?: string;
+  learnStatus?: string;
+  contractStatus?: string;
 }
 
 export type CumulativeProps = {
