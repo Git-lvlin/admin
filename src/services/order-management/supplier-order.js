@@ -65,3 +65,19 @@ export const modifyAddress = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const apply5 = async (params = {}, options = {}) => {
+  return request('/auth/order/auditRecord/apply5', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const audit5 = async (params = {}, options = {}) => {
+  return request('/auth/order/auditRecord/audit5', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

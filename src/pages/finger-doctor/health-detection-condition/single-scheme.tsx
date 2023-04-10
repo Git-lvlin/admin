@@ -66,7 +66,7 @@ const SingleScheme: FC<singleSchemeProps> = ({formRef, fieldsName, type, idx = 0
     <ProFormList
       name={fieldsName}
       label="调理症状的产品方案"
-      itemRender={({ listDom, action }, { record }) => ({listDom})}
+      itemRender={({ listDom }) => ({listDom})}
       creatorButtonProps={false}
       initialValue={[{}]}
     >

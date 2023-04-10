@@ -76,28 +76,32 @@ const bloodData = [
     name: '供应商-货款',
     tip: '销售订单承担通道费',
   },
+  {
+    id: 9,
+    name: '培训中心',
+  },
   // {
   //   id: 9,
   //   name: '运营中心',
   //   tip: '线上记账线下结算,不承担通道费 销售订单：下单人为普通用户，则运营中心无收益，如下单人为店主，则业绩归属于下单店主绑定的运营中心',
   // },
   {
-    id: 9,
+    id: 10,
     name: '省代',
     tip: '线下结算 销售订单按订单收货地址判断业绩归属',
   },
   {
-    id: 10,
+    id: 11,
     name: '市代',
     tip: '线下结算 销售订单按订单收货地址判断业绩归属',
   },
   {
-    id: 11,
+    id: 12,
     name: '全国分红奖',
     tip: '线下结算 每月统计全国各省市的总共业绩（含租赁+销售）前三名',
   },
   {
-    id: 12,
+    id: 13,
     name: '汇能科技',
     tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
   }
@@ -224,6 +228,11 @@ export default (props) => {
               name: '供应商-货款',
               tip: '销售订单承担通道费',
             },
+            {
+              id: 9,
+              name: '培训中心',
+              price: amountTransform(findItem?.trainCenterManageFee, '/')
+            },
             // {
             //   id: 9,
             //   name: '运营中心',
@@ -231,25 +240,25 @@ export default (props) => {
             //   price: amountTransform(findItem?.companyAgent, '/')
             // },
             {
-              id: 9,
+              id: 10,
               name: '省代',
               tip: '线下结算 销售订单按订单收货地址判断业绩归属',
               price: amountTransform(findItem?.provinceAgent, '/')
             },
             {
-              id: 10,
+              id: 11,
               name: '市代',
               tip: '线下结算 销售订单按订单收货地址判断业绩归属',
               price: amountTransform(findItem?.cityAgent, '/')
             },
             {
-              id: 11,
+              id: 12,
               name: '全国分红奖',
               tip: '线下结算 每月统计全国各省市的总共业绩（含租赁+销售）前三名',
               price: amountTransform(findItem?.dividends, '/')
             },
             {
-              id: 12,
+              id: 13,
               name: '汇能科技',
               tip: '没有对应角色的分成归此处,线下结算的角色资金先分账到平台',
             },
@@ -281,11 +290,12 @@ export default (props) => {
       shoppervipManageFee: amountTransform(dataSource[6].price, '*'),
       // companyAgent: amountTransform(dataSource[8].price, '*'),
       companyAgent: 0,
-      provinceAgent: amountTransform(dataSource[8].price, '*'),
-      cityAgent: amountTransform(dataSource[9].price, '*'),
-      dividends: amountTransform(dataSource[10].price, '*'),
+      trainCenterManageFee: amountTransform(dataSource[8].price, '*'),
+      provinceAgent: amountTransform(dataSource[9].price, '*'),
+      cityAgent: amountTransform(dataSource[10].price, '*'),
+      dividends: amountTransform(dataSource[11].price, '*'),
       company: amountTransform(compute(), '*'),
-      extData: dataSource.filter(ele => ele.id > 12).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') })),
+      extData: dataSource.filter(ele => ele.id > 13).map(ele => ({ code: ele.id, name: ele.name, commission: amountTransform(ele.price, '*') })),
     }
     saveCommissionConfig(submitType==1?{status:1,...params}:params).then(res => {
       if (res.code == 0) {
@@ -302,7 +312,7 @@ export default (props) => {
   }, [])
   const compute = () => {
     let sum = 0
-    for (let index = 0; index < 12; index++) {
+    for (let index = 0; index < 13; index++) {
       if (dataSource[index]?.price) {
         sum = sum + parseFloat(dataSource[index]?.price)
       }
@@ -373,7 +383,7 @@ export default (props) => {
                 <p>{recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}元</p>
                 <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价）</p>
               </>
-            } else if (_?.entry?.id == 12) {
+            } else if (_?.entry?.id == 13) {
               return <>
                 <p>{compute()}元</p>
                 <p style={{ color: '#F88000' }}>= 售价  -  前11项之和（随前11项数据即时更新）</p>
@@ -415,7 +425,7 @@ export default (props) => {
                 }}>
                   {detailData?.id?'保存':'提交'}并立即应用
                 </Button>,
-                <Button  type="primary" key="submit" onClick={() => {
+                <Button style={{ display:'none' }}  type="primary" key="submit" onClick={() => {
                   props.form?.submit?.()
                   setSubmitType(2)
                 }}>

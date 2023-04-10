@@ -120,6 +120,14 @@ export default () => {
         return amountTransform(_,'/').toFixed(2)
       }
     },
+    {
+      title: '培训中心',
+      dataIndex: 'trainCenterManageFee',
+      align: 'center',
+      render: (_,data)=>{
+        return amountTransform(_,'/').toFixed(2)
+      },
+    },
     // {
     //   title: '运营中心',
     //   dataIndex: 'companyAgent',
@@ -171,7 +179,8 @@ export default () => {
       valueType: 'option',
       render: (_, record) => [
         <a key='edit' onClick={() => { setDetailData(record);setFormVisible(true) }}>修改</a>,
-        <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>删除</a>
+        <a key='delete' onClick={() => { setDetailData(record);setVisible(true) }}>删除</a>,
+        <span style={{ color:'red' }} key='status'>{{ 0:'禁用(下架修改) ', 1:'生效中', 2:'手动禁用' }[record?.status]}</span>
       ],
       fixed: 'right'
     },

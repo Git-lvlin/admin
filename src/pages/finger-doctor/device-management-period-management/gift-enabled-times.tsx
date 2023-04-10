@@ -16,14 +16,25 @@ const formItemLayout = {
     wrapperCol: { span: 14 }
   };
 
+type paramsItem= {
+  operater: string;
+  storeMobile: string;
+  imei: string;
+  storeName: string;
+  memberPhone: string;
+  freeTimes: string;
+  effectiveDate: string;
+  givenVoucher: string;
+}
+
 const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
   const { visible, setVisible, datailMsg, callback, onClose } = props;
   const [form] = Form.useForm();
   const userInfo = window.localStorage.getItem('user') as string;
   const user = userInfo && JSON.parse(userInfo);
   const [confirmVisible, setConfirmVisible] = useState<boolean>()
-  const [params, setParams] = useState()
-  const [memberPhone, setMemberPhone] = useState()
+  const [params, setParams] = useState<paramsItem>()
+  const [memberPhone, setMemberPhone] = useState<string>()
 
   const checkConfirm = (rule: any, value: string) => {
     return new Promise<void>(async (resolve, reject) => {
@@ -66,12 +77,17 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
         }
       }}
       onFinish={async (values) => {
-        const params={
-          operater: user?.username,
-          ...values
-        }
         setConfirmVisible(true)
-        setParams(params)
+        setParams({
+          operater: user?.username,
+          storeMobile: values.storeMobile,
+          imei: values.imei,
+          storeName: values.storeName,
+          memberPhone: values.memberPhone,
+          freeTimes: values.freeTimes,
+          effectiveDate: values.effectiveDate,
+          givenVoucher: values.givenVoucher
+        })
       }}
       {...formItemLayout}
     >
@@ -156,18 +172,6 @@ const CheckReportConfiguration: React.FC<DetailProps> = (props) => {
       <ProForm.Item
         name='givenVoucher'
         label='上传申请调整启用次数凭证'
-        // rules={[
-        //   {
-        //     required: true,
-        //     validator: (rule, value) => {
-        //       if (!value || value.length < 1) { // 如果文件列表为空
-        //         return Promise.reject('请上传申请调整启用次数的凭证文件');
-        //       } else {
-        //         return Promise.resolve();
-        //       }
-        //     }
-        //   }
-        // ]}
       >
         <Upload multiple maxCount={1} accept="image/*" />
       </ProForm.Item>

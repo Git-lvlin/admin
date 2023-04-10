@@ -825,6 +825,59 @@ export const getAppRedBoxPopup = (params = {}, options = {}) => {
   });
 }
 
+export const adimgList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+  const res = await request('/auth/java-admin/public/adimg/list', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    total: res.data.total,
+  }
+}
+
+export const adimgAdd = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/add', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const adimgUpdate = (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/update', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const adimgDeleteByIds= (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/deleteByIds', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const adimgEnableByIds= (params = {}, options = {}) => {
+  return request('/auth/java-admin/public/adimg/enableByIds', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
 export const getStartUp = (params = {}, options = {}) => {
   return request('/auth/java-admin/public/adimg/boot', {
     method: 'POST',
