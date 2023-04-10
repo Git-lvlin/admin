@@ -65,5 +65,17 @@ export default {
       component: './user-management/hydrogen-atom-user-management',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'AED-volunteer-exam-info',
+      path: '/user-management/AED-volunteer-exam-info',
+      component: './user-management/AED-volunteer-exam-info',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'AED-volunteer-ID-info',
+      path: '/user-management/AED-volunteer-ID-info',
+      component: './user-management/AED-volunteer-ID-info',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

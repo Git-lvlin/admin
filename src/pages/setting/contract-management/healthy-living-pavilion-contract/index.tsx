@@ -43,6 +43,11 @@ const HealthyLivingPavilionContract: FC = () => {
       align: 'center'
     },
     {
+      title: '签订状态',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
       title: '合同ID',
       dataIndex: 'contractId',
       align: 'center',
