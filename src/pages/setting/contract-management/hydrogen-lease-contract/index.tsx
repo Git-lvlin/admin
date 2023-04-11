@@ -64,6 +64,16 @@ const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps
       align: 'center',
     },
     {
+      title: '签订人姓名',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
+      title: '签订人身份证号',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
       title: '合同ID',
       dataIndex: 'contractId',
       align: 'center',
@@ -91,6 +101,7 @@ const HydrogenLeaseContract: FC<LeaseContractProps> = (props: LeaseContractProps
         formRef={form}
         options={false}
         search={{
+          labelWidth: 110,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse()
           ]

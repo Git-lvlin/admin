@@ -14,6 +14,7 @@ const AEDVolunteerIDInfo = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
   const [visible, setVisible] = useState<boolean>(false)
   const [memberPhone, setMemberPhone] = useState<string>()
+  const [orderId, setOrderId] = useState<string>()
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
@@ -108,7 +109,7 @@ const AEDVolunteerIDInfo = () => {
       align: 'center',
       render: (_, r) => (
         <Space size='middle'>
-          <a onClick={() => { setVisible(true); setMemberPhone(r.memberMobile) }}>更新</a>
+          <a onClick={() => { setVisible(true); setMemberPhone(r.memberMobile); setOrderId(r.orderId) }}>更新</a>
         </Space>
       ) 
     }
@@ -150,6 +151,7 @@ const AEDVolunteerIDInfo = () => {
           visible={visible}
           setVisible={setVisible}
           phone={memberPhone}
+          orderId={orderId}
         />
       }
     </PageContainer>

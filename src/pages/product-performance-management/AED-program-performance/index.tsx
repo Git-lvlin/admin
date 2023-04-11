@@ -145,6 +145,11 @@ const AEDProgramPerformance: FC = () => {
       align: 'center'
     },
     {
+      title: '子公司ID',
+      dataIndex: '',
+      align: 'center'
+    },
+    {
       title: '团长手机号',
       dataIndex: 'teamLeaderMobile',
       align: 'center',

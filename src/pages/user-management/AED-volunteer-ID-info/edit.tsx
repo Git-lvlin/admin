@@ -4,28 +4,49 @@ import ProForm, {
   ProFormRadio, 
   ProFormText 
 } from "@ant-design/pro-form"
-import { Image, Space } from "antd"
+import { Image } from "antd"
 
 import type { FC } from 'react'
 import type { FormInstance } from 'antd'
 import type { editProps } from './data'
 
 import Upload from '@/components/upload'
+import { saveAedUserInfo } from '@/services/user-management/AED-volunteer-ID-info'
 
-const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
+const FromWrap: FC<{value?: string, onChange?: ()=> void, content: (value: string, onChange: ()=> void)=> React.ReactNode, right: (value: string)=> React.ReactNode}> = ({ value = '', onChange=()=>{}, content, right }) => (
+  <div style={{ display: 'flex' }}>
+    <div>{content(value, onChange)}</div>
+    <div style={{ flex: 1, marginLeft: 10, minWidth: 180, alignSelf: 'flex-end', marginBottom: '10px'}}>{right(value)}</div>
+  </div>
+)
+
+const Edit: FC<editProps> = ({visible, setVisible, phone, orderId}) => {
   const [imgVisible, setImgVisible] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
-  useEffect(()=> {
-    if(phone) {
-      form.current?.setFieldsValue({
-        memberPhone: phone
-      })
-    }
-  }, [phone])
-
   const URL = 'https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/publicMobile/training-course-examination/ic_aed_certificate.png'
   const IMG_URL = 'https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/publicMobile/training-course-examination/image1.png'
+
+  useEffect(()=> {
+    if(phone && orderId) {
+      form.current?.setFieldsValue({
+        memberPhone: phone,
+        orderId: orderId
+      })
+    }
+  }, [phone, orderId])
+
+  const submit = (values: any) => {
+    return new Promise<void>((resolve, reject) => {
+      saveAedUserInfo(values).then(res => {
+        if(res.code === 0) {
+          resolve()
+        } else {
+          reject()
+        }
+      })
+    })
+  }
 
   return (
     <DrawerForm
@@ -34,8 +55,8 @@ const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
       onVisibleChange={setVisible}
       layout='horizontal'
       onFinish={async (v)=>{
-        console.log(v);
-        
+        await submit(v)
+        return true
       }}
       width={800}
       labelCol={{span: 6}}
@@ -47,8 +68,12 @@ const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
         readonly
       />
       <ProFormText
+        name='orderId'
+        hidden
+      />
+      <ProFormText
         label='用户姓名'
-        name=''
+        name='name'
         rules={[{
           required: true
         }]}
@@ -56,7 +81,7 @@ const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
       />
       <ProFormRadio.Group
         label='用户性别'
-        name=''
+        name='gender'
         options={[
           {label: '男', value: '1'},
           {label: '女', value: '2'},
@@ -67,14 +92,14 @@ const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
       />
       <ProFormRadio.Group
         label='服装尺码'
-        name=''
+        name='clothSize'
         options={[
-          {label: 'M', value: '1'},
-          {label: 'L', value: '2'},
-          {label: 'XL', value: '3'},
-          {label: 'XXL', value: '4'},
-          {label: 'XXXL', value: '5'},
-          {label: 'XXXXL', value: '6'},
+          {label: 'M', value: 'M'},
+          {label: 'L', value: 'L'},
+          {label: 'XL', value: 'XL'},
+          {label: 'XXL', value: 'XXL'},
+          {label: 'XXXL', value: 'XXXL'},
+          {label: 'XXXXL', value: 'XXXXL'},
         ]}
         rules={[{
           required: true
@@ -82,19 +107,21 @@ const Edit: FC<editProps> = ({visible, setVisible, phone}) => {
       />
       <ProForm.Item
         label='证件照片'
-        name=''
+        name='certificateUrl'
         rules={[{
           required: true,
           message: '请上传证件照片'
         }]}
       >
-        <Space size='small'>
-          <Upload/>
-          <div>
-            <div style={{color: '#E18906'}}>请上传一寸蓝底照片！</div>
-            <a onClick={()=> setImgVisible(true)}>查看示例</a>
-          </div>
-        </Space>
+        <FromWrap
+          content={(value: string, onChange: ()=> void) => <Upload value={value} onChange={onChange} />}
+          right={() => (
+            <>
+              <div style={{color: '#E18906'}}>请上传一寸蓝底照片！</div>
+              <a onClick={()=> setImgVisible(true)}>查看示例</a>
+            </>
+          )}
+        />
       </ProForm.Item>
       <ProForm.Item
         label='证件示例'

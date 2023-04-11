@@ -58,6 +58,16 @@ const HydrogenThirdpartnarContract: FC = () => {
       align: 'center',
     },
     {
+      title: '签订人姓名',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
+      title: '签订人身份证号',
+      dataIndex: '',
+      align: 'center',
+    },
+    {
       title: '合同ID',
       dataIndex: 'contractId',
       align: 'center',

@@ -6,42 +6,46 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import Export from '@/components/export'
+import { examResult } from '@/services/user-management/AED-volunteer-ID-info'
 
 const AEDVolunteerExamInfo = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
-    
+    return {
+      ...form.current?.getFieldsValue(),
+      sumOrderIds: selectedKeys
+    }
   }
 
   const columns: ProColumns[] = [
     {
       title: '序号',
-      dataIndex: '',
+      valueType: 'indexBorder',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '手机号码',
-      dataIndex: '',
+      dataIndex: 'phoneNumber',
       align: 'center'
     },
     {
       title: '姓名',
-      dataIndex: '',
+      dataIndex: 'nickName',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '视频学习状态',
-      dataIndex: '',
+      dataIndex: 'isLearnedStr',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '考试状态',
-      dataIndex: '',
+      dataIndex: 'resultStatus',
       hideInTable: true,
       valueType: 'radio',
       valueEnum: {
@@ -51,7 +55,7 @@ const AEDVolunteerExamInfo = () => {
     },
     {
       title: '视频学习状态',
-      dataIndex: '',
+      dataIndex: 'isLearned',
       hideInTable: true,
       valueType: 'radio',
       valueEnum: {
@@ -61,61 +65,61 @@ const AEDVolunteerExamInfo = () => {
     },
     {
       title: '考试状态',
-      dataIndex: '',
+      dataIndex: 'resultStatusStr',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '考试分数',
-      dataIndex: '',
+      dataIndex: 'score',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '考试时间',
-      dataIndex: '',
+      dataIndex: 'examTime',
       align: 'center',
       hideInSearch: true,
     },
     {
-      title: '课程内容',
-      dataIndex: '',
+      title: '课程类型',
+      dataIndex: 'classTypeStr',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '订单号',
-      dataIndex: '',
+      dataIndex: 'sumOrderId',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '订单支付时间',
-      dataIndex: '',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '订单状态',
-      dataIndex: '',
+      dataIndex: 'statusStr',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '所属团长手机',
-      dataIndex: '',
+      dataIndex: 'teamPhone',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '所属团长姓名',
-      dataIndex: '',
+      dataIndex: 'teamName',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '所属团长类型',
-      dataIndex: '',
+      dataIndex: 'teamTypeStr',
       align: 'center',
       hideInSearch: true,
     }
@@ -124,9 +128,9 @@ const AEDVolunteerExamInfo = () => {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey=""
+        rowKey="sumOrderId"
         options={false}
-        // request={}
+        request={examResult}
         formRef={form}
         search={{
           labelWidth: 100,
@@ -134,7 +138,7 @@ const AEDVolunteerExamInfo = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type=''
+              type='export-member-exam-result'
               conditions={getFieldValue}
             />
           ],
