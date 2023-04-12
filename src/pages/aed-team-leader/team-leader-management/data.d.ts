@@ -10,6 +10,7 @@ export type TableProps = {
   type: string;
   typeDesc: string;
   accountId: string;
+  managerPhone: string;
 }
 
 export type CumulativeProps = {
@@ -18,4 +19,23 @@ export type CumulativeProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;
   callback: function;
+}
+
+export type RegimentProps = {
+  listDetail: TableProps  | undefined;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: function;
+  callback: function;
+}
+
+export type EnteringProps = {
+  msgDetail: TableProps  | undefined;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: function;
+  callback: function;
+  type: number;
+  name?: string;
+  subId?: number;
 }

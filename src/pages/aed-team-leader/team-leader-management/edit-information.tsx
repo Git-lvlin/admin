@@ -13,6 +13,16 @@ const formItemLayout = {
     wrapperCol: { span: 14 },
   };
 
+const checkConfirm = (rule: any, value: string) => {
+  return new Promise<void>(async (resolve, reject) => {
+    if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
+      await reject('请输入正确的手机号')
+    }else {
+      await resolve()
+    }
+  })
+}
+
 
 export default (props: CumulativeProps) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
@@ -21,6 +31,7 @@ export default (props: CumulativeProps) => {
     accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.id}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
+          name:msgDetail?.name,
           ...res.data,
         })
       }
@@ -93,13 +104,8 @@ export default (props: CumulativeProps) => {
         hidden
       />
       <ProFormText
-        label="团长姓名"
-        name="manager"
-        readonly
-      />
-      <ProFormText
-        label="手机号"
-        name="managerPhone"
+        label="子公司名称"
+        name="name"
         readonly
       />
       <ProFormText
@@ -109,7 +115,7 @@ export default (props: CumulativeProps) => {
         placeholder='请输入登录账号'
         rules={[
           { required: true, message: '请输入办事处登录账号' },
-          {validator: checkConfirm2}
+          { validator: checkConfirm2 }
         ]}
         fieldProps={{
           maxLength:18
@@ -121,7 +127,7 @@ export default (props: CumulativeProps) => {
         name="password"
         placeholder='请输入登录密码'
         rules={[
-          {validator: checkConfirm3}
+          { validator: checkConfirm3 }
         ]}
         fieldProps={{
           maxLength:18,
@@ -130,6 +136,19 @@ export default (props: CumulativeProps) => {
           autoComplete: 'new-password'
         }}
         extra={<p style={{color:'#FFB45D'}}>未填写时保持已有的密码</p>}
+      />
+      <ProFormText
+        label="负责人"
+        name="manager"
+        rules={[{ required: true, message: '请输入负责人' },]}
+      />
+      <ProFormText
+        label="负责人手机号"
+        name="managerPhone"
+        rules={[
+         { required: true, message: '请输入负责人手机号' },
+         { validator: checkConfirm }
+        ]}
       />
     </DrawerForm >
   );

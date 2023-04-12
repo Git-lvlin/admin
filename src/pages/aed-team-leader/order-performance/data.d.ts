@@ -40,4 +40,5 @@ export type CumulativeProps = {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;
+  activeKey?: string;
 }

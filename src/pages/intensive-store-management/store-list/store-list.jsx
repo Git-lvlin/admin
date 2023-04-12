@@ -243,6 +243,21 @@ const StoreList = (props) => {
       hideInSearch: true,
     },
     {
+      title: 'AED课程VIP状态',
+      dataIndex: 'isJoinLoveFeedback',
+      valueType: 'select',
+      hideInSearch: storeType !== 'normal',
+      hideInTable: storeType !== 'normal',
+      valueEnum: {
+        1: '买AED课程VIP店铺',
+        2: '非买AED课程VIP店铺'
+      },
+      fieldProps: {
+        placeholder:'请选择是否为买AED课程VIP期限店铺'
+      },
+      order:-2
+    },
+    {
       title: '爱心VIP状态',
       dataIndex: 'isJoinLoveFeedback',
       valueType: 'select',
@@ -1249,7 +1264,7 @@ const ShopHealthPackages = (props) => {
         11: 'VIP社区店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈系统建店'
+        33: '爱心回馈系统建店',
       },
       hideInTable: true,
       hideInSearch: storeType != 'love_customer_store',
@@ -1339,6 +1354,52 @@ const ShopHealthPackages = (props) => {
           return '-'
         }
       }
+    },
+    {
+      title: '申请类型',
+      dataIndex: 'applyType',
+      valueType: 'select',
+      valueEnum: {
+        10: '正常申请',
+        11: 'VIP社区店',
+        20: '绿色通道申请',
+        30: '健康生活馆',
+        33: '爱心回馈系统建店',
+        '': '买AED课程系统建店'
+      },
+      hideInTable: true,
+      hideInSearch: storeType != 'buy_AED_course_VIP_shop',
+    },
+    {
+      title: '最近买AED课程名称',
+      dataIndex: 'pgorderLastPackageTitle',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'buy_AED_course_VIP_shop'
+    },
+    {
+      title: '累计购买AED课程金额',
+      dataIndex: 'pgorderSumPayAmount',
+      valueType: 'text',
+      render: (_) => {
+        return amountTransform(_,'/').toFixed(2)
+      },
+      hideInSearch: true, 
+      hideInTable: storeType != 'buy_AED_course_VIP_shop'
+    },
+    {
+      title: '最近购买AED课程时间',
+      dataIndex: 'pgorderLastCreateTime',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'buy_AED_course_VIP_shop'
+    },
+    {
+      title: '店铺编号',
+      dataIndex: 'shopMemberAccount',
+      valueType: 'text',
+      hideInSearch: true,
+      hideInTable: storeType != 'buy_AED_course_VIP_shop'
     },
   ];
   return (
@@ -1450,6 +1511,11 @@ const OverallStore = () => {
         <ProCard.TabPane key="station_manager" tab="健康服务站长">
           {
             activeKey == 'station_manager' && <ShopHealthPackages storeType={activeKey} />
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="buy_AED_course_VIP_shop" tab="买AED课程送VIP店铺">
+          {
+            activeKey == 'buy_AED_course_VIP_shop' && <ShopHealthPackages storeType={activeKey} />
           }
         </ProCard.TabPane>
       </ProCard>

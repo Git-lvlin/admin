@@ -6,20 +6,17 @@ import type { TableProps } from "./data"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 import EnteringInformation from './entering-information'
-import ForbiddenModel from './forbidden-model'
 import OnOffModel from './on-off-model'
-import OperatingRecord from './operating-record'
-
-import { subsidiaryList } from "@/services/aed-team-leader/team-leader-management"
+import HeadRegimentManagement from './head-regiment-management'
+import { subCompanyGetList } from "@/services/aed-team-leader/team-leader-management"
 import { Button } from "antd"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
   const [resetVisible, setResetVisible] = useState<boolean>(false)
   const [enteringVisible, setEnteringVisible] = useState<boolean>(false)
-  const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [onOffVisible, setOnOffVisible] = useState<boolean>(false)
-  const [recordVisible, setRecordVisible] = useState<boolean>(false)
+  const [regimentVisible, setRegimentVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
   const form = useRef<ActionType>()
   const tableColumns: ProColumns<TableProps>[] = [
@@ -30,26 +27,67 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '团长手机号',
-      dataIndex: 'phone',
-      align: 'center',
-      fieldProps: {
-        placeholder: '请输入团长手机号码'
-      }
-    },
-    {
-      title: '团长姓名',
+      title: 'AED子公司名称',
       dataIndex: 'name',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入团长姓名'
+        placeholder: '请输入子公司名称'
+      },
+      hideInTable: true
+    },
+    {
+      title: '类型',
+      dataIndex: 'type',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        1: 'AED子公司',
+        2: 'AED非子公司'
+      },
+      fieldProps: {
+        placeholder: '请选择子公司类型'
       }
     },
     {
-      title: '团长类型',
+      title: '类型',
       dataIndex: 'typeDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '子公司名称',
+      dataIndex: 'name',
+      align: 'center',
+      fieldProps: {
+        placeholder: '请输入子公司名称'
+      },
+      hideInSearch: true
+    },
+    {
+      title: '负责人',
+      dataIndex: 'manager',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '负责人手机',
+      dataIndex: 'managerPhone',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '团长数量',
+      dataIndex: 'teamNum',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data) => {
+        if(_){
+          return <a onClick={()=>{setRegimentVisible(true);setMsgDetail(data)}}>{_}</a>
+        }else{
+          return '-'
+        }
+        
+      }
     },
     {
       title: '录入时间',
@@ -64,16 +102,6 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '业绩状态',
-      dataIndex: 'status',
-      align: 'center',
-      hideInSearch: true,
-      valueEnum: {
-        0: '已禁用',
-        1: '已启用'
-      }
-    },
-    {
       title: '登录状态',
       dataIndex: 'loginStatus',
       align: 'center',
@@ -84,19 +112,12 @@ export default function TransactionData () {
       }
     },
     {
-      title: '团长登录账号',
-      dataIndex: 'accountName',
-      align: 'center',
-      hideInTable: true,
-      fieldProps: {
-        placeholder: '请输入团长登录账号'
-      }
-    },
-    {
       title: '登录账号',
       dataIndex: 'accountName',
       align: 'center',
-      hideInSearch: true,
+      fieldProps: {
+        placeholder: '请输入子公司登录账号'
+      }
     },
     {
       title: '操作',
@@ -106,9 +127,7 @@ export default function TransactionData () {
       render: (_,data)=>([
         <a onClick={()=>{setVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
         <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>,
-        <a onClick={()=>{setForbiddenVisible(true);setMsgDetail(data)}} key='forbidden'>{data?.status?'禁用业绩计算':'启用业绩计算'}</a>,
         <a onClick={()=>{setOnOffVisible(true);setMsgDetail(data)}} key='onOff'>{data?.loginStatus?'禁用登录':'启用登录'}</a>,
-        <a onClick={()=>{setRecordVisible(true);setMsgDetail(data)}} key='record'>操作记录</a>,
       ])
     },
   ]
@@ -118,7 +137,7 @@ export default function TransactionData () {
         headerTitle='列表'
         rowKey="id"
         columns={tableColumns}
-        request={subsidiaryList}
+        request={subCompanyGetList}
         columnEmptyText={false}
         actionRef={form}
         pagination={{
@@ -163,16 +182,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
-        />
-      }
-      {
-        forbiddenVisible&&
-        <ForbiddenModel
-          visible={forbiddenVisible}
-          setVisible={setForbiddenVisible}
-          msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={1}
         />
       }
       {
@@ -183,14 +193,15 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={1}
         />
       }
       {
-        recordVisible&&
-        <OperatingRecord
-          visible={recordVisible}
-          setVisible={setRecordVisible}
-          msgDetail={msgDetail}
+        regimentVisible&&
+        <HeadRegimentManagement
+          visible={regimentVisible}
+          setVisible={setRegimentVisible}
+          listDetail={msgDetail}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />

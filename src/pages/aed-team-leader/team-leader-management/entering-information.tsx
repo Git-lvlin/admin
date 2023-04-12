@@ -5,8 +5,8 @@ import {
   ModalForm,
   ProFormRadio
 } from '@ant-design/pro-form';
-import { addSubsidiary } from "@/services/aed-team-leader/team-leader-management"
-import type { CumulativeProps } from "./data"
+import { addSubsidiary, subCompanyAdd } from "@/services/aed-team-leader/team-leader-management"
+import type { EnteringProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -23,19 +23,20 @@ const checkConfirm = (rule: any, value: string) => {
   })
 }
 
-export default (props:CumulativeProps) => {
-  const { visible, setVisible, callback,msgDetail,onClose} = props;
+export default (props:EnteringProps) => {
+  const { visible, setVisible, callback,msgDetail,onClose,type,name,subId} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
       form.setFieldsValue({
         accountId:msgDetail?.accountId,
-        agencyId:msgDetail?.id
+        agencyId:msgDetail?.id,
+        subId: subId
       })
   },[])
   return (
     <ModalForm
       layout="horizontal"
-      title={<p><strong>录入团长</strong> <span style={{ color:'#B5B2B2',fontSize:'10px' }}>辅助信息</span></p>}
+      title={<p><strong>录入{type==1?'子公司':'团长'}</strong> <span style={{ color:type==1?'#B5B2B2':'red',fontSize:'10px' }}>{type==1?'辅助信息':`所属子公司名称：${name}`}</span></p>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -54,7 +55,8 @@ export default (props:CumulativeProps) => {
         },
       }}
       onFinish={async (values) => {
-        addSubsidiary(values).then(res=>{
+        const api=type==1? subCompanyAdd:addSubsidiary
+        api(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -63,7 +65,62 @@ export default (props:CumulativeProps) => {
       }}
       {...formItemLayout}
     >
-      <ProFormText
+      {
+        type?<ProFormText
+        width={250}
+        label='子公司名称'
+        name="name"
+        placeholder='请输入3-50个字符'
+        fieldProps={{
+          minLength: 3,
+          maxLength: 50
+        }}
+      />:null
+      }
+      {
+        type?<ProFormText
+        width={250}
+        label='负责人'
+        name="manager"
+        placeholder='请输入负责人姓名，6-18个字符'
+        fieldProps={{
+          minLength: 6,
+          maxLength: 8
+        }}
+      />:null
+      }
+      {
+        type?<ProFormText
+        width={250}
+        label='负责人手机'
+        name="managerPhone"
+        placeholder='请输入6-18个字符'
+        rules={[{validator: checkConfirm}]}
+        fieldProps={{
+          minLength: 6,
+          maxLength: 18
+        }}
+      />:null
+      }
+      {
+        type?<ProFormRadio.Group
+        name="type"
+        label='类型'
+        options={[
+          {
+            label: '子公司',
+            value: 1,
+          },
+          {
+            label: '非子公司',
+            value: 2,
+          },
+        ]}
+      />:null
+      }
+
+      {
+        !type&&<ProFormText
         width={250}
         label="团长手机号"
         name="phone"
@@ -76,26 +133,20 @@ export default (props:CumulativeProps) => {
           maxLength:18
         }}
       />
-      <ProFormText
+      }
+     
+      {
+        !type&&<ProFormText
         width={250}
-        label="团长名称"
+        label='团长名称'
         name="name"
         placeholder='请输入团长名称'
       />
-      <ProFormRadio.Group
-        name="type"
-        label="团长类型"
-        rules={[{ required: true, message: '请选择团长类型' },]}
-        options={[
-          {
-            label: '子公司团长',
-            value: 1,
-          },
-          {
-            label: '非子公司团长',
-            value: 2,
-          },
-        ]}
+      }
+      
+      <ProFormText
+        name="subId"
+        hidden
       />
     </ModalForm >
   );
