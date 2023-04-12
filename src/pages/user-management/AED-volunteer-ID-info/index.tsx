@@ -73,19 +73,19 @@ const AEDVolunteerIDInfo = () => {
       }
     },
     {
-      title: '录入人',
+      title: '最近操作人',
       dataIndex: 'memberName',
       align: 'center',
       hideInSearch: true,
     },
     {
-      title: '录入时间',
+      title: '最近操作时间',
       dataIndex: 'createTimeStr',
       align: 'center',
       hideInSearch: true,
     },
     {
-      title: '所属团长手机',
+      title: '所属团长手机号',
       dataIndex: 'teamPhone',
       align: 'center',
       hideInSearch: true,
