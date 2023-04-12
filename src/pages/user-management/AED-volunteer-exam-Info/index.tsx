@@ -90,7 +90,7 @@ const AEDVolunteerExamInfo = () => {
     },
     {
       title: '订单号',
-      dataIndex: 'sumOrderId',
+      dataIndex: 'subOrderSn',
       align: 'center',
       hideInSearch: true,
     },
