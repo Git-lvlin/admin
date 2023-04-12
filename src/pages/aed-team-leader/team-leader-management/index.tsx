@@ -41,8 +41,8 @@ export default function TransactionData () {
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: 'AED子公司',
-        2: 'AED非子公司'
+        1: '子公司',
+        2: '非子公司'
       },
       fieldProps: {
         placeholder: '请选择子公司类型'

@@ -108,7 +108,7 @@ export default function TransactionData (props:RegimentProps) {
       }}
       {...formItemLayout}    
     >
-      <p>子公司名称：{listDetail?.name}</p>
+      <p>子公司名称：{listDetail?.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 类型：{listDetail?.typeDesc}</p>
       <ProTable<TableProps>
         headerTitle='列表'
         rowKey="id"
