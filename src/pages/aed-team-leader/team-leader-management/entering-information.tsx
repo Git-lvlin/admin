@@ -82,11 +82,7 @@ export default (props:EnteringProps) => {
         width={250}
         label='负责人'
         name="manager"
-        placeholder='请输入负责人姓名，6-18个字符'
-        fieldProps={{
-          minLength: 6,
-          maxLength: 8
-        }}
+        placeholder='请输入负责人姓名'
       />:null
       }
       {
@@ -94,12 +90,8 @@ export default (props:EnteringProps) => {
         width={250}
         label='负责人手机'
         name="managerPhone"
-        placeholder='请输入6-18个字符'
+        placeholder='请输入'
         rules={[{validator: checkConfirm}]}
-        fieldProps={{
-          minLength: 6,
-          maxLength: 18
-        }}
       />:null
       }
       {

@@ -81,12 +81,7 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
-        if(_){
-          return <a onClick={()=>{setRegimentVisible(true);setMsgDetail(data)}}>{_}</a>
-        }else{
-          return '-'
-        }
-        
+        return <a onClick={()=>{setRegimentVisible(true);setMsgDetail(data)}}>{_}</a> 
       }
     },
     {
