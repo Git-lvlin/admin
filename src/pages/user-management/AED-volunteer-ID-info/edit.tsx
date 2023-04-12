@@ -81,6 +81,10 @@ const Edit: FC<editProps> = ({visible, setVisible, data}) => {
         rules={[{
           required: true
         }]}
+        fieldProps={{
+          placeholder: '请输入用户姓名,不超过12个字符',
+          maxLength: 12
+        }}
         width='md'
       />
       <ProFormRadio.Group
