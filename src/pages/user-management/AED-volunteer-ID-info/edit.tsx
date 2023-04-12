@@ -31,7 +31,7 @@ const Edit: FC<editProps> = ({visible, setVisible, data}) => {
     if(data) {
       form.current?.setFieldsValue({
         memberPhone: data.memberMobile,
-        orderId: data.orderId,
+        orderId: data.orderSn,
         name: data.name,
         gender: data.gender,
         clothSize: data.clothSize,

@@ -26,7 +26,7 @@ const AEDVolunteerIDInfo = () => {
   const columns: ProColumns[] = [
     {
       title: '订单号',
-      dataIndex: 'orderId',
+      dataIndex: 'orderSn',
       align: 'center',
       hideInSearch: true
     },
