@@ -20,7 +20,7 @@ const FromWrap: FC<{value?: string, onChange?: ()=> void, content: (value: strin
   </div>
 )
 
-const Edit: FC<editProps> = ({visible, setVisible, phone, orderId}) => {
+const Edit: FC<editProps> = ({visible, setVisible, data}) => {
   const [imgVisible, setImgVisible] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
@@ -28,13 +28,17 @@ const Edit: FC<editProps> = ({visible, setVisible, phone, orderId}) => {
   const IMG_URL = 'https://dev-yeahgo.oss-cn-shenzhen.aliyuncs.com/publicMobile/training-course-examination/image1.png'
 
   useEffect(()=> {
-    if(phone && orderId) {
+    if(data) {
       form.current?.setFieldsValue({
-        memberPhone: phone,
-        orderId: orderId
+        memberPhone: data.memberMobile,
+        orderId: data.orderId,
+        name: data.name,
+        gender: data.gender,
+        clothSize: data.clothSize,
+        certificateUrl: data.certificateUrl
       })
     }
-  }, [phone, orderId])
+  }, [data])
 
   const submit = (values: any) => {
     return new Promise<void>((resolve, reject) => {
@@ -83,8 +87,8 @@ const Edit: FC<editProps> = ({visible, setVisible, phone, orderId}) => {
         label='用户性别'
         name='gender'
         options={[
-          {label: '男', value: '1'},
-          {label: '女', value: '2'},
+          {label: '男', value: 1},
+          {label: '女', value: 2},
         ]}
         rules={[{
           required: true
