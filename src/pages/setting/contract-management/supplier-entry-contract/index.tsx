@@ -41,6 +41,7 @@ import styles from "../styles.less"
 import OperationLog from "./operation-log"
 import EditContract from "./edit-contract"
 import Upload from "@/components/upload"
+import Export from '@/components/export'
 
 const SupplierEntryContract: FC = () => {
   const [showAdd, setShowAdd] = useState<boolean>(false)
@@ -53,6 +54,7 @@ const SupplierEntryContract: FC = () => {
   const [contractId, setContractId] = useState<string>()
   const [editVisible, setEditVisible] = useState<boolean>(false)
   const actRef = useRef<ActionType>()
+  const form = useRef<FormInstance>()
 
   const openMiniQr = (e: string) => {
     getMiniQr({contractId: e}).then(res => {
@@ -75,13 +77,16 @@ const SupplierEntryContract: FC = () => {
     setEditVisible(true)
   }
 
+  const getFields = () => {
+    const { signDate, ...rest } = form.current?.getFieldsValue()
+    return  {
+      signDteStart: signDate && moment(signDate[0]).unix(),
+      signDteEnd: signDate && moment(signDate[1]).unix(),
+      ...rest
+    }
+  }
+
   const columns: ProColumns<TableProps>[] = [
-    {
-      title: 'id',
-      dataIndex: 'id',
-      hideInTable: true,
-      hideInSearch: true
-    },
     {
       title: '编号',
       dataIndex: 'pactNo',
@@ -301,13 +306,19 @@ const SupplierEntryContract: FC = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        formRef={form}
         actionRef={actRef}
         options={false}
         search={{
           labelWidth: 100,
           optionRender: (searchConfig, props, dom)=> [
             ...dom.reverse(),
-            <Button key='add' onClick={()=>{setShowAdd(true); setData(undefined)}}>新建</Button>
+            <Button key='add' onClick={()=>{setShowAdd(true); setData(undefined)}}>新建</Button>,
+            <Export
+              type='supplierContract'
+              conditions={getFields}
+              key='export'
+            />
           ]
         }}
       />

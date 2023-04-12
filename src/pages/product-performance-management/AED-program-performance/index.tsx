@@ -146,7 +146,7 @@ const AEDProgramPerformance: FC = () => {
     },
     {
       title: '子公司ID',
-      dataIndex: '',
+      dataIndex: 'subCompanyId',
       align: 'center'
     },
     {
