@@ -10,7 +10,7 @@ import type { FormInstance } from 'antd'
 import type { paymentInfoProps, dataProps } from './data'
 
 import { bankCardInfoModify } from '@/services/product-performance-management/AED-course-list'
-import { findAllBanks } from '@/services/financial-management/yeahgo-virtual-account-management'
+import { getBanks } from '@/services/supplier-management/supplier-list'
 
 const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}) => {
   const [bankList, setBankList] = useState([])
@@ -33,26 +33,26 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}
   }, [data])
 
   useEffect(()=>{
-    const obj: {bankCode: string, bankName: string}[] = bankList.filter((res: {bankName: string}) => res.bankName === data?.bankName)
+    const obj: {value: string, bankName: string}[] = bankList.filter((res: {label: string}) => res.label === data?.bankName)
     form.current?.setFieldsValue({
       realName: data?.realName,
       cardNo: data?.cardNo,
-      bankCode: obj[0]?.bankCode,
+      bankCode: obj[0]?.value,
       bankName: data?.bankName,
       bankBranchName: data?.bankBranchName
     })
   }, [bankList])
 
   useEffect(()=> {
-    const obj: {bankCode: string, bankName: string}[] = bankList.filter((res: {bankCode: string}) => res.bankCode === code)
+    const obj: {label: string}[] = bankList.filter((res: {value: string}) => res.value === code)
     form.current?.setFieldsValue({
-      bankName: obj[0]?.bankName
+      bankName: obj[0]?.label
     })
   }, [code]) 
 
   useEffect(()=> {
-    findAllBanks().then(res=> {
-      setBankList(res?.data)
+    getBanks().then(res=> {
+      setBankList(res)
     })
     return ()=> {
       setBankList([])
@@ -138,9 +138,7 @@ const PaymentInfo: FC<paymentInfoProps> = ({visible, setVisible, data, callback}
         width="md"
         label="开户银行"
         name="bankCode"
-        options={bankList?.map((item: {bankName: string, bankCode: string}) => (
-          {label: item.bankName, value: item.bankCode}
-        ))}
+        options={bankList}
         fieldProps={{
           placeholder: '请选择开户行',
           onSelect: (e: string) => setCode(e)
