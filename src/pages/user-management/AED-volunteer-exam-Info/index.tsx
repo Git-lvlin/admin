@@ -89,6 +89,12 @@ const AEDVolunteerExamInfo = () => {
       hideInSearch: true,
     },
     {
+      title: '订单类型',
+      dataIndex: 'subTypeStr',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '订单支付时间',
       dataIndex: 'payTime',
       align: 'center',

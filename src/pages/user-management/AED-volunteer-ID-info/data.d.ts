@@ -3,7 +3,7 @@ export type editProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: {
     memberMobile: string
-    orderSn: string
+    orderId: string
     name: string
     certificateUrl: string
     gender: number
