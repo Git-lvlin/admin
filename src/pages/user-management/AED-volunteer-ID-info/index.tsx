@@ -40,7 +40,13 @@ const AEDVolunteerIDInfo = () => {
       dataIndex: 'certificateUrl',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => <Image src={r.certificateUrl} width={50} height={50}/>
+      render: (_, r) => {
+        if(r.certificateUrl) {
+          return <Image src={r.certificateUrl} width={50} height={50}/>
+        } else {
+          return <span>-</span>
+        }
+      }
     },
     {
       title: '姓名',
@@ -74,7 +80,7 @@ const AEDVolunteerIDInfo = () => {
     },
     {
       title: '最近操作人',
-      dataIndex: 'memberName',
+      dataIndex: 'lastEditor',
       align: 'center',
       hideInSearch: true,
     },
