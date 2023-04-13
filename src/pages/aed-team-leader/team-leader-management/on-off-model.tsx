@@ -60,7 +60,7 @@ export default (props:EnteringProps) => {
         name="agencyId"
         hidden
       />
-      <p><span style={{ color:'red' }}>{msgDetail?.loginStatus?'禁用':'启用'}后此用户即可登录</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
+      <p><span style={{ color:'red' }}>{msgDetail?.loginStatus?'禁用后此用户不可登录':'启用后此用户即可登录'}</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
     </ModalForm >
   );
 };
