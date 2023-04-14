@@ -61,7 +61,7 @@ const AEDVolunteerExamInfo = () => {
       valueType: 'radio',
       valueEnum: {
         1: '已学习',
-        0: '未学习'
+        2: '未学习'
       }
     },
     {
