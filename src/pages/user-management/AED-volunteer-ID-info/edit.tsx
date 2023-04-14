@@ -20,7 +20,7 @@ const FromWrap: FC<{value?: string, onChange?: ()=> void, content: (value: strin
   </div>
 )
 
-const Edit: FC<editProps> = ({visible, setVisible, data}) => {
+const Edit: FC<editProps> = ({visible, setVisible, data, callback}) => {
   const [imgVisible, setImgVisible] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
@@ -42,8 +42,9 @@ const Edit: FC<editProps> = ({visible, setVisible, data}) => {
 
   const submit = (values: any) => {
     return new Promise<void>((resolve, reject) => {
-      saveAedUserInfo(values).then(res => {
+      saveAedUserInfo(values, {showSuccess: true}).then(res => {
         if(res.code === 0) {
+          callback()
           resolve()
         } else {
           reject()

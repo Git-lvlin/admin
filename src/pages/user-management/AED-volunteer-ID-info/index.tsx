@@ -3,7 +3,7 @@ import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import { Space, Image } from 'antd'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type{ FormInstance } from 'antd'
 
 import Export from '@/components/export'
@@ -15,6 +15,7 @@ const AEDVolunteerIDInfo = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldValue = () => {
     return {
@@ -127,6 +128,7 @@ const AEDVolunteerIDInfo = () => {
         options={false}
         request={getAedUserInfoListByParams}
         formRef={form}
+        actionRef={actRef}
         search={{
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
@@ -156,6 +158,7 @@ const AEDVolunteerIDInfo = () => {
           visible={visible}
           setVisible={setVisible}
           data={data}
+          callback={()=> actRef.current?.reload()}
         />
       }
     </PageContainer>
