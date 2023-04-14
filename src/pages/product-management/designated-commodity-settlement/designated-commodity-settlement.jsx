@@ -120,6 +120,14 @@ export default () => {
         return amountTransform(_,'/').toFixed(2)
       }
     },
+    {
+      title: '培训中心',
+      dataIndex: 'trainCenterManageFee',
+      align: 'center',
+      render: (_,data)=>{
+        return amountTransform(_,'/').toFixed(2)
+      },
+    },
     // {
     //   title: '运营中心',
     //   dataIndex: 'companyAgent',
