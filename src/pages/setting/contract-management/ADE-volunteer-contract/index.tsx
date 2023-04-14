@@ -39,21 +39,21 @@ const ADEVolunteerContract: FC = () => {
       align: 'center',
       hideInSearch: true
     },
-    {
-      title: '签订状态',
-      dataIndex: '',
-      align: 'center',
-    },
-    {
-      title: '签订人姓名',
-      dataIndex: '',
-      align: 'center',
-    },
-    {
-      title: '签订人身份证号',
-      dataIndex: '',
-      align: 'center',
-    },
+    // {
+    //   title: '签订状态',
+    //   dataIndex: '',
+    //   align: 'center',
+    // },
+    // {
+    //   title: '签订人姓名',
+    //   dataIndex: '',
+    //   align: 'center',
+    // },
+    // {
+    //   title: '签订人身份证号',
+    //   dataIndex: '',
+    //   align: 'center',
+    // },
     {
       title: '法大大合同ID',
       dataIndex: 'contractId',

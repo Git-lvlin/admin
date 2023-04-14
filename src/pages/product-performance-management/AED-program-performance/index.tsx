@@ -103,7 +103,7 @@ const AEDProgramPerformance: FC = () => {
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        25: 'AED课程订单',
+        25: 'AED与保证金订单',
         26: 'AED区县培训订单'
       },
       hideInTable: true
@@ -145,31 +145,31 @@ const AEDProgramPerformance: FC = () => {
       align: 'center'
     },
     {
-      title: '子公司ID',
-      dataIndex: 'subCompanyId',
-      align: 'center'
-    },
-    {
       title: '团长手机号',
       dataIndex: 'teamLeaderMobile',
       align: 'center',
     },
     {
-      title: '团长类型',
+      title: '子公司类型',
       dataIndex: 'teamLeaderTypeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '团长类型',
+      title: '子公司类型',
       dataIndex: 'teamLeaderType',
       valueType: 'select',
       valueEnum: {
-        1: '子公司团长',
-        2: '非子公司团长'
+        1: '子公司',
+        2: '非子公司'
       },
       hideInTable: true
     },
+    {
+      title: '子公司名称',
+      dataIndex: 'subCompanyName',
+      align: 'center',
+    }
   ]
 
   return (
