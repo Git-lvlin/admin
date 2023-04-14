@@ -1,13 +1,16 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 合同列表
 export const getList = async (params, options = {}) => {
-  const { pageSize=10, current=1, ...rest } = params
+  const { signDate, pageSize=10, current=1, ...rest } = params
   const res = await request('/auth/supplier/contract/getList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      signDteStart: signDate && moment(signDate[0]).unix(),
+      signDteEnd: signDate && moment(signDate[1]).unix(),
       ...rest
     },
     ...options
@@ -59,7 +62,7 @@ export const getDetail = async (params, options = {}) => {
 export const getMiniQr = async (params, options = {}) => {
   return await request('/auth/supplier/contract/getMiniQr', {
     method: 'POST',
-    data: params,
+    data: params, 
     ...options
   })
 }

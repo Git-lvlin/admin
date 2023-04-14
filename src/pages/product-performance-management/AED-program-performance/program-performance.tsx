@@ -8,10 +8,8 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
-import PageContainer from '@/components/PageContainer'
-import { aedCoursesSum, aedCoursesPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
-import styles from "../styles.less"
+import { aedCoursesSum, aedCoursesPage } from "@/services/product-performance-management/AED-program-performance"
 import Export from '@/components/export'
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
@@ -67,7 +65,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   )
 }
 
-const AEDProgramPerformance: FC = () => {
+const ProgramPerformance: FC = () => {
   const form = useRef<FormInstance>()
   const [searchConfig, setSearchConfig] = useState<FormInstance>()
 
@@ -103,7 +101,7 @@ const AEDProgramPerformance: FC = () => {
       dataIndex: 'orderType',
       valueType: 'select',
       valueEnum: {
-        25: 'AED与保证金订单',
+        25: 'AED课程订单',
         26: 'AED区县培训订单'
       },
       hideInTable: true
@@ -145,65 +143,63 @@ const AEDProgramPerformance: FC = () => {
       align: 'center'
     },
     {
+      title: '子公司ID',
+      dataIndex: '',
+      align: 'center'
+    },
+    {
       title: '团长手机号',
       dataIndex: 'teamLeaderMobile',
       align: 'center',
     },
     {
-      title: '子公司类型',
+      title: '团长类型',
       dataIndex: 'teamLeaderTypeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司类型',
+      title: '团长类型',
       dataIndex: 'teamLeaderType',
       valueType: 'select',
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '子公司团长',
+        2: '非子公司团长'
       },
       hideInTable: true
     },
-    {
-      title: '子公司名称',
-      dataIndex: 'subCompanyName',
-      align: 'center',
-    }
   ]
 
   return (
-    <PageContainer className={styles.desc}>
-      <ProTable
-        columns={columns}
-        request={aedCoursesPage}
-        formRef={form}   
-        pagination={{
-          showQuickJumper: true,
-          pageSize: 10
-        }}
-        onSubmit={()=>{
-          setSearchConfig(form.current?.getFieldsValue())
-        }}
-        onReset={()=> {
-          setSearchConfig(undefined)
-        }}
-        headerTitle={<Aggregate form={searchConfig}/>}
-        options={false}
-        search={{
-          labelWidth: 160,
-          optionRender: (searchConfig, props, dom) => [
-            ...dom.reverse(),
-            <Export 
-              key='export'
-              type='exportAEDCoursesCommissionList'
-              conditions={getFieldsValue}
-            />
-          ]
-        }}
-      />
-    </PageContainer>
+    <ProTable
+      columns={columns}
+      request={aedCoursesPage}
+      formRef={form}   
+      pagination={{
+        showQuickJumper: true,
+        pageSize: 10
+      }}
+      onSubmit={()=>{
+        setSearchConfig(form.current?.getFieldsValue())
+      }}
+      onReset={()=> {
+        setSearchConfig(undefined)
+      }}
+      headerTitle={<Aggregate form={searchConfig}/>}
+      options={false}
+      search={{
+        labelWidth: 160,
+        optionRender: (searchConfig, props, dom) => [
+          ...dom.reverse(),
+          <Export 
+            key='export'
+            type='exportAEDCoursesCommissionList'
+            conditions={getFieldsValue}
+          />
+        ]
+      }}
+    />
   )
 }
 
-export default AEDProgramPerformance
+export default ProgramPerformance
