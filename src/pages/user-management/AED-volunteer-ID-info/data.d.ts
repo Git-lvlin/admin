@@ -9,4 +9,5 @@ export type editProps = {
     gender: number
     clothSize: string
   }
+  callback: () => void
 }
