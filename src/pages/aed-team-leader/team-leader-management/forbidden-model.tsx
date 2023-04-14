@@ -55,7 +55,7 @@ export default (props:CumulativeProps) => {
         name="id"
         hidden
       />
-      <p><span style={{ color:'red' }}>{msgDetail?.status?'禁用':'启用'}后将不计算业绩</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
+      <p><span style={{ color:'red' }}>{msgDetail?.status?'禁用后将不计算业绩':'启用后计算业绩'}</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
     </ModalForm >
   );
 };

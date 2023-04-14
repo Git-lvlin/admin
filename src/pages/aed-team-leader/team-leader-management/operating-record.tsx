@@ -10,9 +10,9 @@ import ProTable from "@ant-design/pro-table"
 import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 14 },
-  };
+  labelCol: { span: 4 },
+  wrapperCol: { span: 14 },
+};
 
 
 export default (props:CumulativeProps) => {
