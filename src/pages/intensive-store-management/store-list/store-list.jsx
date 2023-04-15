@@ -1395,7 +1395,7 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '店铺编号',
-      dataIndex: 'storeNo',
+      dataIndex: 'shopMemberAccount',
       valueType: 'text',
       hideInSearch: true,
       hideInTable: storeType != 'buy_aed'
