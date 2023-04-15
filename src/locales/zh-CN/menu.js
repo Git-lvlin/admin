@@ -484,7 +484,7 @@ export default {
   'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
   'menu.product-performance-management.finger-doctor-performance': ' 手指医生业绩',
   'menu.product-performance-management.AED-program-performance': ' AED课程业绩',
-  'menu.product-performance-management.AED-course-list': ' AED课程交易收款名单',
+  'menu.product-performance-management.AED-course-list': ' AED交易收款名单',
 
   'menu.health-package-activities': '健康套餐活动',
   'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',
