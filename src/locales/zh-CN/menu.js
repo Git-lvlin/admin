@@ -23,8 +23,8 @@ export default {
   'menu.user-management.cancellation-application-record': '注销申请记录',
   'menu.user-management.logout-list': '注销列表',
   'menu.user-management.hydrogen-atom-user-management': '氢原子用户管理',
-  'menu.user-management.AED-volunteer-exam-info': 'AED宣传员考试信息',
-  'menu.user-management.AED-volunteer-ID-info': 'AED宣传员证件信息',
+  'menu.user-management.AED-volunteer-exam-info': 'AED志愿者考试信息',
+  'menu.user-management.AED-volunteer-ID-info': 'AED志愿者证件信息',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',

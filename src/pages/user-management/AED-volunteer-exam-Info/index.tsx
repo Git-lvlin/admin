@@ -145,6 +145,7 @@ const AEDVolunteerExamInfo = () => {
         }}
         rowSelection={{
           selectedRowKeys: selectedKeys,
+          preserveSelectedRowKeys: true,
           onChange: (e) => setSelectedKeys(e)
         }}
       />
