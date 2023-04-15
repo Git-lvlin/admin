@@ -233,6 +233,7 @@ export default (props:CumulativeProps) => {
       contractStatus:time?.contractStatus,
       learnStatus:time?.learnStatus,
       examStatus:time?.examStatus,
+      teamLeaderPhone:time?.teamLeaderPhone
     }
     AEDOrderStats(params).then(res=>{
       if(res.code==0){
