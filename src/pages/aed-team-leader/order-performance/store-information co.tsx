@@ -4,7 +4,6 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import ProCard from "@ant-design/pro-card"
 import { AEDOrder,AEDOrderStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
@@ -19,12 +18,24 @@ const formItemLayout = {
     wrapperCol: { span: 14 },
   };
 
-const StoreInformation = (props:CumulativeProps) => {
-  const { msgDetail, type, activeKey } = props;
+export default (props:CumulativeProps) => {
+  const { visible, setVisible,msgDetail,onClose,type} = props;
+  const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState<DrtailItem>({})
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
+
+  const divideName=()=>{
+    switch (type) {
+      case 1:
+        return '累计业绩'
+      case 2:
+        return '提成'
+      default:
+        return ''
+    }
+  }
 
   const Columns: ProColumns[] = [
     {
@@ -133,83 +144,83 @@ const StoreInformation = (props:CumulativeProps) => {
       },
       hideInSearch: true
     },
-    // {
-    //   title: '签合同状态',
-    //   dataIndex: 'contractStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已签订',
-    //     2: '未签订',
-    //   },
-    //   fieldProps: {
-    //     placeholder: '全部'
-    //   },
-    //   hideInTable: true
-    // },
-    // {
-    //   title: '签合同状态',
-    //   dataIndex: 'contractStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已签订',
-    //     2: '未签订',
-    //   },
-    //   hideInSearch: true
-    // },
-    // {
-    //   title: '视频学习状态',
-    //   dataIndex: 'learnStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已学习',
-    //     2: '未学习',
-    //   },
-    //   fieldProps: {
-    //     placeholder: '全部'
-    //   },
-    //   hideInTable: true
-    // },
-    // {
-    //   title: '视频学习状态',
-    //   dataIndex: 'learnStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已学习',
-    //     2: '未学习',
-    //   },
-    //   hideInSearch: true
-    // },
-    // {
-    //   title: '考试状态',
-    //   dataIndex: 'examStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已通过',
-    //     2: '未通过',
-    //     3: '未考试'
-    //   },
-    //   fieldProps: {
-    //     placeholder: '全部'
-    //   },
-    //   hideInTable: true
-    // },
-    // {
-    //   title: '考试状态',
-    //   dataIndex: 'examStatus',
-    //   align: 'center',
-    //   valueType: 'select',
-    //   valueEnum:{
-    //     1: '已通过',
-    //     2: '未通过',
-    //     3: '未考试'
-    //   },
-    //   hideInSearch: true
-    // },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
+      hideInSearch: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      hideInSearch: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      hideInSearch: true
+    },
   ]
   useEffect(()=>{
     const params={
@@ -222,6 +233,7 @@ const StoreInformation = (props:CumulativeProps) => {
       contractStatus:time?.contractStatus,
       learnStatus:time?.learnStatus,
       examStatus:time?.examStatus,
+      teamLeaderPhone:time?.teamLeaderPhone
     }
     AEDOrderStats(params).then(res=>{
       if(res.code==0){
@@ -240,6 +252,28 @@ const StoreInformation = (props:CumulativeProps) => {
     }
   }
   return (
+    <DrawerForm
+      layout="horizontal"
+      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
+      onVisibleChange={setVisible}
+      visible={visible}
+      form={form}
+      width={1300}
+      drawerProps={{
+        forceRender: true,
+        destroyOnClose: true,
+        onClose: () => {
+          onClose();
+        }
+      }}
+      submitter={{
+        render:()=>{
+            return []
+        }
+      }}
+      {...formItemLayout}
+      className={styles.store_information}
+    >
        <ProTable
         rowKey="date"
         columns={Columns}
@@ -280,70 +314,12 @@ const StoreInformation = (props:CumulativeProps) => {
               <div>
                 累计{type==1?'金额':'收益'}：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
-                {/* <span style={{ marginLeft:'570px', display:type==1? 'none':'inline-block' }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span> */}
+                <span style={{ marginLeft:'570px', display:type==1? 'none':'inline-block' }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span>
               </div>
             </div>
           </>
         }}
       />
+    </DrawerForm >
   );
 };
-
-export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,type} = props;
-  const [form] = Form.useForm();
-  const [activeKey, setActiveKey] = useState<string>('1')
-  const divideName=()=>{
-    switch (type) {
-      case 1:
-        return '累计业绩'
-      case 2:
-        return '提成'
-      default:
-        return ''
-    }
-  }
-  return (
-    <DrawerForm
-      layout="horizontal"
-      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
-      onVisibleChange={setVisible}
-      visible={visible}
-      form={form}
-      width={1300}
-      drawerProps={{
-        forceRender: true,
-        destroyOnClose: true,
-        onClose: () => {
-          onClose();
-        }
-      }}
-      submitter={{
-        render:()=>{
-            return []
-        }
-      }}
-      {...formItemLayout}
-      className={styles.store_information}
-    >
-      <ProCard
-        tabs={{
-          type: 'card',
-          activeKey,
-          onChange: setActiveKey
-        }}
-      >
-        <ProCard.TabPane key="1" tab="AED订单">
-          {
-            activeKey=='1'&&<StoreInformation {...props} activeKey={activeKey}/>
-          }
-        </ProCard.TabPane>
-        <ProCard.TabPane key="2" tab="培训服务套餐">
-          {
-            activeKey=='2'&&<StoreInformation {...props} activeKey={activeKey}/>
-          }
-        </ProCard.TabPane>
-      </ProCard>
-    </DrawerForm >
-  )
-}
