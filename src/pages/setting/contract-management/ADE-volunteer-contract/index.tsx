@@ -101,7 +101,11 @@ const ADEVolunteerContract: FC = () => {
           <Export
             key='export'
             type='orderContractPage'
-            conditions={{...form.current?.getFieldsValue()}}
+            conditions={{ 
+              orderType: 2,
+              subType: 25,
+              ...form.current?.getFieldsValue()
+            }}
           />
         ]
       }}
