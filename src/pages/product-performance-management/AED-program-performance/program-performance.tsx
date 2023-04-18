@@ -87,8 +87,7 @@ const ProgramPerformance: FC = () => {
     {
       title: '订单编号',
       dataIndex: 'orderSn',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     }, 
     {
       title: '订单类型',

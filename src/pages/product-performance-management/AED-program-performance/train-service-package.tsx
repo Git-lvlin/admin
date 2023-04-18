@@ -87,8 +87,7 @@ const TrainServicePackage: FC = () => {
     {
       title: '订单编号',
       dataIndex: 'orderSn',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     }, 
     {
       title: '关联保证金订单状态',
