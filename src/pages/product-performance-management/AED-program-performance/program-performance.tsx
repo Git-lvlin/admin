@@ -167,6 +167,55 @@ const ProgramPerformance: FC = () => {
       title: '子公司名称',
       dataIndex: 'subCompanyName',
       align: 'center',
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatusDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未签订',
+        1: '已签订'
+      }
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatusDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未学习',
+        1: '已学习'
+      }
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatusDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未考试',
+        1: '已通过',
+        2: '未通过'
+      }
     }
   ]
 
