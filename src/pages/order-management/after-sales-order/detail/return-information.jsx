@@ -92,6 +92,10 @@ const ReturnInformation = props => {
       dataIndex: 'subOrderSn'
     },
     {
+      title: '退款金额',
+      dataIndex: ''
+    },
+    {
       title: '退款总金额',
       dataIndex: 'returnAmount',
       render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
