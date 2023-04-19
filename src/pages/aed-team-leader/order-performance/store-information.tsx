@@ -21,7 +21,7 @@ const formItemLayout = {
 
 const StoreInformation = (props:CumulativeProps) => {
   const { msgDetail, type, activeKey } = props;
-  const [orderSum,setOrderSum]=useState()
+  const [orderSum,setOrderSum]=useState<number>(0)
   const [time,setTime]=useState<DrtailItem>({})
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
@@ -258,6 +258,7 @@ const StoreInformation = (props:CumulativeProps) => {
           showQuickJumper: true,
         }}
         onSubmit={(val)=>{
+          setOrderSum(0)
           setTime(val)
         }}
         onReset={()=>{
