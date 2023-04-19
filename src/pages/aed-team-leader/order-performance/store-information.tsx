@@ -284,7 +284,7 @@ const StoreInformation = (props:CumulativeProps) => {
               <div>
                 累计{type==1?'金额':'收益'}：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
-                <span style={{ marginLeft:'600px', display:type==1? 'none':'inline-block' }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span>
+                <span style={{ marginLeft:'600px', }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span>
               </div>
             </div>
           </>
