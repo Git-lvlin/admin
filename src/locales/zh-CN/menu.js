@@ -23,6 +23,8 @@ export default {
   'menu.user-management.cancellation-application-record': '注销申请记录',
   'menu.user-management.logout-list': '注销列表',
   'menu.user-management.hydrogen-atom-user-management': '氢原子用户管理',
+  'menu.user-management.AED-volunteer-exam-info': 'AED志愿者考试信息',
+  'menu.user-management.AED-volunteer-ID-info': 'AED志愿者证件信息',
 
   'menu.order-management': '订单管理',
   // 'menu.order-management.order-detail': '订单详情',
@@ -459,12 +461,8 @@ export default {
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
   'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
 
-  'menu.aed-subsidiary-corporation': 'AED子公司',
-  'menu.aed-subsidiary-corporation.subsidiary-corporation-management': '子公司管理',
-  // 'menu.aed-subsidiary-corporation.order-performance': '订单业绩',
-
-  'menu.aed-team-leader': 'AED团长',
-  'menu.aed-team-leader.team-leader-management': '团长管理',
+  'menu.aed-team-leader': 'AED子公司',
+  'menu.aed-team-leader.team-leader-management': '子公司管理',
   'menu.aed-team-leader.order-performance': '订单业绩',
 
   'menu.great-project-team': '大团队长',
@@ -482,7 +480,7 @@ export default {
   'menu.product-performance-management.brand-authorization-fee': ' 生活馆服务费业绩',
   'menu.product-performance-management.finger-doctor-performance': ' 手指医生业绩',
   'menu.product-performance-management.AED-program-performance': ' AED课程业绩',
-  'menu.product-performance-management.AED-course-list': ' AED课程交易收款名单',
+  'menu.product-performance-management.AED-course-list': ' AED交易收款名单',
 
   'menu.health-package-activities': '健康套餐活动',
   'menu.health-package-activities.store-health-card-management': '店铺健康服务管理',

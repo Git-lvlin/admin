@@ -230,7 +230,7 @@ export default (props) => {
               id: 8,
               name: <>
                     <div>汇智能通省代</div>
-                    <div>VIP直推人开启地址所属省代收益</div>
+                    <div>VIP直推人开店地址所属省代收益</div>
                     </>,
               price: findItem?.commissionType==2?findItem?.provinceAgent:amountTransform(findItem?.provinceAgent, '/')
             },
@@ -238,7 +238,7 @@ export default (props) => {
               id: 9,
               name: <>
                     <div>汇智能通市代</div>
-                    <div>VIP直推人开启地址所属市代收益</div>
+                    <div>VIP直推人开店地址所属市代收益</div>
                     </>,
               price: findItem?.commissionType==2?findItem?.cityAgent:amountTransform(findItem?.cityAgent, '/')
             },
@@ -246,7 +246,7 @@ export default (props) => {
               id: 10,
               name: <>
                     <div>氢原子市代</div>
-                    <div>VIP直推人开启地址所属氢原子市代收益</div>
+                    <div>VIP直推人开店地址所属氢原子市代收益</div>
                     </>,
               price: findItem?.commissionType==2?findItem?.hydrogenCityAgent:amountTransform(findItem?.hydrogenCityAgent, '/')
             },

@@ -39,12 +39,12 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '团长手机号',
-      dataIndex: 'managerPhone',
+      title: '子公司名称',
+      dataIndex: 'name',
       align: 'center',
       order: 4,
       fieldProps:{
-        placeholder:'请输入团长手机号码'
+        placeholder:'请输入子公司名称'
       },
     },
     {

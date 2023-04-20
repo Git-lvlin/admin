@@ -4,16 +4,16 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountSwitch } from "@/services/aed-team-leader/team-leader-management"
-import type { CumulativeProps } from "./data"
+import { accountSwitch,subCompanySwitch } from "@/services/aed-team-leader/team-leader-management"
+import type { EnteringProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
   };
 
-export default (props:CumulativeProps) => {
-  const { visible, setVisible, callback,msgDetail,onClose} = props;
+export default (props:EnteringProps) => {
+  const { visible, setVisible, callback,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
       form.setFieldsValue({
@@ -24,7 +24,7 @@ export default (props:CumulativeProps) => {
   return (
     <ModalForm
       layout="horizontal"
-      title={`确认要${msgDetail?.loginStatus?'禁用':'启用'} ${msgDetail?.phone} 的登录状态么?`}
+      title={`确认要${msgDetail?.loginStatus?'禁用':'启用'} ${msgDetail?.managerPhone} 的登录状态么?`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -42,7 +42,8 @@ export default (props:CumulativeProps) => {
         },
       }}
       onFinish={async (values) => {
-        accountSwitch(values).then(res=>{
+        const api=type==1?subCompanySwitch:accountSwitch
+        api(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -59,7 +60,7 @@ export default (props:CumulativeProps) => {
         name="agencyId"
         hidden
       />
-      <p><span style={{ color:'red' }}>{msgDetail?.loginStatus?'禁用':'启用'}后此用户即可登录</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
+      <p><span style={{ color:'red' }}>{msgDetail?.loginStatus?'禁用后此用户不可登录':'启用后此用户即可登录'}</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
     </ModalForm >
   );
 };

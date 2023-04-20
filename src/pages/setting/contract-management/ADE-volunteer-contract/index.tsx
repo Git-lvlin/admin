@@ -7,6 +7,7 @@ import type { FormInstance } from "antd"
 import type { TableProps } from "../data"
 
 import { contractList } from "@/services/setting/contract-management"
+import Export from '@/components/export'
 
 const ADEVolunteerContract: FC = () => {
   const form = useRef<FormInstance>()
@@ -40,6 +41,32 @@ const ADEVolunteerContract: FC = () => {
       hideInSearch: true
     },
     {
+      title: '签订状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '已签订',
+        0: '未签订'
+      },
+      hideInTable: true
+    },
+    {
+      title: '签订状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '签订人姓名',
+      dataIndex: 'personName',
+      align: 'center',
+    },
+    {
+      title: '签订人身份证号',
+      dataIndex: 'idCard',
+      align: 'center',
+    },
+    {
       title: '法大大合同ID',
       dataIndex: 'contractId',
       align: 'center',
@@ -70,7 +97,16 @@ const ADEVolunteerContract: FC = () => {
       search={{
         labelWidth: 120,
         optionRender: (searchConfig, props, dom)=> [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export
+            key='export'
+            type='orderContractPage'
+            conditions={{ 
+              orderType: 2,
+              subType: 25,
+              ...form.current?.getFieldsValue()
+            }}
+          />
         ]
       }}
     />

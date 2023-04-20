@@ -21,7 +21,11 @@ export type DrtailItem = {
   orderSn?: string; 
   dateRange?: [string, string]; 
   teamPhone?: string;
-  orderType?: string
+  orderType?: string;
+  examStatus?: string;
+  learnStatus?: string;
+  contractStatus?: string;
+  teamLeaderPhone?: string;
 }
 
 export type CumulativeProps = {
@@ -37,4 +41,5 @@ export type CumulativeProps = {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;
+  activeKey?: string;
 }

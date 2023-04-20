@@ -71,3 +71,15 @@ export const closeOrderAndRefund = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+
+//订单类型
+export const findAdminOrderType = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findAdminOrderType', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}
