@@ -25,6 +25,7 @@ export type DrtailItem = {
   examStatus?: string;
   learnStatus?: string;
   contractStatus?: string;
+  teamLeaderPhone?: string;
 }
 
 export type CumulativeProps = {
