@@ -257,7 +257,7 @@ const cancelTaskCanbak=(id: number)=>{
   )
 }
 
-const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory, fileName, placement }) => {
+const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHistory, fileName, placement, callback }) => {
   const [visible, setVisible] = useState(false)
 
   const downExcel = () => {
@@ -289,6 +289,7 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
       if (res?.success) {
         message.success('导出任务创建成功')
         setVisible(true)
+        callback?.()
       }
     })
   }

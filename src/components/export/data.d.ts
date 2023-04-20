@@ -8,6 +8,7 @@ export type ExprotProps = {
   slotHistory?: (v: React.DOMAttributes)=> React.ReactChild
   fileName?: string
   placement?: TooltipPlacement
+  callback?: ()=> void
 }
 
 export type ExportHistoryProps = {

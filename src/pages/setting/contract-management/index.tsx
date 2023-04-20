@@ -35,7 +35,7 @@ import ADEVolunteerContract from "./ADE-volunteer-contract"
         <ProCard.TabPane key="5" tab="健康生活馆加盟合同">
           <HealthyLivingPavilionContract/> 
         </ProCard.TabPane>
-        <ProCard.TabPane key="6" tab="AED志愿者服务协议合同">
+        <ProCard.TabPane key="6" tab="AED宣传员服务协议合同">
           <ADEVolunteerContract/> 
         </ProCard.TabPane>
       </ProCard>
