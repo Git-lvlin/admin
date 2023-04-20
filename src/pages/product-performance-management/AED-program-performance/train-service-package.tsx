@@ -8,7 +8,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
-import { aedCoursesSum, aedCoursesPage } from "@/services/product-performance-management/AED-program-performance"
+import { trainServerSum, trainServerPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
 
@@ -16,7 +16,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
   
   const getData = async () => {
-    await aedCoursesSum({
+    await trainServerSum({
       ...form
     }).then(res => {
       setData(res.data)
@@ -65,7 +65,7 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   )
 }
 
-const ProgramPerformance: FC = () => {
+const TrainServicePackage: FC = () => {
   const form = useRef<FormInstance>()
   const [searchConfig, setSearchConfig] = useState<FormInstance>()
 
@@ -90,21 +90,27 @@ const ProgramPerformance: FC = () => {
       align: 'center'
     }, 
     {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
+      title: '关联保证金订单状态',
+      dataIndex: 'orderNo',
       align: 'center',
       hideInSearch: true
-    }, 
+    },
     {
-      title: '订单类型',
-      dataIndex: 'orderType',
+      title: '关联保证金订单状态',
+      dataIndex: 'orderStatus',
       valueType: 'select',
       valueEnum: {
-        25: 'AED与保证金订单',
-        26: 'AED区县培训订单'
+        1: '未关联保证金订单',
+        2: '已关联保证金订单'
       },
       hideInTable: true
-    }, 
+    },
+    {
+      title: '关联保证金订单签合同状态',
+      dataIndex: 'contractId',
+      align: 'center',
+      hideInSearch: true
+    },
     {
       title: '支付时间',
       dataIndex: 'payTime', 
@@ -125,8 +131,8 @@ const ProgramPerformance: FC = () => {
       render: _ => amountTransform(_, '/')
     },
     {
-      title: '订单状态',
-      dataIndex: 'orderStatusDesc',
+      title: '子公司名称',
+      dataIndex: 'subCompanyName',
       align: 'center',
       hideInSearch: true
     },
@@ -161,11 +167,6 @@ const ProgramPerformance: FC = () => {
         2: '非子公司'
       },
       hideInTable: true
-    },
-    {
-      title: '子公司名称',
-      dataIndex: 'subCompanyName',
-      align: 'center',
     },
     {
       title: '签合同状态',
@@ -221,7 +222,7 @@ const ProgramPerformance: FC = () => {
   return (
     <ProTable
       columns={columns}
-      request={aedCoursesPage}
+      request={trainServerPage}
       formRef={form}   
       pagination={{
         showQuickJumper: true,
@@ -241,7 +242,7 @@ const ProgramPerformance: FC = () => {
           ...dom.reverse(),
           <Export 
             key='export'
-            type='exportAEDCoursesCommissionList'
+            type='exportAEDTrainServerCommissionList'
             conditions={getFieldsValue}
           />
         ]
@@ -250,4 +251,4 @@ const ProgramPerformance: FC = () => {
   )
 }
 
-export default ProgramPerformance
+export default TrainServicePackage

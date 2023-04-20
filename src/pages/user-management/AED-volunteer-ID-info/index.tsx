@@ -147,9 +147,8 @@ const AEDVolunteerIDInfo = () => {
         }}
         rowSelection={{
           selectedRowKeys: selectedKeys,
-          onChange: (e) => {
-            setSelectedKeys(e)
-          }
+          preserveSelectedRowKeys: true,
+          onChange: e => setSelectedKeys(e)
         }}
       />
       {
