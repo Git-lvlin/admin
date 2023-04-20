@@ -91,10 +91,10 @@ const ReturnInformation = props => {
       title: '订单编号',
       dataIndex: 'subOrderSn'
     },
-    {
-      title: '退款金额',
-      dataIndex: ''
-    },
+    // {
+    //   title: '平台承担退款金额',
+    //   dataIndex: ''
+    // },
     {
       title: '退款总金额',
       dataIndex: 'returnAmount',
