@@ -7,6 +7,7 @@ import type { FormInstance } from 'antd'
 
 import Export from '@/components/export'
 import { examResult } from '@/services/user-management/AED-volunteer-ID-info'
+import Import from '@/components/ImportFile'
 
 const AEDVolunteerExamInfo = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
@@ -24,7 +25,7 @@ const AEDVolunteerExamInfo = () => {
       title: '序号',
       valueType: 'indexBorder',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '手机号码',
@@ -35,7 +36,7 @@ const AEDVolunteerExamInfo = () => {
       title: '姓名',
       dataIndex: 'nickName',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '视频学习状态',
@@ -68,55 +69,78 @@ const AEDVolunteerExamInfo = () => {
       title: '考试状态',
       dataIndex: 'resultStatusStr',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '考试分数',
       dataIndex: 'score',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '考试时间',
       dataIndex: 'examTime',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '订单号',
       dataIndex: 'subOrderSn',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '订单类型',
       dataIndex: 'subTypeStr',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '订单支付时间',
       dataIndex: 'payTime',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '所属团长手机',
       dataIndex: 'teamPhone',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '所属团长姓名',
       dataIndex: 'teamName',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
     },
     {
       title: '所属团长类型',
       dataIndex: 'teamTypeStr',
       align: 'center',
-      hideInSearch: true,
+      hideInSearch: true
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: '',
+      valueType: 'select',
+      valueEnum: {
+        1: '已培训',
+        2: '未培训'
+      },
+      hideInTable: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      // render: (_, r) => {
+      //   if(r.)
+      // }
     }
   ]
 
@@ -139,6 +163,13 @@ const AEDVolunteerExamInfo = () => {
           ],
         }}
         columns={columns}
+        toolBarRender={()=> [
+          <Import
+            key='import'
+            code='healthy_training_offline_import'
+            title='导入线下培训信息'
+          />
+        ]}
         pagination={{
           pageSize: 10,
           showQuickJumper: true
