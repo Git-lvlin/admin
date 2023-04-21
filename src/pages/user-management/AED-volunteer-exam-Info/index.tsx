@@ -2,16 +2,21 @@ import { PageContainer } from '@ant-design/pro-layout'
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import Export from '@/components/export'
 import { examResult } from '@/services/user-management/AED-volunteer-ID-info'
 import Import from '@/components/ImportFile'
+import Model from './model-form'
 
 const AEDVolunteerExamInfo = () => {
   const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
+  const [visible, setVisible] = useState<boolean>(false)
+  const [phone, setPhone] = useState<string>()
+  const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldValue = () => {
     return {
@@ -111,6 +116,7 @@ const AEDVolunteerExamInfo = () => {
       title: '所属团长姓名',
       dataIndex: 'teamName',
       align: 'center',
+      width: '15%',
       hideInSearch: true
     },
     {
@@ -121,15 +127,16 @@ const AEDVolunteerExamInfo = () => {
     },
     {
       title: '线下培训状态',
-      dataIndex: '',
+      dataIndex: 'trainingStatusStr',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '线下培训状态',
-      dataIndex: '',
+      dataIndex: 'trainingStatus',
       valueType: 'select',
       valueEnum: {
+        0: '未录入',
         1: '已培训',
         2: '未培训'
       },
@@ -138,9 +145,14 @@ const AEDVolunteerExamInfo = () => {
     {
       title: '操作',
       valueType: 'option',
-      // render: (_, r) => {
-      //   if(r.)
-      // }
+      align: 'center',
+      render: (_, r) => {
+        if(r.trainingStatus === 2 || r.trainingStatus === 0) {
+          return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线上培训</a>
+        } else {
+          return <span>线上培训</span>
+        }
+      }
     }
   ]
 
@@ -151,6 +163,7 @@ const AEDVolunteerExamInfo = () => {
         options={false}
         request={examResult}
         formRef={form}
+        actionRef={actRef}
         search={{
           labelWidth: 100,
           optionRender: (search, props, dom) => [
@@ -180,6 +193,16 @@ const AEDVolunteerExamInfo = () => {
           onChange: (e) => setSelectedKeys(e)
         }}
       />
+      {
+        visible&&
+        <Model
+          visible={visible}
+          setVisible={setVisible}
+          phone={phone}
+          id={id}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
     </PageContainer>
   )
 }
