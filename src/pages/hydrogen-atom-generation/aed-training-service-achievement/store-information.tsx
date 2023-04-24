@@ -4,10 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { 
-  cityAgentHydrogenLeaseComm,
-  cityAgentHydrogenLeaseCommStats
- } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { hpaAedTrainOrder,hpaAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -106,22 +103,22 @@ export default (props) => {
     },
     {
       title: '业绩范围',
-      dataIndex: 'storeHouseNumber',
+      dataIndex: 'scopeDesc',
       align: 'center',
       hideInSearch: true,
     }
   ]
   useEffect(()=>{
     const params={
-      agentId:msgDetail?.agentId,
+      agencyId:msgDetail?.agencyId,
       orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
       orderType:time?.orderType
     }
-    cityAgentHydrogenLeaseCommStats(params).then(res=>{
+    hpaAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.amount)
+        setOrderSum(res?.data?.[0]?.commission)
       }
     })
 
@@ -130,7 +127,7 @@ export default (props) => {
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      agentId:msgDetail?.agentId,
+      agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
@@ -138,7 +135,7 @@ export default (props) => {
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.agentName} AED培训及服务套餐单提成 （ID:${msgDetail?.agentId}）`}
+      title={`${msgDetail?.name} AED培训及服务套餐单提成 （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -164,11 +161,11 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={cityAgentHydrogenLeaseComm}
+        request={hpaAedTrainOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agentId:msgDetail?.agentId,
+          agencyId:msgDetail?.agencyId,
         }}
         pagination={{
           pageSize: 10,
@@ -187,10 +184,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'cityAgentHydrogenLeaseComm'}
+              type={'hpaAedTrainOrderCom'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentHydrogenLeaseComm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaAedTrainOrderCom'}/>
           ],
         }}
         tableRender={(_, dom) => {

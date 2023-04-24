@@ -6,7 +6,7 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { cityAgentManage,cityAgentManageStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { hpaAedTrain,hpaAedTrainStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
@@ -21,12 +21,12 @@ export default function GenerationManagement () {
 
   useEffect(() => {
     const params={
-      agentId:time?.agentId,
-      agentName:time?.agentName,
-      startTime:time?.createTime&&time?.createTime[0],
-      endTime:time?.createTime&&time?.createTime[1]
+      agencyId:time?.agencyId,
+      name:time?.name,
+      startTime:time?.dateRange&&time?.dateRange[0],
+      endTime:time?.dateRange&&time?.dateRange[1]
     }
-    cityAgentManageStats(params).then(res=>{
+    hpaAedTrainStats(params).then(res=>{
       if(res.code==0){
         setDetailList(res.data[0])
       }
@@ -37,13 +37,13 @@ export default function GenerationManagement () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'agentId',
+      dataIndex: 'agencyId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '氢原子市代名称',
-      dataIndex: 'agentName',
+      dataIndex: 'name',
       align: 'center',
       order: 4,
       fieldProps:{
@@ -52,13 +52,13 @@ export default function GenerationManagement () {
     },
     {
       title: '交易时间',
-      dataIndex: 'createTime',
+      dataIndex: 'dateRange',
       valueType: 'dateRange',
       hideInTable: true
     },
     {
       title: 'AED培训及服务套餐单业绩',
-      dataIndex: 'totalAmount',
+      dataIndex: 'totalPayAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -71,7 +71,7 @@ export default function GenerationManagement () {
     },
     {
       title: 'AED培训及服务套餐单提成',
-      dataIndex: 'hydrogenCommission',
+      dataIndex: 'totalCommission',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -85,7 +85,7 @@ export default function GenerationManagement () {
     },
     {
       title: '业绩范围',
-      dataIndex: 'accountName',
+      dataIndex: 'scopeDesc',
       align: 'center',
       hideInSearch: true
     }
@@ -94,15 +94,15 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-        <Descriptions.Item  label="氢原子市代总数量">{detailList?.agentNum}  </Descriptions.Item>
-        <Descriptions.Item  label="AED培训及服务套餐业绩">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
-        <Descriptions.Item  label="AED培训及服务套餐提成">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="氢原子市代总数量">{detailList?.totalNum}  </Descriptions.Item>
+        <Descriptions.Item  label="AED培训及服务套餐业绩">{amountTransform(detailList?.totalAmount,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="AED培训及服务套餐提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
-        rowKey="agentId"
+        rowKey="agencyId"
         headerTitle='列表'
         columns={tableColumns}
-        request={cityAgentManage}
+        request={hpaAedTrain}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{

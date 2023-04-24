@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { cityAgentComm,cityAgentCommStats } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { hpaAedTrainOrder,hpaAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -77,21 +77,21 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '业绩范围',
-      dataIndex: 'storeHouseNumber',
+      dataIndex: 'scopeDesc',
       align: 'center',
     }
   ]
   useEffect(()=>{
     const params={
-      agentId:msgDetail?.agentId,
+      agencyId:msgDetail?.agencyId,
       orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      storeHouseNumber:time?.storeHouseNumber
+      scopeDesc:time?.scopeDesc
     }
-    cityAgentCommStats(params).then(res=>{
+    hpaAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.amount)
+        setOrderSum(res?.data?.[0]?.payAmount)
       }
     })
   },[time])
@@ -99,7 +99,7 @@ export default (props:CumulativeProps)=>{
   const getFieldValue = (searchConfig) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      agentId:msgDetail?.agentId,
+      agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
@@ -107,7 +107,7 @@ export default (props:CumulativeProps)=>{
   }
   return (
       <DrawerForm
-        title={`${msgDetail?.agentName} AED培训及服务套餐单业绩 （ID:${msgDetail?.agentId}）`}
+        title={`${msgDetail?.name} AED培训及服务套餐单业绩 （ID:${msgDetail?.agencyId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}
@@ -130,11 +130,11 @@ export default (props:CumulativeProps)=>{
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={cityAgentComm}
+        request={hpaAedTrainOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agentId:msgDetail?.agentId,
+          agencyId:msgDetail?.agencyId,
         }}
         pagination={{
           pageSize: 10,
@@ -153,10 +153,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'cityAgentComm'}
+              type={'hpaAedTrainOrderPm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentComm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaAedTrainOrderPm'}/>
           ],
         }}
         tableRender={(_, dom) => {
