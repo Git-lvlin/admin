@@ -148,9 +148,9 @@ const AEDVolunteerExamInfo = () => {
       align: 'center',
       render: (_, r) => {
         if(r.trainingStatus === 2 || r.trainingStatus === 0) {
-          return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线上培训</a>
+          return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线下培训</a>
         } else {
-          return <span>线上培训</span>
+          return <span>线下培训</span>
         }
       }
     }
