@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Form, message } from 'antd';
 import ProForm, {
   ModalForm,
@@ -14,8 +14,17 @@ import * as api from '@/services/product-management/product-category'
 import Upload from '@/components/upload'
 import styles from './form.less'
 import Big from 'big.js';
+import  ReactQuill,{ Quill }  from 'react-quill';
+import QuillEmoji from 'quill-emoji'
+import 'react-quill/dist/quill.snow.css';
 
 Big.RM = 0;
+
+Quill.register({
+  'modules/emoji-toolbar': QuillEmoji.ToolbarEmoji,
+  'modules/emoji-shortname': QuillEmoji.ShortNameEmoji
+})
+
 
 const FromWrap = ({ value, onChange, content, right }) => (
   <div style={{ display: 'flex' }}>
@@ -34,6 +43,7 @@ export default (props) => {
   const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
+  const ref = useRef();
   const [dataSource, setDataSource] = useState([
     { name: '五星店主', level: 5, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
     { name: '四星店主', level: 4, shopCommission: 75, operateCommission: 23, referrerCommission: 2, platForm: 0 },
@@ -273,12 +283,29 @@ export default (props) => {
   const submit = (values) => {
     return new Promise((resolve, reject) => {
       formRef.validateFields()
-        .then(_ => {
+        .then(_ => {   
           const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
-          const { gcShow, shopValue, ...rest } = values;
+          const { gcShow, shopValue,gcRemark, ...rest } = values;
+          const convertedContent = gcRemark.replace(/<(\w+)\s+[^>]*class="([^"]+)"[^>]*>/g, (match, p1, p2) => {
+            let newTag = `<${p1} style="`;
+            const styles = p2.split(' ');
+            styles.forEach(style => {
+              // 根据需要将class转换为相应的inline-style
+              if (style === 'ql-align-right') {
+                newTag += 'text-align:right;';
+              }else if(style === 'ql-align-center'){
+                newTag += 'text-align:center;';
+              }
+              // 还可以添加其他的class到inline-style的转换
+            });
+            newTag += '">';
+            return newTag;
+        });
+        
           const params = {
             ...rest,
             gcShow: gcShow ? 1 : 0,
+            gcRemark:`<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /></head><body>${convertedContent}</body></html>`
           }
 
           if (type === 'add') {
@@ -325,6 +352,30 @@ export default (props) => {
     return debounce(validate, 1000);
   }, []);
 
+  const modules={
+    toolbar:{
+      container:[
+        [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
+        [{ 'font': [] }],
+        [{ 'header': 1 }, { 'header': 2 }],        // custom button values
+        ['bold', 'italic', 'underline', 'strike'],    // toggled buttons
+        [{'align': ['', 'center', 'right', 'justify']}],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],     // outdent/indent
+        [{ 'direction': 'rtl' }],             // text direction
+        [{ 'script': 'sub' }, { 'script': 'super' }],   // superscript/subscript
+        ['blockquote', 'code-block'],
+      
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['emoji', 'link'],
+      
+        ['clean']
+      ],
+    },
+    'emoji-toolbar': true,
+    'emoji-shortname': true,
+  }
+
   useEffect(() => {
     if (data) {
       form?.setFieldsValue({
@@ -352,6 +403,7 @@ export default (props) => {
         })
       }
     }
+    // console.log('json',json)
   }, [form, data])
 
   return (
@@ -636,6 +688,21 @@ export default (props) => {
         </ProFormDependency>
 
       </Form.Item>
+
+      <Form.Item
+        label="分类商品说明"
+        name="gcRemark"
+        placeholder='请输入分类商品的说明，最多可输入1000个字！'
+        rules={[
+          {
+            max: 1000,
+            message: "最多只能输入1000个字符"
+          }
+        ]}
+      >
+        <ReactQuill modules={modules} ref={ref}/>
+      </Form.Item>
+
       <ProFormSwitch checkedChildren="开" unCheckedChildren="关" name="gcShow" label="开启状态" />
     </ModalForm >
   );

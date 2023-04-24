@@ -46,6 +46,35 @@ const StoreInformation = (props:CumulativeProps) => {
       align: 'center',
     },
     {
+      title: '商品主图',
+      dataIndex: 'goodsImg',
+      valueType: 'image',
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '收货人姓名',
+      dataIndex: 'consignee',
+      valueType: 'text',
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '关联保证金订单状态',
+      dataIndex: 'depositOrderStatus',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
@@ -212,6 +241,29 @@ const StoreInformation = (props:CumulativeProps) => {
       },
       hideInSearch: true
     },
+    {
+      title: '线下培训状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        0: '未录入',
+        1: '已培训',
+        2: '未培训',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
+    },
   ]
   useEffect(()=>{
     const params={
@@ -224,7 +276,8 @@ const StoreInformation = (props:CumulativeProps) => {
       contractStatus:time?.contractStatus,
       learnStatus:time?.learnStatus,
       examStatus:time?.examStatus,
-      teamLeaderPhone:time?.teamLeaderPhone
+      teamLeaderPhone:time?.teamLeaderPhone,
+      offTrainStatus:time?.offTrainStatus
     }
     const api=activeKey=='1'?AEDOrderStats:AEDTrainingsServiceStats
     api(params).then(res=>{
@@ -285,7 +338,7 @@ const StoreInformation = (props:CumulativeProps) => {
               <div>
                 累计{type==1?'金额':'收益'}：
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
-                <span style={{ marginLeft:'600px', }}>对未完成法大大合同签写、培训视频学习和考试通过的提成，将冻结提现</span>
+                <span style={{ marginLeft:'530px', }}>对未完成线上法大大合同签写、培训视频学习和考试通过、线下培训的提成，将冻结提现</span>
               </div>
             </div>
           </>

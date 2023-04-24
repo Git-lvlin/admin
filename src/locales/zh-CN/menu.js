@@ -469,9 +469,16 @@ export default {
   'menu.great-project-team.great-project-team-management': '大团队长管理',
   'menu.great-project-team.order-performance': '订单业绩',
 
+  'menu.hydrogen-atom-saved': '氢原子省代',
+  'menu.hydrogen-atom-saved.order-performance': '订单业绩',
+
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
+  'menu.hydrogen-atom-generation.aed-training-service-achievement': 'AED培训服务套餐订单业绩',
+  'menu.hydrogen-atom-generation.health-package-order-performance': '健康礼包订单业绩',
 
+  'menu.great-health-province': '大健康省代',
+  'menu.great-health-province.aed-training-service-achievement': 'AED培训及服务套餐业绩',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
