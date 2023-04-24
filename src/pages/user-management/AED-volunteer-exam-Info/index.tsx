@@ -177,6 +177,12 @@ const AEDVolunteerExamInfo = () => {
         }}
         columns={columns}
         toolBarRender={()=> [
+          <Export
+            key='ex'
+            type='export_training_offline'
+            conditions={getFieldValue}
+            text='下载导入线下培训模板'
+          />,
           <Import
             key='import'
             code='healthy_training_offline_import'
