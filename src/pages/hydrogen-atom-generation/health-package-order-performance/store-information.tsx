@@ -108,7 +108,7 @@ export default (props) => {
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.totalCommission)
+        setOrderSum(res?.data?.[0]?.commission)
       }
     })
 
@@ -125,7 +125,7 @@ export default (props) => {
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.agentName} 健康礼包订单提成 （ID:${msgDetail?.agencyId}）`}
+      title={`${msgDetail?.name} 健康礼包订单提成 （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

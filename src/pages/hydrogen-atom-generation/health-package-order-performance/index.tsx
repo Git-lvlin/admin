@@ -62,7 +62,7 @@ const GenerationManagement =(props) => {
       },
       {
         title: '健康礼包订单业绩',
-        dataIndex: 'totalAmount',
+        dataIndex: 'totalPayAmount',
         align: 'center',
         render: (_,data)=>{
           if(parseFloat(_)){

@@ -98,7 +98,7 @@ export default (props:CumulativeProps)=>{
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.totalAmount)
+        setOrderSum(res?.data?.[0]?.payAmount)
       }
     })
   },[time])
@@ -114,7 +114,7 @@ export default (props:CumulativeProps)=>{
   }
   return (
       <DrawerForm
-        title={`${msgDetail?.agentName} 健康礼包订单业绩 （ID:${msgDetail?.agencyId}）`}
+        title={`${msgDetail?.name} 健康礼包订单业绩 （ID:${msgDetail?.agencyId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}
