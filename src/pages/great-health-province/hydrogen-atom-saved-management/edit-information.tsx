@@ -4,7 +4,7 @@ import {
   ProFormText,
   DrawerForm
 } from '@ant-design/pro-form';
-import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { hydrogenProvinceAgentDetail,hydrogenProvinceAgentEdit,checkAccount } from "@/services/great-health-province/hydrogen-atom-saved-management"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
@@ -19,31 +19,12 @@ const formItemLayout = {
       },
     }
   };
-const checkConfirm = (rule: any, value: string ) => {
-  return new Promise<void>(async (resolve, reject) => {
-    if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
-      await reject('请输入正确的手机号')
-    }else {
-      await resolve()
-    }
-  })
-}
-const activityName = (rule: any, value: string ) => {
-  return new Promise<void>(async (resolve, reject) => {
-    if (value&&/[%&',;=?$\x22]/.test(value)) {
-      await reject('不可以含特殊字符')
-    } else {
-      await resolve()
-    }
-  })
-}
-
 
 export default (props) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    accountCityDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agentId}).then(res=>{
+    hydrogenProvinceAgentDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
           name:msgDetail?.agentName,
@@ -99,7 +80,7 @@ export default (props) => {
           ...values,
           password:values?.password&&md5(values?.password)
         }
-        accountCityEdit(params).then(res=>{
+        hydrogenProvinceAgentEdit(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -119,17 +100,17 @@ export default (props) => {
       />
       <ProFormText
         width={250}
-        label="氢原子市代名称"
+        label="名称"
         name="name"
         readonly
       />
       <ProFormText
         width={250}
-        label="氢原子市代登录账号"
+        label="登录账号"
         name="userName"
         placeholder='请输入登录账号'
         rules={[
-          { required: true, message: '请输入氢原子市代登录账号' },
+          { required: true, message: '请输入登录账号' },
           {validator: checkConfirm2}
         ]}
         fieldProps={{
@@ -138,11 +119,11 @@ export default (props) => {
       />
       <ProFormText.Password
         width={250}
-        label="氢原子市代登录密码"
+        label="登录密码"
         name="password"
         placeholder='请输入登录密码'
         rules={[
-          // { required: true, message: '请输入氢原子市代登录密码' },
+          // { required: true, message: '请输入登录密码' },
           {validator: checkConfirm3}
         ]}
         fieldProps={{
@@ -152,29 +133,6 @@ export default (props) => {
           autoComplete: 'new-password'
         }}
         extra={<p style={{color:'#FFB45D'}}>未填写时保持已有的密码</p>}
-      />
-      <ProFormText
-        width={250}
-        label="负责人"
-        name="manager"
-        placeholder='请输入负责人姓名'
-        rules={[
-          { required: true, message: '请输入负责人姓名' },
-          { validator: activityName }
-        ]}
-        fieldProps={{
-          maxLength:10
-        }}
-      />
-      <ProFormText
-        width={250}
-        label="负责人手机号"
-        name="managerPhone"
-        placeholder='请输入负责人手机号'
-        rules={[
-          { required: true, message: '请输入负责人手机号' },
-          {validator: checkConfirm}
-        ]}
       />
     </DrawerForm >
   );

@@ -35,7 +35,6 @@ import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
 import AedTeamLeader from './routers/aed-team-leader'
 import GreatProjectTeam from './routers/great-project-team'
-import HydrogenAtomSaved from './routers/hydrogen-atom-saved'
 import HydrogenAtomGeneration from './routers/hydrogen-atom-generation'
 import GreatHealthProvince from './routers/great-health-province'
 import HydrogenAtomTrusteeship from './routers/hydrogen-atom-trusteeship'
@@ -124,7 +123,6 @@ const config = {
             CityOfficeManagement,
             AedTeamLeader,
             GreatProjectTeam,
-            HydrogenAtomSaved,
             HydrogenAtomGeneration,
             GreatHealthProvince,
             productPerformanceManagement,

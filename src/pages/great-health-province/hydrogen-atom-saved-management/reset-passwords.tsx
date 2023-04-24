@@ -4,7 +4,7 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { accountCityResetPwd } from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { hydrogenProvinceAgentResetPwd } from "@/services/great-health-province/hydrogen-atom-saved-management"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -25,12 +25,12 @@ export default (props) => {
   useEffect(()=>{
       form.setFieldsValue({
         accountId:msgDetail?.accountId,
-        agencyId:msgDetail?.agentId
+        agencyId:msgDetail?.agencyId
       })
   },[])
   return (
     <ModalForm
-      title={`请确认要重置事业部：${msgDetail?.agentName}（账号：${msgDetail?.accountName}）的登录密码？`}
+      title={`请确认要重置氢原子省代：${msgDetail?.name}（账号：${msgDetail?.userName}）的登录密码？`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -44,13 +44,13 @@ export default (props) => {
       submitter={{
         render: (props, defaultDoms) => {
             return [
-            <span style={{display:'inline-block',marginRight:'430px',color:'#979797'}}>重置密码将同步发送给事业部</span>,
+            <span style={{display:'inline-block',marginRight:'430px',color:'#979797'}}>重置密码将同步发送给氢原子省代</span>,
             ...defaultDoms
             ];
         },
       }}
       onFinish={async (values) => {
-        accountCityResetPwd(values).then(res=>{
+        hydrogenProvinceAgentResetPwd(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)

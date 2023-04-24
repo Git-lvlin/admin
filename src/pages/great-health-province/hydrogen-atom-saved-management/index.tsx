@@ -4,7 +4,7 @@ import ProTable from "@ant-design/pro-table"
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps } from "./data"
 
-import { cityAgentManage} from "@/services/city-office-management/hydrogen-atom-generation/generation-management"
+import { configHpa } from "@/services/great-health-province/hydrogen-atom-saved-management"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 
@@ -18,7 +18,7 @@ export default function GenerationManagement () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'agentId',
+      dataIndex: 'agencyId',
       align: 'center',
       hideInSearch: true
     },
@@ -27,14 +27,10 @@ export default function GenerationManagement () {
       dataIndex: 'status',
       align: 'center',
       hideInSearch: true,
-      valueEnum: {
-        0: '未生效',
-        1: '已生效'
-      }
     },
     {
       title: '氢原子省代名称',
-      dataIndex: 'agentName',
+      dataIndex: 'name',
       align: 'center',
       fieldProps:{
         placeholder:'请输入氢原子省代名称'
@@ -42,7 +38,7 @@ export default function GenerationManagement () {
     },
     {
       title: '登录账号',
-      dataIndex: 'accountName',
+      dataIndex: 'userName',
       align: 'center',
       fieldProps: {
         placeholder: '请输入登录账号'
@@ -63,10 +59,10 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="agentId"
+        rowKey="agencyId"
         headerTitle='列表'
         columns={tableColumns}
-        request={cityAgentManage}
+        request={configHpa}
         columnEmptyText={false}
         actionRef={ref}
         pagination={{
