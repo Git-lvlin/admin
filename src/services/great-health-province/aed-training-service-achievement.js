@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 import moment from 'moment'
 
-export const cityAgentAedTrain = async (params = {}, options = {}) => {
+export const hpaAedTrain = async (params = {}, options = {}) => {
   const { current=1, pageSize=10,dateRange,...rest } = params
-  const res = await request('/auth/java-admin/report/config/cityAgentAedTrain', {
+  const res = await request('/auth/java-admin/report/config/hpaAedTrain', {
     method: 'POST',
     data: {
       page: current,
@@ -22,8 +22,8 @@ export const cityAgentAedTrain = async (params = {}, options = {}) => {
   }
 }
 
-export const cityAgentAedTrainStats = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/report/config/cityAgentAedTrainStats', {
+export const hpaAedTrainStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/java-admin/report/config/hpaAedTrainStats', {
         method: 'POST',
         data:params,
         ...options
@@ -37,9 +37,9 @@ export const cityAgentAedTrainStats = async (params = {}, options = {}) => {
 }
 
 
-export const cityAgentAedTrainOrder = async (params = {}, options = {}) => {
+export const hpaAedTrainOrder = async (params = {}, options = {}) => {
     const { current=1, pageSize=10,dateRange,...rest } = params
-    const res = await request('/auth/java-admin/report/config/cityAgentAedTrainOrder', {
+    const res = await request('/auth/java-admin/report/config/hpaAedTrainOrder', {
       method: 'POST',
       data: {
         page: current,
@@ -58,8 +58,8 @@ export const cityAgentAedTrainOrder = async (params = {}, options = {}) => {
     }
 }
 
-export const cityAgentAedTrainOrderStats = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/report/config/cityAgentAedTrainOrderStats', {
+export const hpaAedTrainOrderStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/java-admin/report/config/hpaAedTrainOrderStats', {
         method: 'POST',
         data:params,
         ...options

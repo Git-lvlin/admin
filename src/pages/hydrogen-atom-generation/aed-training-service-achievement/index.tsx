@@ -6,7 +6,7 @@ import type { FormInstance } from "@ant-design/pro-form"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
-import { hpaAedTrain,hpaAedTrainStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
+import { cityAgentAedTrain,cityAgentAedTrainStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
@@ -26,7 +26,7 @@ export default function GenerationManagement () {
       startTime:time?.dateRange&&time?.dateRange[0],
       endTime:time?.dateRange&&time?.dateRange[1]
     }
-    hpaAedTrainStats(params).then(res=>{
+    cityAgentAedTrainStats(params).then(res=>{
       if(res.code==0){
         setDetailList(res.data[0])
       }
@@ -95,14 +95,14 @@ export default function GenerationManagement () {
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
         <Descriptions.Item  label="氢原子市代总数量">{detailList?.totalNum}  </Descriptions.Item>
-        <Descriptions.Item  label="AED培训及服务套餐业绩">{amountTransform(detailList?.totalAmount,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="AED培训及服务套餐业绩">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="AED培训及服务套餐提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
       <ProTable<TableProps>
         rowKey="agencyId"
         headerTitle='列表'
         columns={tableColumns}
-        request={hpaAedTrain}
+        request={cityAgentAedTrain}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{

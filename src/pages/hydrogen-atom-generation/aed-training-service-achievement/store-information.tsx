@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { hpaAedTrainOrder,hpaAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
+import { cityAgentAedTrainOrder,cityAgentAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -116,7 +116,7 @@ export default (props) => {
       endTime:time?.dateRange?.[1],
       orderType:time?.orderType
     }
-    hpaAedTrainOrderStats(params).then(res=>{
+    cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
         setOrderSum(res?.data?.[0]?.commission)
       }
@@ -161,7 +161,7 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={hpaAedTrainOrder}
+        request={cityAgentAedTrainOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
@@ -184,10 +184,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'hpaAedTrainOrderCom'}
+              type={'cityAgentAedTrainOrderCom'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaAedTrainOrderCom'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentAedTrainOrderCom'}/>
           ],
         }}
         tableRender={(_, dom) => {

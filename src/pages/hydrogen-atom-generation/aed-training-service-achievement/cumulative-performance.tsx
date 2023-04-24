@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { hpaAedTrainOrder,hpaAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
+import { cityAgentAedTrainOrder,cityAgentAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -89,7 +89,7 @@ export default (props:CumulativeProps)=>{
       endTime:time?.dateRange?.[1],
       scopeDesc:time?.scopeDesc
     }
-    hpaAedTrainOrderStats(params).then(res=>{
+    cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
         setOrderSum(res?.data?.[0]?.payAmount)
       }
@@ -130,7 +130,7 @@ export default (props:CumulativeProps)=>{
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={hpaAedTrainOrder}
+        request={cityAgentAedTrainOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
@@ -153,10 +153,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'hpaAedTrainOrderPm'}
+              type={'cityAgentAedTrainOrderPm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaAedTrainOrderPm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentAedTrainOrderPm'}/>
           ],
         }}
         tableRender={(_, dom) => {
