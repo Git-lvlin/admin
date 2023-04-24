@@ -120,7 +120,7 @@ const AEDVolunteerExamInfo = () => {
       hideInSearch: true
     },
     {
-      title: '所属团长类型',
+      title: '所属子公司类型',
       dataIndex: 'teamTypeStr',
       align: 'center',
       hideInSearch: true
