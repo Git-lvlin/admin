@@ -30,7 +30,7 @@ const formItemLayout = {
 
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible,msgDetail,onClose,scope} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState<GithubIssueItem>()
@@ -94,7 +94,8 @@ export default (props:CumulativeProps)=>{
       orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      storeHouseNumber:time?.storeHouseNumber
+      storeHouseNumber:time?.storeHouseNumber,
+      scope:scope
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){
@@ -142,6 +143,7 @@ export default (props:CumulativeProps)=>{
         actionRef={ref}
         params={{
           agencyId:msgDetail?.agencyId,
+          scope:scope
         }}
         pagination={{
           pageSize: 10,

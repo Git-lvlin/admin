@@ -133,6 +133,7 @@ const GenerationManagement =(props) => {
             visible={storeVisible}
             setVisible={setStoreVisible}
             msgDetail={msgDetail}
+            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
             onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           />
         }
@@ -142,6 +143,7 @@ const GenerationManagement =(props) => {
             visible={visible}
             setVisible={setVisible}
             msgDetail={msgDetail}
+            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
             onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           />
         }
