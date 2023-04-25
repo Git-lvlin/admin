@@ -37,7 +37,7 @@ const Model: React.FC<modelProps> = ({visible, setVisible, type, callback, id}) 
         await submit(values)
         return true
       }}
-      width={400}
+      width={500}
       submitter={{
         searchConfig: {
           resetText: '暂时不解冻',

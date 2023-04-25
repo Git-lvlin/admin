@@ -5,6 +5,7 @@ import type { FC } from "react"
 import PageContainer from '@/components/PageContainer'
 import ClassifiedProhibitedWords from './classified-prohibited-words'
 import GlobalProhibitedWords from './global-prohibited-words'
+import ProhibitedWordProducts from './prohibited-word-products'
 
 const ProhibitedWordsManagement: FC = () => {
   return (
@@ -21,8 +22,8 @@ const ProhibitedWordsManagement: FC = () => {
           <GlobalProhibitedWords />
         </ProCard.TabPane>
         <ProCard.TabPane key="3" tab="含违禁词敏感词商品">
-          
-          </ProCard.TabPane>
+          <ProhibitedWordProducts/>
+        </ProCard.TabPane>
       </ProCard>
     </PageContainer>
   )

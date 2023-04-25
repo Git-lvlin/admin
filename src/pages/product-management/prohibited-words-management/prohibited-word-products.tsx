@@ -1,0 +1,148 @@
+import { useState, useRef } from 'react'
+import ProTable from '@ant-design/pro-table'
+
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
+
+import Export from '@/components/export'
+import { getWordCheckListByParams } from '@/services/product-management/prohibited-words-management'
+import GcCascader from '@/components/gc-cascader'
+import Edit from '@/pages/product-management/supplier/product-list/edit'
+import { getDetail } from '@/services/product-management/product-list'
+
+const ProhibitedWordProducts: React.FC = () => {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [detailData, setDetailData] = useState(null)
+  const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
+
+  const getDetail1 = (id: string) => {
+    getDetail({spuId: id})?.then(res => {
+      if (res.code === 0) {
+        setVisible(true)
+        setDetailData({
+          ...res.data,
+          settleType: 2
+        })
+      }
+    })
+  }
+
+  const columns: ProColumns[] = [
+    {
+      title: '违禁词/敏感词',
+      dataIndex: 'words',
+      hideInTable: true
+    },
+    {
+      title: '类目',
+      dataIndex: 'gc',
+      renderFormItem: () => <GcCascader />,
+      hideInTable: true
+    },
+    {
+      title: '商品上架状态',
+      dataIndex: 'goodsState',
+      valueType: 'select',
+      hideInTable: true
+    },
+    {
+      title: 'spuID',
+      dataIndex: 'spuId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      align: 'center',
+      hideInSearch: true,
+      width: '15%'
+    },
+    {
+      title: '一级类目',
+      dataIndex: 'gcId1Name',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '二级类目',
+      dataIndex: 'gcId2Name',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '包含违禁词',
+      dataIndex: 'words1',
+      align: 'center',
+      hideInSearch: true,
+      width: '15%'
+    },
+    {
+      title: '包含敏感词',
+      dataIndex: 'words2',
+      align: 'center',
+      hideInSearch: true,
+      width: '15%'
+    },
+    {
+      title: '上架状态',
+      dataIndex: 'goodsStateStr',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '检测时间',
+      dataIndex: 'updateTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      align: 'center',
+      render: (_, r)=> <a onClick={()=> {getDetail1(r.spuId)}}>编辑</a>
+    },
+  ]
+
+  return (
+    <>
+      <ProTable
+        rowKey='spuId'
+        columns={columns}
+        params={{}}
+        request={getWordCheckListByParams}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true
+        }}
+        formRef={form}
+        actionRef={actRef}
+        options={false}
+        search={{
+          labelWidth: 100,
+          optionRender: (search, props, dom) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              type='sensitive-goods-list'
+              conditions={{...form.current?.getFieldsValue()}}
+            />
+          ]
+        }}
+      />
+      {
+        visible &&
+        <Edit
+          visible={visible}
+          setVisible={setVisible}
+          detailData={detailData}
+          callback={() => {}}
+          onClose={() => {}}
+        />
+      }
+    </>
+  )
+}
+
+export default ProhibitedWordProducts

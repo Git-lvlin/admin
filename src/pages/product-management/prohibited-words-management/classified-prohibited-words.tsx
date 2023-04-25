@@ -8,66 +8,74 @@ import type { FormInstance } from 'antd'
 import Export from '@/components/export'
 import Edit from './edit'
 import Model  from './model-form'
+import GcCascader from '@/components/gc-cascader'
+import { getSensitiveListByParams } from '@/services/product-management/prohibited-words-management'
 
 const ClassifiedProhibitedWords = () => {
   const [editVisible, setEditVisible] = useState<boolean>(false)
   const [modelVisible, setModelVisible] = useState<boolean>(false)
   const [id, setId] = useState<string>()
+  const [id1, setId1] = useState<string>()
+  const [id2, setId2] = useState<string>()
+  const [type, setType] = useState<string>('')
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
+  const getFieldsValue = () => {
+    const { gc, ...rest } = form.current?.getFieldsValue()
+    return {
+      gcId1: gc && gc[0],
+      gcId2: gc && gc[1],
+      ...rest
+    }
+  }
+
   const columns: ProColumns[] = [
     {
-      title: '敏感词',
-      dataIndex: '',
-      hideInTable: true
-    },
-    {
       title: '类目',
-      dataIndex: '',
-      valueType: 'select',
+      dataIndex: 'gc',
+      renderFormItem: () => <GcCascader />,
       hideInTable: true
     },
     {
       title: '序号',
-      dataIndex: '',
+      dataIndex: 'id',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '一级类目',
-      dataIndex: '',
+      dataIndex: 'gcId1Name',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '二级类目',
-      dataIndex: '',
+      dataIndex: 'gcId2Name',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '违禁词',
-      dataIndex: '',
+      dataIndex: 'words',
       align: 'center',
-      hideInSearch: true,
       width: '15%'
     },
     {
       title: '最近操作人',
-      dataIndex: '',
+      dataIndex: 'lastEditor',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '最近操作时间',
-      dataIndex: '',
+      dataIndex: 'updateTime',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '状态',
-      dataIndex: '',
+      dataIndex: 'statusStr',
       align: 'center',
       hideInSearch: true
     },
@@ -77,8 +85,10 @@ const ClassifiedProhibitedWords = () => {
       align: 'center',
       render: (_, r)=>(
         <Space size='small'>
-          <a onClick={()=> {setEditVisible(true); setId(r)}}>编辑</a>
-          <a onClick={()=> {setModelVisible(true)}}>不限制</a>
+          <a onClick={()=> {setEditVisible(true); setId1(r.gcId1); setType('edit'); setId2(r.gcId2);}}>编辑</a>
+          <a onClick={()=> {setModelVisible(true); setType(r.statusStr === '已限制' ? '0' : '1'); setId(r.id)}}>
+            {r.statusStr === '已限制' ? '不限制' : '限制'}
+          </a>
         </Space>
       )
     },
@@ -87,9 +97,10 @@ const ClassifiedProhibitedWords = () => {
   return (
     <>
       <ProTable
+        rowKey='id'
         columns={columns}
         params={{}}
-        // request={}
+        request={getSensitiveListByParams}
         pagination={{
           pageSize: 10,
           showQuickJumper: true
@@ -102,8 +113,8 @@ const ClassifiedProhibitedWords = () => {
             ...dom.reverse(),
             <Export
               key='export'
-              type=''
-              conditions={{...form.current?.getFieldsValue()}}
+              type='sensitive-list'
+              conditions={getFieldsValue}
             />
           ]
         }}
@@ -111,19 +122,21 @@ const ClassifiedProhibitedWords = () => {
           <Button
             key='add'
             type='primary'
-            onClick={()=> {setEditVisible(true)}}
+            onClick={()=> {setEditVisible(true); setType('add'); setId1('')}}
           >
             新增
           </Button>,
           <Button
             key='push'
             type='primary'
+            onClick={()=> {setEditVisible(true); setType('push'); setId1('')}}
           >
             追加
           </Button>,
           <Button
             key='delete'
             type='primary'
+            onClick={()=> {setEditVisible(true); setType('delete'); setId1('')}}
           >
             删除
           </Button>
@@ -134,8 +147,10 @@ const ClassifiedProhibitedWords = () => {
         <Edit
           visible={editVisible}
           setVisible={setEditVisible}
-          id={id}
+          id1={id1}
+          id2={id2}
           callback={()=> actRef.current?.reload()}
+          type={type}
         />
       }
       {
@@ -144,6 +159,8 @@ const ClassifiedProhibitedWords = () => {
           visible={modelVisible}
           setVisible={setModelVisible}
           callback={()=> actRef.current?.reload()}
+          id={id}
+          type={type}
         />
       }
     </>

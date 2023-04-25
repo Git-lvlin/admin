@@ -1,97 +1,98 @@
-import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
-import { Button, Space } from 'antd'
+import { useState, useRef, useEffect } from 'react'
+import ProForm,{ ProFormRadio, ProFormTextArea } from '@ant-design/pro-form'
+import { Button } from 'antd'
 
-import type { ProColumns, ActionType } from '@ant-design/pro-table'
+import type { dataProps } from './data'
 import type { FormInstance } from 'antd'
 
-import Edit from './edit'
-import Model  from './model-form'
+import { detailSensitiveData, saveAedUserInfo, editSensitiveData } from '@/services/product-management/prohibited-words-management'
 
-const GlobalProhibitedWords = () => {
-  const [editVisible, setEditVisible] = useState<boolean>(false)
-  const [modelVisible, setModelVisible] = useState<boolean>(false)
-  const [id, setId] = useState<string>()
+const GlobalProhibitedWords: React.FC = () => {
+  const [data, setData] = useState<dataProps>()
   const form = useRef<FormInstance>()
-  const actRef = useRef<ActionType>()
 
-  const columns: ProColumns[] = [
-    {
-      title: '违禁词',
-      dataIndex: '',
-      align: 'center', 
-      width: '15%'
-    },
-    {
-      title: '最近操作人',
-      dataIndex: '',
-      align: 'center'
-    },
-    {
-      title: '最近操作时间',
-      dataIndex: '',
-      align: 'center'
-    },
-    {
-      title: '状态',
-      dataIndex: '',
-      align: 'center'
-    },
-    {
-      title: '操作',
-      valueType: 'option',
-      align: 'center',
-      render: (_, r)=>(
-        <Space size='small'>
-          <a onClick={()=> {setEditVisible(true); setId(r)}}>编辑</a>
-          <a onClick={()=> {setModelVisible(true)}}>不限制</a>
-        </Space>
-      )
-    },
-  ]
+  useEffect(()=> {
+    detailSensitiveData({
+      gcId1: 0,
+      gcId2: 0
+    }).then(res => {
+      setData(res.data)
+    })
+  }, [])
+
+  useEffect(()=> {
+    if(data) {
+      form.current?.setFieldsValue({
+        words: data.words,
+        status: data.status
+      })
+    }
+  }, [data])
+
+  const submit = (values: any) => {
+    const { words } = values
+    const str = words.replaceAll('，', ',')
+    return new Promise<void>((resolve, reject) => {
+      if(data) {
+        editSensitiveData({
+          id: data.id,
+          ...values,
+          words: str
+        }, {showSuccess: true})
+      } else {
+        saveAedUserInfo({
+          gcId1: 0,
+          gcId2: 0,
+          ...values,
+          words: str
+        })
+      }
+    })
+  }
 
   return (
-    <>
-      <ProTable
-        columns={columns}
-        params={{}}
-        // request={}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true
+    <ProForm
+      layout='horizontal'
+      formRef={form}
+      onFinish={async (values)=> {
+        await submit(values)
+        return true
+      }}
+      labelCol={{span: 9}}
+      submitter={{
+        render: (props) => {
+          return [
+            <div key="submit" style={{textAlign: 'center'}}>
+              <Button type='primary' onClick={() => props.form?.submit?.()}>
+                更新
+              </Button>
+            </div>
+          ];
+        },
+      }}
+    >
+      <ProFormTextArea
+        label='违禁词'
+        name='words'
+        rules={[{required: true}]}
+        fieldProps={{
+          placeholder: '请输入此分类商品的违禁词，多个违禁词逗号分隔，不重复，不超过1000个字',
+          maxLength: 1000,
+          showCount: true
         }}
-        formRef={form}
-        actionRef={actRef}
-        options={false}
-        search={false}
-        toolBarRender={()=> [
-          <Button
-            key='add'
-            type='primary'
-            onClick={()=> {setEditVisible(true)}}
-          >
-            新增
-          </Button>
-        ]}
+        width='lg'
       />
-      {
-        editVisible &&
-        <Edit
-          visible={editVisible}
-          setVisible={setEditVisible}
-          id={id}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        modelVisible &&
-        <Model
-          visible={modelVisible}
-          setVisible={setModelVisible}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-    </>
+      <ProFormRadio.Group
+        label='状态'
+        name='status'
+        rules={[{required: true}]}
+        options={[
+          {label: '限制敏感词录入', value: 1},
+          {label: '不限制敏感词录入', value: 0}
+        ]}
+        width='md'
+      />
+    </ProForm>
   )
 }
 

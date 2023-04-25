@@ -108,24 +108,6 @@ const UnfrozenList: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '解冻操作人',
-      dataIndex: 'operator',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '解冻时间',
-      dataIndex: 'unfreezeTime',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '解冻说明',
-      dataIndex: 'remark',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
       title: '操作',
       valueType: 'option', 
       align: 'center',
