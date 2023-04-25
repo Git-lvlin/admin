@@ -57,6 +57,16 @@ export default (props:CumulativeProps)=>{
       align: 'center',
     },
     {
+      title: '客户手机',
+      dataIndex: 'teamPhone',
+      align: 'center',
+      hideInTable: true,
+      fieldProps: {
+        placeholder:'请输入当前大团队长的客户手机号码'
+      },
+      order: -1
+    },
+    {
       title: '下单人手机号',
       dataIndex: 'memberPhone',
       align: 'center',
@@ -79,6 +89,7 @@ export default (props:CumulativeProps)=>{
       title: '业绩范围',
       dataIndex: 'scopeDesc',
       align: 'center',
+      hideInSearch: true
     }
   ]
   useEffect(()=>{
