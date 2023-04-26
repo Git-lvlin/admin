@@ -11,6 +11,7 @@ import { removeEmpty } from '@/utils/utils'
 const GlobalProhibitedWords: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [data, setData] = useState<dataProps>()
+  const [change, setChange] = useState<number>(0)
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -22,7 +23,7 @@ const GlobalProhibitedWords: React.FC = () => {
       setData(res.data)
       setLoading(false)
     })
-  }, [])
+  }, [change])
 
   useEffect(()=> {
     if(data) {
@@ -43,13 +44,21 @@ const GlobalProhibitedWords: React.FC = () => {
           id: data.id,
           ...values,
           words: source
-        }, {showSuccess: true})
+        }, {showSuccess: true}).then(res => {
+          if(res.code === 0) {
+            setChange(change + 1)
+          }
+        })
       } else {
         saveAedUserInfo({
           gcId1: 0,
           gcId2: 0,
           ...values,
           words: source
+        }).then(res => {
+          if(res.code === 0) {
+            setChange(change + 1)
+          }
         })
       }
     })
