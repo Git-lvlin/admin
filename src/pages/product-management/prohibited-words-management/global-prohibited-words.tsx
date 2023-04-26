@@ -33,7 +33,7 @@ const GlobalProhibitedWords: React.FC = () => {
     const { words } = values
     const str = words.replaceAll('，', ',')
     return new Promise<void>((resolve, reject) => {
-      if(data) {
+      if(data?.id) {
         editSensitiveData({
           id: data.id,
           ...values,
