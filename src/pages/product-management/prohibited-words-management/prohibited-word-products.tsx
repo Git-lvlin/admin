@@ -44,6 +44,10 @@ const ProhibitedWordProducts: React.FC = () => {
       title: '商品上架状态',
       dataIndex: 'goodsState',
       valueType: 'select',
+      valueEnum: {
+        0: '下架',
+        1: '正常'
+      },
       hideInTable: true
     },
     {
