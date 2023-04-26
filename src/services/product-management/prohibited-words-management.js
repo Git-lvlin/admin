@@ -88,3 +88,12 @@ export const changeSensitiveStatus = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+// 查找已处理过的分类
+export const getEditedCategoryList = async (params = {}, options = {}) => {
+  return request('/auth/goods/product/getEditedCategoryList', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

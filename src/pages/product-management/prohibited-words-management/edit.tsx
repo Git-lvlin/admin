@@ -9,7 +9,8 @@ import {
   saveAedUserInfo,
   editSensitiveData,
   detailSensitiveData,
-  appendSensitiveData
+  appendSensitiveData,
+  getEditedCategoryList
 } from '@/services/product-management/prohibited-words-management'
 
 const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, type}) => {
@@ -40,15 +41,28 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
   }, [data])
 
   useEffect(()=> {
-    category({gcParentId: 0}).then(res => {
-      if(res.code === 0) {
-        setList(res.data.records.map((item: {gcName: string, id: number}) => ({
-          label: item.gcName,
-          value: item.id
-        })))
+    if(!id1) {
+      if(type === 'add') {
+        category({gcParentId: 0}).then(res => {
+          if(res.code === 0) {
+            setList(res.data.records.map((item: {gcName: string, id: number}) => ({
+              label: item.gcName,
+              value: item.id
+            })))
+          }
+        })
+      } else {
+        getEditedCategoryList().then(res => {
+          if(res.code === 0) {
+            setList(res.data.map((item: {gcIdName: string, id: number}) => ({
+              label: item.gcIdName,
+              value: item.id
+            })))
+          }
+        })
       }
-    })
-  },[])
+    }
+  },[id1])
 
   const submit = (values: any) => {
     const { words } = values
