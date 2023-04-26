@@ -286,7 +286,7 @@ export default (props) => {
         .then(_ => {   
           const apiMethod = type === 'add' ? api.categoryAdd : api.categoryEdit;
           const { gcShow, shopValue,gcRemark, ...rest } = values;
-          const convertedContent = gcRemark.replace(/<(\w+)\s+[^>]*class="([^"]+)"[^>]*>/g, (match, p1, p2) => {
+          const convertedContent = gcRemark&&gcRemark.replace(/<(\w+)\s+[^>]*class="([^"]+)"[^>]*>/g, (match, p1, p2) => {
             let newTag = `<${p1} style="`;
             const styles = p2.split(' ');
             styles.forEach(style => {
@@ -305,7 +305,7 @@ export default (props) => {
           const params = {
             ...rest,
             gcShow: gcShow ? 1 : 0,
-            gcRemark:`<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /></head><body>${convertedContent}</body></html>`
+            gcRemark:convertedContent&&`<!DOCTYPE html><html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /></head><body>${convertedContent}</body></html>`
           }
 
           if (type === 'add') {
