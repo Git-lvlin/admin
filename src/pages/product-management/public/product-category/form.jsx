@@ -331,6 +331,7 @@ export default (props) => {
             ...params,
           }, { showSuccess: true, showError: true }).then(res => {
             if (res.code === 0) {
+              setVisible(false)
               resolve();
             } else {
               reject();
@@ -418,7 +419,6 @@ export default (props) => {
       onFinish={async (values) => {
         await submit(values);
         callback();
-        return true;
       }}
       onChange={() => {
         // form.validateFields()
