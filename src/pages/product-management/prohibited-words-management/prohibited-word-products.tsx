@@ -9,6 +9,7 @@ import { getWordCheckListByParams } from '@/services/product-management/prohibit
 import GcCascader from '@/components/gc-cascader'
 import Edit from '@/pages/product-management/supplier/product-list/edit'
 import { getDetail } from '@/services/product-management/product-list'
+import { getAuth } from '@/components/auth'
 
 const ProhibitedWordProducts: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -111,7 +112,13 @@ const ProhibitedWordProducts: React.FC = () => {
       valueType: 'option',
       align: 'center',
       width: '5%',
-      render: (_, r)=> <a onClick={()=> {getDetail1(r.spuId)}}>编辑</a>
+      render: (_, r)=> {
+        if(getAuth('goodsEdit')) {
+          return <a onClick={()=> {getDetail1(r.spuId)}}>编辑</a>
+        } else {
+          return <span>编辑</span>
+        }
+      }
     },
   ]
 

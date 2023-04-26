@@ -171,7 +171,8 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
         fieldProps={{
           placeholder: '请输入此分类商品的违禁词，多个违禁词逗号分隔，不重复，不超过1000个字',
           maxLength: 1000,
-          showCount: true
+          showCount: true,
+          autoSize: true
         }}
         width='lg'
       />
