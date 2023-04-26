@@ -12,6 +12,7 @@ import {
   appendSensitiveData,
   getEditedCategoryList
 } from '@/services/product-management/prohibited-words-management'
+import { removeEmpty } from '@/utils/utils'
 
 const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, type}) => {
   const [list, setList] = useState([])
@@ -63,16 +64,6 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
       }
     }
   },[id1])
-
-  const removeEmpty = (arr: string[]) => {
-    for (var i = 0; i < arr.length; i++) {
-      if (arr[i] == "" || typeof (arr[i]) == "undefined" || arr[i] == " ") {
-        arr.splice(i, 1)
-        i--
-      }
-    }
-    return arr
-  }
 
   const submit = (values: any) => {
     const { words } = values

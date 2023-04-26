@@ -6,6 +6,7 @@ import type { dataProps } from './data'
 import type { FormInstance } from 'antd'
 
 import { detailSensitiveData, saveAedUserInfo, editSensitiveData } from '@/services/product-management/prohibited-words-management'
+import { removeEmpty } from '@/utils/utils'
 
 const GlobalProhibitedWords: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -35,19 +36,20 @@ const GlobalProhibitedWords: React.FC = () => {
   const submit = (values: any) => {
     const { words } = values
     const str = words.replaceAll('，', ',')
+    const source = [...new Set(removeEmpty(str.split(',')))].join(',')
     return new Promise<void>((resolve, reject) => {
       if(data?.id) {
         editSensitiveData({
           id: data.id,
           ...values,
-          words: str
+          words: source
         }, {showSuccess: true})
       } else {
         saveAedUserInfo({
           gcId1: 0,
           gcId2: 0,
           ...values,
-          words: str
+          words: source
         })
       }
     })
