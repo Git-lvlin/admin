@@ -12,7 +12,8 @@ const ProhibitedWordsManagement: FC = () => {
     <PageContainer>
       <ProCard
         tabs={{
-          type: 'card'
+          type: 'card',
+          destroyInactiveTabPane: true
         }}
       >
         <ProCard.TabPane key="1" tab="分类违禁词">
