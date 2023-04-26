@@ -131,7 +131,7 @@ const UnfrozenList: React.FC = () => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type=''
+              type='exportTrainServerUnfreezeDivideList'
               conditions={{...form.current?.getFieldsValue()}}
             />
           ]
