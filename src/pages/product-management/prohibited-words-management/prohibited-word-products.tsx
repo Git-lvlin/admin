@@ -37,7 +37,7 @@ const ProhibitedWordProducts: React.FC = () => {
     {
       title: '类目',
       dataIndex: 'gc',
-      renderFormItem: () => <GcCascader />,
+      renderFormItem: () => <GcCascader changeOnSelect/>,
       hideInTable: true
     },
     {
@@ -50,57 +50,63 @@ const ProhibitedWordProducts: React.FC = () => {
       title: 'spuID',
       dataIndex: 'spuId',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '4%'
     },
     {
       title: '商品名称',
       dataIndex: 'goodsName',
       align: 'center',
       hideInSearch: true,
-      width: '15%'
+      width: '12%'
     },
     {
       title: '一级类目',
       dataIndex: 'gcId1Name',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '5%'
     },
     {
       title: '二级类目',
       dataIndex: 'gcId2Name',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '6%'
     },
     {
       title: '包含违禁词',
       dataIndex: 'words1',
       align: 'center',
       hideInSearch: true,
-      width: '15%'
+      width: '25%'
     },
     {
       title: '包含敏感词',
       dataIndex: 'words2',
       align: 'center',
       hideInSearch: true,
-      width: '15%'
+      width: '25%'
     },
     {
       title: '上架状态',
       dataIndex: 'goodsStateStr',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '5%'
     },
     {
       title: '检测时间',
       dataIndex: 'updateTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '5%'
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      width: '5%',
       render: (_, r)=> <a onClick={()=> {getDetail1(r.spuId)}}>编辑</a>
     },
   ]

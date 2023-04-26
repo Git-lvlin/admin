@@ -34,55 +34,62 @@ const ClassifiedProhibitedWords = () => {
     {
       title: '类目',
       dataIndex: 'gc',
-      renderFormItem: () => <GcCascader />,
-      hideInTable: true
+      renderFormItem: () => <GcCascader changeOnSelect/>,
+      hideInTable: true,
     },
     {
       title: '序号',
       dataIndex: 'id',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "3%"
     },
     {
       title: '一级类目',
       dataIndex: 'gcId1Name',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "6%"
     },
     {
       title: '二级类目',
       dataIndex: 'gcId2Name',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "6%"
     },
     {
       title: '违禁词',
       dataIndex: 'words',
       align: 'center',
-      width: '15%'
+      width: '25%'
     },
     {
       title: '最近操作人',
       dataIndex: 'lastEditor',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "5%"
     },
     {
       title: '最近操作时间',
       dataIndex: 'updateTime',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "5%"
     },
     {
       title: '状态',
       dataIndex: 'statusStr',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: "4%"
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      width: "5%",
       render: (_, r)=>(
         <Space size='small'>
           <a onClick={()=> {setEditVisible(true); setId1(r.gcId1); setType('edit'); setId2(r.gcId2);}}>编辑</a>
