@@ -91,8 +91,8 @@ const GlobalProhibitedWords: React.FC = () => {
           name='words'
           rules={[{required: true}]}
           fieldProps={{
-            placeholder: '请输入此分类商品的违禁词，多个违禁词逗号分隔，不重复，不超过1000个字',
-            maxLength: 1000,
+            placeholder: '请输入此分类商品的违禁词，多个违禁词逗号分隔，不重复，不超过3000个字',
+            maxLength: 3000,
             showCount: true
           }}
           width='lg'
