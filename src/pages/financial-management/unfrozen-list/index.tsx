@@ -36,7 +36,7 @@ const UnfrozenList: React.FC = () => {
       align: 'center'
     },
     {
-      title: '解冻超时时间',
+      title: '未解冻超时时间',
       dataIndex: 'timeout',
       valueType: 'select',
       valueEnum: {
