@@ -64,10 +64,21 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
     }
   },[id1])
 
+  const removeEmpty = (arr: string[]) => {
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] == "" || typeof (arr[i]) == "undefined" || arr[i] == " ") {
+        arr.splice(i, 1)
+        i--
+      }
+    }
+    return arr
+  }
+
   const submit = (values: any) => {
     const { words } = values
     const str = words.replaceAll('，', ',')
     const actStr = type === 'push' ? 1 : 2 
+    const source = [...new Set(removeEmpty(str.split(',')))].join(',')
     return new Promise<void>((resolve, reject) => {
       if(type === 'add') {
         saveAedUserInfo({...values, words: str, gcId2: 0}, {showSuccess: true}).then(res => {
@@ -82,7 +93,7 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
         editSensitiveData({
           id: data?.id,
           ...values,
-          words: str
+          words: source
         },
         {
           showSuccess: true
@@ -98,7 +109,7 @@ const Edit: React.FC<editProps> = ({visible, setVisible, id1, id2, callback, typ
         appendSensitiveData({
           actType: actStr,
           ...values,
-          words: str
+          words: source
         },{
           showSuccess: true
         }).then(res => {
