@@ -94,9 +94,10 @@ const GlobalProhibitedWords: React.FC = () => {
             placeholder: '请输入此分类商品的违禁词，多个违禁词逗号分隔，不重复，不超过3000个字',
             maxLength: 3000,
             showCount: true,
-            autoSize: true
+            autoSize: true,
+            rows: 10
           }}
-          width='lg'
+          width='xl'
         />
         <ProFormRadio.Group
           label='状态'
