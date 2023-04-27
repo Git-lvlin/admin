@@ -110,6 +110,7 @@ export default (props:CumulativeProps)=>{
       agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      scope:scope,
       ...rest,
     }
   }
