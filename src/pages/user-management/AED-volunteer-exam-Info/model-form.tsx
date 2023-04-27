@@ -37,7 +37,7 @@ const Model: React.FC<modelProps> = ({phone, visible, setVisible, id, callback})
       submitter={{
         searchConfig: {
           resetText: '关闭',
-          submitText: '录入先培训状态'
+          submitText: '录入线下培训状态'
         }
       }}
       labelCol={{span: 10}}
