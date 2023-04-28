@@ -14,11 +14,12 @@ const typeTransform = (array) => {
   }
   const obj = {};
   array.forEach(item => {
-    obj[item.value] = {
-      text: item.label,
+    if(item.value&&item.label){
+      obj[item.value] = {
+        text: item.label,
+      }
     }
   })
-
   return obj;
 }
 
