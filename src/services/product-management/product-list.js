@@ -189,3 +189,10 @@ export const getCommissionConfigBySpuId = (params = {}, options = {}) => {
     ...options
   });
 }
+export const checkSensitiveWords = (params = {}, options = {}) => {
+  return request('/auth/goods/product/checkSensitiveWords', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

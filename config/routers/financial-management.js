@@ -154,6 +154,12 @@ export default {
       name: 'subsidy-summary-detail',
       path: '/financial-management/subsidy-summary/detail/:id',
       component: './financial-management/subsidy-summary/detail'
+    }, 
+    {
+      name: 'unfrozen-list',
+      path: '/financial-management/unfrozen-list',
+      component: './financial-management/unfrozen-list',
+      wrappers: [RouteWatcher],
     }
   ]
 }

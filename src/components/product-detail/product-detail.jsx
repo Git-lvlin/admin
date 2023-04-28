@@ -511,7 +511,7 @@ export default (props) => {
         {
           detailData?.primaryImages.map(item => (
             <div
-              style={{ marginRight: 10, display: 'inline-block' }}
+              style={{ marginRight: 10, marginBottom:10, display: 'inline-block' }}
               key={item.imageSort}
             >
               <Image width={100} height={100} src={item.imageUrl} />
@@ -525,7 +525,7 @@ export default (props) => {
         {
           detailData?.detailImages.map(item => (
             <div
-              style={{ marginRight: 10, display: 'inline-block' }}
+              style={{ marginRight: 10, marginBottom: 10, display: 'inline-block' }}
               key={item.imageSort}
             >
               <Image width={100} height={100} src={item.imageUrl} />

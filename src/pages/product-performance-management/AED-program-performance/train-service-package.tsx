@@ -6,11 +6,12 @@ import moment from 'moment'
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
-import type { FormInstance } from "antd"
+import { FormInstance, Image } from "antd"
 
 import { trainServerSum, trainServerPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
+import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -68,6 +69,8 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
 const TrainServicePackage: FC = () => {
   const form = useRef<FormInstance>()
   const [searchConfig, setSearchConfig] = useState<FormInstance>()
+  const [normalOrderVisible, setNormalOrderVisible] = useState<boolean>(false)
+  const [id, setId] = useState<string>()
 
   const getFieldsValue = () => {
     const {payTime, ...rest} = form.current?.getFieldsValue()
@@ -90,10 +93,36 @@ const TrainServicePackage: FC = () => {
       align: 'center'
     }, 
     {
+      title: '商品主图',
+      dataIndex: 'goodsUrl',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> <Image src={r.goodsUrl} width={50} height={50}/>
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '收货人姓名',
+      dataIndex: 'consignee',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '关联保证金订单状态',
       dataIndex: 'orderNo',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.orderId){
+          return <a onClick={()=> {setNormalOrderVisible(true); setId(r.orderId)}}>{_}</a> 
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '关联保证金订单状态',
@@ -109,7 +138,14 @@ const TrainServicePackage: FC = () => {
       title: '关联保证金订单签合同状态',
       dataIndex: 'contractId',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.contractUrl) {
+          return <a href={r.contractUrl} target='_blank'>{_}</a> 
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '支付时间',
@@ -216,38 +252,77 @@ const TrainServicePackage: FC = () => {
         1: '已通过',
         2: '未通过'
       }
-    }
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'trainStatusDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'trainStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未录入',
+        1: '已培训',
+        2: '未培训'
+      }
+    },
+    {
+      title: '所属大健康省代',
+      dataIndex: 'hyProvinceAgent',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '所属氢原子市代',
+      dataIndex: 'hyCityAgent',
+      align: 'center',
+      hideInSearch: true,
+    },
   ]
 
   return (
-    <ProTable
-      columns={columns}
-      request={trainServerPage}
-      formRef={form}   
-      pagination={{
-        showQuickJumper: true,
-        pageSize: 10
-      }}
-      onSubmit={()=>{
-        setSearchConfig(form.current?.getFieldsValue())
-      }}
-      onReset={()=> {
-        setSearchConfig(undefined)
-      }}
-      headerTitle={<Aggregate form={searchConfig}/>}
-      options={false}
-      search={{
-        labelWidth: 160,
-        optionRender: (searchConfig, props, dom) => [
-          ...dom.reverse(),
-          <Export 
-            key='export'
-            type='exportAEDTrainServerCommissionList'
-            conditions={getFieldsValue}
-          />
-        ]
-      }}
-    />
+    <>
+      <ProTable
+        columns={columns}
+        request={trainServerPage}
+        formRef={form}   
+        pagination={{
+          showQuickJumper: true,
+          pageSize: 10
+        }}
+        onSubmit={()=>{
+          setSearchConfig(form.current?.getFieldsValue())
+        }}
+        onReset={()=> {
+          setSearchConfig(undefined)
+        }}
+        headerTitle={<Aggregate form={searchConfig}/>}
+        options={false}
+        search={{
+          labelWidth: 160,
+          optionRender: (searchConfig, props, dom) => [
+            ...dom.reverse(),
+            <Export 
+              key='export'
+              type='exportAEDTrainServerCommissionList'
+              conditions={getFieldsValue}
+            />
+          ]
+        }}
+      />
+      {
+        normalOrderVisible &&
+        <NormalOrderDetail
+          id={id}
+          visible={normalOrderVisible}
+          setVisible={setNormalOrderVisible}
+        />
+      }
+    </>
   )
 }
 

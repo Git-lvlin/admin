@@ -48,3 +48,13 @@ export const examResult = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+// 线下培训 编辑
+export const editTrainingOffline = async (params = {}, options = {}) => {
+  return await request('/auth/healthy/member/editTrainingOffline', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
