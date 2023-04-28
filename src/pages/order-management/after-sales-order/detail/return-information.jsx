@@ -91,14 +91,10 @@ const ReturnInformation = props => {
       title: '订单编号',
       dataIndex: 'subOrderSn'
     },
-    // {
-    //   title: '平台承担退款金额',
-    //   dataIndex: ''
-    // },
     {
-      title: '退款总金额',
-      dataIndex: 'returnAmount',
-      render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
+      title: '平台承担退款金额',
+      dataIndex: 'returnSupplierAmount',
+      render: (_, r) => amountTransform(Number(r.returnAmount - r.returnSupplierAmount), '/').toFixed(2)
     },
     {
       title: '售后物流信息',
@@ -159,7 +155,12 @@ const ReturnInformation = props => {
       title: '商家收货时间',
       dataIndex: 'receiveTime',
       hideInDescriptions: isHide()
-    }
+    },
+    {
+      title: '退款总金额',
+      dataIndex: 'returnAmount',
+      render:(_) =>`¥${amountTransform(_, '/').toFixed(2)}`
+    },
   ]
   return (
     <ProDescriptions

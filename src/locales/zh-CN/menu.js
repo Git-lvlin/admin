@@ -82,6 +82,7 @@ export default {
   'menu.product-management.public.product-unit': '商品单位',
   'menu.product-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-management.merchandise-settlement-record': '商品结算记录',
+  'menu.product-management.prohibited-words-management': '违禁词管理',
 
 
 
@@ -350,6 +351,7 @@ export default {
   'menu.financial-management.transaction-allocation-management.withdrawal-fee-config':'提现费配置',
   'menu.financial-management.subsidy-summary' : '优惠补贴',
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
+  'menu.financial-management.unfrozen-list' : 'AED4300订单分账超时未解冻列表',
 
   'menu.data-board': '数据看板',
   'menu.data-board.summary-of-data': '数据概况',
