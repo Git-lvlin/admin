@@ -6,7 +6,7 @@ import moment from 'moment'
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
-import type { FormInstance } from "antd"
+import { FormInstance, Image } from "antd"
 
 import { trainServerSum, trainServerPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
@@ -92,6 +92,25 @@ const TrainServicePackage: FC = () => {
       dataIndex: 'orderSn',
       align: 'center'
     }, 
+    {
+      title: '商品主图',
+      dataIndex: 'goodsUrl',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r)=> <Image src={r.goodsUrl} width={50} height={50}/>
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '收货人姓名',
+      dataIndex: 'consignee',
+      align: 'center',
+      hideInSearch: true,
+    },
     {
       title: '关联保证金订单状态',
       dataIndex: 'orderNo',
@@ -233,7 +252,36 @@ const TrainServicePackage: FC = () => {
         1: '已通过',
         2: '未通过'
       }
-    }
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'trainStatusDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'trainStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未录入',
+        1: '已培训',
+        2: '未培训'
+      }
+    },
+    {
+      title: '所属大健康省代',
+      dataIndex: 'hyProvinceAgent',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '所属氢原子市代',
+      dataIndex: 'hyCityAgent',
+      align: 'center',
+      hideInSearch: true,
+    },
   ]
 
   return (

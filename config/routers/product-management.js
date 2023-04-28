@@ -113,6 +113,12 @@ export default {
       component: './product-management/merchandise-settlement-record',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'prohibited-words-management',
+      path: '/product-management/prohibited-words-management',
+      component: './product-management/prohibited-words-management',
+      wrappers: [RouteWatcher],
+    },
     
     // {
     //   name: 'freight-template',

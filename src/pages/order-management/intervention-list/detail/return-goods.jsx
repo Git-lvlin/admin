@@ -117,7 +117,7 @@ const ReturnGoods = ({ data }) => {
       title: '小计',
       dataIndex: 'subtotal',
       align: 'center',
-      render: (_, records) => `¥${amountTransform((records?.skuSalePrice * records?.returnNum), '/').toFixed(2)}`
+      render: (_, r) => `¥${amountTransform((r.skuSalePrice * r.returnNum), '/').toFixed(2)}`
     },
     {
       title: '优惠金额',
@@ -135,12 +135,6 @@ const ReturnGoods = ({ data }) => {
           <a onClick={()=>skipToOrderDetail(records?.orderType, records?.subOrderId)}>查看订单详情</a>
         </>
       )
-    },
-    {
-      title: '应退金额',
-      dataIndex: 'returnAmount',
-      align: 'center',
-      render: (_) => `¥${amountTransform(Number(_), '/').toFixed(2)}`
     }
   ]
 

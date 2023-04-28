@@ -327,3 +327,14 @@ export const getTimeDistance = (type) => {
   // 本年
   return [moment(`${year}-01-01 00:00:00`), moment(`${year}-12-31 23:59:59`)];
 }
+
+// 去除数组空元素
+export const removeEmpty = (arr) => {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] == "" || typeof (arr[i]) == "undefined" || arr[i] == " ") {
+      arr.splice(i, 1)
+      i--
+    }
+  }
+  return arr
+}
