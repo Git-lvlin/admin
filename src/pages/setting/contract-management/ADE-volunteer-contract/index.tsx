@@ -71,7 +71,7 @@ const ADEVolunteerContract: FC = () => {
       dataIndex: 'contractId',
       align: 'center',
       render: (_, r)=> {
-        if(r.contractUrl !== '') {
+        if(r.contractUrl) {
           return <a target="blank" href={`${r.contractUrl}`}>{_}</a>
         } else {
           return <span>{_}</span>
