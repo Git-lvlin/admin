@@ -29,11 +29,11 @@ export default function GenerationManagement () {
       hideInSearch: true,
     },
     {
-      title: '氢原子省代名称',
+      title: '大健康省代名称',
       dataIndex: 'name',
       align: 'center',
       fieldProps:{
-        placeholder:'请输入氢原子省代名称'
+        placeholder:'请输入大健康省代名称'
       },
     },
     {
