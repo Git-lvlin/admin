@@ -37,6 +37,18 @@ export default function GenerationManagement () {
       },
     },
     {
+      title: '联系人',
+      dataIndex: 'manager',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '联系人手机号',
+      dataIndex: 'managerPhone',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '登录账号',
       dataIndex: 'userName',
       align: 'center',
