@@ -112,6 +112,9 @@ const GenerationManagement =(props) => {
           onSubmit={(val)=>{
             setTime(val)
           }}
+          onReset={()=>{
+            setTime({})
+          }}
           params={{
             scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
           }}
