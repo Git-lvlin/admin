@@ -57,6 +57,11 @@ const CancelAduit: FC = () => {
       },
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      valueType: 'text',
+    },
+    {
       title: '店铺类型',
       dataIndex: 'memberShopType',
       align: 'center',

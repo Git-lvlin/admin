@@ -26,6 +26,11 @@ const StoreReview = () => {
       },
       width: 80,
     },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      valueType: 'text',
+    },
     // {
     //   title: '店铺图片',
     //   dataIndex: ['details', 'storeLogo'],

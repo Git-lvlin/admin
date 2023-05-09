@@ -15,6 +15,12 @@ export default {
       path: '/aed-team-leader/order-performance',
       component: './aed-team-leader/order-performance',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'three-thousand-eight-performance',
+      path: '/aed-team-leader/three-thousand-eight-performance',
+      component: './aed-team-leader/three-thousand-eight-performance',
+      wrappers: [RouteWatcher],
     }
   ]
 }

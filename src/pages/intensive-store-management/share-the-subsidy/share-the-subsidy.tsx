@@ -33,6 +33,11 @@ export default () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      valueType: 'text',
+    },
+    {
       title: '总补贴金额（元）',
       dataIndex: 'totalShareCommission',
       valueType: 'text',

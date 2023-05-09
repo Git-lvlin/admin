@@ -41,6 +41,18 @@ export default function TransactionData (props:RegimentProps) {
       }
     },
     {
+      title: '团长用户ID',
+      dataIndex: 'buyerId',
+      valueType: 'text',
+      hideInTable: true,
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
       title: '团长姓名',
       dataIndex: 'name',
       align: 'center',

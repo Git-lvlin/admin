@@ -466,6 +466,7 @@ export default {
   'menu.aed-team-leader': 'AED子公司',
   'menu.aed-team-leader.team-leader-management': '子公司管理',
   'menu.aed-team-leader.order-performance': '订单业绩',
+  'menu.aed-team-leader.three-thousand-eight-performance': '3800单业绩',
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',

@@ -93,20 +93,6 @@ const StoreInformation = (props:CumulativeProps) => {
       hideInSearch: true
     },
     {
-      title: '客户用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInTable: true,
-      hideInSearch: activeKey == '1'||type==2
-    },
-    {
-      title: '用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInSearch: true,
-      hideInTable: activeKey == '1'||type==2
-    },
-    {
       title: '客户手机',
       dataIndex: 'teamPhone',
       align: 'center',
@@ -137,13 +123,6 @@ const StoreInformation = (props:CumulativeProps) => {
         placeholder: '请输入团长手机号'
       },
       order: -2
-    },
-    {
-      title: '团长用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInTable: activeKey == '1'||type==2,
-      hideInSearch: activeKey == '1'||type==2
     },
     {
       title: '收益',
