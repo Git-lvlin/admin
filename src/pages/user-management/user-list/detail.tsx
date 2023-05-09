@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin } from 'antd';
+import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button } from 'antd';
 import { getMemberDetail } from '@/services/user-management/user-list';
+import ModifyMobilePhone from './modify-mobile-phone'
 
 
 const { Title } = Typography;
@@ -27,6 +28,33 @@ const columns = [
     title: '默认地址',
     dataIndex: 'isDefault',
     render: (_) => _ ? '是' : '否'
+  },
+];
+
+const phoneColumns = [
+  {
+    title: '原手机号',
+    dataIndex: 'index',
+  },
+  {
+    title: '修改后手机号',
+    dataIndex: 'consignee',
+  },
+  {
+    title: '修改说明',
+    dataIndex: 'phone',
+  },
+  {
+    title: '修改凭证',
+    dataIndex: 'fullAddress',
+  },
+  {
+    title: '修改时间',
+    dataIndex: 'isDefault',
+  },
+  {
+    title: '修改人',
+    dataIndex: 'isDefault',
   },
 ];
 
@@ -72,6 +100,7 @@ const Detail: React.FC<DetailProps> = (props) => {
   const [detailData, setDetailData] = useState<DataType>({});
   const { memberInfoToAdminResponse: info } = detailData;
   const [loading, setLoading] = useState(false);
+  const [editPhoneVisible,setEditPhoneVisible] = useState<boolean>(false)
 
   useEffect(() => {
     (getMemberDetail({
@@ -103,7 +132,10 @@ const Detail: React.FC<DetailProps> = (props) => {
               <div>{info?.nickName}</div>
             </div>
             <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 100, display: 'inline-block' }}>
-              <Descriptions.Item label="下单手机号">{info?.phoneNumber}</Descriptions.Item>
+              <Descriptions.Item label="下单手机号">
+                {info?.phoneNumber}
+                <Button style={{ marginLeft: '20px' }} onClick={()=>{ setEditPhoneVisible(true) }}>修改</Button>
+              </Descriptions.Item>
               <Descriptions.Item label="注册来源">{sourceType[info?.sourceType as string]}</Descriptions.Item>
               <Descriptions.Item label="邀请码">
                 {info?.inviteCode}
@@ -142,6 +174,9 @@ const Detail: React.FC<DetailProps> = (props) => {
               <Descriptions.Item label="关注的品类">
                 {info?.categoryIds}
               </Descriptions.Item>
+              <Descriptions.Item label="用户ID">
+                {info?.userIds}
+              </Descriptions.Item>
             </Descriptions>
           </Row>
 
@@ -150,8 +185,24 @@ const Detail: React.FC<DetailProps> = (props) => {
             <Divider />
             <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={columns} />
           </Row>
+
+          <Row style={{ marginTop: 50 }}>
+            <Title style={{ marginBottom: -10 }} level={5}>手机号修改记录</Title>
+            <Divider />
+            <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={phoneColumns} />
+          </Row>
         </div>
       </Spin>
+
+      {editPhoneVisible&&
+        <ModifyMobilePhone
+          visible={editPhoneVisible}
+          setVisible={setEditPhoneVisible}
+          msgDetail={detailData}
+          onClose={()=>{}}
+          callback={()=>{}}
+        />
+      }
     </Drawer>
   )
 }
