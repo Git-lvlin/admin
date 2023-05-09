@@ -58,7 +58,8 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={5}
+      labelStyle={{width: '10%'}}
+      column={{ xl: 3, xxl: 5 }}
       bordered
       dataSource={data}
     />
@@ -227,6 +228,7 @@ const ProgramPerformance: FC = () => {
         showQuickJumper: true,
         pageSize: 10
       }}
+      scroll={{x: 'max-content'}}
       onSubmit={()=>{
         setSearchConfig(form.current?.getFieldsValue())
       }}

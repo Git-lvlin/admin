@@ -59,7 +59,8 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={5}
+      labelStyle={{width: '10%'}}
+      column={{ xl: 3, xxl: 5 }}
       bordered
       dataSource={data}
     />
@@ -290,6 +291,7 @@ const TrainServicePackage: FC = () => {
         columns={columns}
         request={trainServerPage}
         formRef={form}   
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10
