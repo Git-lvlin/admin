@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Button, message, Input } from 'antd';
+import { Button, message, Input, Divider } from 'antd';
 import ProTable from '@ant-design/pro-table';
 import ProForm from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -318,11 +318,12 @@ const UserRelationship = () => {
         <ProForm.Group>
           &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}&nbsp;&nbsp;&nbsp;&nbsp;是否VIP社区店店主：{indexData?.vipStore ? '是' : '不是'}
         </ProForm.Group>
+        <Divider />
         <ProForm.Group>
-          &nbsp;&nbsp;是否为大团队长：{indexData?.isTeamLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属大团队长：{indexData?.teamLeaderPhone}
+          &nbsp;&nbsp;是否为大团队长：{indexData?.isTeamLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属大团队长：{indexData?.teamLeaderPhone?indexData?.teamLeaderPhone:'-'}
         </ProForm.Group>
         <ProForm.Group>
-          &nbsp;&nbsp;是否为AED团长：{indexData?.isAEDLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.aedLeaderPhone}&nbsp;&nbsp;&nbsp;&nbsp;所属AED子公司：{indexData?.subsidiaryName}
+          &nbsp;&nbsp;是否为AED团长：{indexData?.isAEDLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.aedLeaderPhone?indexData?.aedLeaderPhone:'-'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED子公司：{indexData?.subsidiaryName?indexData?.subsidiaryName:'-'}
         </ProForm.Group>
       </ProCard>
 
