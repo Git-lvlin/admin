@@ -78,7 +78,10 @@ export default function TransactionData () {
       title: '负责人手机',
       dataIndex: 'managerPhone',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,record) => {
+        return <div>{record.managerPhone?record.managerPhone:<span style={{ color:'red' }}>{record.managerPhone}（第1次注销）</span>}</div>
+      }
     },
     {
       title: '团长数量',

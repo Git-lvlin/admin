@@ -70,7 +70,10 @@ const NewIntensivePerformance: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      render: (_,record) => {
+        return <div>{record.memberPhone?record.memberPhone:<span style={{ color:'red' }}>{record.memberPhone}（第1次注销）</span>}</div>
+      }
     },
     {
       title: '订单编号',

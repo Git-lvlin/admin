@@ -275,13 +275,70 @@ const StoreInformation = (props:CumulativeProps) => {
       fieldProps: {
         placeholder: '全部'
       },
-      hideInSearch: activeKey == '1',
       hideInTable: true
     },
     {
       title: '线下培训状态',
       dataIndex: 'offTrainStatus',
       align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '已下保证金单状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已下保证金订单',
+        2: '未下保证金订单',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '保证金订单号',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '已失效'
+      },
+      fieldProps: {
+        placeholder: '请选择结算状态'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '业绩结算状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '已失效'
+      },
       hideInSearch: true,
       hideInTable: activeKey == '1'
     },

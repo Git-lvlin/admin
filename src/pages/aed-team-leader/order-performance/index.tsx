@@ -8,6 +8,9 @@ import { Descriptions } from 'antd';
 import { AEDOrderPm,AEDOrderPmStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment"
 
 export default function TransactionData () {
   const [type, setType] = useState<number>(0)
@@ -16,6 +19,7 @@ export default function TransactionData () {
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState<Refer>()
   const form = useRef<ActionType>()
+  const [visit, setVisit] = useState<boolean>(false)
 
   useEffect(() => {
     const params={
@@ -32,6 +36,12 @@ export default function TransactionData () {
   }, [time])
 
   const tableColumns: ProColumns<TableProps>[] = [
+    {
+      title: '序号',
+      dataIndex:'id',
+      hideInSearch: true,
+      valueType: 'indexBorder'
+    },
     {
       title: 'ID',
       dataIndex: 'agencyId',
@@ -78,9 +88,44 @@ export default function TransactionData () {
         }
       },
       hideInSearch: true
+    },
+    {
+      title: '已解冻提成(元)【含通道费】',
+      dataIndex: 'totalCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return amountTransform(_,'/').toFixed(2)
+        }else{
+          return '0'
+        }
+      },
+      hideInSearch: true
+    },
+    {
+      title: '未解冻提成(元)【含通道费】',
+      dataIndex: 'totalCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return amountTransform(_,'/').toFixed(2)
+        }else{
+          return '0'
+        }
+      },
+      hideInSearch: true
     }
   ]
 
+  const getFieldValue = (searchConfig: any) => {
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
+    return {
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
@@ -109,7 +154,14 @@ export default function TransactionData () {
           defaultCollapsed: true,
           labelWidth: 110,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+            key='export'
+            change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+            type={'AEDOrderPm'}
+            conditions={()=>{return getFieldValue(searchConfig)}}
+          />,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderPm'}/>
           ],
         }}
       />
