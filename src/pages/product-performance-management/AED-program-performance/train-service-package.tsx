@@ -283,6 +283,21 @@ const TrainServicePackage: FC = () => {
       align: 'center',
       hideInSearch: true,
     },
+    {
+      title: '业绩结算状态',
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '结算状态',
+      dataIndex: '',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        
+      }
+    },
   ]
 
   return (

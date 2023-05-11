@@ -216,7 +216,39 @@ const ProgramPerformance: FC = () => {
         1: '已通过',
         2: '未通过'
       }
-    }
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '线下培训',
+      dataIndex: '',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未培训',
+        1: '已培训',
+        2: '未录入'
+      }
+    },
+    {
+      title: '业绩结算状态',
+      dataIndex: '',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '结算状态',
+      dataIndex: '',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        
+      }
+    },
   ]
 
   return (

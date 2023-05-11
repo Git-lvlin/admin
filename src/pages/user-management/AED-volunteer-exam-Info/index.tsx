@@ -53,7 +53,7 @@ const AEDVolunteerExamInfo = () => {
       title: '考试状态',
       dataIndex: 'resultStatus',
       hideInTable: true,
-      valueType: 'radio',
+      valueType: 'select',
       valueEnum: {
         1: '通过',
         2: '未通过',
@@ -64,7 +64,7 @@ const AEDVolunteerExamInfo = () => {
       title: '视频学习状态',
       dataIndex: 'isLearned',
       hideInTable: true,
-      valueType: 'radio',
+      valueType: 'select',
       valueEnum: {
         1: '已学习',
         2: '未学习'
@@ -146,6 +146,7 @@ const AEDVolunteerExamInfo = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, r) => {
         if(r.trainingStatus === 2 || r.trainingStatus === 0) {
           return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线下培训</a>
@@ -175,6 +176,7 @@ const AEDVolunteerExamInfo = () => {
             />
           ],
         }}
+        scroll={{x: 'max-content'}}
         columns={columns}
         toolBarRender={()=> [
           <Export

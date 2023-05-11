@@ -46,5 +46,11 @@ export default {
       component: './product-performance-management/AED-course-list',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'AED-program-transaction',
+      path: '/product-performance-management/AED-program-transaction',
+      component: './product-performance-management/AED-program-transaction',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
