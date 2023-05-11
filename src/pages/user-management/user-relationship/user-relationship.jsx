@@ -318,6 +318,12 @@ const UserRelationship = () => {
         <ProForm.Group>
           &nbsp;&nbsp;用户昵称：{indexData?.nickName}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人昵称：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;邀请成功的好友数量（位）：{indexData?.inviteCount}&nbsp;&nbsp;&nbsp;&nbsp;是否VIP社区店店主：{indexData?.vipStore ? '是' : '不是'}
         </ProForm.Group>
+        {/* <ProForm.Group>
+          &nbsp;&nbsp;是否为大团队长：{indexData?.vipStore ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属大团队长：{indexData?.inviteNickName}
+        </ProForm.Group>
+        <ProForm.Group>
+          &nbsp;&nbsp;是否为AED团长：{indexData?.vipStore ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.inviteNickName}&nbsp;&nbsp;&nbsp;&nbsp;所属AED子公司：{indexData?.inviteCount}
+        </ProForm.Group> */}
       </ProCard>
 
       {!!phoneNumber && <ProTable

@@ -304,6 +304,8 @@ const TableList = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
+      width: 50,
       render: (_, record) => (
         <>
           <a onClick={() => { getDetail(record) }}>设置</a>

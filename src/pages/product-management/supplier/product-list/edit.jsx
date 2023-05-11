@@ -24,7 +24,7 @@ import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
 import FreightTemplateDetail from '@/components/freight-template-detail'
 import { useLocation } from 'umi';
-import { preAccountCheck, preAccountShow } from '@/services/product-management/product-list';
+import { preAccountCheck, preAccountShow, checkSensitiveWords } from '@/services/product-management/product-list';
 import ProfitTable from './profit-table';
 import Big from 'big.js';
 import Overrule from '../product-review/overrule';
@@ -677,6 +677,21 @@ export default (props) => {
     });
   }
 
+  const checkSensitiveWordsHandle = (val)=> {
+    if (!val) {
+      return
+    }
+    checkSensitiveWords({
+      words: val,
+    }).then(res => {
+      if (res.code ===0) {
+        if (res.data.length) {
+          message.warn(`包含敏感词：${res.data.join(',')},建议修改。`)
+        }
+      }
+    })
+  }
+
   useEffect(() => {
     if (detailData) {
       const { specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
@@ -884,6 +899,8 @@ export default (props) => {
       }
     }
 
+    
+
   }, [form, detailData]);
 
   return (
@@ -995,6 +1012,9 @@ export default (props) => {
               ]}
               fieldProps={{
                 maxLength: 90,
+                onBlur:(e) => {
+                  checkSensitiveWordsHandle(e.target.value);
+                }
               }}
             />
           )
@@ -1026,6 +1046,9 @@ export default (props) => {
         placeholder="请输入商品副标题"
         fieldProps={{
           maxLength: 90,
+          onBlur: (e) => {
+            checkSensitiveWordsHandle(e.target.value);
+          }
         }}
         rules={[
           () => ({
@@ -1053,6 +1076,9 @@ export default (props) => {
         placeholder="请输入搜索关键字"
         fieldProps={{
           maxLength: 30,
+          onBlur: (e) => {
+            checkSensitiveWordsHandle(e.target.value);
+          }
         }}
         rules={[
           () => ({
@@ -1879,7 +1905,10 @@ export default (props) => {
         label="特殊说明"
         // disabled
         fieldProps={{
-          placeholder: ''
+          placeholder: '',
+          onBlur: (e) => {
+            checkSensitiveWordsHandle(e.target.value);
+          }
         }}
       />
       <ProFormDependency name={['goodsSaleType']}>
@@ -1962,9 +1991,12 @@ export default (props) => {
         rules={[{ required: true, message: '请上传商品详情图片' }]}
       >
         <FromWrap
-          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} disabled multiple maxCount={50} accept="image/*" size={1024 * 10} />}
+          content={(value, onChange) => <Upload code={218} value={value} onChange={onChange} multiple maxCount={50} accept="image/*" size={1024 * 10} />}
           right={(value) => (
             <dl>
+              <dt>图片要求</dt>
+              <dd>1.图片大小10MB以内</dd>
+              <dd>2.图片格式png/jpg/gif</dd>
               {value?.length > 1 && <dd><ImageSort data={value} callback={(v) => { form.setFieldsValue({ detailImages: v }) }} /></dd>}
             </dl>
           )}

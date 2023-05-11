@@ -10,5 +10,17 @@ export default {
       component: './hydrogen-atom-generation/generation-management',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'aed-training-service-achievement',
+      path: '/hydrogen-atom-generation/aed-training-service-achievement',
+      component: './hydrogen-atom-generation/aed-training-service-achievement',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-package-order-performance',
+      path: '/hydrogen-atom-generation/health-package-order-performance',
+      component: './hydrogen-atom-generation/health-package-order-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

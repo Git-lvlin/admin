@@ -463,12 +463,8 @@ export default {
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
   'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
 
-  'menu.aed-subsidiary-corporation': 'AED子公司',
-  'menu.aed-subsidiary-corporation.subsidiary-corporation-management': '子公司管理',
-  // 'menu.aed-subsidiary-corporation.order-performance': '订单业绩',
-
-  'menu.aed-team-leader': 'AED团长',
-  'menu.aed-team-leader.team-leader-management': '团长管理',
+  'menu.aed-team-leader': 'AED子公司',
+  'menu.aed-team-leader.team-leader-management': '子公司管理',
   'menu.aed-team-leader.order-performance': '订单业绩',
 
   'menu.great-project-team': '大团队长',
@@ -477,7 +473,13 @@ export default {
 
   'menu.hydrogen-atom-generation': '氢原子市代',
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
+  'menu.hydrogen-atom-generation.aed-training-service-achievement': 'AED培训服务套餐订单业绩',
+  'menu.hydrogen-atom-generation.health-package-order-performance': '健康礼包订单业绩',
 
+  'menu.great-health-province': '大健康省代',
+  'menu.great-health-province.hydrogen-atom-saved-management': '大健康省代管理',
+  'menu.great-health-province.order-performance': '订单业绩',
+  'menu.great-health-province.aed-training-service-achievement': 'AED培训及服务套餐业绩',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

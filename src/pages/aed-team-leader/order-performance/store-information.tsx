@@ -4,7 +4,8 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder,AEDOrderStats } from "@/services/aed-team-leader/order-performance"
+import ProCard from "@ant-design/pro-card"
+import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
@@ -18,24 +19,12 @@ const formItemLayout = {
     wrapperCol: { span: 14 },
   };
 
-export default (props:CumulativeProps) => {
-  const { visible, setVisible,msgDetail,onClose,type} = props;
-  const [form] = Form.useForm();
-  const [orderSum,setOrderSum]=useState()
+const StoreInformation = (props:CumulativeProps) => {
+  const { msgDetail, type, activeKey } = props;
+  const [orderSum,setOrderSum]=useState<number>(0)
   const [time,setTime]=useState<DrtailItem>({})
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
-
-  const divideName=()=>{
-    switch (type) {
-      case 1:
-        return '累计业绩'
-      case 2:
-        return '提成'
-      default:
-        return ''
-    }
-  }
 
   const Columns: ProColumns[] = [
     {
@@ -57,6 +46,35 @@ export default (props:CumulativeProps) => {
       align: 'center',
     },
     {
+      title: '商品主图',
+      dataIndex: 'goodsImg',
+      valueType: 'image',
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '商品名称',
+      dataIndex: 'goodsName',
+      valueType: 'text',
+      ellipsis:true,
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '收货人姓名',
+      dataIndex: 'consignee',
+      valueType: 'text',
+      hideInSearch:true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '关联保证金订单状态',
+      dataIndex: 'depositOrderStatus',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
@@ -65,7 +83,8 @@ export default (props:CumulativeProps) => {
         'aedCourses': 'AED课程订单',
         'aedTrain': 'AED区县培训订单',
       },
-      hideInTable: true
+      hideInTable: true,
+      hideInSearch: activeKey == '2'
     },
     {
       title: '下单人手机号',
@@ -95,6 +114,15 @@ export default (props:CumulativeProps) => {
         }
       },
       hideInSearch: true,
+    },
+    {
+      title: '团长手机号',
+      dataIndex: 'teamLeaderPhone',
+      align: 'center',
+      fieldProps: {
+        placeholder: '请输入团长手机号'
+      },
+      order: -2
     },
     {
       title: '收益',
@@ -133,7 +161,108 @@ export default (props:CumulativeProps) => {
         'aedCourses': 'AED课程订单',
         'aedTrain': 'AED区县培训订单',
       },
+      hideInSearch: true,
+      hideInTable: activeKey == '2'
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '签合同状态',
+      dataIndex: 'contractStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已签订',
+        2: '未签订',
+      },
       hideInSearch: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '视频学习状态',
+      dataIndex: 'learnStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已学习',
+        2: '未学习',
+      },
+      hideInSearch: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInTable: true
+    },
+    {
+      title: '考试状态',
+      dataIndex: 'examStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已通过',
+        2: '未通过',
+        3: '未考试'
+      },
+      hideInSearch: true
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        0: '未录入',
+        1: '已培训',
+        2: '未培训',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'offTrainStatus',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
     },
   ]
   useEffect(()=>{
@@ -143,9 +272,15 @@ export default (props:CumulativeProps) => {
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
       teamPhone:time?.teamPhone,
-      orderType:time?.orderType
+      orderType:time?.orderType,
+      contractStatus:time?.contractStatus,
+      learnStatus:time?.learnStatus,
+      examStatus:time?.examStatus,
+      teamLeaderPhone:time?.teamLeaderPhone,
+      offTrainStatus:time?.offTrainStatus
     }
-    AEDOrderStats(params).then(res=>{
+    const api=activeKey=='1'?AEDOrderStats:AEDTrainingsServiceStats
+    api(params).then(res=>{
       if(res.code==0){
         type==1? setOrderSum(res?.data?.[0]?.totalPayAmount):setOrderSum(res?.data?.[0]?.totalCommission)
       }
@@ -162,13 +297,78 @@ export default (props:CumulativeProps) => {
     }
   }
   return (
+       <ProTable
+        rowKey="date"
+        columns={Columns}
+        request={activeKey=='1'?AEDOrder:AEDTrainingsService}
+        columnEmptyText={false}
+        actionRef={ref}
+        params={{
+          agencyId:msgDetail?.agencyId,
+        }}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+        onSubmit={(val)=>{
+          setOrderSum(0)
+          setTime(val)
+        }}
+        onReset={()=>{
+          setTime({})
+        }}
+        options={false}
+        search={{
+          labelWidth:120,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={type==1?{1:'AEDOrderPm',2:'AEDTrainingsServicePm'}[activeKey]:{1:'AEDOrderAdm',2:'AEDTrainingsServiceAdm'}[activeKey]}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==1?{1:'AEDOrderPm',2:'AEDTrainingsServicePm'}[activeKey]:{1:'AEDOrderAdm',2:'AEDTrainingsServiceAdm'}[activeKey]}/>
+          ],
+        }}
+        tableRender={(_, dom) => {
+          return <>
+            { dom }
+            <div className={styles.summary}>
+              <div>
+                累计{type==1?'金额':'收益'}：
+                <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
+                <span style={{ marginLeft:'530px', }}>对未完成线上法大大合同签写、培训视频学习、考试通过和线下培训，将冻结提现</span>
+              </div>
+            </div>
+          </>
+        }}
+      />
+  );
+};
+
+export default (props:CumulativeProps)=>{
+  const { visible, setVisible,msgDetail,onClose,type} = props;
+  const [form] = Form.useForm();
+  const [activeKey, setActiveKey] = useState<string>('1')
+  const divideName=()=>{
+    switch (type) {
+      case 1:
+        return '累计业绩'
+      case 2:
+        return '提成'
+      default:
+        return ''
+    }
+  }
+  return (
     <DrawerForm
       layout="horizontal"
       title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
-      width={1300}
+      width={1400}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
@@ -184,50 +384,24 @@ export default (props:CumulativeProps) => {
       {...formItemLayout}
       className={styles.store_information}
     >
-       <ProTable
-        rowKey="date"
-        columns={Columns}
-        request={AEDOrder}
-        columnEmptyText={false}
-        actionRef={ref}
-        params={{
-          agencyId:msgDetail?.agencyId,
+      <ProCard
+        tabs={{
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
         }}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true,
-        }}
-        onSubmit={(val)=>{
-          setTime(val)
-        }}
-        onReset={()=>{
-          setTime({})
-        }}
-        options={false}
-        search={{
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse(),
-            <Export
-              key='export'
-              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={type==1?'AEDOrderPm':'AEDOrderAdm'}
-              conditions={()=>{return getFieldValue(searchConfig)}}
-            />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={type==1?'AEDOrderPm':'AEDOrderAdm'}/>
-          ],
-        }}
-        tableRender={(_, dom) => {
-          return <>
-            { dom }
-            <div className={styles.summary}>
-              <div>
-                累计{type==1?'金额':'收益'}：
-                <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
-              </div>
-            </div>
-          </>
-        }}
-      />
+      >
+        <ProCard.TabPane key="1" tab="AED订单">
+          {
+            activeKey=='1'&&<StoreInformation {...props} activeKey={activeKey}/>
+          }
+        </ProCard.TabPane>
+        <ProCard.TabPane key="2" tab="培训服务套餐">
+          {
+            activeKey=='2'&&<StoreInformation {...props} activeKey={activeKey}/>
+          }
+        </ProCard.TabPane>
+      </ProCard>
     </DrawerForm >
-  );
-};
+  )
+}

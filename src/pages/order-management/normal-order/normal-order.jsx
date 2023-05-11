@@ -6,7 +6,7 @@ import { history, useLocation } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'
 import { amountTransform } from '@/utils/utils'
-import { orderList, deliverGoods, orderList2, orderList3 } from '@/services/order-management/normal-order';
+import { orderList, deliverGoods, orderList2, orderList3, findAdminOrderType } from '@/services/order-management/normal-order';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import ImportHistory from '@/components/ImportFile/import-history'
@@ -38,6 +38,7 @@ const TableList = () => {
   const [subOrderId, setSubOrderId] = useState(null)
   const [orderVisible, setOrderVisible] = useState(false)
   const [primaryAddress,setPrimaryAddress] = useState({})
+  const [orderTypeArr, setOrderTypeArr] = useState([])
 
 
   const [form] = Form.useForm()
@@ -87,6 +88,11 @@ const TableList = () => {
   useEffect(() => {
     form.setFieldsValue({
       ...location?.query,
+    })
+    findAdminOrderType({}).then(res=>{
+      if(res.code==0){
+        setOrderTypeArr(res.data)
+      }
     })
   }, [])
 
@@ -227,25 +233,7 @@ const TableList = () => {
         <ProFormSelect
           name="orderType"
           label="订单类型"
-          options={[
-            { value: '2', label: '秒约订单' },
-            { value: '3', label: '拼团订单' },
-            // { value: '4', label: '团约订单' },
-            { value: '11', label: '1688订单' },
-            { value: '17', label: '盲盒活动订单' },
-            { value: '18', label: '签到活动订单' },
-            { value: '666', label: '氢原子购买订单' },
-            { value: '888', label: '氢原子押金订单' },
-            { value: '999', label: '氢原子启动订单' },
-            { value: '205', label: '分享订单' },
-            { value: '242', label: '氢原子托管购买订单' },
-            { value: '222', label: '氢原子托管启动订单' },
-            { value: '33', label: '爱心回馈订单' },
-            { value: '34', label: '健康礼包订单' },
-            { value: '333', label: '健康检测启动单' },
-            { value: '225', label: 'AED课程订单' },
-            { value: '226', label: 'AED区县培训订单' },
-          ]}
+          options={orderTypeArr}
           fieldProps={{
             style: {
               marginBottom: 20,
