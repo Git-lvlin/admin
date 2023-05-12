@@ -23,8 +23,16 @@ import {
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 
-const PopModal = ({sn, form}) => {
+const PopModal = ({sn, form, types}) => {
   const [type,setType] = useState('online')
+
+  const typeEnum1 = {
+    'online': '线上转帐',
+    'offline': '线下转账'
+  }
+  const typeEnum2 = {
+    'offline': '线下转账'
+  }
 
   const submit = async (val) => {
     return new Promise((resolve, reject) => {
@@ -68,10 +76,7 @@ const PopModal = ({sn, form}) => {
               setType(e)
             }
           }}
-          valueEnum={{
-            'online': '线上转帐',
-            'offline': '线下转账'
-          }}
+          valueEnum={ types === 'commission' ? typeEnum2 : typeEnum1 }
         />
       </div>
       {
@@ -155,8 +160,17 @@ const PopModalForm = ({sn, form}) => {
 }
 
 const Detail = () => {
+  const [data, setData] = useState()
   const {id} = useParams()
   const form = useRef()
+
+  useEffect(()=> {
+    withdrawPageDetail({
+      id
+    }).then(res=> {
+      setData(res.data)
+    })
+  }, [id])
 
   const SwitchStatus = ({ type }) => {
     const { status, sn } = type
@@ -164,7 +178,7 @@ const Detail = () => {
       case 'auditing':
         return <PopModalForm sn={sn} form={form}/>
       case 'waitPay':
-        return <PopModal sn={sn} form={form}/>
+        return <PopModal sn={sn} form={form} types={data.withdrawType}/>
       case 'arrived':
         return '已到账'
       case 'unPass':  
@@ -172,7 +186,7 @@ const Detail = () => {
       case 'paid':
         return '已打款'
       case 'failure':
-        return <Space size={10}>提现失败 <PopModal sn={sn} form={form}/></Space>
+        return <Space size={10}>提现失败 <PopModal sn={sn} form={form} types={data.withdrawType}/></Space>
       default:
         return '状态错误'
     }
@@ -191,7 +205,7 @@ const Detail = () => {
       render: (_, records) => (
         <div>
           {records?.accountId}
-          <span>（手机：{records?.registMobile}）</span>
+          <span>（手机：{records?.registMobile || '-'}）</span>
         </div>
       )
     },
@@ -316,8 +330,8 @@ const Detail = () => {
           padding: 20
         }}
         bordered
-        params={{ id }}
-        request={withdrawPageDetail}
+        // params={{ id }}
+        dataSource={data}
       />
       <div style={{ background: '#fff', padding: 20 }}>
         <Button type='primary' onClick={() => {back()}}>返回</Button>
