@@ -33,6 +33,17 @@ export default (props) => {
       }
     })
   },[])
+
+  const checkConfirm = (rule: any, value: string) => {
+    return new Promise<void>(async (resolve, reject) => {
+      if (value && !/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(value)) {
+        await reject('请输入正确的手机号')
+      }else {
+        await resolve()
+      }
+    })
+  }
+
   const checkConfirm2 = (rule: any, value: any ) => {
     return new Promise<void>(async (resolve, reject) => {
       checkAccount({userName:value,accountId:msgDetail?.accountId}).then(async res=>{
@@ -133,6 +144,17 @@ export default (props) => {
           autoComplete: 'new-password'
         }}
         extra={<p style={{color:'#FFB45D'}}>未填写时保持已有的密码</p>}
+      />
+      <ProFormText
+        label="联系人"
+        name="manager"
+      />
+      <ProFormText
+        label="联系人手机号"
+        name="managerPhone"
+        rules={[
+         { validator: checkConfirm }
+        ]}
       />
     </DrawerForm >
   );

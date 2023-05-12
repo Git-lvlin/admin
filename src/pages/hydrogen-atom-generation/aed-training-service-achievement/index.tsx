@@ -108,6 +108,9 @@ export default function GenerationManagement () {
         onSubmit={(val)=>{
           setTime(val)
         }}
+        onReset={()=>{
+          setTime({})
+        }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
