@@ -1,20 +1,20 @@
 import { useRef,useEffect, useState } from "react"
-import { Form, Image, Divider, Button, Space,Checkbox } from 'antd';
-import {
+import { Form, Image, Divider, Button, Space, Row, Col } from 'antd';
+import ProForm, {
   DrawerForm,
   ProFormText,
   ProFormTextArea,
   ProFormRadio,
   ProFormDependency
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
-import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
+import { AEDOrder, AEDOrderStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
-import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import SelectRemittance from './select-remittance'
 import Upload from '@/components/upload';
+import moment from "moment";
+import RemittanceInformation from './remittance-information'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -22,157 +22,12 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,type} = props;
+  const { visible, setVisible,msgDetail,onClose,type,callback} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState<number>(0)
   const [time,setTime]=useState<DrtailItem>({})
-  const [dataStatus,setDataStatus]=useState([])
-  const ref = useRef<ActionType>()
-  const [selectedRows, setSelectedRows] = useState([]);
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
-
-  const Columns: ProColumns[] = [
-    {
-      title: '审核本页业绩',
-      dataIndex: 'check',
-      align: 'left',
-      render: (_, data) => {
-        return '选中';
-      },
-      width:70,
-      fixed: 'left',
-      hideInSearch:true
-    },
-    {
-      title: '订单编号',
-      dataIndex: 'orderSn',
-      align: 'center',
-    },
-    {
-      title: '下单用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '下单人手机号',
-      dataIndex: 'memberPhone',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '订单金额',
-      dataIndex: 'payAmount',
-      align: 'center',
-      render: (_,data)=>{
-        if(_&&_>0){
-          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
-        }else{
-          return '-'
-        }
-      },
-      hideInSearch: true,
-    },
-    {
-      title: '提成金额',
-      dataIndex: 'payAmount',
-      align: 'center',
-      render: (_,data)=>{
-        if(_&&_>0){
-          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
-        }else{
-          return '-'
-        }
-      },
-      hideInSearch: true,
-    },
-    {
-      title: '团长手机号',
-      dataIndex: 'teamLeaderPhone',
-      align: 'center',
-      fieldProps: {
-        placeholder: '请输入团长手机号'
-      },
-      hideInSearch: true
-    },
-    {
-      title: '商品名称',
-      dataIndex: 'goodsName',
-      valueType: 'text',
-      ellipsis:true,
-      hideInSearch:true,
-    },
-    {
-      title: '收货人姓名',
-      dataIndex: 'consignee',
-      valueType: 'text',
-    },
-    {
-      title: '订单时间',
-      dataIndex: 'dateRange',
-      valueType: 'dateRange',
-      align: 'center',
-      hideInTable: true,
-      fieldProps:{
-        placeholder:['开始时间', '结束时间']
-      }
-    },
-    {
-      title: '订单时间',
-      dataIndex: 'createTime',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
-      title: '审核时间',
-      dataIndex: 'createTime',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
-      title: '结算状态',
-      dataIndex: 'depositOrderStatus',
-      align: 'center',
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '已审核',
-        2: '待审核',
-      }
-    },
-    {
-      title: '结算状态',
-      dataIndex: 'depositOrderStatus',
-      align: 'center',
-      hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '已审核',
-        2: '待审核',
-      }
-    },
-  ]
-
-  const handleSelectRows = (rows) => {
-    console.log('rows',rows)
-    setSelectedRows(rows);
-    setDataStatus([])
-  };
-
-  const handleCheckAll = (val) => {
-    setDataStatus(val)
-    if (val[0]) {
-      AEDOrder({ agencyId:msgDetail?.agencyId, pageSize:999 }).then(res=>{
-        if(res.code==0){
-          setSelectedRows(res.data.map(ele=>ele.orderSn));
-        }
-      })
-     
-    } else {
-      setSelectedRows([]);
-    }
-  };
 
   useEffect(()=>{
     const params={
@@ -206,7 +61,7 @@ export default (props:CumulativeProps)=>{
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
-      width={1400}
+      width={1200}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
@@ -248,33 +103,47 @@ export default (props:CumulativeProps)=>{
 
     <ProFormText
       label='收款子公司名称'
-      name="id"
+      name="name"
+      width={400}
       disabled
     />
 
     <ProFormText
       label='收款银行卡号'
-      name="id"
+      width={400}
+      name="credit"
+      rules={[
+        { pattern: /^([1-9]{1})(\d{14}|\d{18})$/, message: '银行卡号格式不正确' }
+      ]}
     />
+    <ProForm.Group style={{ marginLeft: '70px' }}>
+      <ProFormText
+        label='审核通过结算单数'
+        name="singular"
+        disabled
+        width={400}
+        labelCol={5}
+      />
+      <p>已汇款 5 单</p>
+    </ProForm.Group>
 
-    <ProFormText
-      label='审核通过结算单数'
-      name="id"
-      disabled
-    />
-
-    <ProFormText
-      label='审核通过结算金额'
-      name="id"
-      fieldProps={{
-        addonAfter: '元'
-      }}
-      disabled
-    />
+    <ProForm.Group style={{ marginLeft: '70px' }}>
+      <ProFormText
+        label='审核通过结算金额'
+        name="结算金额"
+        fieldProps={{
+          addonAfter: '元'
+        }}
+        width={400}
+        labelCol={5}
+        disabled
+      />
+      <p>已汇款 3750 元，扣除通道费X元，实际已汇款 3315 元</p>
+    </ProForm.Group>
 
     <ProFormRadio.Group
       name="status"
-      label='汇款提成业绩'
+      label='待汇款提成业绩'
       options={[
         {
             label:'全部订单（20单）',
@@ -285,7 +154,7 @@ export default (props:CumulativeProps)=>{
             value: 0,
         }
       ]}
-      rules={[{required: true, message: '请选择汇款提成业绩'}]}
+      rules={[{required: true, message: '请选择待汇款提成业绩'}]}
       initialValue={1}
     />
 
@@ -298,19 +167,26 @@ export default (props:CumulativeProps)=>{
         }}
     </ProFormDependency>
 
-    <ProFormText
-      label='扣除通道费'
-      name="id"
-      rules={[{required: true, message: '请输入扣除通道费'}]}
-      fieldProps={{
-        addonAfter: '元'
-      }}
-      extra='交易通道费为第三方支付渠道收取；'
-    />
+    <p style={{ marginLeft: '180px' }}>应结算金额 12000 元</p>
+    <ProForm.Group style={{ marginLeft: '90px' }}>
+      <ProFormText
+        label='扣除通道费'
+        name="通道费"
+        width={400}
+        rules={[{required: true, message: '请输入扣除通道费'}]}
+        fieldProps={{
+          addonAfter: '元'
+        }}
+        disabled
+        labelCol={5}
+      />
+      <p>交易通道费为第三方支付渠道收取；</p>
+    </ProForm.Group>
 
     <ProFormText
       label='应结算汇款金额'
-      name="id"
+      name="remittance"
+      width={400}
       fieldProps={{
         addonAfter: '元'
       }}
@@ -319,22 +195,40 @@ export default (props:CumulativeProps)=>{
 
     <ProFormText
       label='实际汇款金额'
-      name="id"
-      rules={[{required: true, message: '请输入实际汇款金额'}]}
-      fieldProps={{
+      name="practical"
+      width={400}
+      rules={[
+        {required: true, message: '请输入实际汇款金额'},
+        {pattern: /^([1-9]\d*|0)(\.\d{1,2})?$/, message: '请输入正确的金额格式'}
+      ]}  
+      fieldProps={{ 
         addonAfter: '元'
       }}
     />
 
     <ProFormText
       label='汇款时间'
-      name="id"
-      rules={[{required: true, message: '请输入汇款时间'}]}
+      name="time"
+      width={400}
+      rules={[
+        { required: true, message: '请输入汇款时间' },
+        { validator: (_, value) => {
+            if (!value) {
+              return Promise.resolve();
+            }
+            if (moment(value, 'YYYY-MM-DD HH:mm:ss', true).isValid()) {
+              return Promise.resolve();
+            }
+            return Promise.reject('时间格式不正确');
+          }
+        }
+      ]}
     />
 
     <Form.Item
       label="上传汇款凭证"
       name="cardImage"
+      width={400}
       rules={[{ required: true, message: '请上传汇款凭证!' }]}
     >
       <Upload multiple  maxCount={1} accept="image/*"/>
@@ -348,6 +242,7 @@ export default (props:CumulativeProps)=>{
         minLength:5,
         placeholder:'请输入5-50个字符'
       }}
+      width={400}
       extra={<span style={{ color:'red' }}>此备注内容将会在AED子公司后台展示，请注意隐私，谨慎填写。</span>}
     />
     <Divider />
@@ -356,10 +251,11 @@ export default (props:CumulativeProps)=>{
       label='汇款操作人'
       name="id"
       disabled
+      width={400}
     />
 
     <ProFormText
-    name="id"
+    name="operator"
     hidden
     />
 
@@ -369,7 +265,17 @@ export default (props:CumulativeProps)=>{
       setVisible={setRemittanceVisible}
       msgDetail={msgDetail}
       onClose={()=>{}}
+      callback={(rows)=>{  }}
     />
+    }
+    {forbiddenVisible&&
+      <RemittanceInformation
+        visible={forbiddenVisible}
+        setVisible={setForbiddenVisible}
+        msgDetail={msgDetail}
+        callback={()=>{ setVisible(false) }}
+        onClose={()=>{}}
+      />
     }
     </DrawerForm >
   )

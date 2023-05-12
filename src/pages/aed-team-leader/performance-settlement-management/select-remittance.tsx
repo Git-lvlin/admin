@@ -1,14 +1,12 @@
 import { useEffect, useState, useRef } from "react"
-import { Form, message, Divider } from 'antd';
+import { Form } from 'antd';
 import {
   ProFormText,
   ModalForm,
-  ProFormTextArea,
 } from '@ant-design/pro-form';
 import { updateAdminCancel } from "@/services/order-management/invoice-management"
-import styles from './styles.less'
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
+import { AEDOrder } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 
@@ -18,7 +16,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible,msgDetail,onClose,callback} = props;
   const [form] = Form.useForm();
   const [selectedRows, setSelectedRows] = useState([]);
   const ref = useRef<ActionType>()
@@ -29,15 +27,8 @@ export default (props) => {
   },[])
   const waitTime = (values) => {
     return new Promise((resolve, reject) => {
-        updateAdminCancel({id:values?.id,cancelRemark:values?.cancelRemark}).then((res) => {
-        if (res.code === 0) {
-          resolve(true);
-          onClose();
-        } else {
-          reject(false);
-        }
-      })
-
+      callback(selectedRows)
+      resolve(true);
     });
   };
 
@@ -96,7 +87,33 @@ export default (props) => {
       hideInSearch: true,
     },
     {
-      title: '订单支付日期',
+      title: '通道费金额',
+      dataIndex: 'payAmount',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '汇款金额',
+      dataIndex: 'payAmount',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '支付日期',
       dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
@@ -125,7 +142,6 @@ export default (props) => {
       width={1000}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('操作成功');
         return true;
       }}
       {...formItemLayout}
@@ -151,7 +167,7 @@ export default (props) => {
           selectedRowKeys: selectedRows,
         }}
       />
-      <p>汇款结算业绩：7500.00元（共10单）</p>
+      <p>总计结算提成：7500.00元（共10单）</p>
       <p>预计结算汇款金额：7075.00元（扣除税费：425.00元）</p>
       <ProFormText
         name="id"
