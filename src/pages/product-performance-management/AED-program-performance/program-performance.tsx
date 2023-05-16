@@ -219,34 +219,42 @@ const ProgramPerformance: FC = () => {
     },
     {
       title: '线下培训状态',
-      dataIndex: '',
+      dataIndex: 'trainStatusDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '线下培训',
-      dataIndex: '',
+      dataIndex: 'trainStatus',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        0: '未培训',
+        0: '未录入',
         1: '已培训',
-        2: '未录入'
+        2: '未培训',
       }
     },
     {
       title: '业绩结算状态',
-      dataIndex: '',
+      dataIndex: 'auditStatusDesc',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '结算状态',
-      dataIndex: '',
+      dataIndex: 'auditStatus',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '审核不通过',
+        8: '已失效',
+        9: '已线下结算'
       }
     },
   ]

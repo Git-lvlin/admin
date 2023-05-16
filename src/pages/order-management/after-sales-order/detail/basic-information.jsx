@@ -18,6 +18,10 @@ const BasicInformation = ({data}) => {
       dataIndex: 'buyerPhone'
     },
     {
+      title: '用户ID',
+      dataIndex: 'userId'
+    },
+    {
       title: '商家ID',
       dataIndex: 'storeNo'
     },

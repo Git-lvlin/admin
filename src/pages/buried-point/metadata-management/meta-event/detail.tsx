@@ -1,5 +1,5 @@
 import ProTable from "@ant-design/pro-table"
-import { Drawer, Typography, Row, Col } from "antd"
+import { Drawer, Typography } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { DetailProps } from "./data"

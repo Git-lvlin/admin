@@ -308,26 +308,31 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
   ]
 
   const payInfo = [
+    // {
+    //   title: '支付阶段',
+    //   dataIndex: 'stageName'
+    // },
     {
-      title: '支付阶段',
-      dataIndex: 'stageName'
+      title: '支付渠道',
+      dataIndex: 'payTpyeName'
     },
     {
       title: '支付时间',
       dataIndex: 'payTime'
     },
     {
-      title: '支付渠道',
-      dataIndex: 'payTpyeName'
+      title: '实付金额',
+      dataIndex: 'amount',
+      render: (_, records) => `¥${amountTransform((Number(_)-Number(records.couponAmount)), '/')}`
     },
     {
       title: 'skuID',
       dataIndex: 'skuIds'
     },
     {
-      title: '实付金额',
-      dataIndex: 'amount',
-      render: (_, records) => `¥${amountTransform((Number(_)-Number(records.couponAmount)), '/')}`
+      title: ' ',
+      dataIndex: '',
+      render: () => ' '
     },
     {
       title: '虚拟分账计算',

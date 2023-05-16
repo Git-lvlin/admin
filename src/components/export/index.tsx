@@ -336,4 +336,6 @@ const Export: FC<ExprotProps> = ({ type, conditions, text='导出', slot, slotHi
   )
 }
 
+export { ExportHistory } 
+
 export default Export

@@ -78,3 +78,24 @@ export const trainServerPage = async (params, options = {}) => {
     success: res.success
   }
 }
+
+// 3800订单列表
+export const coursesPage = async (params, options = {}) => {
+  const { pageSize, current, payTime, ...rest } = params
+  const res = await request('/auth/java-admin/financial/aedRecord/coursesPage', {
+    method: 'POST',
+    data: {
+      startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    total: res.data.total,
+    success: res.success
+  }
+}

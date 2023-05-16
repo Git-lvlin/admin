@@ -103,6 +103,10 @@ const Detail = (props) => {
                   <div>{detailData?.store?.phone}</div>
                 </div>
                 <div className={styles.box}>
+                  <div>用户ID</div>
+                  <div>{detailData?.memberId}</div>
+                </div>
+                <div className={styles.box}>
                   <div>支付时间</div>
                   <div>{dateFormat(detailData?.payAdvance?.payTime * 1000)}</div>
                 </div>

@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from "react"
 import ProTable from '@ant-design/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
+import { Image } from 'antd'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
-import { FormInstance, Image } from "antd"
+import type { FormInstance } from "antd"
 
 import { trainServerSum, trainServerPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
@@ -285,17 +286,25 @@ const TrainServicePackage: FC = () => {
     },
     {
       title: '业绩结算状态',
-      dataIndex: '',
+      dataIndex: 'auditStatusDesc',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '结算状态',
-      dataIndex: '',
+      dataIndex: 'auditStatus',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '审核不通过',
+        8: '已失效',
+        9: '已线下结算'
       }
     },
   ]
