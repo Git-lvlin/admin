@@ -1,4 +1,4 @@
-import { PageContainer } from '@/components/PageContainer';
+import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@ant-design/pro-table'
 import React, { useState } from 'react'
 import { Button } from 'antd'
