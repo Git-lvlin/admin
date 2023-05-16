@@ -22,7 +22,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount,dataStatus} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
     form.setFieldsValue({
@@ -56,11 +56,20 @@ export default (props) => {
       <strong>待审核信息</strong>
         <p><span>提成金额：￥{amountTransform(unfreezeAmount,'/').toFixed(2)}</span><span>业绩订单数：{totalSum}单</span></p>
       <Divider />
-      <strong>审核通过</strong>
+      {dataStatus?
+        <>
+        <strong>审核通过</strong>
+        <p><span>审核通过提成金额：￥{amountTransform(unfreezeAmount,'/').toFixed(2)}</span><span>审核通过单数：{totalSum}单</span></p>
+        </>
+        :
+        <>
+        <strong>审核通过</strong>
         <p><span>审核通过提成金额：￥{amountTransform(msgDetail?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2) }</span><span>审核通过单数：{msgDetail.length}单</span></p>
-      <Divider />
-      <strong>继续等待审核</strong>
-        <p><span>待审核提成金额：￥{amountTransform(unfreezeAmount-msgDetail?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2) }</span><span>待审核单数：{totalSum-msgDetail.length}单</span></p>
+          <Divider />
+          <strong>继续等待审核</strong>
+          <p><span>待审核提成金额：￥{amountTransform(unfreezeAmount-msgDetail?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2) }</span><span>待审核单数：{totalSum-msgDetail.length}单</span></p>
+        </>
+      }
 
       <ProFormTextArea
         label='备注信息'

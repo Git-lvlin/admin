@@ -347,6 +347,7 @@ export default (props:CumulativeProps)=>{
           unfreezeAmount={pendingUnfreezeAmount}
           totalSum={totalSum}
           onClose={()=>{}}
+          dataStatus={dataStatus}
         />
       }
        {
@@ -354,8 +355,12 @@ export default (props:CumulativeProps)=>{
         <RejectModel
           visible={rejectVisible}
           setVisible={setRejectVisible}
-          msgDetail={selectedRows}
+          selectedRows={selectedRows}
+          msgDetail={msgDetail}
           callback={(values)=>{ rejectSubmit(values)}}
+          totalSum={totalSum}
+          unfreezeAmount={pendingUnfreezeAmount}
+          pendingFee={pendingFee}
           onClose={()=>{}}
         />
       }
