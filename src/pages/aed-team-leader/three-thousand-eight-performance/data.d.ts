@@ -1,19 +1,20 @@
 export type DescriptionsProps = {
   totalCommission: number;
-  totalPayAmount: number;
+  totalAmount: number;
 }
 
-export type TableProps = {
-  agencyId: string | undefined;
-  totalCommission: number;
-  totalPayAmount: number;
-  totalCommissionDesc: string;
-  managerPhone: string;
-  dateRange:Array
-}
+export type MsgDetailProps = { 
+  subId: string | undefined; 
+  totalCommission: number; 
+  totalPayAmount: number; 
+  totalCommissionDesc: string; 
+  subMobile: string; 
+  dateRange: any; 
+  subName: string; 
+} | undefined
 
 export type Refer = {
-  managerPhone: string;
+  subName: string;
   dateRange: Array;
 }
 
@@ -31,13 +32,13 @@ export type DrtailItem = {
 
 export type CumulativeProps = {
   msgDetail: {
-    agencyId: string | undefined;
+    subId: string | undefined;
     totalCommission: number;
     totalPayAmount: number;
     totalCommissionDesc: string;
-    managerPhone: string;
+    subMobile: string;
     dateRange: Array;
-    name: string;
+    subName: string;
   } | undefined;
   type: number;
   visible: boolean;

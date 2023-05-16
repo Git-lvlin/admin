@@ -5,24 +5,19 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps, Refer } from "./data"
 import { Descriptions } from 'antd';
 
-import { AEDOrderPm,AEDOrderPmStats } from "@/services/aed-team-leader/order-performance"
+import { aedTeamPm,aedTeamPmStats } from "@/services/aed-team-leader/aed-head-performance"
 import { amountTransform } from '@/utils/utils'
 
 export default function TransactionData () {
-  const [type, setType] = useState<number>(0)
-  const [storeVisible, setStoreVisible] = useState<boolean>(false)
-  const [msgDetail, setMsgDetail] = useState<TableProps>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [time,setTime]=useState<Refer>()
   const form = useRef<ActionType>()
 
   useEffect(() => {
     const params={
-      managerPhone:time?.managerPhone,
-      startTime:time?.dateRange&&time?.dateRange[0],
-      endTime:time?.dateRange&&time?.dateRange[1]
+      ...time
     }
-    AEDOrderPmStats(params).then(res=>{
+    aedTeamPmStats(params).then(res=>{
       if(res.code==0){
         setDetailList(res.data[0])
       }
@@ -33,9 +28,9 @@ export default function TransactionData () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: '排名',
-      dataIndex: 'sort',
-      align: 'center',
-      hideInSearch: true
+      dataIndex:'id',
+      hideInSearch: true,
+      valueType: 'indexBorder'
     },
     {
       title: 'ID',
@@ -45,7 +40,7 @@ export default function TransactionData () {
     },
     {
       title: '团长手机号',
-      dataIndex: 'phone',
+      dataIndex: 'managerPhone',
       align: 'center',
       fieldProps: {
         placeholder: '请输入团长手机号码'
@@ -53,94 +48,109 @@ export default function TransactionData () {
     },
     {
       title: '团长用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
-      hideInTable: true,
-    },
-    {
-      title: '团长用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInSearch: true
     },
     {
       title: '团长姓名',
-      dataIndex: 'name',
+      dataIndex: 'manager',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '团长类型',
+      title: '子公司类型',
+      dataIndex: 'type',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        1: '子公司',
+        2: '非子公司'
+      }
+    },
+    {
+      title: '所属子公司类型',
       dataIndex: 'typeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '子公司ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'subId',
       valueType: 'text',
       hideInTable: true,
     },
     {
       title: '所属子公司ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'subId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '子公司名称',
-      dataIndex: 'name',
+      dataIndex: 'subName',
       valueType: 'text',
       hideInTable: true,
     },
     {
       title: '所属子公司名称',
-      dataIndex: 'name',
+      dataIndex: 'subName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '业绩单数',
-      dataIndex: 'createTime',
+      dataIndex: 'orderNum',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '团长业绩(元)',
-      dataIndex: 'operateName',
+      dataIndex: 'payAmount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => {
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '团长提成(元)',
-      dataIndex: 'status',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
+      render: (_) => {
+        return amountTransform(_,'/').toFixed(2)
+      }
     }
   ]
 
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="businessDeptId"
+        rowKey="id"
         columns={tableColumns}
-        request={AEDOrderPm}
+        request={aedTeamPm}
         columnEmptyText={false}
         actionRef={form}
         tableExtraRender={() => 
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={5} layout="horizontal" bordered>
-            <Descriptions.Item  label="团长数">{detailList?.totalPayAmount} 名</Descriptions.Item>
-            <Descriptions.Item  label="所属子公司数">{detailList?.totalPayAmount} 家</Descriptions.Item>
-            <Descriptions.Item  label="业绩单数">{detailList?.totalPayAmount} 单</Descriptions.Item>
-            <Descriptions.Item  label="团长业绩">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="团长提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="团长数">{detailList?.teamNum} 名</Descriptions.Item>
+            <Descriptions.Item  label="所属子公司数">{detailList?.subNum} 家</Descriptions.Item>
+            <Descriptions.Item  label="业绩单数">{detailList?.orderNum} 单</Descriptions.Item>
+            <Descriptions.Item  label="团长业绩">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  元</Descriptions.Item>
+            <Descriptions.Item  label="团长提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  元</Descriptions.Item>
           </Descriptions>
         }
         onSubmit={(val)=>{
           setTime({
+            memberId: val.memberId,
             managerPhone: val.managerPhone,
-            dateRange: val.dateRange,
+            subId: val.subId,
+            subName: val.subName,
+            type: val.type,
           })
+        }}
+        onReset={()=>{
+          setTime(undefined)
         }}
         pagination={{
           pageSize: 10,

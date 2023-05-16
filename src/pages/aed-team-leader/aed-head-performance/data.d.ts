@@ -1,47 +1,29 @@
 export type DescriptionsProps = {
-  totalCommission: number;
-  totalPayAmount: number;
+  payAmount: number;
+  orderNum: number;
+  commission: number;
+  teamNum: number;
+  subNum: number;
 }
 
 export type TableProps = {
-  agencyId: string | undefined;
-  totalCommission: number;
-  totalPayAmount: number;
-  totalCommissionDesc: string;
+  subId: number;
+  commission: number;
+  typeDesc: string;
+  payAmount: number;
+  manager: string;
   managerPhone: string;
-  dateRange:Array
+  subName: string;
+  orderNum: number;
+  id: number;
+  type: number;
+  memberId: string;
 }
 
 export type Refer = {
+  subId: number;
   managerPhone: string;
-  dateRange: Array;
-}
-
-export type DrtailItem = {
-  offTrainStatus: any;
-  orderSn?: string; 
-  dateRange?: [string, string]; 
-  teamPhone?: string;
-  orderType?: string;
-  examStatus?: string;
-  learnStatus?: string;
-  contractStatus?: string;
-  teamLeaderPhone?: string;
-}
-
-export type CumulativeProps = {
-  msgDetail: {
-    agencyId: string | undefined;
-    totalCommission: number;
-    totalPayAmount: number;
-    totalCommissionDesc: string;
-    managerPhone: string;
-    dateRange: Array;
-    name: string;
-  } | undefined;
+  subName: string;
   type: number;
-  visible: boolean;
-  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onClose: function;
-  activeKey?: string;
+  memberId: string;
 }

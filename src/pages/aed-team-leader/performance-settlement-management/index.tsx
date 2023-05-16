@@ -5,51 +5,37 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps, Refer } from "./data"
 import RangeNumberInput from '@/components/range-number-input'
 
-import { AEDOrderPm,AEDOrderPmStats } from "@/services/aed-team-leader/order-performance"
+import { applyPage } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import SettlementPerformance from './settlement-performance'
 import RemittanceDrawer from './remittance-drawer'
 import SettlementAudit from './settlement-audit'
 import SettlementLog from './settlement-log'
+import PaymentDocument from './payment-document'
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
   const [settlementVisible, setSettlementVisible] = useState<boolean>(false)
   const [recordVisible, setRecordVisible] = useState<boolean>(false)
+  const [paymentVisible, setPaymentVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
-  const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState<Refer>()
   const form = useRef<ActionType>()
-
-  useEffect(() => {
-    const params={
-      managerPhone:time?.managerPhone,
-      startTime:time?.dateRange&&time?.dateRange[0],
-      endTime:time?.dateRange&&time?.dateRange[1]
-    }
-    AEDOrderPmStats(params).then(res=>{
-      if(res.code==0){
-        setDetailList(res.data[0])
-      }
-    })
-
-  }, [time])
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
-      title: '结算单号',
-      dataIndex: 'agencyId',
+      title: '结算申请单号',
+      dataIndex: 'settlementId',
       align: 'center',
     },
     {
       title: '子公司ID',
-      dataIndex: 'agencyId',
+      dataIndex: 'applyId',
       align: 'center',
     },
     {
       title: '子公司名称',
-      dataIndex: 'name',
+      dataIndex: 'applyName',
       align: 'center',
       fieldProps:{
         placeholder:'请输入子公司名称'
@@ -57,23 +43,20 @@ export default function TransactionData () {
     },
     {
       title: '订单类型',
-      dataIndex: 'sele',
+      dataIndex: 'orderType',
       align: 'center',
       valueType: 'select',
       hideInTable: true,
       valueEnum: {
-        1: 'AED培训服务套餐订单'
+        'aedTrainServer': 'AED培训服务套餐订单'
       }
     },
     {
       title: '订单类型',
-      dataIndex: 'sele',
+      dataIndex: 'orderTypeDesc',
       align: 'center',
       valueType: 'select',
       hideInSearch: true,
-      valueEnum: {
-        1: 'AED培训服务套餐订单'
-      }
     },
     {
       title: '业绩金额',
@@ -84,13 +67,20 @@ export default function TransactionData () {
     },
     {
       title: '订单业绩',
-      dataIndex: 'name',
+      dataIndex: 'confirmedAmount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,data)=>{
+        if(_&&_>0){
+          return amountTransform(_,'/').toFixed(2)
+        }else{
+          return '0'
+        }
+      },
     },
     {
       title: '提成金额',
-      dataIndex: 'name',
+      dataIndex: 'commissionAmount',
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
@@ -103,43 +93,49 @@ export default function TransactionData () {
     },
     {
       title: '结算单数',
-      dataIndex: 'sum',
+      dataIndex: 'subOrderCount',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '结算状态',
-      dataIndex: 'depositOrderStatus',
+      dataIndex: 'status',
       align: 'center',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        1: '已审核',
-        2: '待审核',
+        10: '待审核',
+        11: '部分审核通过，未汇款',
+        12: '全部审核通过，未汇款',
+        13: '部分审核通过，部分汇款',
+        14: '全部审核通过，部分汇款',
+        15: '全部审核通过，全部汇款',
+        16: '全部拒绝',
       }
     },
     {
       title: '结算状态',
-      dataIndex: 'sum',
+      dataIndex: 'settlementStatusDesc',
       align: 'center',
       hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '已审核',
-        2: '待审核',
-      }
     },
     {
       title: '最近审核备注',
-      dataIndex: 'sum',
+      dataIndex: 'auditRemark',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '汇款明细',
-      dataIndex: 'sum',
       align: 'center',
       hideInSearch: true,
+      render: (_,record) => {
+        if(record?.lastRemittanceTime){
+          return <a onClick={()=>{ setPaymentVisible(true);setMsgDetail(record) }}>查看汇款凭证</a>
+        }else{
+          return ''
+        }
+      }
     },
     {
       title: '申请时段',
@@ -152,18 +148,17 @@ export default function TransactionData () {
     },
     {
       title: '申请时间',
-      dataIndex: 'dateRange',
+      dataIndex: 'applyTime',
       hideInSearch: true
     },
     {
       title: '最近审核时间',
-      dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      dataIndex: 'auditTime',
       hideInSearch: true
     },
     {
-      title: '汇款时段',
-      dataIndex: 'dateRange',
+      title: '最近汇款时段',
+      dataIndex: 'remittanceDate',
       valueType: 'dateRange',
       fieldProps: {
         placeholder: ['开始时间', '结束时间']
@@ -172,38 +167,38 @@ export default function TransactionData () {
     },
     {
       title: '最近汇款时间',
-      dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      dataIndex: 'lastRemittanceTime',
       hideInSearch: true
     },
     {
       title: '操作',
       key: 'option',
       valueType: 'option',
-      render:(text, record, _, action)=>[
-        <a key='remittance' onClick={()=>{setRemittanceVisible(true);setMsgDetail(record)}}>汇款</a>,
-        <a key='detail' onClick={()=>{setVisible(true);setMsgDetail(record)}}>查看</a>,
-        <a key='settlement' onClick={()=>{setSettlementVisible(true);setMsgDetail(record)}}>结算审核</a>,
-        <a key='record' onClick={()=>{setRecordVisible(true);setMsgDetail(record)}}>日志</a>
-
-      ],
+      render:(text, record, _, action)=>{
+        const operateArr=[
+          <a key='detail' onClick={()=>{setVisible(true);setMsgDetail(record)}}>查看</a>,
+          <a key='record' onClick={()=>{setRecordVisible(true);setMsgDetail(record)}}>日志</a>
+        ]
+        if(record.settlementStatus>10&&record.settlementStatus<15){
+           operateArr.unshift(<a key='remittance' onClick={()=>{setRemittanceVisible(true);setMsgDetail(record)}}>汇款</a>)
+        }
+        if(record.settlementStatus==10||record.settlementStatus==11||record.settlementStatus==13){
+          operateArr.unshift( <a key='settlement' onClick={()=>{setSettlementVisible(true);setMsgDetail(record)}}>结算审核</a>)
+        }
+        return operateArr
+      },
     }, 
   ]
 
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="businessDeptId"
+        rowKey="settlementId"
         columns={tableColumns}
-        request={AEDOrderPm}
+        request={applyPage}
+        // dataSource={datadata}
         columnEmptyText={false}
         actionRef={form}
-        onSubmit={(val)=>{
-          setTime({
-            managerPhone: val.managerPhone,
-            dateRange: val.dateRange,
-          })
-        }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
@@ -224,6 +219,7 @@ export default function TransactionData () {
           setVisible={setSettlementVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -233,6 +229,7 @@ export default function TransactionData () {
           setVisible={setVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -242,6 +239,7 @@ export default function TransactionData () {
           setVisible={setRemittanceVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -249,6 +247,16 @@ export default function TransactionData () {
         <SettlementLog
           visible={recordVisible}
           setVisible={setRecordVisible}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+        />
+      }
+      {
+        paymentVisible&&
+        <PaymentDocument
+          visible={paymentVisible}
+          setVisible={setPaymentVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />

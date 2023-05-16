@@ -4,11 +4,12 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder } from "@/services/aed-team-leader/order-performance"
+import { getLogsListByParams } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
+import RemittanceDetails from './remittance-details'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -17,16 +18,18 @@ const formItemLayout = {
 
 export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
+  const [paymentVisible, setPaymentVisible] = useState<boolean>(false)
+  const [remittanceId, setRemittanceId] = useState()
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
 
   const Columns: ProColumns[] = [
     {
-      dataIndex: 'create',
+      dataIndex: 'searchKey',
       align: 'center',
       hideInTable: true,
       fieldProps: {
-        placeholder: '请输入操作人或备注'
+        placeholder: '请输入备注'
       }
     },
     {
@@ -43,27 +46,31 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '角色',
-      dataIndex: 'orderSn',
+      dataIndex: 'operateRole',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '操作人',
-      dataIndex: 'consignee',
+      dataIndex: 'operateName',
       valueType: 'text',
       hideInSearch: true,
     },
     {
       title: '操作项',
-      dataIndex: 'buyerId',
+      dataIndex: 'type',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '操作备注',
-      dataIndex: 'memberPhone',
+      dataIndex: 'remark',
       align: 'center',
+      width: 400,
       hideInSearch: true,
+      render: (_,data) =>{
+        return <p>{_} {data?.type == '汇款'&&<a onClick={()=>{ setPaymentVisible(true); setRemittanceId(data.id) }}>{data.actParams.title}</a>}</p>
+      }
     }
   ]
 
@@ -73,7 +80,7 @@ export default (props:CumulativeProps)=>{
       layout="horizontal"
       title={<>
         <strong>结算日志</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：26    子公司名称：{msgDetail?.name}    结算单号：2038388893    结算状态：待审核    订单类型：AED培训服务套餐订单   申请时间：2023-04-26 18:05:27</p>
+        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -95,13 +102,13 @@ export default (props:CumulativeProps)=>{
       className={styles.settlement_performance}
     >
       <ProTable
-        rowKey="orderSn"
+        rowKey="id"
         columns={Columns}
-        request={AEDOrder}
+        request={getLogsListByParams}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agencyId:msgDetail?.agencyId,
+          auditSumId:msgDetail?.settlementId,
         }}
         pagination={{
           pageSize: 10,
@@ -115,6 +122,15 @@ export default (props:CumulativeProps)=>{
           ],
         }}
       />
+       {
+        paymentVisible&&
+        <RemittanceDetails
+          visible={paymentVisible}
+          setVisible={setPaymentVisible}
+          id={remittanceId}
+          onClose={()=>{ form?.current?.reload();setRemittanceId(undefined)}}
+        />
+      }
     </DrawerForm >
   )
 }

@@ -13,7 +13,7 @@ export type TableProps = {
 }
 
 export type Refer = {
-  managerPhone: string;
+  name: string;
   dateRange: Array;
 }
 

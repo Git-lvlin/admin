@@ -1,5 +1,5 @@
 import { useRef,useEffect, useState } from "react"
-import { Form, Image, Divider, Button, Space, Row, Col } from 'antd';
+import { Form, Image, Divider, Button, Space, Row, Col, message, FormInstance } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -7,7 +7,7 @@ import ProForm, {
   ProFormRadio,
   ProFormDependency
 } from '@ant-design/pro-form';
-import { AEDOrder, AEDOrderStats } from "@/services/aed-team-leader/order-performance"
+import { remitSave,getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import styles from './styles.less'
@@ -22,45 +22,73 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,type,callback} = props;
+  const { visible, setVisible,msgDetail,onClose,callback} = props;
   const [form] = Form.useForm();
-  const [orderSum,setOrderSum]=useState<number>(0)
-  const [time,setTime]=useState<DrtailItem>({})
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
+  const [dataDatil, setDataDatil] = useState<DrtailItem>()
+  const [remarkMsg, setRemarkMsg] = useState()
+  const [orderArr, setOrderArr] = useState([])
+  const [submitMsg, setSubmitMsg] = useState()
+  const formRef = useRef<FormInstance>()
+  const user = JSON.parse(window.localStorage.getItem('user'))
 
   useEffect(()=>{
-    const params={
-      agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
-      startTime:time?.dateRange?.[0],
-      endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone,
-      orderType:time?.orderType,
-      contractStatus:time?.contractStatus,
-      learnStatus:time?.learnStatus,
-      examStatus:time?.examStatus,
-      teamLeaderPhone:time?.teamLeaderPhone,
-      offTrainStatus:time?.offTrainStatus
-    }
-    const api=AEDOrderStats
-    api(params).then(res=>{
+    getDataByAuditSumId({ auditSumId:2 }).then(res=>{
       if(res.code==0){
-        type==1? setOrderSum(res?.data?.[0]?.totalPayAmount):setOrderSum(res?.data?.[0]?.totalCommission)
+       setDataDatil(res.data)
+       form.setFieldsValue({
+        ...res.data,
+        ...msgDetail,
+        allOrder:`${res.data.allOrder} 单`,
+        allAmount:amountTransform(res.data.allAmount,'/').toFixed(2)
+       })
       }
     })
-  },[time])
+  },[])
+
+  const waitTime = (values) => {
+    const fee=values?.status?dataDatil?.orderArr.reduce((sum, item) => sum + item.fee, 0):orderArr.reduce((sum, item) => sum + item.fee, 0)
+    const unfreezeAmount=values?.status?dataDatil?.orderArr.reduce((sum, item) => sum + item.unfreezeAmount, 0):orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0)
+    const params={
+      remark:remarkMsg?.remark,
+      auditSumId: msgDetail?.settlementId,
+      orderArr:orderArr.reduce((obj, item) => {
+        obj[item.orderId] = item.orderNo;
+        return obj;
+      }, {}),
+      fee:fee,
+      unfreezeAmount:unfreezeAmount,
+      ...values,
+      remitAmount:amountTransform(values.remitAmount,'*'),
+      remitTime:moment(values.remitTime).valueOf()
+    }
+    console.log('params',params)
+    return new Promise((resolve, reject) => {
+      remitSave(params).then((res) => {
+        if (res.code === 0) {
+          resolve(true);
+          setVisible(false)
+          callback()
+        } else {
+          reject(false);
+        }
+      })
+
+    });
+  };
 
   return (
     <DrawerForm
       layout="horizontal"
       title={<>
         <strong>结算业绩</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：26    子公司名称：{msgDetail?.name}    结算单号：2038388893    结算状态：待审核    订单类型：AED培训服务套餐订单   申请时间：2023-04-26 18:05:27</p>
+        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
+      formRef={formRef}
       width={1200}
       drawerProps={{
         forceRender: true,
@@ -77,8 +105,8 @@ export default (props:CumulativeProps)=>{
                 <Button
                   type="primary"
                   onClick={() => {
-                    // form?.submit()
                     setForbiddenVisible(true)
+                    setSubmitMsg(form?.getFieldValue())
                   }}
                 >
                   确认完成汇款
@@ -97,13 +125,20 @@ export default (props:CumulativeProps)=>{
           )
         }
       }}
+      onFinish={async (values) => {
+        console.log('values',values)
+        await waitTime(values);
+        message.success('提交成功');
+        // 不返回不会关闭弹框
+        return true;
+      }}
       {...formItemLayout}
       className={styles.remittance_drawer}
     >
 
     <ProFormText
       label='收款子公司名称'
-      name="name"
+      name="applyName"
       width={400}
       disabled
     />
@@ -111,7 +146,7 @@ export default (props:CumulativeProps)=>{
     <ProFormText
       label='收款银行卡号'
       width={400}
-      name="credit"
+      name="bankNo"
       rules={[
         { pattern: /^([1-9]{1})(\d{14}|\d{18})$/, message: '银行卡号格式不正确' }
       ]}
@@ -119,18 +154,18 @@ export default (props:CumulativeProps)=>{
     <ProForm.Group style={{ marginLeft: '70px' }}>
       <ProFormText
         label='审核通过结算单数'
-        name="singular"
+        name="allOrder"
         disabled
         width={400}
         labelCol={5}
       />
-      <p>已汇款 5 单</p>
+      <p>已汇款 {dataDatil?.hasRemitOrder} 单</p>
     </ProForm.Group>
 
     <ProForm.Group style={{ marginLeft: '70px' }}>
       <ProFormText
         label='审核通过结算金额'
-        name="结算金额"
+        name="allAmount"
         fieldProps={{
           addonAfter: '元'
         }}
@@ -138,7 +173,7 @@ export default (props:CumulativeProps)=>{
         labelCol={5}
         disabled
       />
-      <p>已汇款 3750 元，扣除通道费X元，实际已汇款 3315 元</p>
+      <p>已汇款 {amountTransform(dataDatil?.hasRemitAmount,'/').toFixed(2)} 元，扣除通道费{amountTransform(dataDatil?.hasFee,'/').toFixed(2)}元，实际已汇款 {amountTransform(dataDatil?.hasRemitReal,'/').toFixed(2)} 元</p>
     </ProForm.Group>
 
     <ProFormRadio.Group
@@ -146,7 +181,7 @@ export default (props:CumulativeProps)=>{
       label='待汇款提成业绩'
       options={[
         {
-            label:'全部订单（20单）',
+            label:`全部订单（${dataDatil?.allOrder-dataDatil?.hasRemitOrder}单）`,
             value: 1,
         },
         {
@@ -160,42 +195,84 @@ export default (props:CumulativeProps)=>{
 
     <ProFormDependency name={['status']}>
         {({ status }) => {
-            if(status==1) return null
+            if(status==1) return <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应结算金额 {amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
             if(status==0){
-              return <a style={{ display:'block', margin: '0 0 100px 230px' }} onClick={()=>{ setRemittanceVisible(true) }}>选择结算汇款的订单</a>
+              return <>
+                <a style={{ display:'block', margin: '0 0 10px 180px' }} onClick={()=>{ setRemittanceVisible(true) }}>选择结算汇款的订单</a>
+                {
+                  orderArr?.length?<p style={{ margin: '0 0 10px 180px', fontWeight:'bold' }}>已选择 {orderArr.length} 单</p>:null
+                }
+                <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应结算金额 {amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
+              </>
             }
         }}
     </ProFormDependency>
 
-    <p style={{ marginLeft: '180px' }}>应结算金额 12000 元</p>
-    <ProForm.Group style={{ marginLeft: '90px' }}>
-      <ProFormText
-        label='扣除通道费'
-        name="通道费"
-        width={400}
-        rules={[{required: true, message: '请输入扣除通道费'}]}
-        fieldProps={{
-          addonAfter: '元'
-        }}
-        disabled
-        labelCol={5}
-      />
-      <p>交易通道费为第三方支付渠道收取；</p>
-    </ProForm.Group>
 
-    <ProFormText
-      label='应结算汇款金额'
-      name="remittance"
-      width={400}
-      fieldProps={{
-        addonAfter: '元'
-      }}
-      disabled
-    />
+    <ProFormDependency name={['status']}>
+        {({ status }) => {
+            if(status==1) return <>
+              <ProForm.Group style={{ marginLeft: '90px' }}>
+              <ProFormText
+                label='扣除通道费'
+                name="fee"
+                width={400}
+                // rules={[{required: true, message: '请输入扣除通道费'}]}
+                fieldProps={{
+                  addonAfter: '元',
+                  value:amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)
+                }}
+                disabled
+                labelCol={5}
+              />
+              <p>交易通道费为第三方支付渠道收取；</p>
+            </ProForm.Group>
+                <ProFormText
+                label='应结算汇款金额'
+                name="unfreezeAmount"
+                width={400}
+                fieldProps={{
+                  addonAfter: '元',
+                  value: amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
+                }}
+                disabled
+              />
+            </>
+            if(status==0){
+              return <>
+              <ProForm.Group style={{ marginLeft: '90px' }}>
+                <ProFormText
+                  label='扣除通道费'
+                  name="fee"
+                  width={400}
+                  // rules={[{required: true, message: '请输入扣除通道费'}]}
+                  fieldProps={{
+                    addonAfter: '元',
+                    value:amountTransform(orderArr.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)
+                  }}
+                  disabled
+                  labelCol={5}
+                />
+                <p>交易通道费为第三方支付渠道收取；</p>
+              </ProForm.Group>
+              <ProFormText
+                label='应结算汇款金额'
+                name="unfreezeAmount"
+                width={400}
+                fieldProps={{
+                  addonAfter: '元',
+                  value: amountTransform(orderArr.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
+                }}
+                disabled
+              />
+            </>
+            }
+        }}
+    </ProFormDependency>
 
     <ProFormText
       label='实际汇款金额'
-      name="practical"
+      name="remitAmount"
       width={400}
       rules={[
         {required: true, message: '请输入实际汇款金额'},
@@ -208,7 +285,7 @@ export default (props:CumulativeProps)=>{
 
     <ProFormText
       label='汇款时间'
-      name="time"
+      name="remitTime"
       width={400}
       rules={[
         { required: true, message: '请输入汇款时间' },
@@ -227,16 +304,16 @@ export default (props:CumulativeProps)=>{
 
     <Form.Item
       label="上传汇款凭证"
-      name="cardImage"
+      name="urlArr"
       width={400}
       rules={[{ required: true, message: '请上传汇款凭证!' }]}
     >
-      <Upload multiple  maxCount={1} accept="image/*"/>
+      <Upload multiple  maxCount={3} accept="image/*"/>
     </Form.Item>
 
     <ProFormTextArea
       label='备注'
-      name="cancelRemark"
+      name="remark"
       fieldProps={{
         maxLength:50,
         minLength:5,
@@ -249,31 +326,30 @@ export default (props:CumulativeProps)=>{
 
     <ProFormText
       label='汇款操作人'
-      name="id"
+      name="operateName"
+      fieldProps={{
+        value:user.username
+      }}
       disabled
       width={400}
-    />
-
-    <ProFormText
-    name="operator"
-    hidden
     />
 
     {remittanceVisible&&
     <SelectRemittance
       visible={remittanceVisible}
       setVisible={setRemittanceVisible}
-      msgDetail={msgDetail}
+      msgDetail={dataDatil}
       onClose={()=>{}}
-      callback={(rows)=>{  }}
+      callback={(rows)=>{ setOrderArr(rows) }}
     />
     }
     {forbiddenVisible&&
       <RemittanceInformation
         visible={forbiddenVisible}
         setVisible={setForbiddenVisible}
-        msgDetail={msgDetail}
-        callback={()=>{ setVisible(false) }}
+        msgDetail={submitMsg}
+        orderArr={orderArr}
+        callback={(values)=>{ setRemarkMsg(values); formRef.current?.submit()  }}
         onClose={()=>{}}
       />
     }

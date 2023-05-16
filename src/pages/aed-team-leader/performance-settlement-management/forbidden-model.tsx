@@ -5,8 +5,8 @@ import {
   ModalForm,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { updateAdminCancel } from "@/services/order-management/invoice-management"
 import styles from './styles.less'
+import { amountTransform } from "@/utils/utils";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -22,7 +22,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
     form.setFieldsValue({
@@ -30,17 +30,8 @@ export default (props) => {
     })
   },[])
   const waitTime = (values) => {
-    return new Promise((resolve, reject) => {
-        updateAdminCancel({id:values?.id,cancelRemark:values?.cancelRemark}).then((res) => {
-        if (res.code === 0) {
-          resolve(true);
-          onClose();
-        } else {
-          reject(false);
-        }
-      })
-
-    });
+    callback(values)
+    setVisible(false)
   };
   return (
     <ModalForm
@@ -57,34 +48,29 @@ export default (props) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('操作成功');
         return true;
       }}
       {...formItemLayout}
       className={styles.forbidden_model}
     >
-      <strong>申请信息</strong>
-        <p><span>申请结算金额：￥86000</span><span>申请结算单数：20单</span></p>
+      <strong>待审核信息</strong>
+        <p><span>提成金额：￥{amountTransform(unfreezeAmount,'/').toFixed(2)}</span><span>业绩订单数：{totalSum}单</span></p>
       <Divider />
       <strong>审核通过</strong>
-        <p><span>审核通过金额：￥86000</span><span>审核通过单数：20单</span></p>
+        <p><span>审核通过提成金额：￥{amountTransform(msgDetail?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2) }</span><span>审核通过单数：{msgDetail.length}单</span></p>
       <Divider />
       <strong>继续等待审核</strong>
-        <p><span>待审核金额：￥86000</span><span>待审核单数：20单</span></p>
-      
+        <p><span>待审核提成金额：￥{amountTransform(unfreezeAmount-msgDetail?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2) }</span><span>待审核单数：{totalSum-msgDetail.length}单</span></p>
+
       <ProFormTextArea
         label='备注信息'
-        name="cancelRemark"
+        name="remark"
         fieldProps={{
           maxLength:30,
           minLength:5,
           placeholder:'请输入5-30个字符'
         }}
         rules={[{ required: true, message: '请输入备注信息' },]}
-      />
-      <ProFormText
-        name="id"
-        hidden
       />
     </ModalForm >
   );

@@ -23,9 +23,9 @@ export default function TransactionData () {
 
   useEffect(() => {
     const params={
-      managerPhone:time?.managerPhone,
       startTime:time?.dateRange&&time?.dateRange[0],
-      endTime:time?.dateRange&&time?.dateRange[1]
+      endTime:time?.dateRange&&time?.dateRange[1],
+      ...time
     }
     AEDOrderPmStats(params).then(res=>{
       if(res.code==0){
@@ -141,9 +141,12 @@ export default function TransactionData () {
         actionRef={form}
         onSubmit={(val)=>{
           setTime({
-            managerPhone: val.managerPhone,
+            name: val.name,
             dateRange: val.dateRange,
           })
+        }}
+        onReset={()=>{
+          setTime(undefined)
         }}
         pagination={{
           pageSize: 10,

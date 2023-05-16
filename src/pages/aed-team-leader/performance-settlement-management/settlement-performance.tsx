@@ -4,7 +4,7 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder } from "@/services/aed-team-leader/order-performance"
+import { applySubPage } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
@@ -28,7 +28,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '下单用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
       hideInSearch: true
     },
@@ -52,8 +52,34 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
+      title: '分账金额',
+      dataIndex: 'amount',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '通道费金额',
+      dataIndex: 'fee',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
       title: '提成金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
@@ -97,39 +123,34 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '订单时间',
-      dataIndex: 'createTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '审核时间',
-      dataIndex: 'createTime',
+      dataIndex: 'auditTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '汇款时间',
       valueType: 'dateRange',
-      dataIndex: 'createTime',
+      dataIndex: 'remittanceTime',
       align: 'center',
       hideInTable: true,
     },
     {
       title: '汇款时间',
-      dataIndex: 'createTime',
+      dataIndex: 'remittanceTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '结算状态',
-      dataIndex: 'depositOrderStatus',
+      dataIndex: 'statusDesc',
       align: 'center',
-      hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '已审核',
-        2: '待审核',
-      }
+      hideInSearch: true
     },
   ]
 
@@ -139,7 +160,7 @@ export default (props:CumulativeProps)=>{
       layout="horizontal"
       title={<>
         <strong>结算业绩</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：26    子公司名称：{msgDetail?.name}    结算单号：2038388893    结算状态：待审核    订单类型：AED培训服务套餐订单   申请时间：2023-04-26 18:05:27</p>
+        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -161,17 +182,20 @@ export default (props:CumulativeProps)=>{
       className={styles.settlement_performance}
     >
       <ProTable
-        rowKey="orderSn"
+        rowKey="divideItemId"
         columns={Columns}
-        request={AEDOrder}
+        request={applySubPage}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agencyId:msgDetail?.agencyId,
+          settlementId:msgDetail?.settlementId,
         }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
+        }}
+        postData={(data)=>{
+          return data.records
         }}
         options={false}
         search={{

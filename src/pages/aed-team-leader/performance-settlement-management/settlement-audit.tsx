@@ -5,7 +5,7 @@ import {
   ProFormCheckbox
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
+import { applySubPage,settlementAuditAudit } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
@@ -19,15 +19,17 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,type} = props;
+  const { visible, setVisible,msgDetail,onClose,callback} = props;
   const [form] = Form.useForm();
-  const [orderSum,setOrderSum]=useState<number>(0)
-  const [time,setTime]=useState<DrtailItem>({})
   const [dataStatus,setDataStatus]=useState([])
   const ref = useRef<ActionType>()
   const [selectedRows, setSelectedRows] = useState([]);
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [rejectVisible, setRejectVisible] = useState<boolean>(false)
+  const [totalSum, settotalSum] = useState()
+  const [pendingAmount, setPendingAmount] = useState()
+  const [pendingFee, setPendingFee] = useState()
+  const [pendingUnfreezeAmount, setPendingUnfreezeAmount] = useState()
 
   const Columns: ProColumns[] = [
     {
@@ -48,7 +50,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '下单用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
       hideInSearch: true
     },
@@ -72,8 +74,34 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
+      title: '分账金额',
+      dataIndex: 'amount',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
+      title: '实际通道费',
+      dataIndex: 'fee',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+      hideInSearch: true,
+    },
+    {
       title: '提成金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
@@ -117,88 +145,83 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '订单时间',
-      dataIndex: 'createTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '审核时间',
-      dataIndex: 'createTime',
+      dataIndex: 'auditTime',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '结算状态',
-      dataIndex: 'depositOrderStatus',
+      dataIndex: 'status',
       align: 'center',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        1: '已审核',
-        2: '待审核',
+        '10': '待审核',
+        '11': '待结算',
+        '12': '审核拒绝',
+        '21': '已结算'
       }
     },
     {
       title: '结算状态',
-      dataIndex: 'depositOrderStatus',
+      dataIndex: 'statusDesc',
       align: 'center',
-      hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '已审核',
-        2: '待审核',
-      }
+      hideInSearch: true
     },
   ]
 
-  const handleSelectRows = (rows) => {
-    console.log('rows',rows)
-    setSelectedRows(rows);
+  const handleSelectRows = (rows,arr) => {
+    setSelectedRows(arr);
     setDataStatus([])
   };
 
   const handleCheckAll = (val) => {
     setDataStatus(val)
-    if (val[0]) {
-      AEDOrder({ agencyId:msgDetail?.agencyId, pageSize:999 }).then(res=>{
-        if(res.code==0){
-          setSelectedRows(res.data.map(ele=>ele.orderSn));
-        }
-      })
-     
-    } else {
-      setSelectedRows([]);
-    }
   };
 
-  useEffect(()=>{
+  const waitTime = (values) => {
     const params={
-      agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
-      startTime:time?.dateRange?.[0],
-      endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone,
-      orderType:time?.orderType,
-      contractStatus:time?.contractStatus,
-      learnStatus:time?.learnStatus,
-      examStatus:time?.examStatus,
-      teamLeaderPhone:time?.teamLeaderPhone,
-      offTrainStatus:time?.offTrainStatus
+      settlementId: msgDetail?.settlementId,
+      divideItemIdList: dataStatus.length?'all':selectedRows.map(ele=>ele.divideItemId),
+      action: 'approve',
+      ...values
     }
-    const api=AEDOrderStats
-    api(params).then(res=>{
+    settlementAuditAudit(params).then(res=>{
       if(res.code==0){
-        type==1? setOrderSum(res?.data?.[0]?.totalPayAmount):setOrderSum(res?.data?.[0]?.totalCommission)
+        setVisible(false)
+        callback()
       }
     })
-  },[time])
+  };
+
+  
+  const rejectSubmit = (values) => {
+    const params={
+      settlementId: msgDetail?.settlementId,
+      divideItemIdList: dataStatus.length?'all':selectedRows.map(ele=>ele.divideItemId),
+      action: 'reject',
+      ...values
+    }
+    settlementAuditAudit(params).then(res=>{
+      if(res.code==0){
+        setVisible(false)
+        callback()
+      }
+    })
+  };
 
   return (
     <DrawerForm
       layout="horizontal"
       title={<>
-        <strong>结算审核</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：26    子公司名称：{msgDetail?.name}    结算单号：2038388893    结算状态：待审核    订单类型：AED培训服务套餐订单   申请时间：2023-04-26 18:05:27</p>
+        <strong>结算业绩</strong>
+        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -219,23 +242,24 @@ export default (props:CumulativeProps)=>{
                 <span style={{ fontWeight:'bolder', marginRight:'100px' }}>审核通过后，请尽快为用户汇款！</span>
                 <Button
                   type="primary"
-                  disabled={!selectedRows.length}
-                  style={{ backgroundColor:selectedRows.length?'#1890FF':'#A7A7A8', color:'#fff' }}
+                  disabled={!selectedRows.length&&!dataStatus.length}
+                  style={{ backgroundColor:selectedRows.length||dataStatus.length?'#1890FF':'#A7A7A8', color:'#fff' }}
                   onClick={() => {
                     // form?.submit()
                     setForbiddenVisible(true)
                   }}
                 >
-                  {selectedRows.length?dataStatus.length?'全部审核通过':'部分审核通过':'审核通过'}
+                  {selectedRows.length?'部分审核通过':dataStatus.length?'全部审核通过':'审核通过'}
                 </Button>
                 <Button
-                  style={{ backgroundColor:'red', color:'#fff' }}
+                  style={{ backgroundColor:dataStatus.length?'red':'#A7A7A8', color:'#fff' }}
+                  disabled={!dataStatus.length}
                   onClick={() => {
                     // form?.resetFields()
                     setRejectVisible(true)
                   }}
                 >
-                  审核拒绝
+                  {dataStatus.length?'全部审核拒绝':'审核拒绝'}
                 </Button>
               </Space>
             </div>
@@ -249,8 +273,8 @@ export default (props:CumulativeProps)=>{
         <div>
           <p>申请信息</p>
            <div>
-            <p>申请备注：XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-            <p>申请附件：<Image /></p>
+            <p>申请备注：{msgDetail?.applyRemark}</p>
+            <p>申请附件：<Image src={msgDetail?.applyAttach}/></p>
            </div>
         </div>
         <ProFormCheckbox.Group
@@ -270,29 +294,26 @@ export default (props:CumulativeProps)=>{
       </div>
       <Divider />
       <ProTable
-        rowKey="orderSn"
+        rowKey="divideItemId"
         columns={Columns}
-        request={AEDOrder}
+        request={applySubPage}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agencyId:msgDetail?.agencyId,
+          settlementId:msgDetail?.settlementId,
+          status: 10
         }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
         }}
-        onSubmit={(val)=>{
-          setOrderSum(0)
-          setTime(val)
+        postData={(data)=>{
+          settotalSum(data.total)
+          setPendingAmount(data.pendingAmount)
+          setPendingFee(data.pendingFee)
+          setPendingUnfreezeAmount(data.pendingUnfreezeAmount)
+          return data.records
         }}
-        onReset={()=>{
-          setTime({})
-        }}
-        // postData={(data)=>{
-        //   setDataSource(data)
-        //   return data
-        // }}
         options={false}
         search={{
           labelWidth:120,
@@ -303,14 +324,14 @@ export default (props:CumulativeProps)=>{
         rowSelection={{
           type: 'checkbox',
           onChange: handleSelectRows,
-          selectedRowKeys: selectedRows,
+          selectedRowKeys: selectedRows?.map(ele=>ele.divideItemId),
         }}
         tableRender={(_, dom) => {
           return <>
             { dom }
             <div className={styles.summary}>
               <div>
-                <p>AED子公司：{msgDetail?.name}，业绩结算汇款金额 ：<span style={{ color:'red' }}>1000</span> 元（ 2 单）</p>
+                <p>AED子公司：{msgDetail?.applyName}，业绩总分账金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.amount, 0):pendingAmount,'/').toFixed(2)}</span>元，扣除通道费：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.fee, 0):pendingFee,'/').toFixed(2)}</span>元，提成金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.unfreezeAmount, 0):pendingUnfreezeAmount,'/').toFixed(2)}</span> 元（ {selectedRows.length?selectedRows.length:totalSum} 单）</p>
               </div>
             </div>
           </>
@@ -322,7 +343,9 @@ export default (props:CumulativeProps)=>{
           visible={forbiddenVisible}
           setVisible={setForbiddenVisible}
           msgDetail={selectedRows}
-          callback={()=>{ setVisible(false) }}
+          callback={(values)=>{ waitTime(values) }}
+          unfreezeAmount={pendingUnfreezeAmount}
+          totalSum={totalSum}
           onClose={()=>{}}
         />
       }
@@ -332,7 +355,7 @@ export default (props:CumulativeProps)=>{
           visible={rejectVisible}
           setVisible={setRejectVisible}
           msgDetail={selectedRows}
-          callback={()=>{ setVisible(false) }}
+          callback={(values)=>{ rejectSubmit(values)}}
           onClose={()=>{}}
         />
       }

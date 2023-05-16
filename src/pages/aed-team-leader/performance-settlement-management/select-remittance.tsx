@@ -4,11 +4,11 @@ import {
   ProFormText,
   ModalForm,
 } from '@ant-design/pro-form';
-import { updateAdminCancel } from "@/services/order-management/invoice-management"
+// import { getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import ProTable from "@ant-design/pro-table"
-import { AEDOrder } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -32,9 +32,8 @@ export default (props) => {
     });
   };
 
-  const handleSelectRows = (rows) => {
-    console.log('rows',rows)
-    setSelectedRows(rows);
+  const handleSelectRows = (rows,arr) => {
+    setSelectedRows(arr);
   };
 
   const Columns: ProColumns[] = [
@@ -51,12 +50,12 @@ export default (props) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderSn',
+      dataIndex: 'orderNo',
       align: 'center',
     },
     {
       title: '下单人手机号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'memberMobile',
       align: 'center',
       hideInSearch: true
     },
@@ -75,7 +74,7 @@ export default (props) => {
     },
     {
       title: '提成金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
@@ -88,7 +87,7 @@ export default (props) => {
     },
     {
       title: '通道费金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'fee',
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
@@ -105,7 +104,7 @@ export default (props) => {
       align: 'center',
       render: (_,data)=>{
         if(_&&_>0){
-          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+          return <span>￥{amountTransform(data?.unfreezeAmount-data?.fee,'/').toFixed(2)}</span>
         }else{
           return '-'
         }
@@ -114,15 +113,21 @@ export default (props) => {
     },
     {
       title: '支付日期',
-      dataIndex: 'createTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
+      render:(_,data)=>{
+        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+      }
     },
     {
       title: '审核时间',
-      dataIndex: 'createTime',
+      dataIndex: 'auditTime',
       align: 'center',
       hideInSearch: true,
+      render:(_,data)=>{
+        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
+      }
     }
   ]
   return (
@@ -139,7 +144,7 @@ export default (props) => {
           onClose();
         }
       }}
-      width={1000}
+      width={1200}
       onFinish={async (values) => {
         await waitTime(values);
         return true;
@@ -147,13 +152,14 @@ export default (props) => {
       {...formItemLayout}
     >
       <ProTable
-        rowKey="orderSn"
+        rowKey="orderNo"
         columns={Columns}
-        request={AEDOrder}
+        // request={getDataByAuditSumId}
+        dataSource={msgDetail?.orderArr}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          agencyId:msgDetail?.agencyId,
+          auditSumId:msgDetail?.settlementId,
         }}
         pagination={{
           pageSize: 10,
@@ -164,11 +170,11 @@ export default (props) => {
         rowSelection={{
           type: 'checkbox',
           onChange: handleSelectRows,
-          selectedRowKeys: selectedRows,
+          selectedRowKeys: selectedRows.map(ele=>ele.orderNo),
         }}
       />
-      <p>总计结算提成：7500.00元（共10单）</p>
-      <p>预计结算汇款金额：7075.00元（扣除税费：425.00元）</p>
+      <p>总计结算业绩：{amountTransform(selectedRows.reduce((sum, item) => sum + item.payAmount, 0),'/').toFixed(2)}元，提成：{amountTransform(selectedRows.reduce((sum, item) => sum + item.unfreezeAmount, 0),'/').toFixed(2)}元（共{selectedRows.length}单）</p>
+      <p>预计结算汇款金额：{amountTransform(selectedRows.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)}元（扣除通道费：{amountTransform(selectedRows.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}元）</p>
       <ProFormText
         name="id"
         hidden
