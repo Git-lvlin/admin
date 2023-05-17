@@ -48,6 +48,11 @@ export default () => {
         valueType: 'text',
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
+      },
+      {
         title: '用户名',
         dataIndex: 'memberNicheng',
         valueType: 'text',

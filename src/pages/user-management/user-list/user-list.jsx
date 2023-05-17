@@ -33,6 +33,11 @@ const TableList = () => {
   const actionRef = useRef();
   const columns = [
     {
+      title: '用户ID',
+      dataIndex: 'id',
+      order: -1,
+    },
+    {
       title: '昵称',
       dataIndex: 'nickName',
       valueType: 'text',

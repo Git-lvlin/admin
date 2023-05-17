@@ -72,6 +72,11 @@ const VolunteerList: FC = ()=>  {
           hideInSearch: true,
         },
         {
+          title: '用户ID',
+          dataIndex: 'memberId',
+          order: -1,
+        },
+        {
           title: '注册来源',
           dataIndex: 'sourceTypeDesc',
           align: 'center',
@@ -146,6 +151,7 @@ const VolunteerList: FC = ()=>  {
             showQuickJumper: true,
             pageSize: 10
           }}
+          scroll={{x:'max-content'}}
           search={{
             labelWidth: 120,
             optionRender: (searchConfig, props, dom) => [

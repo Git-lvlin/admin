@@ -38,6 +38,11 @@ export default () => {
         valueType: 'text',
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
+      },
+      {
         title: '使用时间',
         key: 'dateTimeRange',
         dataIndex: 'activityStartTime',

@@ -27,6 +27,11 @@ export default () => {
   const ref=useRef()
   const columns:ProColumns<CancelListItem>[]= [
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: '昵称',
       dataIndex: 'nickName',
       valueType: 'text',
@@ -163,6 +168,7 @@ export default () => {
             pageSize: 10,
             showQuickJumper: true,
           }}
+          scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         />
         {
         detailVisible &&

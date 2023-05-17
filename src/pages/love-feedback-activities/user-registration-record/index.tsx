@@ -49,6 +49,11 @@ const UserRegistrationRecord = () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       dataIndex: 'memberMobile',
       align: 'center',
       fieldProps: {

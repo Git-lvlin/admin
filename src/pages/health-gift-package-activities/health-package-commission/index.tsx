@@ -45,6 +45,11 @@ const HealthPackageCommission: FC = () => {
       hideInTable: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: '店铺编号',
       dataIndex: 'shopMemberAccount',
       align: 'center',
@@ -113,6 +118,7 @@ const HealthPackageCommission: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x:'max-content'}}
         options={false}
         search={{
           labelWidth: 100,

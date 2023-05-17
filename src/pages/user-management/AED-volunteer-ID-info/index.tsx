@@ -32,6 +32,11 @@ const AEDVolunteerIDInfo = () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      order: -1,
+    },
+    {
       title: '手机号码',
       dataIndex: 'memberMobile',
       align: 'center'

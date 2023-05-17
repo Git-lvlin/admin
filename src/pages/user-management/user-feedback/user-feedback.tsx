@@ -42,6 +42,11 @@ export default () => {
     },[])
     const columns:ProColumns<activityItem>[]= [
       {
+        title: '用户ID',
+        dataIndex: 'createId',
+        order: -1,
+      },
+      {
         title: '反馈用户',
         dataIndex: 'createName',
         valueType: 'text',

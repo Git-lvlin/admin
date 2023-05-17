@@ -48,6 +48,11 @@ export default () => {
         hideInSearch: true,
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
+      },
+      {
         title: '银行账户',
         dataIndex: 'withdrawAccount',
         valueType: 'text',

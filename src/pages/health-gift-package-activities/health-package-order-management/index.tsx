@@ -51,6 +51,11 @@ const StoreHealthCardManagement = () => {
       align: 'center'
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: '套餐名称',
       dataIndex: 'giftPackageId',
       hideInTable: true,
@@ -103,6 +108,8 @@ const StoreHealthCardManagement = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
+      width: 50,
       render: (_, r)=> <a onClick={()=> {setVisible(true); setId(r.orderId)}}>详情</a>
     },
   ]
@@ -118,6 +125,7 @@ const StoreHealthCardManagement = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x:'max-content'}}
         options={false}
         formRef={form}
         search={{

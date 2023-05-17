@@ -49,6 +49,11 @@ const LoveFeedbackGiftOrder = ()=>  {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       dataIndex: 'memberPhone',
       align: 'center',
       fieldProps: {

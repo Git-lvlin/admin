@@ -94,6 +94,11 @@ const UserRelationship = () => {
 
   const columns = [
     {
+      title: '用户ID',
+      dataIndex: 'id',
+      order: -1,
+    },
+    {
       title: '用户手机号',
       dataIndex: 'phoneNumber',
       valueType: 'text',

@@ -32,6 +32,11 @@ const TableList = () => {
   const location = useLocation();
   const columns = [
     {
+      title: '用户ID',
+      dataIndex: 'id',
+      order: -1,
+    },
+    {
       title: '昵称',
       dataIndex: 'nickName',
       valueType: 'text',

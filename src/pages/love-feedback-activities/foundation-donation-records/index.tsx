@@ -50,6 +50,11 @@ const FoundationDonationRecords =  () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: '付款人姓名',
       dataIndex: 'userName',
       align: 'center',
@@ -138,7 +143,8 @@ const FoundationDonationRecords =  () => {
         pagination={{
           showQuickJumper: true,
           pageSize: 10
-        }} 
+        }}
+        scroll={{x:'max-content'}} 
         actionRef={actRef}
         options={false}
         search={{

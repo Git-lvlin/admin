@@ -33,6 +33,11 @@ const AEDVolunteerExamInfo = () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      order: -1,
+    },
+    {
       title: '手机号码',
       dataIndex: 'phoneNumber',
       align: 'center'
@@ -146,6 +151,8 @@ const AEDVolunteerExamInfo = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
+      width: 100,
       render: (_, r) => {
         if(r.trainingStatus === 2 || r.trainingStatus === 0) {
           return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线下培训</a>
@@ -193,6 +200,7 @@ const AEDVolunteerExamInfo = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         rowSelection={{
           selectedRowKeys: selectedKeys,
           preserveSelectedRowKeys: true,

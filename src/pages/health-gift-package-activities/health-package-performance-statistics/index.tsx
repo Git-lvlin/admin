@@ -44,6 +44,11 @@ export default () => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: '店铺编号',
       dataIndex: 'houseNumber',
       align: 'center',
@@ -76,7 +81,8 @@ export default () => {
       title: '店主店铺地址',
       dataIndex: 'address',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      width: '20%'
     },
     {
       title: '店铺设备数',
@@ -144,6 +150,7 @@ export default () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x:'max-content'}}
         options={false}
         search={{
           labelWidth: 132,

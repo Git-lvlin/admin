@@ -36,6 +36,11 @@ const InviteRegister=(props) => {
         valueType: 'text',
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
+      },
+      {
         title: '活动时间',
         key: 'dateTimeRange',
         dataIndex: 'startTime',
@@ -179,6 +184,11 @@ const BuildBuilding=(props) => {
         title: '用户手机号',
         dataIndex: 'phone',
         valueType: 'text',
+      },
+      {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
       },
       {
         title: '活动时间',

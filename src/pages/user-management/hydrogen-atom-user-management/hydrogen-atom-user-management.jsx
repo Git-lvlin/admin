@@ -21,6 +21,11 @@ export default function TransactionData () {
   const form = useRef()
   const tableColumns= [
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
+    },
+    {
       title: 'ID',
       dataIndex: 'id',
       align: 'center',
@@ -143,6 +148,7 @@ export default function TransactionData () {
             ...dom.reverse(),
           ],
         }}
+        scroll={{ x: 'max-content' }}
       />
       {
         visible&&
