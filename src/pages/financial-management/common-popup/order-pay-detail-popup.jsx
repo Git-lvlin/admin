@@ -243,9 +243,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       dataIndex: 'sellerType'
     },
     {
-      title: '',
-      dataIndex: '',
-      render: () => ''
+      title: '买家会员ID',
+      dataIndex: 'buyerId',
     },
     {
       title: '卖家会员信息',

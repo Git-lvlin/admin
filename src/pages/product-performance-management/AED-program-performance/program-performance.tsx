@@ -86,6 +86,11 @@ const ProgramPerformance: FC = () => {
       align: 'center'
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center'
@@ -141,6 +146,12 @@ const ProgramPerformance: FC = () => {
       title: '推荐人手机号',
       dataIndex: 'memberMobile',
       align: 'center'
+    },
+    {
+      title: '推荐人用户ID',
+      dataIndex: 'recomMemberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '团长手机号',

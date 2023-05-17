@@ -36,6 +36,11 @@ const UnfrozenList: React.FC = () => {
       align: 'center'
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '未解冻超时时间',
       dataIndex: 'timeout',
       valueType: 'select',
@@ -116,17 +121,19 @@ const UnfrozenList: React.FC = () => {
           <a onClick={()=> {setVisible(true); setType(1); setId(r.orderSn)}}>解冻给各角色</a>
           <a onClick={()=> {setVisible(true); setType(2); setId(r.orderSn)}}>解冻到平台</a>
         </Space>
-      )
+      ),
+      fixed: 'right'
     },
   ]
 
   return (
     <PageContainer title={false}>
       <ProTable
+        rowKey='orderSn'
         columns={columns}
         options={false}
         search={{
-          labelWidth: 100,
+          labelWidth: 110,
           optionRender: (search, props, dom)=> [
             ...dom.reverse(),
             <Export 
@@ -138,6 +145,7 @@ const UnfrozenList: React.FC = () => {
         }}
         formRef={form}
         actionRef={actRef}
+        scroll={{x: 'max-content'}}
         pagination={{
           pageSize: 10,
           showQuickJumper: true

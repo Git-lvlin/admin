@@ -4,7 +4,6 @@ import { Button, Drawer } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
-import './styles.less'
 import styles from './styles.less'
 import { tradeType } from '../../common-enum'
 import { orderTypes } from '@/services/financial-management/common'
@@ -212,6 +211,7 @@ const Detail = ({id, visible, setVisible}) => {
           <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
+      className={styles.desc}
     >
       <ProDescriptions
         loading={loading}

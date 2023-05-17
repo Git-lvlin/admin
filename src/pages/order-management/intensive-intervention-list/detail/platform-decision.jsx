@@ -5,8 +5,6 @@ import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
 
 import styles from './styles.less'
-import './styles.less'
-
 
 const PlatformDecision = ({data, platformEvidenceImg, platformOpinion}) => {
 

@@ -36,6 +36,11 @@ export default () => {
       align: 'center'
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center',

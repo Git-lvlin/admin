@@ -140,6 +140,10 @@ const MemberStoreFundManagement = () => {
       dataIndex: 'registMobile'
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId'
+    },
+    {
       title: '注册日期',
       dataIndex: 'registTime',
       hideInSearch: true
@@ -200,6 +204,7 @@ const MemberStoreFundManagement = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=>(
         <Space size='large'>
           <a onClick={

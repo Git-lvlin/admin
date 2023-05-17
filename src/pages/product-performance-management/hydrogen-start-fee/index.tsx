@@ -38,7 +38,7 @@ const Aggregate: FC<any> = ({data}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={4}
+      column={{xl: 2, xxl: 3}}
       bordered
       dataSource={data}
     />
@@ -65,6 +65,11 @@ const HydrogenStartFee: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'memberPhone',
+      align: 'center'
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
       align: 'center'
     },
     {
@@ -101,6 +106,12 @@ const HydrogenStartFee: FC = () => {
     {
       title: '店主手机号',
       dataIndex: 'storeMemberPhone',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '店主用户ID',
+      dataIndex: 'recomMemberId',
       align: 'center',
       hideInSearch: true
     },
@@ -154,6 +165,7 @@ const HydrogenStartFee: FC = () => {
           setData(v[0].total)
           return (v[0].res)
         }}
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

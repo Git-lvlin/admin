@@ -49,6 +49,7 @@ const interventioListDetail = ({id, setVisible, visible}) => {
       visible={visible}
       onClose={()=>{setVisible(false)}}
       width={1200}
+      className={styles.desc}
     >
       <Spin spinning={loading}>
         <InterventionDetailStatus 

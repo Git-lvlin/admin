@@ -90,6 +90,11 @@ const TrainServicePackage: FC = () => {
       align: 'center'
     },
     {
+      title: '用户Id',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center'
@@ -184,6 +189,12 @@ const TrainServicePackage: FC = () => {
       title: '推荐人手机号',
       dataIndex: 'memberMobile',
       align: 'center'
+    },
+    {
+      title: '推荐人用户Id',
+      dataIndex: 'recomMemberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '团长手机号',

@@ -39,6 +39,10 @@ const WithdrawalAuditManagement = () => {
       dataIndex: 'registMobile',
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId'
+    },
+    {
       title: '用户类型',
       dataIndex: 'accountType',
       valueType: 'select',

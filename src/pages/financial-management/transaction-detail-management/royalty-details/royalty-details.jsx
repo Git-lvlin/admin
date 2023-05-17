@@ -10,7 +10,6 @@ import {
   operationCommissionDetail
 } from "@/services/financial-management/transaction-detail-management"
 import { orderTypes } from '@/services/financial-management/common'
-import './styles.less'
 import styles from './styles.less'
 import { fashionableType } from '../../common-function'
 
@@ -325,6 +324,7 @@ const TransactionDetails = (props) => {
           <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
+      className={styles.desc}
     >
       <ProDescriptions
         loading={loading}

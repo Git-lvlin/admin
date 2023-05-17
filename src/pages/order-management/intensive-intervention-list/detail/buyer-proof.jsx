@@ -4,7 +4,6 @@ import ProCard from '@ant-design/pro-card'
 import { Image } from 'antd'
 
 import styles from './styles.less'
-import './styles.less'
 
 const BuyerProof = props => {
   const { platformOpinion, data, userEvidenceImg } = props
