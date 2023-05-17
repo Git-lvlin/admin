@@ -332,8 +332,6 @@ const Detail = () => {
           padding: 20
         }}
         bordered
-        params={{ id }}
-        request={withdrawPageDetail}
         dataSource={data}
       />
       <div style={{ background: '#fff', padding: 20 }}>
