@@ -104,11 +104,10 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      storeHouseNumber:time?.storeHouseNumber,
-      scope:scope
+      scope:scope,
+      ...time
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){

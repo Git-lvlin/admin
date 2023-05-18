@@ -114,10 +114,9 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderType:time?.orderType
+      ...time
     }
     cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){

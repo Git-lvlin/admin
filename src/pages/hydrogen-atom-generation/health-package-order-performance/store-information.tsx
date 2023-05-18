@@ -114,11 +114,10 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderType:time?.orderType,
-      scope:scope
+      scope:scope,
+      ...time
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){

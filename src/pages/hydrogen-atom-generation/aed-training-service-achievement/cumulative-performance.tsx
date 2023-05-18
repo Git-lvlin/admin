@@ -98,10 +98,9 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      scopeDesc:time?.scopeDesc
+      ...time
     }
     cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
