@@ -30,6 +30,7 @@ export default (props:CumulativeProps)=>{
   const [pendingAmount, setPendingAmount] = useState()
   const [pendingFee, setPendingFee] = useState()
   const [pendingUnfreezeAmount, setPendingUnfreezeAmount] = useState()
+  const [confirmedAmount, setConfirmedAmount] = useState()
 
   const Columns: ProColumns[] = [
     {
@@ -183,6 +184,7 @@ export default (props:CumulativeProps)=>{
 
   const handleCheckAll = (val) => {
     setDataStatus(val)
+    setSelectedRows([])
   };
 
   const waitTime = (values) => {
@@ -245,7 +247,6 @@ export default (props:CumulativeProps)=>{
                   disabled={!selectedRows.length&&!dataStatus.length}
                   style={{ backgroundColor:selectedRows.length||dataStatus.length?'#1890FF':'#A7A7A8', color:'#fff' }}
                   onClick={() => {
-                    // form?.submit()
                     setForbiddenVisible(true)
                   }}
                 >
@@ -255,7 +256,6 @@ export default (props:CumulativeProps)=>{
                   style={{ backgroundColor:dataStatus.length?'red':'#A7A7A8', color:'#fff' }}
                   disabled={!dataStatus.length}
                   onClick={() => {
-                    // form?.resetFields()
                     setRejectVisible(true)
                   }}
                 >
@@ -274,7 +274,7 @@ export default (props:CumulativeProps)=>{
           <p>申请信息</p>
            <div>
             <p>申请备注：{msgDetail?.applyRemark}</p>
-            <p>申请附件：<Image src={msgDetail?.applyAttach}/></p>
+            <p>申请附件：{msgDetail?.applyAttach?.map(item=><Image src={item} width={50} height={50} style={{ display:'inline-block',marginRight:'20px' }}/>)}</p>
            </div>
         </div>
         <ProFormCheckbox.Group
@@ -303,6 +303,7 @@ export default (props:CumulativeProps)=>{
           settlementId:msgDetail?.settlementId,
           status: 10
         }}
+        scroll={{ x: 'max-content' }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
@@ -312,6 +313,7 @@ export default (props:CumulativeProps)=>{
           setPendingAmount(data.pendingAmount)
           setPendingFee(data.pendingFee)
           setPendingUnfreezeAmount(data.pendingUnfreezeAmount)
+          setConfirmedAmount(data.confirmedAmount)
           return data.records
         }}
         options={false}
@@ -355,12 +357,12 @@ export default (props:CumulativeProps)=>{
         <RejectModel
           visible={rejectVisible}
           setVisible={setRejectVisible}
-          selectedRows={selectedRows}
           msgDetail={msgDetail}
           callback={(values)=>{ rejectSubmit(values)}}
           totalSum={totalSum}
           unfreezeAmount={pendingUnfreezeAmount}
           pendingFee={pendingFee}
+          confirmedAmount={confirmedAmount}
           onClose={()=>{}}
         />
       }

@@ -147,6 +147,11 @@ export default function TransactionData () {
       align: 'center'
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+    },
+    {
       title: '店主ID',
       dataIndex: 'memberId',
       align: 'center',

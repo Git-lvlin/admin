@@ -1,5 +1,5 @@
 import { useRef,useEffect, useState } from "react"
-import { Form, Image, Divider, Button, Space, Row, Col, message, FormInstance } from 'antd';
+import { Form, Divider, Button, Space, message, FormInstance } from 'antd';
 import ProForm, {
   DrawerForm,
   ProFormText,
@@ -9,7 +9,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { remitSave,getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem } from "./data"
+import type { CumulativeProps, DrtailItem,Weather } from "./data"
 import styles from './styles.less'
 import SelectRemittance from './select-remittance'
 import Upload from '@/components/upload';
@@ -48,12 +48,15 @@ export default (props:CumulativeProps)=>{
   },[])
 
   const waitTime = (values) => {
-    const fee=values?.status?dataDatil?.orderArr.reduce((sum, item) => sum + item.fee, 0):orderArr.reduce((sum, item) => sum + item.fee, 0)
-    const unfreezeAmount=values?.status?dataDatil?.orderArr.reduce((sum, item) => sum + item.unfreezeAmount, 0):orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0)
+    const fee=values?.status?dataDatil?.orderArr?.reduce((sum, item) => sum + item.fee, 0):orderArr.reduce((sum, item) => sum + item.fee, 0)
+    const unfreezeAmount=values?.status?dataDatil?.orderArr?.reduce((sum, item) => sum + item.unfreezeAmount, 0):orderArr.reduce((sum, item) => sum + item.unfreezeAmount, 0)
     const params={
       remark:remarkMsg?.remark,
       auditSumId: msgDetail?.settlementId,
-      orderArr:orderArr.reduce((obj, item) => {
+      orderArr:values?.status?dataDatil?.orderArr?.reduce((obj, item) => {
+        obj[item.orderId] = item.orderNo;
+        return obj;
+      }, {}):orderArr.reduce((obj, item) => {
         obj[item.orderId] = item.orderNo;
         return obj;
       }, {}),
@@ -63,7 +66,6 @@ export default (props:CumulativeProps)=>{
       remitAmount:amountTransform(values.remitAmount,'*'),
       remitTime:moment(values.remitTime).valueOf()
     }
-    console.log('params',params)
     return new Promise((resolve, reject) => {
       remitSave(params).then((res) => {
         if (res.code === 0) {
@@ -126,7 +128,6 @@ export default (props:CumulativeProps)=>{
         }
       }}
       onFinish={async (values) => {
-        console.log('values',values)
         await waitTime(values);
         message.success('提交成功');
         // 不返回不会关闭弹框
@@ -164,7 +165,7 @@ export default (props:CumulativeProps)=>{
 
     <ProForm.Group style={{ marginLeft: '70px' }}>
       <ProFormText
-        label='审核通过结算金额'
+        label='已审核通过业绩订单金额'
         name="allAmount"
         fieldProps={{
           addonAfter: '元'
@@ -195,14 +196,14 @@ export default (props:CumulativeProps)=>{
 
     <ProFormDependency name={['status']}>
         {({ status }) => {
-            if(status==1) return <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应结算金额 {amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
+            if(status==1) return <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
             if(status==0){
               return <>
                 <a style={{ display:'block', margin: '0 0 10px 180px' }} onClick={()=>{ setRemittanceVisible(true) }}>选择结算汇款的订单</a>
                 {
                   orderArr?.length?<p style={{ margin: '0 0 10px 180px', fontWeight:'bold' }}>已选择 {orderArr.length} 单</p>:null
                 }
-                <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应结算金额 {amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
+                <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
               </>
             }
         }}
@@ -220,7 +221,7 @@ export default (props:CumulativeProps)=>{
                 // rules={[{required: true, message: '请输入扣除通道费'}]}
                 fieldProps={{
                   addonAfter: '元',
-                  value:amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)
+                  value:amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)
                 }}
                 disabled
                 labelCol={5}
@@ -228,12 +229,12 @@ export default (props:CumulativeProps)=>{
               <p>交易通道费为第三方支付渠道收取；</p>
             </ProForm.Group>
                 <ProFormText
-                label='应结算汇款金额'
+                label='提成金额'
                 name="unfreezeAmount"
                 width={400}
                 fieldProps={{
                   addonAfter: '元',
-                  value: amountTransform(dataDatil?.orderArr.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
+                  value: amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
                 }}
                 disabled
               />
@@ -256,7 +257,7 @@ export default (props:CumulativeProps)=>{
                 <p>交易通道费为第三方支付渠道收取；</p>
               </ProForm.Group>
               <ProFormText
-                label='应结算汇款金额'
+                label='提成金额'
                 name="unfreezeAmount"
                 width={400}
                 fieldProps={{

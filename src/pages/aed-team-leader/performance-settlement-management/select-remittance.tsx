@@ -9,13 +9,14 @@ import ProTable from "@ant-design/pro-table"
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import moment from "moment";
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible,msgDetail,onClose,callback} = props;
   const [form] = Form.useForm();
   const [selectedRows, setSelectedRows] = useState([]);
@@ -64,7 +65,7 @@ export default (props) => {
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -77,7 +78,7 @@ export default (props) => {
       dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -90,7 +91,7 @@ export default (props) => {
       dataIndex: 'fee',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -103,7 +104,7 @@ export default (props) => {
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(data?.unfreezeAmount-data?.fee,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -154,7 +155,6 @@ export default (props) => {
       <ProTable
         rowKey="orderNo"
         columns={Columns}
-        // request={getDataByAuditSumId}
         dataSource={msgDetail?.orderArr}
         columnEmptyText={false}
         actionRef={ref}

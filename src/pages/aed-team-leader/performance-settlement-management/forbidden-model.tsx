@@ -1,7 +1,6 @@
 import { useEffect } from "react"
-import { Form, message, Divider } from 'antd';
+import { Form, Divider } from 'antd';
 import {
-  ProFormText,
   ModalForm,
   ProFormTextArea,
 } from '@ant-design/pro-form';
@@ -11,14 +10,6 @@ import { amountTransform } from "@/utils/utils";
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 export default (props) => {
@@ -35,6 +26,7 @@ export default (props) => {
   };
   return (
     <ModalForm
+      layout="horizontal"
       title={<><span style={{ fontWeight:'bold' }}>AED业绩结算审核</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -56,7 +48,7 @@ export default (props) => {
       <strong>待审核信息</strong>
         <p><span>提成金额：￥{amountTransform(unfreezeAmount,'/').toFixed(2)}</span><span>业绩订单数：{totalSum}单</span></p>
       <Divider />
-      {dataStatus?
+      {dataStatus.length?
         <>
         <strong>审核通过</strong>
         <p><span>审核通过提成金额：￥{amountTransform(unfreezeAmount,'/').toFixed(2)}</span><span>审核通过单数：{totalSum}单</span></p>

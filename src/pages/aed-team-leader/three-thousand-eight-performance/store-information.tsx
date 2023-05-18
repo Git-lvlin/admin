@@ -97,7 +97,7 @@ const formItemLayout = {
         dataIndex: 'orderAmount',
         align: 'center',
         render: (_,data)=>{
-          if(_&&_>0){
+          if(_){
             return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
           }else{
             return '-'
@@ -117,7 +117,7 @@ const formItemLayout = {
         align: 'center',
         hideInSearch: true,
         render: (_,data)=>{
-          if(_&&_>0){
+          if(_){
             return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
           }else{
             return '-'
@@ -131,7 +131,7 @@ const formItemLayout = {
         align: 'center',
         hideInSearch: true,
         render: (_,data)=>{
-          if(_&&_>0){
+          if(_){
             return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
           }else{
             return '-'
@@ -296,7 +296,7 @@ const formItemLayout = {
           setTime(val)
         }}
         onReset={()=>{
-          setTime({})
+          setTime(undefined)
         }}
         options={false}
         search={{

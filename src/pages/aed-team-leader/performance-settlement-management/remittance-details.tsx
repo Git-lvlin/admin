@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import { Form, Image } from 'antd';
-import ProForm,{
+import {
   ProFormText,
   ModalForm,
-  ProFormTextArea,
 } from '@ant-design/pro-form';
 import { getRemitDetailById } from "@/services/aed-team-leader/performance-settlement-management"
 import styles from './styles.less'
@@ -77,7 +76,7 @@ export default (props) => {
         disabled
       />
       <ProFormText
-        label='结算汇款金额'
+        label='结算分账金额'
         name="unfreezeAmount"
         disabled
       />
@@ -88,7 +87,7 @@ export default (props) => {
         extra='交易通道费为第三方支付渠道收取；'
       />
       <ProFormText
-        label='实际已汇款总金额'
+        label='实际汇款金额'
         name="remitAmount"
         disabled
       />
@@ -106,7 +105,7 @@ export default (props) => {
         disabled
        />
       <ProFormText
-        label='确认汇款时间'
+        label='确认汇款操作时间'
         name="remitTime"
         disabled
     />

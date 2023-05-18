@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import { amountTransform } from "@/utils/utils";
 
 //结算申请子订单分页列表
 export const applySubPage = async (params = {}, options = {}) => {
@@ -27,7 +28,8 @@ export const applySubPage = async (params = {}, options = {}) => {
 
 //结算申请记录分页数据
 export const applyPage = async (params = {}, options = {}) => {
-  const { current, pageSize, dateRange, remittanceDate, ...rest } = params;
+  const { current, pageSize, dateRange,confirmed, remittanceDate, ...rest } = params;
+  console.log('confirmed',confirmed)
   const res = await request('/auth/finance/settlementAudit/applyPage', {
     method: 'POST',
     data: {
@@ -37,6 +39,8 @@ export const applyPage = async (params = {}, options = {}) => {
       applyEndTime: dateRange&&dateRange[1],
       lastRemittanceStart: remittanceDate&&remittanceDate[0],
       lastRemittanceEnd: remittanceDate&&remittanceDate[1],
+      confirmedAmountMin: confirmed&&amountTransform(confirmed.min,'*'),
+      confirmedAmountMax: confirmed&&amountTransform(confirmed.max,'*'),
       ...rest
     },
     ...options
@@ -54,6 +58,26 @@ export const applyPage = async (params = {}, options = {}) => {
 export const settlementAuditAudit = async (params = {}, options = {}) => {
   const { current, pageSize, ...rest } = params;
   const res = await request('/auth/finance/settlementAudit/audit', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: true,
+    code: res.code
+  }
+}
+
+//结算申请单详情
+export const applyDetail = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/finance/settlementAudit/applyDetail', {
     method: 'POST',
     data: {
       page: current,

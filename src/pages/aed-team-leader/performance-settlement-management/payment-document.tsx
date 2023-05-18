@@ -3,13 +3,13 @@ import { Form, Image } from 'antd';
 import ProForm,{
   ProFormText,
   ModalForm,
-  ProFormTextArea,
 } from '@ant-design/pro-form';
 import { getRemitListByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import ProCard from "@ant-design/pro-card"
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
 import moment from "moment";
+import type { CumulativeProps } from "./data"
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -17,10 +17,9 @@ const formItemLayout = {
   };
 
   const StoreInformation = (props) => {
-    const { msgDetail, activeKey } = props;
+    const { msgDetail } = props;
     const [form] = Form.useForm()
     useEffect(()=>{
-      console.log('msgDetail',msgDetail)
       form.setFieldsValue({
         ...msgDetail,
         fee: amountTransform(msgDetail?.fee,'/').toFixed(2),
@@ -41,7 +40,7 @@ const formItemLayout = {
         {...formItemLayout}
       >
         <ProFormText
-          label='结算单数及金额'
+          label='结算单数及分账金额'
           name="SingularAmount"
           disabled
         />
@@ -82,11 +81,11 @@ const formItemLayout = {
     );
   };
 
-export default (props) => {
+export default (props:CumulativeProps) => {
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
-  const [activeKey, setActiveKey] = useState<string>('1')
   const [dataDatil, setDataDatil] = useState([])
+  const [activeKey, setActiveKey] = useState<string>('1')
   useEffect(()=>{
     getRemitListByAuditSumId({auditSumId:msgDetail?.settlementId}).then(res=>{
       if(res.code==0){
@@ -128,7 +127,7 @@ export default (props) => {
         disabled
       />
       <ProFormText
-        label='已结算总金额'
+        label='已结算总分账金额'
         name="singularAmount"
         disabled
       />
@@ -147,9 +146,7 @@ export default (props) => {
         {
           dataDatil?.map((ele,index)=> 
             <ProCard.TabPane key={index+1} tab={`第${index+1}笔汇款`}>
-              {
-                activeKey==(index+1)&&<StoreInformation msgDetail={ele} activeKey={activeKey}/>
-              }
+             <StoreInformation msgDetail={ele} activeKey={activeKey}/>
             </ProCard.TabPane>
         )
         }

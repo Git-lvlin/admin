@@ -38,7 +38,7 @@ export default function TransactionData () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: '序号',
-      dataIndex:'id',
+      dataIndex:'agencyId',
       hideInSearch: true,
       valueType: 'indexBorder'
     },
@@ -91,28 +91,14 @@ export default function TransactionData () {
     },
     {
       title: '已解冻提成(元)【含通道费】',
-      dataIndex: 'totalCommission',
+      dataIndex: 'freezeAmountDesc',
       align: 'center',
-      render: (_,data)=>{
-        if(_&&_>0){
-          return amountTransform(_,'/').toFixed(2)
-        }else{
-          return '0'
-        }
-      },
       hideInSearch: true
     },
     {
       title: '未解冻提成(元)【含通道费】',
-      dataIndex: 'totalCommission',
+      dataIndex: 'unFreezeAmountDesc',
       align: 'center',
-      render: (_,data)=>{
-        if(_&&_>0){
-          return amountTransform(_,'/').toFixed(2)
-        }else{
-          return '0'
-        }
-      },
       hideInSearch: true
     }
   ]
@@ -120,7 +106,6 @@ export default function TransactionData () {
   const getFieldValue = (searchConfig: any) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
@@ -161,10 +146,10 @@ export default function TransactionData () {
             <Export
             key='export'
             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-            type={'AEDOrderPm'}
+            type={'AEDOrder'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderPm'}/>
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrder'}/>
           ],
         }}
       />

@@ -45,13 +45,13 @@ export default function TransactionData (props:RegimentProps) {
     },
     {
       title: '团长用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
       hideInTable: true,
     },
     {
       title: '用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
       hideInSearch: true
     },

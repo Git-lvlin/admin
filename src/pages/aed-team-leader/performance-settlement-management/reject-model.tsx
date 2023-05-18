@@ -6,6 +6,7 @@ import {
 } from '@ant-design/pro-form';
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
+import { useEffect } from 'react';
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -13,7 +14,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,selectedRows,onClose,callback,totalSum,unfreezeAmount,pendingFee} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount,pendingFee,confirmedAmount} = props;
   const [form] = Form.useForm();
   const waitTime = (values) => {
     callback(values)
@@ -44,7 +45,7 @@ export default (props) => {
       <ProFormText
         label='申请结算业绩订单金额'
         fieldProps={{
-          value: `￥${amountTransform(selectedRows?.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2) }`
+          value: `￥${amountTransform(confirmedAmount,'/').toFixed(2)}`
         }}
         readonly
       />

@@ -77,6 +77,11 @@ export default () => {
       order:6
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+    },
+    {
       title: '社区店主',
       dataIndex: 'isShopkeeper',
       valueType: 'select',

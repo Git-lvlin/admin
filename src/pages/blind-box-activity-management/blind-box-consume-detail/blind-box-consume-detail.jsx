@@ -48,6 +48,11 @@ export default () => {
         }
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        align: 'center',
+      },
+      {
         title: '用户名',
         dataIndex: 'memberNicheng',
         valueType: 'text',

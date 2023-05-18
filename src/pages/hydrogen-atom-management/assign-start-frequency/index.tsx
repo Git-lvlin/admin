@@ -32,6 +32,11 @@ export default ()=> {
       }
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+    },
+    {
       title: '每日可启用次数',
       dataIndex: 'times',
       align: 'center',

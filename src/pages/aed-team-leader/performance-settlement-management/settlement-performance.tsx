@@ -4,11 +4,12 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { applySubPage } from "@/services/aed-team-leader/performance-settlement-management"
+import { applySubPage, applyDetail } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem } from "./data"
+import type { CumulativeProps, Refer, Statistics } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
+import { Descriptions } from 'antd';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -19,6 +20,24 @@ export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
+  const [time,setTime]=useState<Refer>()
+  const [detailList,setDetailList]=useState<Statistics>()
+  useEffect(() => {
+    const params={
+      settlementId: msgDetail?.settlementId,
+      payTimeStart: time?.dateRange&&time.dateRange[0],
+      payTimeEnd: time?.dateRange&&time.dateRange[1],
+      remittanceTimeStart: time?.remittanceTime&&time.remittanceTime[0],
+      remittanceTimeEnd: time?.remittanceTime&&time.remittanceTime[1],
+      ...time
+    }
+    applyDetail(params).then(res=>{
+      if(res.code==0){
+        setDetailList(res.data)
+      }
+    })
+
+  }, [time])
 
   const Columns: ProColumns[] = [
     {
@@ -43,7 +62,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -56,7 +75,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'amount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -69,7 +88,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'fee',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -82,7 +101,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -165,7 +184,7 @@ export default (props:CumulativeProps)=>{
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
-      width={1400}
+      width={1500}
       drawerProps={{
         forceRender: true,
         destroyOnClose: true,
@@ -189,6 +208,26 @@ export default (props:CumulativeProps)=>{
         actionRef={ref}
         params={{
           settlementId:msgDetail?.settlementId,
+        }}
+        tableExtraRender={() => 
+          <Descriptions labelStyle={{fontWeight:'bold',width: '13%'}} style={{background:'#fff'}} column={{ xl: 3, xxl: 5 }} layout="horizontal" bordered>
+            <Descriptions.Item  label="总业绩订单数(单)">{detailList?.subOrderCount}</Descriptions.Item>
+            <Descriptions.Item  label="待审核订单数(单)">{detailList?.statsCount10}  </Descriptions.Item>
+            <Descriptions.Item  label="待汇款订单数(单)">{detailList?.statsCount11}  </Descriptions.Item>
+            <Descriptions.Item  label="已汇款订单数(单)">{detailList?.statsCount21}  </Descriptions.Item>
+            <Descriptions.Item  label="拒绝订单数(单)">{detailList?.statsCount12}  </Descriptions.Item>
+            <Descriptions.Item  label="总业绩订单金额(元)">{amountTransform(detailList?.statsConfirmedAmount,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="总业绩分账金额(元)">{amountTransform(detailList?.statsAmount,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="总扣通道费金额(元)">{amountTransform(detailList?.statsFee,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="总提成金额(元)">{amountTransform(detailList?.statsCommissionAmount,'/').toFixed(2)}  </Descriptions.Item>
+            <Descriptions.Item  label="总实际已汇款金额(元)">{amountTransform(detailList?.statsRemitAmount,'/').toFixed(2)}  </Descriptions.Item>
+          </Descriptions>
+        }
+        onSubmit={(val)=>{
+          setTime(val)
+        }}
+        onReset={()=>{
+          setTime(undefined)
         }}
         pagination={{
           pageSize: 10,

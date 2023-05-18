@@ -329,6 +329,11 @@ export default function EquipmentManagement() {
       }
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+    },
+    {
       title: '使用状态',
       dataIndex: 'status',
       valueType: 'select',

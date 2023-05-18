@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { Form, message, Divider, Image } from 'antd';
+import { Form, Divider, Image } from 'antd';
 import {
   ProFormText,
   ModalForm,
@@ -11,21 +11,12 @@ import { amountTransform } from "@/utils/utils";
 const formItemLayout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 10,
-      },
-      wrapperCol: {
-        span: 14,
-      },
-    }
   };
 
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,callback,orderArr} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    console.log('msgDetail',msgDetail)
     form.setFieldsValue({
       ...msgDetail
     })
@@ -35,6 +26,7 @@ export default (props) => {
   };
   return (
     <ModalForm
+      layout="horizontal"
       title={<><span style={{ fontWeight:'bold' }}>确认AED业绩结算汇款信息</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -62,7 +54,7 @@ export default (props) => {
       <strong>确认业绩信息</strong>
       {
         msgDetail?.status?<>
-          <p><span>结算业绩金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2) }</span><span>结算业绩单数：{msgDetail?.allOrder-msgDetail?.hasRemitOrder}单</span></p>
+          <p><span>结算业绩金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2) }</span><span>结算业绩单数：{msgDetail.status?parseInt(msgDetail?.allOrder)-msgDetail?.hasRemitOrder:msgDetail?.orderArr?.length}单</span></p>
           <p><span>结算提成金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item.unfreezeAmount, 0),'/').toFixed(2) }</span><span>结算扣除通道费金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}</span></p>
           <p><span>应结算到账金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)}</span></p>
         </>:

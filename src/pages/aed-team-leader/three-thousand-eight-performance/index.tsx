@@ -58,7 +58,7 @@ export default function TransactionData () {
       dataIndex: 'amountSum',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0'
@@ -71,7 +71,7 @@ export default function TransactionData () {
       dataIndex: 'commissionSum',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else{
           return '0'

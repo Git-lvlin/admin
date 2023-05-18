@@ -93,18 +93,18 @@ const StoreInformation = (props:CumulativeProps) => {
       hideInSearch: true
     },
     {
+      title: '下单用户ID',
+      dataIndex: 'memberId',
+      valueType: 'text',
+      hideInTable:  activeKey == '1'||type==2,
+      hideInSearch: activeKey == '1'||type==2
+    },
+    {
       title: '客户用户ID',
       dataIndex: 'buyerId',
       valueType: 'text',
       hideInTable: true,
       hideInSearch: activeKey == '1'||type==2
-    },
-    {
-      title: '用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInSearch: true,
-      hideInTable: activeKey == '1'||type==2
     },
     {
       title: '客户手机',
@@ -121,7 +121,7 @@ const StoreInformation = (props:CumulativeProps) => {
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -140,7 +140,7 @@ const StoreInformation = (props:CumulativeProps) => {
     },
     {
       title: '团长用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'teamMemberId',
       valueType: 'text',
       hideInTable: activeKey == '1'||type==2,
       hideInSearch: activeKey == '1'||type==2
@@ -151,7 +151,7 @@ const StoreInformation = (props:CumulativeProps) => {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -165,7 +165,7 @@ const StoreInformation = (props:CumulativeProps) => {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -285,7 +285,7 @@ const StoreInformation = (props:CumulativeProps) => {
     },
     {
       title: '已下保证金单状态',
-      dataIndex: 'offTrainStatus',
+      dataIndex: 'depositStatus',
       align: 'center',
       valueType: 'select',
       valueEnum:{
@@ -300,14 +300,14 @@ const StoreInformation = (props:CumulativeProps) => {
     },
     {
       title: '保证金订单号',
-      dataIndex: 'offTrainStatus',
+      dataIndex: 'depositOrderSn',
       align: 'center',
       hideInSearch: true,
       hideInTable: activeKey == '1'
     },
     {
       title: '结算状态',
-      dataIndex: 'offTrainStatus',
+      dataIndex: 'auditStatus',
       align: 'center',
       valueType: 'select',
       valueEnum:{
@@ -315,9 +315,10 @@ const StoreInformation = (props:CumulativeProps) => {
         2: '未到期',
         3: '待申请',
         4: '待审核',
-        5: '待汇款',
+        5: '审核通过待汇款',
         6: '已结算',
-        7: '已失效'
+        7: '审核不通过',
+        8: '已失效'
       },
       fieldProps: {
         placeholder: '请选择结算状态'
@@ -327,18 +328,8 @@ const StoreInformation = (props:CumulativeProps) => {
     },
     {
       title: '业绩结算状态',
-      dataIndex: 'offTrainStatus',
+      dataIndex: 'auditStatusDesc',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        1: '未解冻',
-        2: '未到期',
-        3: '待申请',
-        4: '待审核',
-        5: '待汇款',
-        6: '已结算',
-        7: '已失效'
-      },
       hideInSearch: true,
       hideInTable: activeKey == '1'
     },
@@ -346,16 +337,9 @@ const StoreInformation = (props:CumulativeProps) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone,
-      orderType:time?.orderType,
-      contractStatus:time?.contractStatus,
-      learnStatus:time?.learnStatus,
-      examStatus:time?.examStatus,
-      teamLeaderPhone:time?.teamLeaderPhone,
-      offTrainStatus:time?.offTrainStatus
+      ...time
     }
     const api=activeKey=='1'?AEDOrderStats:AEDTrainingsServiceStats
     api(params).then(res=>{
@@ -388,6 +372,7 @@ const StoreInformation = (props:CumulativeProps) => {
           pageSize: 10,
           showQuickJumper: true,
         }}
+        scroll={{ x: 'max-content' }}
         onSubmit={(val)=>{
           setOrderSum(0)
           setTime(val)

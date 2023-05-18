@@ -56,7 +56,7 @@ export default function TransactionData () {
     },
     {
       title: '用户ID',
-      dataIndex: 'buyerId',
+      dataIndex: 'memberId',
       valueType: 'text',
     },
     {

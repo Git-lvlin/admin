@@ -1,8 +1,8 @@
-import { useState, useRef,useEffect } from "react"
+import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from "@ant-design/pro-table"
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { DescriptionsProps, TableProps, Refer } from "./data"
+import type { TableProps } from "./data"
 import RangeNumberInput from '@/components/range-number-input'
 
 import { applyPage } from "@/services/aed-team-leader/performance-settlement-management"
@@ -60,7 +60,7 @@ export default function TransactionData () {
     },
     {
       title: '业绩金额',
-      dataIndex: 'name',
+      dataIndex: 'confirmed',
       align: 'center',
       hideInTable: true,
       renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>
@@ -71,7 +71,7 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return amountTransform(_,'/').toFixed(2)
         }else{
           return '0'
@@ -83,7 +83,7 @@ export default function TransactionData () {
       dataIndex: 'commissionAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return amountTransform(_,'/').toFixed(2)
         }else{
           return '0'
@@ -174,6 +174,7 @@ export default function TransactionData () {
       title: '操作',
       key: 'option',
       valueType: 'option',
+      width:250,
       render:(text, record, _, action)=>{
         const operateArr=[
           <a key='detail' onClick={()=>{setVisible(true);setMsgDetail(record)}}>查看</a>,
@@ -187,6 +188,7 @@ export default function TransactionData () {
         }
         return operateArr
       },
+      fixed:'right'
     }, 
   ]
 
@@ -196,13 +198,13 @@ export default function TransactionData () {
         rowKey="settlementId"
         columns={tableColumns}
         request={applyPage}
-        // dataSource={datadata}
         columnEmptyText={false}
         actionRef={form}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
         }}
+        scroll={{ x: 'max-content' }}
         options={false}
         search={{
           defaultCollapsed: true,
@@ -259,6 +261,7 @@ export default function TransactionData () {
           setVisible={setPaymentVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          callback={()=>{ }}
         />
       }
     </PageContainer>

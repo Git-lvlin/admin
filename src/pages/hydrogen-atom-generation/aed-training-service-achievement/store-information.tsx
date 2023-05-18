@@ -60,6 +60,19 @@ export default (props) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',

@@ -33,6 +33,19 @@ export default function TransactionData () {
       }
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '大团队长姓名',
       dataIndex: 'manager',
       align: 'center',

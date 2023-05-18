@@ -43,6 +43,19 @@ const HealthPackageCommission: FC = () => {
       hideInTable: true
     },
     {
+      title: '团长用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '佣金类型',
       dataIndex: 'commissionTypeDesc',
       align: 'center',

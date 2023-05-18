@@ -51,6 +51,19 @@ export default function TransactionData () {
       },
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '交易时间',
       dataIndex: 'createTime',
       valueType: 'dateRange',
@@ -153,7 +166,7 @@ export default function TransactionData () {
 
   return (
     <PageContainer title={false}>
-      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
+      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={{ xl: 3, xxl: 7 }} layout="vertical" bordered>
         <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>
