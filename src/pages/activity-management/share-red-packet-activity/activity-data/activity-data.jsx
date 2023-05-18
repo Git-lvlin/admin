@@ -65,6 +65,12 @@ export default () => {
         hideInSearch:true
       },
       {
+        title: '被邀请用户ID',
+        dataIndex: 'inviteeId',
+        valueType: 'text',
+        hideInSearch: true
+      },
+      {
         title: '被邀请时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
