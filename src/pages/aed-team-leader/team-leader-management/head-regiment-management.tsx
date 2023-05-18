@@ -50,7 +50,7 @@ export default function TransactionData (props:RegimentProps) {
       hideInTable: true,
     },
     {
-      title: '用户ID',
+      title: '团长用户ID',
       dataIndex: 'memberId',
       valueType: 'text',
       hideInSearch: true

@@ -37,7 +37,7 @@ export default () => {
       dataIndex: 'memberId',
       align: 'center',
       hideInTable: true,
-      order:-1
+      order:-1,
     },
     {
       title: '用户ID',
