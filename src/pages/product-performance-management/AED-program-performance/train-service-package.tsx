@@ -90,7 +90,7 @@ const TrainServicePackage: FC = () => {
       align: 'center'
     },
     {
-      title: '用户Id',
+      title: '下单人用户Id',
       dataIndex: 'buyerId',
       align: 'center'
     },

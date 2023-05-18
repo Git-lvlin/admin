@@ -86,7 +86,7 @@ const ProgramPerformance: FC = () => {
       align: 'center'
     },
     {
-      title: '用户ID',
+      title: '下单人用户ID',
       dataIndex: 'buyerId',
       align: 'center'
     },
