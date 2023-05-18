@@ -26,12 +26,6 @@ export default function TransactionData () {
       order: -1,
     },
     {
-      title: 'ID',
-      dataIndex: 'id',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
       title: '手机号',
       dataIndex: 'memberPhone',
       align: 'center',
