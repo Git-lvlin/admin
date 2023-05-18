@@ -1,4 +1,4 @@
-import { useRef,useEffect, useState } from "react"
+import { useRef,useEffect, useState, SetStateAction } from "react"
 import { Form, Divider, Button, Space, message, FormInstance } from 'antd';
 import ProForm, {
   DrawerForm,
@@ -341,7 +341,7 @@ export default (props:CumulativeProps)=>{
       setVisible={setRemittanceVisible}
       msgDetail={dataDatil}
       onClose={()=>{}}
-      callback={(rows)=>{ setOrderArr(rows) }}
+      callback={(rows: SetStateAction<never[]>)=>{ setOrderArr(rows) }}
     />
     }
     {forbiddenVisible&&
