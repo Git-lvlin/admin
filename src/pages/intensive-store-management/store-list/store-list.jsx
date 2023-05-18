@@ -169,8 +169,16 @@ const StoreList = (props) => {
     },
     {
       title: '用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺类型',
@@ -1164,8 +1172,16 @@ const ShopHealthPackages = (props) => {
     },
     {
       title: '用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺名称',

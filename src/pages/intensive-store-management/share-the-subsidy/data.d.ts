@@ -31,6 +31,7 @@ export type SubsidyOrderItem = {
 export type ModalFormProps = {
 	visible: boolean
 	setVisible: React.Dispatch<React.SetStateAction<boolean>>
-	onclose?: function
 	storeNo?:string
+	orderDetail:SubsidyOrderItem
+	onClose: function
 }
