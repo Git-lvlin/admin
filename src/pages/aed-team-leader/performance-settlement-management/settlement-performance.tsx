@@ -133,7 +133,7 @@ export default (props:CumulativeProps)=>{
     {
       title: '订单时间',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       align: 'center',
       hideInTable: true,
       fieldProps:{

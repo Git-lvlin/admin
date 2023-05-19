@@ -140,7 +140,7 @@ export default function TransactionData () {
     {
       title: '申请时段',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       fieldProps: {
         placeholder: ['开始时间', '结束时间']
       },
@@ -159,7 +159,7 @@ export default function TransactionData () {
     {
       title: '最近汇款时段',
       dataIndex: 'remittanceDate',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       fieldProps: {
         placeholder: ['开始时间', '结束时间']
       },
