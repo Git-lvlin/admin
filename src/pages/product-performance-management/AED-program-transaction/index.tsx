@@ -98,8 +98,6 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
   ]
 
   const submit = (type: number) => {
-    console.log(search);
-    
     const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, ...rest} = form.current?.getFieldsValue()
     const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
     return new Promise<void>((_resolve, _reject) => {
