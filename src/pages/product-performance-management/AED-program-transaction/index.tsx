@@ -19,7 +19,7 @@ import { amountTransform ,numberTransform } from '@/utils/utils'
 import Export, { ExportHistory } from '@/components/export'
 import ExportLog from './export-log'
 
-const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search}) => {
+const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => {
   
   const [detailData, setDetailData] = useState<detailDataProps>()
   const [visible, setVisible] = useState<boolean>(false)
@@ -63,7 +63,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search}) => {
 
   const orderNum2 = [
     {name: 'onlineDopNum', type: true},
-    {name: 'offlineDopNum', type: false},
+    {name: 'offlineDopNum', type: true},
     {name: 'onlineDopMustNoNum', type: true},
     {name: 'offlineDopMustNoNum', type: false},
     {name: 'onlineDopNoNum', type: true},
@@ -98,6 +98,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search}) => {
   ]
 
   const submit = (type: number) => {
+    console.log(search);
+    
     const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, ...rest} = form.current?.getFieldsValue()
     const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
     return new Promise<void>((_resolve, _reject) => {
@@ -355,8 +357,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search}) => {
 }
 
 const AEDProgramTransaction: React.FC = () => {
-  const [searchConfig, setSearchConfig] = useState<FormInstance>()
   const form = useRef<FormInstance>()
+  const [searchConfig, setSearchConfig] = useState<FormInstance| any>(form.current?.getFieldsValue())
 
   const getFieldsValue = () => {
     const { depositPayTime, aedPayTime, dcPayTime, ...rest } = form.current?.getFieldsValue()
