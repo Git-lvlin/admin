@@ -100,13 +100,6 @@ const StoreInformation = (props:CumulativeProps) => {
       hideInSearch: activeKey == '1'||type==2
     },
     {
-      title: '客户用户ID',
-      dataIndex: 'buyerId',
-      valueType: 'text',
-      hideInTable: true,
-      hideInSearch: activeKey == '1'||type==2
-    },
-    {
       title: '客户手机',
       dataIndex: 'teamPhone',
       align: 'center',
