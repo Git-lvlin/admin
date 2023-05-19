@@ -152,13 +152,13 @@ const NoSubAEDProgramPerformance = () => {
     },
     {
       title: '签合同状态',
-      dataIndex: 'signStatusDesc',
+      dataIndex: 'contractStatusDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '签合同状态',
-      dataIndex: 'signStatus',
+      dataIndex: 'contractStatus',
       valueType: 'select',
       valueEnum: {
         1: '已签订',
