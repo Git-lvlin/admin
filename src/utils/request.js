@@ -59,8 +59,9 @@ const getPrefix = () => {
 }
 
 const checkId = (data) => {
-  if (data?.numberId) {
-    return /\d{19}/g.test(data?.numberId)
+  if (data?.memberId) {
+    console.log('data', data?.memberId);
+    return /\d{19}/g.test(data?.memberId)
   }
   return true
 }
@@ -131,7 +132,7 @@ const request = (url, options = {}) => {
   }
 
   if (!checkId(options.data)) {
-    message.error('用戶ID只能是19位纯数字')
+    message.error('用户ID只能是19位纯数字')
     return Promise.reject()
   }
   if (options.data && !options.noFilterParams) {
@@ -153,7 +154,6 @@ const request = (url, options = {}) => {
     // eslint-disable-next-line no-param-reassign
     options.params = paramsUndefinedToEmpty(options.params)
   }
-  console.log('options', options);
   return instance(url, {
     ...options,
     ...ops,
