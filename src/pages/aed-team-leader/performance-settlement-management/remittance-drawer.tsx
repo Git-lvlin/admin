@@ -5,7 +5,8 @@ import ProForm, {
   ProFormText,
   ProFormTextArea,
   ProFormRadio,
-  ProFormDependency
+  ProFormDependency,
+  ProFormDateTimePicker
 } from '@ant-design/pro-form';
 import { remitSave,getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
@@ -149,6 +150,7 @@ export default (props:CumulativeProps)=>{
       width={400}
       name="bankNo"
       rules={[
+        {required: true, message: '请输入收款银行卡号'},
         { pattern: /^([1-9]\d{9,29})$/, message: '银行卡号格式不正确' }
       ]}
     />
@@ -284,23 +286,10 @@ export default (props:CumulativeProps)=>{
       }}
     />
 
-    <ProFormText
+    <ProFormDateTimePicker 
       label='汇款时间'
-      name="remitTime"
-      width={400}
-      rules={[
-        { required: true, message: '请输入汇款时间' },
-        { validator: (_, value) => {
-            if (!value) {
-              return Promise.resolve();
-            }
-            if (moment(value, 'YYYY-MM-DD HH:mm:ss', true).isValid()) {
-              return Promise.resolve();
-            }
-            return Promise.reject('时间格式不正确');
-          }
-        }
-      ]}
+      name='remitTime'
+      rules={[{ required: true, message: '请选择汇款时间' }]}
     />
 
     <Form.Item

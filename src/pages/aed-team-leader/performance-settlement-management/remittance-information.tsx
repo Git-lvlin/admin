@@ -7,6 +7,7 @@ import {
 } from '@ant-design/pro-form';
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -67,7 +68,7 @@ export default (props) => {
         
       <Divider />
       <strong>确认汇款信息</strong>
-        <p><span>实际汇款金额：￥{amountTransform(msgDetail?.remitAmount,'/').toFixed(2) }</span><span>汇款时间：{msgDetail?.remitTime}</span></p>
+        <p><span>实际汇款金额：￥{msgDetail?.remitAmount}</span><span>汇款时间：{moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')}</span></p>
         <p>
           <span>汇款凭证：{msgDetail?.urlArr?.map(item=><Image src={item} style={{ marginBottom: '20px' }}/>)}</span>
           <span>收款账号：{msgDetail?.bankNo}</span>
