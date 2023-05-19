@@ -51,7 +51,7 @@ const StoreHealthCardManagement = () => {
       align: 'center'
     },
     {
-      title: '下单用户ID',
+      title: '用户ID',
       dataIndex: 'memberId',
       align: 'center',
       hideInTable: true,

@@ -54,14 +54,7 @@ const PromotionActivityManagement: FC = () => {
       title: '店主用户ID',
       dataIndex: 'memberId',
       align: 'center',
-      hideInTable: true,
       order:-1
-    },
-    {
-      title: '用户ID',
-      dataIndex: 'memberId',
-      align: 'center',
-      hideInSearch: true
     },
     {
       title: '店主姓名',
