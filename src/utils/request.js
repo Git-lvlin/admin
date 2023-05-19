@@ -60,8 +60,7 @@ const getPrefix = () => {
 
 const checkId = (data) => {
   if (data?.memberId) {
-    console.log('data', data?.memberId);
-    return /\d{19}/g.test(data?.memberId)
+    return /^\d{19}$/g.test(data?.memberId)
   }
   return true
 }
