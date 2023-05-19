@@ -108,8 +108,12 @@ export default (props:CumulativeProps)=>{
                 <Button
                   type="primary"
                   onClick={() => {
-                    setForbiddenVisible(true)
-                    setSubmitMsg(form?.getFieldValue())
+                    if(form?.getFieldValue()?.bankNo){
+                      setForbiddenVisible(true)
+                      setSubmitMsg(form?.getFieldValue())
+                    }else{
+                      message.error('收款银行卡号必填！')
+                    }
                   }}
                 >
                   确认完成汇款

@@ -51,14 +51,14 @@ export default function TransactionData () {
       },
     },
     {
-      title: '用户ID',
+      title: '团长用户ID',
       dataIndex: 'memberId',
       align: 'center',
       hideInTable: true,
       order:-1
     },
     {
-      title: '用户ID',
+      title: '团长用户ID',
       dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
