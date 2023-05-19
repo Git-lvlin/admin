@@ -66,7 +66,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -79,7 +79,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'amount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -88,11 +88,11 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
-      title: '实际通道费',
+      title: '通道费金额',
       dataIndex: 'fee',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -105,7 +105,7 @@ export default (props:CumulativeProps)=>{
       dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -137,11 +137,14 @@ export default (props:CumulativeProps)=>{
     {
       title: '订单时间',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       align: 'center',
       hideInTable: true,
       fieldProps:{
-        placeholder:['开始时间', '结束时间']
+        placeholder:['开始时间', '结束时间'],
+        style:{
+          width: 330
+        }
       }
     },
     {
@@ -167,7 +170,8 @@ export default (props:CumulativeProps)=>{
         '11': '待结算',
         '12': '审核拒绝',
         '21': '已结算'
-      }
+      },
+      initialValue: '10'
     },
     {
       title: '结算状态',
@@ -250,16 +254,16 @@ export default (props:CumulativeProps)=>{
                     setForbiddenVisible(true)
                   }}
                 >
-                  {selectedRows.length?'部分审核通过':dataStatus.length?'全部审核通过':'审核通过'}
+                  {selectedRows.length?selectedRows.length==totalSum?'全部审核通过':'部分审核通过':dataStatus.length?'全部审核通过':'审核通过'}
                 </Button>
                 <Button
-                  style={{ backgroundColor:dataStatus.length?'red':'#A7A7A8', color:'#fff' }}
-                  disabled={!dataStatus.length}
+                  style={{ backgroundColor:(dataStatus.length&&msgDetail?.subOrderCount==totalSum)||(selectedRows.length==totalSum&&msgDetail?.subOrderCount==totalSum)?'red':'#A7A7A8', color:'#fff' }}
+                  disabled={(!dataStatus.length&&selectedRows.length!=totalSum)||msgDetail?.subOrderCount!=totalSum}
                   onClick={() => {
                     setRejectVisible(true)
                   }}
                 >
-                  {dataStatus.length?'全部审核拒绝':'审核拒绝'}
+                  {(dataStatus.length&&msgDetail?.subOrderCount==totalSum)||(selectedRows.length==totalSum&&msgDetail?.subOrderCount==totalSum)?'全部审核拒绝':'审核拒绝'}
                 </Button>
               </Space>
             </div>
@@ -300,8 +304,7 @@ export default (props:CumulativeProps)=>{
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          settlementId:msgDetail?.settlementId,
-          status: 10
+          settlementId:msgDetail?.settlementId
         }}
         scroll={{ x: 'max-content' }}
         pagination={{

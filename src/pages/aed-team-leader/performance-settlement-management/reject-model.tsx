@@ -57,7 +57,7 @@ export default (props) => {
         readonly
       />
       <ProFormText
-        label='申请结算业绩订单金额'
+        label='申请结算提成金额'
         fieldProps={{
           value: `￥${amountTransform(unfreezeAmount,'/').toFixed(2)}（扣通道费${amountTransform(pendingFee,'/')}）`
         }}

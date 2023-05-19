@@ -24,7 +24,7 @@ const formItemLayout = {
         ...msgDetail,
         fee: amountTransform(msgDetail?.fee,'/').toFixed(2),
         remitAmount: amountTransform(msgDetail?.remitAmount,'/').toFixed(2),
-        SingularAmount:`${msgDetail?.orderCount}单 共${amountTransform(msgDetail?.unfreezeAmount,'/').toFixed(2)} 元 `,
+        SingularAmount:`${msgDetail?.orderCount}单 共${amountTransform(msgDetail?.amount,'/').toFixed(2)} 元 `,
         remitTime: moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')
       })
     },[])
@@ -93,7 +93,7 @@ export default (props:CumulativeProps) => {
         form.setFieldsValue({
           ...res.data,
           applyName: msgDetail?.applyName,
-          singularAmount: `${amountTransform(res.data.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元 （${res.data.reduce((sum, item) => sum + item?.orderCount, 0)}单）`,
+          singularAmount: `${amountTransform(res.data.reduce((sum, item) => sum + item?.amount, 0),'/').toFixed(2)} 元 （${res.data.reduce((sum, item) => sum + item?.orderCount, 0)}单）`,
           totalAmount:`${amountTransform(res.data.reduce((sum, item) => sum + item?.remitAmount, 0),'/').toFixed(2)} 元 （已扣除通道费${amountTransform(res.data.reduce((sum, item) => sum + item?.fee, 0),'/').toFixed(2)}元）`
         })
       }

@@ -74,8 +74,8 @@ export default (props:CumulativeProps) => {
       hideInSearch: true,
     },
     {
-      title: '提成金额',
-      dataIndex: 'unfreezeAmount',
+      title: '分账金额',
+      dataIndex: 'amount',
       align: 'center',
       render: (_,data)=>{
         if(_){
@@ -100,12 +100,12 @@ export default (props:CumulativeProps) => {
       hideInSearch: true,
     },
     {
-      title: '汇款金额',
-      dataIndex: 'payAmount',
+      title: '提成金额',
+      dataIndex: 'unfreezeAmount',
       align: 'center',
       render: (_,data)=>{
         if(_){
-          return <span>￥{amountTransform(data?.unfreezeAmount-data?.fee,'/').toFixed(2)}</span>
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
         }
@@ -173,8 +173,8 @@ export default (props:CumulativeProps) => {
           selectedRowKeys: selectedRows.map(ele=>ele.orderNo),
         }}
       />
-      <p>总计结算业绩：{amountTransform(selectedRows.reduce((sum, item) => sum + item.payAmount, 0),'/').toFixed(2)}元，提成：{amountTransform(selectedRows.reduce((sum, item) => sum + item.unfreezeAmount, 0),'/').toFixed(2)}元（共{selectedRows.length}单）</p>
-      <p>预计结算汇款金额：{amountTransform(selectedRows.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)}元（扣除通道费：{amountTransform(selectedRows.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}元）</p>
+      <p>总计订单业绩：{amountTransform(selectedRows.reduce((sum, item) => sum + item.payAmount, 0),'/').toFixed(2)}元，分账金额：{amountTransform(selectedRows.reduce((sum, item) => sum + item.amount, 0),'/').toFixed(2)}元（共{selectedRows.length}单）</p>
+      <p>预计提成金额：{amountTransform(selectedRows.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}元（扣除通道费：{amountTransform(selectedRows.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}元）</p>
       <ProFormText
         name="id"
         hidden

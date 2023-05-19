@@ -34,7 +34,7 @@ export default (props:CumulativeProps)=>{
   const user = JSON.parse(window.localStorage.getItem('user'))
 
   useEffect(()=>{
-    getDataByAuditSumId({ auditSumId:2 }).then(res=>{
+    getDataByAuditSumId({ auditSumId:msgDetail?.settlementId }).then(res=>{
       if(res.code==0){
        setDataDatil(res.data)
        form.setFieldsValue({
@@ -174,7 +174,7 @@ export default (props:CumulativeProps)=>{
         labelCol={5}
         disabled
       />
-      <p>已汇款 {amountTransform(dataDatil?.hasRemitAmount,'/').toFixed(2)} 元，扣除通道费{amountTransform(dataDatil?.hasFee,'/').toFixed(2)}元，实际已汇款 {amountTransform(dataDatil?.hasRemitReal,'/').toFixed(2)} 元</p>
+      <p>已分账 {amountTransform(dataDatil?.hasRemitAmount,'/').toFixed(2)} 元，扣除通道费{amountTransform(dataDatil?.hasFee,'/').toFixed(2)}元，实际已汇款 {amountTransform(dataDatil?.hasRemitReal,'/').toFixed(2)} 元</p>
     </ProForm.Group>
 
     <ProFormRadio.Group
@@ -196,14 +196,14 @@ export default (props:CumulativeProps)=>{
 
     <ProFormDependency name={['status']}>
         {({ status }) => {
-            if(status==1) return <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
+            if(status==1) return <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.amount, 0),'/').toFixed(2)} 元</p>
             if(status==0){
               return <>
                 <a style={{ display:'block', margin: '0 0 10px 180px' }} onClick={()=>{ setRemittanceVisible(true) }}>选择结算汇款的订单</a>
                 {
                   orderArr?.length?<p style={{ margin: '0 0 10px 180px', fontWeight:'bold' }}>已选择 {orderArr.length} 单</p>:null
                 }
-                <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)} 元</p>
+                <p style={{ marginLeft: '180px' }}>订单业绩 {amountTransform(orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2)} 元  ，应分账金额 {amountTransform(orderArr.reduce((sum, item) => sum + item?.amount, 0),'/').toFixed(2)} 元</p>
               </>
             }
         }}
@@ -234,7 +234,7 @@ export default (props:CumulativeProps)=>{
                 width={400}
                 fieldProps={{
                   addonAfter: '元',
-                  value: amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
+                  value: amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)
                 }}
                 disabled
               />
@@ -262,7 +262,7 @@ export default (props:CumulativeProps)=>{
                 width={400}
                 fieldProps={{
                   addonAfter: '元',
-                  value: amountTransform(orderArr.reduce((sum, item) => sum + (item?.unfreezeAmount-item?.fee), 0),'/').toFixed(2)
+                  value: amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)
                 }}
                 disabled
               />

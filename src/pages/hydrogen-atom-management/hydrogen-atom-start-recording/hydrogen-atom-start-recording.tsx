@@ -77,8 +77,8 @@ export default () => {
       order:6
     },
     {
-      title: '用户ID',
-      dataIndex: 'memberId',
+      title: '启动人用户ID',
+      dataIndex: 'occupantId',
       align: 'center',
     },
     {

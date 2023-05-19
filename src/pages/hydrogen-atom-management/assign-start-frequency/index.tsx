@@ -18,12 +18,6 @@ export default ()=> {
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
       title: '手机号',
       dataIndex: 'memberPhone',
       align: 'center',

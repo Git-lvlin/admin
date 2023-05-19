@@ -46,7 +46,7 @@ function ReferralCommission () {
       align: 'center'
     },
     {
-      title: '用户ID',
+      title: '推荐人用户ID',
       dataIndex: 'pMemId',
       align: 'center',
     },
