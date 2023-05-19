@@ -20,16 +20,10 @@ export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
-  const [time,setTime]=useState<Refer>()
   const [detailList,setDetailList]=useState<Statistics>()
   useEffect(() => {
     const params={
       settlementId: msgDetail?.settlementId,
-      payTimeStart: time?.dateRange&&time.dateRange[0],
-      payTimeEnd: time?.dateRange&&time.dateRange[1],
-      remittanceTimeStart: time?.remittanceTime&&time.remittanceTime[0],
-      remittanceTimeEnd: time?.remittanceTime&&time.remittanceTime[1],
-      ...time
     }
     applyDetail(params).then(res=>{
       if(res.code==0){
@@ -37,7 +31,7 @@ export default (props:CumulativeProps)=>{
       }
     })
 
-  }, [time])
+  }, [])
 
   const Columns: ProColumns[] = [
     {
@@ -49,13 +43,11 @@ export default (props:CumulativeProps)=>{
       title: '下单用户ID',
       dataIndex: 'memberId',
       valueType: 'text',
-      hideInSearch: true
     },
     {
       title: '下单人用户手机',
       dataIndex: 'memberPhone',
       align: 'center',
-      hideInTable: true
     },
     {
       title: '订单金额',
@@ -137,7 +129,7 @@ export default (props:CumulativeProps)=>{
       align: 'center',
       hideInTable: true,
       fieldProps:{
-        placeholder:['开始时间', '结束时间']
+        placeholder:['开始时间', '结束时间'],
       }
     },
     {
@@ -154,10 +146,13 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '汇款时间',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       dataIndex: 'remittanceTime',
       align: 'center',
       hideInTable: true,
+      fieldProps:{
+        placeholder:['开始时间', '结束时间'],
+      }
     },
     {
       title: '汇款时间',
@@ -200,6 +195,18 @@ export default (props:CumulativeProps)=>{
       {...formItemLayout}
       className={styles.settlement_performance}
     >
+      <Descriptions labelStyle={{fontWeight:'bold',width: '13%'}} style={{background:'#fff'}} column={{ xl: 3, xxl: 5 }} layout="horizontal" bordered>
+        <Descriptions.Item  label="总业绩订单数(单)">{detailList?.subOrderCount}</Descriptions.Item>
+        <Descriptions.Item  label="待审核订单数(单)">{detailList?.statsCount10}  </Descriptions.Item>
+        <Descriptions.Item  label="待汇款订单数(单)">{detailList?.statsCount11}  </Descriptions.Item>
+        <Descriptions.Item  label="已汇款订单数(单)">{detailList?.statsCount21}  </Descriptions.Item>
+        <Descriptions.Item  label="拒绝订单数(单)">{detailList?.statsCount12}  </Descriptions.Item>
+        <Descriptions.Item  label="总业绩订单金额(元)">{amountTransform(detailList?.statsConfirmedAmount,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总业绩分账金额(元)">{amountTransform(detailList?.statsAmount,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总扣通道费金额(元)">{amountTransform(detailList?.statsFee,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总提成金额(元)">{amountTransform(detailList?.statsCommissionAmount,'/').toFixed(2)}  </Descriptions.Item>
+        <Descriptions.Item  label="总实际已汇款金额(元)">{amountTransform(detailList?.statsRemitAmount,'/').toFixed(2)}  </Descriptions.Item>
+      </Descriptions>
       <ProTable
         rowKey="divideItemId"
         columns={Columns}
@@ -209,26 +216,7 @@ export default (props:CumulativeProps)=>{
         params={{
           settlementId:msgDetail?.settlementId,
         }}
-        tableExtraRender={() => 
-          <Descriptions labelStyle={{fontWeight:'bold',width: '13%'}} style={{background:'#fff'}} column={{ xl: 3, xxl: 5 }} layout="horizontal" bordered>
-            <Descriptions.Item  label="总业绩订单数(单)">{detailList?.subOrderCount}</Descriptions.Item>
-            <Descriptions.Item  label="待审核订单数(单)">{detailList?.statsCount10}  </Descriptions.Item>
-            <Descriptions.Item  label="待汇款订单数(单)">{detailList?.statsCount11}  </Descriptions.Item>
-            <Descriptions.Item  label="已汇款订单数(单)">{detailList?.statsCount21}  </Descriptions.Item>
-            <Descriptions.Item  label="拒绝订单数(单)">{detailList?.statsCount12}  </Descriptions.Item>
-            <Descriptions.Item  label="总业绩订单金额(元)">{amountTransform(detailList?.statsConfirmedAmount,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="总业绩分账金额(元)">{amountTransform(detailList?.statsAmount,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="总扣通道费金额(元)">{amountTransform(detailList?.statsFee,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="总提成金额(元)">{amountTransform(detailList?.statsCommissionAmount,'/').toFixed(2)}  </Descriptions.Item>
-            <Descriptions.Item  label="总实际已汇款金额(元)">{amountTransform(detailList?.statsRemitAmount,'/').toFixed(2)}  </Descriptions.Item>
-          </Descriptions>
-        }
-        onSubmit={(val)=>{
-          setTime(val)
-        }}
-        onReset={()=>{
-          setTime(undefined)
-        }}
+        scroll={{ x: 'max-content' }}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,

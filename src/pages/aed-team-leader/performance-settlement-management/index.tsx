@@ -142,7 +142,10 @@ export default function TransactionData () {
       dataIndex: 'dateRange',
       valueType: 'dateTimeRange',
       fieldProps: {
-        placeholder: ['开始时间', '结束时间']
+        placeholder: ['开始时间', '结束时间'],
+        style:{
+          width: 330
+        }
       },
       hideInTable: true
     },
@@ -161,7 +164,10 @@ export default function TransactionData () {
       dataIndex: 'remittanceDate',
       valueType: 'dateTimeRange',
       fieldProps: {
-        placeholder: ['开始时间', '结束时间']
+        placeholder: ['开始时间', '结束时间'],
+        style:{
+          width: 330
+        }
       },
       hideInTable: true
     },
