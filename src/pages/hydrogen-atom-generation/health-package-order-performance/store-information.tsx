@@ -55,7 +55,7 @@ export default (props) => {
       hideInSearch: true
     },
     {
-      title: '团长用户ID',
+      title: '用户ID',
       dataIndex: 'memberId',
       align: 'center',
       hideInTable: true,
