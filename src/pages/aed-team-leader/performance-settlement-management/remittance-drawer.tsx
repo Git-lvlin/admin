@@ -149,7 +149,7 @@ export default (props:CumulativeProps)=>{
       width={400}
       name="bankNo"
       rules={[
-        { pattern: /^([1-9]{1})(\d{14}|\d{18})$/, message: '银行卡号格式不正确' }
+        { pattern: /^([1-9]\d{9,29})$/, message: '银行卡号格式不正确' }
       ]}
     />
     <ProForm.Group style={{ marginLeft: '70px' }}>
