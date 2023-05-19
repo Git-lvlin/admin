@@ -159,7 +159,7 @@ export default () => {
             <Export
               key='export'
               type='healthPkgOrderPm'
-              conditions={()=>{getFieldValue(searchConfig)}}
+              conditions={()=>{return getFieldValue(searchConfig)}}
             />,
           ]
         }}
