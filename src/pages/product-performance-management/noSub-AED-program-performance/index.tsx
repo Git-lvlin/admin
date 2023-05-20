@@ -47,10 +47,9 @@ const NoSubAEDProgramPerformance = () => {
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmountDesc',
       align: 'center',
-      hideInSearch: true,
-      render: (_, r) => amountTransform(parseInt(r.orderAmount), '/')
+      hideInSearch: true
     },
     {
       title: '订单类型',
