@@ -91,13 +91,13 @@ export default function TransactionData () {
     },
     {
       title: '已解冻提成(元)【含通道费】',
-      dataIndex: 'freezeAmountDesc',
+      dataIndex: 'unFreezeAmountDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '未解冻提成(元)【含通道费】',
-      dataIndex: 'unFreezeAmountDesc',
+      dataIndex: 'freezeAmountDesc',
       align: 'center',
       hideInSearch: true
     }
