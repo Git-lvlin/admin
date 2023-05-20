@@ -36,7 +36,7 @@ const StoreInformation = (props:CumulativeProps) => {
     {
       title: '订单日期',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       align: 'center',
       hideInTable: true,
     },

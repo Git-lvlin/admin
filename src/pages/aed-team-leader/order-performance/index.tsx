@@ -60,7 +60,7 @@ export default function TransactionData () {
     {
       title: '交易时间',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       hideInTable: true
     },
     {
