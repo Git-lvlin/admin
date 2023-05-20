@@ -50,7 +50,9 @@ const phoneColumns = [
     title: '修改凭证',
     dataIndex: 'voucher',
     render: (_) => {
-      return JSON.parse(_)?.map(item=><div style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
+      if(_){
+        return JSON.parse(_)?.map(item=><div style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
+      }
     }
   },
   {
