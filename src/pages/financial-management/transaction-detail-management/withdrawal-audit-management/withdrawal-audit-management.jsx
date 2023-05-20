@@ -31,7 +31,7 @@ const WithdrawalAuditManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
+      title: '店铺ID',
       dataIndex: 'accountId',
     },
     {
