@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button } from 'antd';
-import { getMemberDetail } from '@/services/user-management/user-list';
+import React, { useEffect, useState, useRef } from 'react';
+import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button, Image } from 'antd';
+import { getMemberDetail,modifyPhoneNumberPage } from '@/services/user-management/user-list';
 import ModifyMobilePhone from './modify-mobile-phone'
+import ProTable from '@ant-design/pro-table';
+import type { ActionType } from "@ant-design/pro-table"
 
 
 const { Title } = Typography;
@@ -34,27 +36,30 @@ const columns = [
 const phoneColumns = [
   {
     title: '原手机号',
-    dataIndex: 'index',
+    dataIndex: 'value',
   },
   {
     title: '修改后手机号',
-    dataIndex: 'consignee',
+    dataIndex: 'newValue',
   },
   {
     title: '修改说明',
-    dataIndex: 'phone',
+    dataIndex: 'remark',
   },
   {
     title: '修改凭证',
-    dataIndex: 'fullAddress',
+    dataIndex: 'voucher',
+    render: (_) => {
+      return JSON.parse(_)?.map(item=><div style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
+    }
   },
   {
     title: '修改时间',
-    dataIndex: 'isDefault',
+    dataIndex: 'createTime',
   },
   {
     title: '修改人',
-    dataIndex: 'isDefault',
+    dataIndex: 'operator',
   },
 ];
 
@@ -75,7 +80,7 @@ const sourceType = {
 type DetailProps = {
   visible: boolean,
   setVisible: (v: boolean) => void,
-  id: string,
+  id: string
 }
 
 type DataType = {
@@ -101,6 +106,8 @@ const Detail: React.FC<DetailProps> = (props) => {
   const { memberInfoToAdminResponse: info } = detailData;
   const [loading, setLoading] = useState(false);
   const [editPhoneVisible,setEditPhoneVisible] = useState<boolean>(false)
+  const [toLoad, setToLoad] = useState<number>(0)
+  const actionRef = useRef<ActionType>()
 
   useEffect(() => {
     (getMemberDetail({
@@ -112,7 +119,7 @@ const Detail: React.FC<DetailProps> = (props) => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [id])
+  }, [id,toLoad])
 
   return (
     <Drawer
@@ -175,7 +182,7 @@ const Detail: React.FC<DetailProps> = (props) => {
                 {info?.categoryIds}
               </Descriptions.Item>
               <Descriptions.Item label="用户ID">
-                {info?.userIds}
+                {info?.id}
               </Descriptions.Item>
             </Descriptions>
           </Row>
@@ -189,7 +196,23 @@ const Detail: React.FC<DetailProps> = (props) => {
           <Row style={{ marginTop: 50 }}>
             <Title style={{ marginBottom: -10 }} level={5}>手机号修改记录</Title>
             <Divider />
-            <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={phoneColumns} />
+            <ProTable
+              rowKey="id"
+              options={false}
+              actionRef={actionRef}
+              params={{
+                memberId: id,
+                name: 'phone'
+              }}
+              style={{ width: '100%' }}
+              request={modifyPhoneNumberPage}
+              search={false}
+              columns={phoneColumns}
+              pagination={{
+                pageSize: 10,
+                showQuickJumper: true,
+              }}
+            />
           </Row>
         </div>
       </Spin>
@@ -198,9 +221,9 @@ const Detail: React.FC<DetailProps> = (props) => {
         <ModifyMobilePhone
           visible={editPhoneVisible}
           setVisible={setEditPhoneVisible}
-          msgDetail={detailData}
+          msgDetail={info}
           onClose={()=>{}}
-          callback={()=>{}}
+          callback={()=>{ setToLoad(toLoad+1);actionRef?.current?.reload(); }}
         />
       }
     </Drawer>
