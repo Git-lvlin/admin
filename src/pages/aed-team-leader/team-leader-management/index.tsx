@@ -55,11 +55,6 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '用户ID',
-      dataIndex: 'memberId',
-      valueType: 'text',
-    },
-    {
       title: '子公司名称',
       dataIndex: 'name',
       align: 'center',
