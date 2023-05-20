@@ -7,7 +7,6 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import { aednoSubOrder } from "@/services/product-performance-management/noSub-AED-program-performance"
-import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
 
 const NoSubAEDProgramPerformance = () => {

@@ -192,7 +192,7 @@ const TrainServicePackage: FC = () => {
     },
     {
       title: '推荐人用户Id',
-      dataIndex: 'recomMemberId',
+      dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
     },

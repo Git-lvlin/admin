@@ -149,7 +149,7 @@ const ProgramPerformance: FC = () => {
     },
     {
       title: '推荐人用户ID',
-      dataIndex: 'recomMemberId',
+      dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
     },
