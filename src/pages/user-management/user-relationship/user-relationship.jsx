@@ -24,6 +24,7 @@ const UserRelationship = () => {
   const [initialData, setInitialData] = useState(null);
   const [taskId, setTaskId] = useState(null);
   const [totalVisit, setTotalVisit] = useState(false)
+  const form = useRef()
   // useEffect(() => {
   //   if (phoneNumber) {
   //     getInitData()
@@ -60,6 +61,7 @@ const UserRelationship = () => {
 
   const getFieldValue = () => {
     return {
+      ...form.current?.getFieldsValue(),
       phoneNumber: phoneNumber
     }
   }
@@ -328,6 +330,7 @@ const UserRelationship = () => {
       </ProCard>
 
       {!!phoneNumber && <ProTable
+        formRef={form}
         rowKey="id"
         columns={columns}
         actionRef={actionRef}
