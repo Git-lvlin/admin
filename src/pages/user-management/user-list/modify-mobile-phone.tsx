@@ -58,7 +58,6 @@ const checkConfirm2 = (rule: any, value: string) => {
         message.success('获取成功')
       }
     })
-    
   };
   return (
     <ModalForm
