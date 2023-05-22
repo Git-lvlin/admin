@@ -63,7 +63,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
 
   const orderNum2 = [
     {name: 'onlineDopNum', type: true},
-    {name: 'offlineDopNum', type: true},
+    {name: 'offlineDopNum', type: false},
     {name: 'onlineDopMustNoNum', type: true},
     {name: 'offlineDopMustNoNum', type: false},
     {name: 'onlineDopNoNum', type: true},
