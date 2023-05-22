@@ -50,8 +50,8 @@ const phoneColumns = [
     title: '修改凭证',
     dataIndex: 'voucher',
     render: (_) => {
-      if(_){
-        return JSON.parse(_)?.map(item=><div style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
+      if(_&&_!='-'){
+        return JSON.parse(_)?.map((item,index)=><div key={index} style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
       }
     }
   },
@@ -192,7 +192,7 @@ const Detail: React.FC<DetailProps> = (props) => {
           <Row style={{ marginTop: 50 }}>
             <Title style={{ marginBottom: -10 }} level={5}>收货地址</Title>
             <Divider />
-            <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={columns} />
+            <Table rowKey="id" style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={columns} />
           </Row>
 
           <Row style={{ marginTop: 50 }}>
