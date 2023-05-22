@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
-import ProForm, { ProFormDependency, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ProFormDependency, ProFormDigit, ProFormText } from '@ant-design/pro-form'
 import { Button, Space } from 'antd'
 import moment from 'moment'
 
@@ -194,14 +194,20 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
               {
                 orderNum1.map(res => (
                   <td key={res.name}>
-                    <ProFormText 
-                      name={res.name} 
-                      fieldProps={{
-                        bordered: false,
-                        allowClear: false
-                      }}
-                      readonly={res.type}
-                    />
+                    {
+                      res.type ?
+                      <ProFormText 
+                        name={res.name} 
+                        readonly
+                      />:
+                      <ProFormDigit 
+                        name={res.name} 
+                        fieldProps={{
+                          bordered: false,
+                          controls: false
+                        }}
+                      />
+                    }
                   </td>
                 ))
               }
@@ -217,14 +223,20 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
               {
                 orderNum2.map(res => (
                   <td key={res.name}>
-                    <ProFormText 
-                      name={res.name} 
-                      fieldProps={{
-                        bordered: false,
-                        allowClear: false
-                      }}
-                      readonly={res.type}
-                    />
+                    {
+                      res.type ?
+                      <ProFormText 
+                        name={res.name} 
+                        readonly
+                      />:
+                      <ProFormDigit 
+                        name={res.name} 
+                        fieldProps={{
+                          bordered: false,
+                          controls: false
+                        }}
+                      />
+                    }
                   </td>
                 ))
               }
@@ -238,7 +250,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
                 </ProFormDependency>
               </td>
               <td>
-                <ProFormText 
+                <ProFormText
                   name='noSignContractNum'
                   readonly
                 />
@@ -266,11 +278,11 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
                 />
               </td>
               <td>
-                <ProFormText
+                <ProFormDigit
                   name='offlineCourseAmount'
                   fieldProps={{
                     bordered: false,
-                    allowClear: false
+                    controls: false
                   }}
                 />
               </td>
@@ -301,14 +313,20 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
               {
                 subTotal.map(res => (
                   <td key={res.name}>
-                    <ProFormText 
-                      name={res.name} 
-                      fieldProps={{
-                        bordered: false,
-                        allowClear: false
-                      }}
-                      readonly={res.type}
-                    />
+                    {
+                      res.type ?
+                      <ProFormText 
+                        name={res.name} 
+                        readonly
+                      />:
+                      <ProFormDigit 
+                        name={res.name} 
+                        fieldProps={{
+                          bordered: false,
+                          controls: false
+                        }}
+                      />
+                    }
                   </td>
                 ))
               }
@@ -327,14 +345,20 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
               {
                 totalAmount.map(res => (
                   <td key={res.name}>
-                    <ProFormText 
-                      name={res.name}
-                      fieldProps={{
-                        bordered: false,
-                        allowClear: false
-                      }}
-                      readonly={res.type}
-                    />
+                    {
+                      res.type ?
+                      <ProFormText 
+                        name={res.name} 
+                        readonly
+                      />:
+                      <ProFormDigit 
+                        name={res.name} 
+                        fieldProps={{
+                          bordered: false,
+                          controls: false
+                        }}
+                      />
+                    }
                   </td>
                 ))
               }
@@ -403,7 +427,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '推荐人手机号',
       dataIndex: 'recomMemberPhone',
-      hideInTable: true
+      align: 'center'
     },
     {
       title: '团长ID',
@@ -418,7 +442,7 @@ const AEDProgramTransaction: React.FC = () => {
     },
     {
       title: '所属子公司类型',
-      dataIndex: 'subTypeDesc',
+      dataIndex: 'subType',
       align: 'center',
       hideInSearch: true
     },
@@ -553,7 +577,7 @@ const AEDProgramTransaction: React.FC = () => {
     },
     {
       title: '线下培训状态',
-      dataIndex: 'examStatusDesc',
+      dataIndex: 'trainingStatusDesc',
       align: 'center',
       hideInSearch: true
     },
@@ -564,7 +588,7 @@ const AEDProgramTransaction: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '单业绩解冻状态',
+      title: '业绩解冻状态',
       dataIndex: 'freezeStatus',
       valueType: 'select',
       valueEnum: {
