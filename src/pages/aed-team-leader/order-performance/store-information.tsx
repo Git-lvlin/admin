@@ -96,8 +96,6 @@ const StoreInformation = (props:CumulativeProps) => {
       title: '下单用户ID',
       dataIndex: 'memberId',
       valueType: 'text',
-      hideInTable:  activeKey == '1'||type==2,
-      hideInSearch: activeKey == '1'||type==2
     },
     {
       title: '客户手机',
@@ -135,8 +133,6 @@ const StoreInformation = (props:CumulativeProps) => {
       title: '团长用户ID',
       dataIndex: 'teamMemberId',
       valueType: 'text',
-      hideInTable: activeKey == '1'||type==2,
-      hideInSearch: activeKey == '1'||type==2
     },
     {
       title: '收益',
