@@ -5,11 +5,9 @@ import ProForm, { ProFormDependency, ProFormDigit, ProFormText } from '@ant-desi
 import { Button, Space } from 'antd'
 import moment from 'moment'
 
-import type { RangePickerProps } from 'antd/es/date-picker'
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 import type { detailDataProps } from './data'
-
 
 import { 
   aedCoursesTradeStats, 
@@ -21,7 +19,7 @@ import { amountTransform ,numberTransform } from '@/utils/utils'
 import Export, { ExportHistory } from '@/components/export'
 import ExportLog from './export-log'
 
-const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => {
+const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = ({search={}, change}) => {
   
   const [detailData, setDetailData] = useState<detailDataProps>()
   const [visible, setVisible] = useState<boolean>(false)
@@ -29,12 +27,21 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    aedCoursesTradeStats().then(res => {
+    const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
+    aedCoursesTradeStats({
+      startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
+      endDcPayTime: dcPayTime && moment(dcPayTime[1]).format('YYYY-MM-DD'),
+      startAedPayTime: aedPayTime && moment(aedPayTime[0]).format('YYYY-MM-DD'),
+      endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
+      startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
+      endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      ...r
+    }).then(res => {
       if(res.code === 0) {
         setDetailData(res.data)
       }
     })
-  }, [])
+  }, [change])
 
   useEffect(()=> {
     if(detailData) {
@@ -381,8 +388,9 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any}> = ({search={}}) => 
 }
 
 const AEDProgramTransaction: React.FC = () => {
+  const [searchConfig, setSearchConfig] = useState<FormInstance | any>()
+  const [change, setChange] = useState<number>(0)
   const form = useRef<FormInstance>()
-  const [searchConfig, setSearchConfig] = useState<FormInstance| any>(form.current?.getFieldsValue())
 
   const getFieldsValue = () => {
     const { depositPayTime, aedPayTime, dcPayTime, ...rest } = form.current?.getFieldsValue()
@@ -395,10 +403,6 @@ const AEDProgramTransaction: React.FC = () => {
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
       ...rest
     }
-  }
-
-  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    return current && current > moment().endOf('day').subtract(1, 'days')
   }
 
   const columns: ProColumns[] = [
@@ -490,9 +494,6 @@ const AEDProgramTransaction: React.FC = () => {
       title: '保证金订单支付时间',
       dataIndex: 'depositPayTime',
       valueType: 'dateRange',
-      fieldProps: {
-        disabledDate: disabledDate
-      },
       hideInTable: true
     },
     {
@@ -533,9 +534,6 @@ const AEDProgramTransaction: React.FC = () => {
       title: '课程订单支付时间 ',
       dataIndex: 'aedPayTime',
       valueType: 'dateRange',
-      fieldProps: {
-        disabledDate: disabledDate
-      },
       hideInTable: true
     },
     {
@@ -637,9 +635,6 @@ const AEDProgramTransaction: React.FC = () => {
       title: '区县订单支付时间',
       dataIndex: 'dcPayTime',
       valueType: 'dateRange',
-      fieldProps: {
-        disabledDate: disabledDate
-      },
       hideInTable: true
     },
     {
@@ -658,7 +653,6 @@ const AEDProgramTransaction: React.FC = () => {
 
   return (
     <PageContainer title={false}>
-      <div style={{background: '#fff', paddingLeft: '40px'}}>截至至昨日（{moment(+new Date()).subtract(1, 'days').format('YYYY-MM-DD')}）</div>
       <ProTable
         rowKey='id'
         columns={columns}
@@ -668,12 +662,14 @@ const AEDProgramTransaction: React.FC = () => {
           pageSize: 10
         }}
         formRef={form}
-        headerTitle={<AEDTable search={searchConfig}/>}
+        headerTitle={<AEDTable search={searchConfig} change={change}/>}
         params={{}} 
         onSubmit={()=>{
           setSearchConfig(form.current?.getFieldsValue())
+          setChange(change + 1)
         }}
         onReset={()=> {
+          setChange(0)
           setSearchConfig(undefined)
         }}
         request={aedCoursesTradeList}
