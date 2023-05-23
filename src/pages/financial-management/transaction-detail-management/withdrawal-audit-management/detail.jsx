@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { PageContainer } from '@/components/PageContainer'
 import { useParams, history } from 'umi'
@@ -23,14 +23,22 @@ import {
 import styles from './styles.less'
 import { amountTransform } from '@/utils/utils'
 
-const PopModal = ({sn, form}) => {
+const PopModal = ({sn, callback, types}) => {
   const [type,setType] = useState('online')
+
+  const typeEnum1 = {
+    'online': '线上转帐',
+    'offline': '线下转账'
+  }
+  const typeEnum2 = {
+    'offline': '线下转账'
+  }
 
   const submit = async (val) => {
     return new Promise((resolve, reject) => {
       payment({ ...val, sn }).then(res => {
         if (res.code === 0) {
-          form.current.reload()
+          callback()
           setType('online')
           message.success('提交成功')
           resolve()
@@ -68,10 +76,7 @@ const PopModal = ({sn, form}) => {
               setType(e)
             }
           }}
-          valueEnum={{
-            'online': '线上转帐',
-            'offline': '线下转账'
-          }}
+          valueEnum={ types === 'commission' ? typeEnum2 : typeEnum1 }
         />
       </div>
       {
@@ -87,7 +92,7 @@ const PopModal = ({sn, form}) => {
   )
 }
 
-const PopModalForm = ({sn, form}) => {
+const PopModalForm = ({sn, callback}) => {
   const [choosed, setChoosed] = useState('1')
 
   const choose =(value)=> {
@@ -98,7 +103,7 @@ const PopModalForm = ({sn, form}) => {
     return new Promise((resolve, reject) => {
       audit({ ...val, sn }).then(res => {
         if (res.code === 0) {
-          form.current.reload()
+          callback()
           message.success('提交成功')
           resolve()
         } else {
@@ -155,16 +160,28 @@ const PopModalForm = ({sn, form}) => {
 }
 
 const Detail = () => {
+  const [data, setData] = useState({})
   const {id} = useParams()
-  const form = useRef()
+
+  const getData = async () => {
+    await withdrawPageDetail({
+      id
+    }).then(res=> {
+      setData(res.data)
+    })
+  }
+
+  useEffect(()=> {
+    getData()
+  }, [id])
 
   const SwitchStatus = ({ type }) => {
     const { status, sn } = type
     switch (status) {
       case 'auditing':
-        return <PopModalForm sn={sn} form={form}/>
+        return <PopModalForm sn={sn} callback={()=> getData()}/>
       case 'waitPay':
-        return <PopModal sn={sn} form={form}/>
+        return <PopModal sn={sn} callback={()=> getData()} types={data.withdrawType}/>
       case 'arrived':
         return '已到账'
       case 'unPass':  
@@ -172,7 +189,7 @@ const Detail = () => {
       case 'paid':
         return '已打款'
       case 'failure':
-        return <Space size={10}>提现失败 <PopModal sn={sn} form={form}/></Space>
+        return <Space size={10}>提现失败 <PopModal sn={sn} callback={()=> getData()} types={data.withdrawType}/></Space>
       default:
         return '状态错误'
     }
@@ -191,7 +208,7 @@ const Detail = () => {
       render: (_, records) => (
         <div>
           {records?.accountId}
-          <span>（手机：{records?.registMobile}）</span>
+          <span>（手机：{records?.registMobile || '-'}）</span>
         </div>
       )
     },
@@ -309,15 +326,13 @@ const Detail = () => {
     <PageContainer title={false}>
       <ProDescriptions
         column={2}
-        actionRef={form}
         columns={columns}
         style={{
           background: '#fff',
           padding: 20
         }}
         bordered
-        params={{ id }}
-        request={withdrawPageDetail}
+        dataSource={data}
       />
       <div style={{ background: '#fff', padding: 20 }}>
         <Button type='primary' onClick={() => {back()}}>返回</Button>

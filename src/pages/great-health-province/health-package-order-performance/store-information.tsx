@@ -4,9 +4,9 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from '@/components/pro-table'
-import { cityItemOrderListPage,cityItemOrderSum } from "@/services/city-office-management/city-office-achievements"
+import { hpaHealthyGiftOrder,hpaHealthyGiftOrderStats } from "@/services/great-health-province/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'
-import type { GithubIssueItem, CumulativeProps, TableProps } from "./data"
+import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
 import Export from '@/pages/export-excel/export'
@@ -26,45 +26,18 @@ const formItemLayout = {
     }
   };
 
-export default (props:CumulativeProps) => {
-  const { visible, setVisible,msgDetail,onClose,type} = props;
+export default (props) => {
+  const { visible, setVisible,msgDetail,onClose,scope} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
-  const [time,setTime]=useState<TableProps>()
+  const [time,setTime]=useState({})
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
-
-  const divideName=()=>{
-    switch (type) {
-      case 1:
-        return '累计业绩'
-      case 2:
-        return '健康礼包提成'
-      case 3:
-        return '健康套餐订单提成'
-      case 4:
-        return '启动费提成'
-      case 5:
-        return '租赁管理费提成'
-      default:
-        return ''
-    }
-  }
-  const doAway=()=>{
-    switch(type) {
-      case 3: 
-       return true
-      case 4:
-       return true
-      case 5:
-       return true
-    }
-  }
 
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'orderTime',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -77,39 +50,30 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        'hydrogen': '氢原子销售',
-        'hydrogenAgent': '氢原子托管',
-        'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
-        'hydrogenBoot': '氢原子启动',
-        'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
-      },
-      hideInTable: true
+      hideInSearch: true
     },
     {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
+      title: '店铺编号',
+      dataIndex: 'storeHouseNumber',
+      align: 'center',
       hideInSearch: true
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(parseFloat(_)){
@@ -122,7 +86,7 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -132,39 +96,44 @@ export default (props:CumulativeProps) => {
           return _
         }
       },
+    },
+    {
+      title: '业绩范围',
+      dataIndex: 'scopeDesc',
+      align: 'center',
+      hideInSearch: true,
     }
   ]
   useEffect(()=>{
     const params={
-      type:type,
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+      agencyId:msgDetail?.agencyId,
+      orderSn:time?.orderSn,
+      startTime:time?.dateRange?.[0],
+      endTime:time?.dateRange?.[1],
       orderType:time?.orderType,
-      orderNo:time?.orderNo,
-      begin:time?.dateRange?.[0],
-      end:time?.dateRange?.[1],
-      hasTeamLeader:parseInt(time?.hasTeamLeader)
+      scope:scope
     }
-    cityItemOrderSum(params).then(res=>{
+    hpaHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.total)
+        setOrderSum(res?.data?.[0]?.commission)
       }
     })
+
   },[time])
 
   const getFieldValue = (searchConfig) => {
-    const {dateRange,hasTeamLeader,...rest}=searchConfig.form.getFieldsValue()
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
-      type:type,
-      begin:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      end:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      hasTeamLeader:parseInt(hasTeamLeader),
+      agencyId:msgDetail?.agencyId,
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      scope:scope,
       ...rest,
     }
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.cityBusinessDeptName} ${divideName()} （ID:${msgDetail?.cityBusinessDeptId}）`}
+      title={`${msgDetail?.name} 健康礼包订单提成 （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -188,14 +157,14 @@ export default (props:CumulativeProps) => {
       className={styles.store_information}
     >
        <ProTable<GithubIssueItem>
-        rowKey="date"
+        rowKey="orderSn"
         columns={Columns}
-        request={cityItemOrderListPage}
+        request={hpaHealthyGiftOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          type:type,
-          cityBusinessDeptId:msgDetail?.cityBusinessDeptId,
+          agencyId:msgDetail?.agencyId,
+          scope:scope
         }}
         pagination={{
           pageSize: 10,
@@ -214,10 +183,10 @@ export default (props:CumulativeProps) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'exportCityItemOrderList'}
+              type={'hpaHealthyGiftOrderCom'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportCityItemOrderList'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaHealthyGiftOrderCom'}/>
           ],
         }}
         tableRender={(_, dom) => {
@@ -225,7 +194,7 @@ export default (props:CumulativeProps) => {
             { dom }
             <div className={styles.summary}>
               <div>
-                累计{type==1?'金额':'收益'}：
+                累计收益
                 <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
               </div>
             </div>
