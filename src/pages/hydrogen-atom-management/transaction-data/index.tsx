@@ -11,7 +11,6 @@ import type { DescriptionsProps, TableProps } from "./data"
 
 import { findMemberDeviceTotal, findMemberDevicePage } from "@/services/hydrogen-atom-management/transaction-data"
 import DevicesDetail from "../components/devices-detail"
-import { getPageQuery } from "@/utils/utils"
 import Export from "@/components/export"
 
 export default function TransactionData () {
@@ -150,13 +149,6 @@ export default function TransactionData () {
       title: '用户ID',
       dataIndex: 'memberId',
       align: 'center',
-    },
-    {
-      title: '店主ID',
-      dataIndex: 'memberId',
-      align: 'center',
-      initialValue: getPageQuery().memberId,
-      hideInTable: true
     },
     {
       title: '头像',
