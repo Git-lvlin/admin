@@ -1,0 +1,91 @@
+import { useState, useRef } from "react"
+import { PageContainer } from "@ant-design/pro-layout"
+import ProTable from "@ant-design/pro-table"
+import type { ProColumns,ActionType } from "@ant-design/pro-table"
+import type { TableProps } from "./data"
+
+import { configHpa } from "@/services/great-health-province/hydrogen-atom-saved-management
+
+export default function GenerationManagement () {
+  const [editVisible, setEditVisible] = useState<boolean>(false)
+  const [resetVisible, setResetVisible] = useState<boolean>(false)
+  const [msgDetail, setMsgDetail] = useState<TableProps>()
+  const ref = useRef<ActionType>()
+
+
+  const tableColumns: ProColumns<TableProps>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'agencyId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '生效状态',
+      dataIndex: 'status',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '大健康省代名称',
+      dataIndex: 'name',
+      align: 'center',
+      fieldProps:{
+        placeholder:'请输入大健康省代名称'
+      },
+    },
+    {
+      title: '联系人',
+      dataIndex: 'manager',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '联系人手机号',
+      dataIndex: 'managerPhone',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '登录账号',
+      dataIndex: 'userName',
+      align: 'center',
+      fieldProps: {
+        placeholder: '请输入登录账号'
+      }
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data)=>([
+        <a onClick={()=>{setEditVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
+        <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>
+      ])
+    },
+  ]
+
+  return (
+    <PageContainer title={false}>
+      <ProTable<TableProps>
+        rowKey="agencyId"
+        columns={tableColumns}
+        request={configHpa}
+        columnEmptyText={false}
+        actionRef={ref}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+        options={false}
+        search={{
+          labelWidth: 200,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse()
+          ],
+        }}
+      />
+    </PageContainer>
+  )
+}
