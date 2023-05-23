@@ -648,6 +648,12 @@ const AEDProgramTransaction: React.FC = () => {
       dataIndex: 'receiveCity',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '备注',
+      dataIndex: 'trainingRemark',
+      align: 'center',
+      hideInSearch: true
     }
   ]
 
