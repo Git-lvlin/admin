@@ -5,9 +5,11 @@ import ProForm, { ProFormDependency, ProFormDigit, ProFormText } from '@ant-desi
 import { Button, Space } from 'antd'
 import moment from 'moment'
 
+import type { RangePickerProps } from 'antd/es/date-picker'
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 import type { detailDataProps } from './data'
+
 
 import { 
   aedCoursesTradeStats, 
@@ -388,9 +390,9 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
 }
 
 const AEDProgramTransaction: React.FC = () => {
-  const [searchConfig, setSearchConfig] = useState<FormInstance | any>()
-  const [change, setChange] = useState<number>(0)
   const form = useRef<FormInstance>()
+  const [change, setChange] = useState<number>(0)
+  const [searchConfig, setSearchConfig] = useState<FormInstance| any>(form.current?.getFieldsValue())
 
   const getFieldsValue = () => {
     const { depositPayTime, aedPayTime, dcPayTime, ...rest } = form.current?.getFieldsValue()
@@ -403,6 +405,10 @@ const AEDProgramTransaction: React.FC = () => {
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
       ...rest
     }
+  }
+
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    return current && current > moment().endOf('day').subtract(1, 'days')
   }
 
   const columns: ProColumns[] = [
@@ -494,6 +500,9 @@ const AEDProgramTransaction: React.FC = () => {
       title: '保证金订单支付时间',
       dataIndex: 'depositPayTime',
       valueType: 'dateRange',
+      fieldProps: {
+        disabledDate: disabledDate
+      },
       hideInTable: true
     },
     {
@@ -534,6 +543,9 @@ const AEDProgramTransaction: React.FC = () => {
       title: '课程订单支付时间 ',
       dataIndex: 'aedPayTime',
       valueType: 'dateRange',
+      fieldProps: {
+        disabledDate: disabledDate
+      },
       hideInTable: true
     },
     {
@@ -635,6 +647,9 @@ const AEDProgramTransaction: React.FC = () => {
       title: '区县订单支付时间',
       dataIndex: 'dcPayTime',
       valueType: 'dateRange',
+      fieldProps: {
+        disabledDate: disabledDate
+      },
       hideInTable: true
     },
     {
@@ -659,6 +674,7 @@ const AEDProgramTransaction: React.FC = () => {
 
   return (
     <PageContainer title={false}>
+      <div style={{background: '#fff', paddingLeft: '40px'}}>截至至昨日（{moment(+new Date()).subtract(1, 'days').format('YYYY-MM-DD')}）</div>
       <ProTable
         rowKey='id'
         columns={columns}
