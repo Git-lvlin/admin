@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { productList } from '@/services/product-management/daifa-product';
 export default (props) => {

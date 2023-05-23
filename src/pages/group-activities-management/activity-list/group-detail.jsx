@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Drawer, Space, Spin, Table } from 'antd';
 import { singleGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Button, Drawer, Space } from 'antd'
 import { ModalForm } from '@ant-design/pro-form'

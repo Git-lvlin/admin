@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import Modify from './edit';
 import { productList } from '@/services/product-management/product-list';

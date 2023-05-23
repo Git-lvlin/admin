@@ -1,6 +1,6 @@
 import React, {  useRef } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { adminCircleList } from '@/services/community-management/circle-admin-circle-list';
 import { circleHide } from '@/services/community-management/circle-hide';
 import { cancelHide } from '@/services/community-management/circle-cancel-hide';

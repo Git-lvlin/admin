@@ -1,6 +1,6 @@
 import { useRef } from "react"
 import { Drawer } from "antd"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 
 import type { DetailProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"

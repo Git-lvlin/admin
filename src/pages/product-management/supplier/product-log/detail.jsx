@@ -1,5 +1,5 @@
 import { Drawer, Image } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { logDetail } from '@/services/product-management/product-log';
 
 const UserDetail = (props) => {

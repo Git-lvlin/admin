@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import moment from "moment"
 
 import type { ProColumns } from '@ant-design/pro-table'

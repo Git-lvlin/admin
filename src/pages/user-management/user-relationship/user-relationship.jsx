@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProForm from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';

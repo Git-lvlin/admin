@@ -1,5 +1,5 @@
 
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { cmsWeekGoodsList, cmsGoodsStatusSub } from '@/services/cms/member/weekend-revelry';

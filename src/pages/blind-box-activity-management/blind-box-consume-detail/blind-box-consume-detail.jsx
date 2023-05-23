@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button,Image,Descriptions} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history } from 'umi';

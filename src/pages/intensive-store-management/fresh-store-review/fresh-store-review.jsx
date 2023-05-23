@@ -6,7 +6,7 @@ import ProForm,{
   ProFormRadio,
   ProFormTextArea
 } from '@ant-design/pro-form'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Form, Space } from 'antd'
 
 import { freshApplyPage, approve, refuse, detail } from '@/services/intensive-store-management/fresh-store-review'

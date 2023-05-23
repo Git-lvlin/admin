@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tooltip, Table, Spin } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@ant-design/pro-layout';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';
 import * as api from '@/services/product-management/product-list-purchase';

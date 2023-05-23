@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { couponCcodebase,couponCodebaseEnd } from '@/services/coupon-management/coupon-codebase';
 import { DrawerForm} from '@ant-design/pro-form';
 // import XLSX from 'xlsx'

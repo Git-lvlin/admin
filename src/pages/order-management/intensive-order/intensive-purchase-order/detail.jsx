@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Drawer, Typography, Space, Button, Divider, Row, Col, Table, Modal, Steps } from 'antd';
 import { detail, expressInfo, purchaseInList, dispatchOutList } from '@/services/order-management/intensive-purchase-order'
 import { amountTransform } from '@/utils/utils'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import moment from 'moment';
 import styles from './detail.less';
 

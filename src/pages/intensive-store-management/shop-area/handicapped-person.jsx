@@ -4,7 +4,7 @@ import { FormattedMessage, formatMessage } from 'umi';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { history, connect } from 'umi';
 import { getMemberShopDeformed,setMemberShopDeformed,getMemberShopDeformedLog } from '@/services/intensive-store-management/shop-area'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import moment from 'moment';
 
 const formItemLayout = {

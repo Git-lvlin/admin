@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { PageContainer } from '@/components/PageContainer';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { DatePicker, Tooltip } from 'antd'

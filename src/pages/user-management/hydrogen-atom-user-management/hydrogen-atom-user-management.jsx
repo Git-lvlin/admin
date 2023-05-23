@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import AddedEnabledHydrogen from './added-enabled-hydrogen'
 import StoreInformation from './store-information'
 import { Descriptions } from 'antd';

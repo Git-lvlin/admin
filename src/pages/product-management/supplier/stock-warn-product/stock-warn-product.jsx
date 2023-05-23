@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Table, Tooltip, Space } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import PageContainer from '@/components/PageContainer';
 import { stockWarnProductList } from '@/services/product-management/stock-warn-product';
 import { getDetail, getConfig } from '@/services/product-management/product-list';

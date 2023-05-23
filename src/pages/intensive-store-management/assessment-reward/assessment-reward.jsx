@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 // import { Button } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { memberShopResults } from '@/services/intensive-store-management/assessment-reward';
 import { amountTransform } from '@/utils/utils'

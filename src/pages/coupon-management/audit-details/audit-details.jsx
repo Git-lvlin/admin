@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { couponVerifyDetail } from '@/services/coupon-management/coupon-audit';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
 import { Divider, Form, Spin, Button } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import AuditModel from '../coupon-audit/audit-model'
 import { amountTransform } from '@/utils/utils'
 import { history } from 'umi';

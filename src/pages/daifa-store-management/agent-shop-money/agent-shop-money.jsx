@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { commissionSum,commissionPage } from '@/services/daifa-store-management/list';
 import { Statistic, Row, Col,Space } from 'antd';
 import './style.less'

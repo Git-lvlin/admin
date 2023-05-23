@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import { Drawer, Form, Table } from 'antd'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { ruleDetail } from '@/services/single-contract-activity-management/activity-detail'
 import moment from 'moment'

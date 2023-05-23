@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tabs,Image,Dropdown,Menu} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import Video from './video'

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Table } from 'antd'
 
 import { indexDataDetail } from "@/services/data-board/order-analysis"

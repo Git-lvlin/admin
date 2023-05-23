@@ -6,7 +6,7 @@ import {
 } from '@ant-design/pro-form';
 import { logList } from "@/services/aed-team-leader/team-leader-management"
 import type { ProColumns } from "@ant-design/pro-table"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { CumulativeProps } from "./data"
 
 const formItemLayout = {

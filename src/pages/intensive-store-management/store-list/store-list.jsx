@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Space, Tooltip, Image, Menu, Dropdown, Input } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@/components/PageContainer';

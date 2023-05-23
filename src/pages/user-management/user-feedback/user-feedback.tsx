@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { feedbackList,selAllVersion} from '@/services/user-management/user-feedback';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Image,Space } from 'antd';

@@ -5,7 +5,7 @@ import { couponInviteSub,couponInviteEdit,couponInviteDetail,couponInviteSelList
 import ProForm, { ProFormText, ProFormRadio,ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect,DrawerForm } from '@ant-design/pro-form';
 import { FormattedMessage, formatMessage } from 'umi';
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import moment from 'moment';
 import { history,connect } from 'umi';
 import styles from './style.less'

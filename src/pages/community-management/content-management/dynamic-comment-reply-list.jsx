@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
 import { deleteCommentOrReply } from '@/services/community-management/delete-comment-reply';
 import DeleteModal from '@/components/DeleteModal'

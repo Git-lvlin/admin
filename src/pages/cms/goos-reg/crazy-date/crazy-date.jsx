@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';
 import { seckillingClassList } from '@/services/cms/member/goos-reg';

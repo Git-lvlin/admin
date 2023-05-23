@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { MinusOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message, Input, Form, Spin, InputNumber } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import {
   priceComparsionListAlls,

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Image } from 'antd'
 import moment from 'moment'
 import { PageContainer } from '@ant-design/pro-layout'

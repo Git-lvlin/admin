@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
 import { PageContainer } from '@/components/PageContainer';
 import { history } from 'umi';

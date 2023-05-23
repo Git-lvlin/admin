@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { Button, Dropdown, Menu } from "antd"
 import { EllipsisOutlined } from "@ant-design/icons"
 

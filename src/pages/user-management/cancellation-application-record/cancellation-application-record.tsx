@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ModalForm } from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import GcCascader from '@/components/gc-cascader'
 import BrandSelect from '@/components/brand-select'
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'

@@ -2,7 +2,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Space, Select,Switch } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getSpuList, goodsSortTop, goodsSortTopCancel, goodsMoveSort, modifySpuCategory, goodsClassList,modifyOrderLimit } from '@/services/cms/fresh-goods-sort';
 import Sort from './sort';

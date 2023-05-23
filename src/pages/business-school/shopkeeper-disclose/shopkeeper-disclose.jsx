@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Image } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { history,connect } from 'umi';
 import { findAdminDebunkList } from '@/services/business-school/find-admin-debunk-list';

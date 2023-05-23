@@ -3,7 +3,7 @@ import { Button,Switch,InputNumber,message} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import BrandSelect from '@/components/brand-select'
 import GcCascader from '@/components/gc-cascader'

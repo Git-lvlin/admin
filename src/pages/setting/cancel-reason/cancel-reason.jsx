@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Button, Space, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { pageForAdmin,cancelReasonUpdate,getCancelMessage} from '@/services/setting/cancel-reason';
 import { PageContainer } from '@/components/PageContainer';

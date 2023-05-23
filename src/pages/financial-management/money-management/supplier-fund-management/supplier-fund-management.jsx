@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
 import { Space, message, Form, Button} from 'antd'

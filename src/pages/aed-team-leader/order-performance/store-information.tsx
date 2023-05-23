@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import ProCard from "@ant-design/pro-card"
 import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'

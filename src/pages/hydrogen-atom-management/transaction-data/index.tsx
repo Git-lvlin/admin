@@ -1,7 +1,7 @@
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProDescriptions from "@ant-design/pro-descriptions"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { Image } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"

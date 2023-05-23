@@ -1,5 +1,5 @@
 import { useRef,useEffect, useState } from "react"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import ProCard from "@ant-design/pro-card"
 import { cityAgentHealthyGift,cityAgentHealthyGiftStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'

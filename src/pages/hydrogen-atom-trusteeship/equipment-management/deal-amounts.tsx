@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Empty, Select, Space } from "antd"
 
 import type { ProColumns } from '@ant-design/pro-table'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import GcCascader from '@/components/gc-cascader'
 import { message,Button,Modal,Space,Image } from 'antd';
 import * as api from '@/services/product-management/product-list';

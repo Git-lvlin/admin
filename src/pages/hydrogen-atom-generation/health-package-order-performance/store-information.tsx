@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { cityAgentHealthyGiftOrder,cityAgentHealthyGiftOrderStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"

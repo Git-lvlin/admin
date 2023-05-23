@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getBuildhouseUseList } from '@/services/activity-management/spring-festival-build-building-activity';
 import { history, connect } from 'umi';

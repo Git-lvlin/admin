@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Space, Tooltip } from 'antd'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import moment from 'moment'

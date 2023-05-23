@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { adminList } from '@/services/community-management/dynamic-admin-list';
 import { banDynamicComment } from '@/services/community-management/dynamic-ban-dynamic-comment';
 import { cancelBanDynamicComment } from '@/services/community-management/dynamic-cancel-ban-dynamic-comment';

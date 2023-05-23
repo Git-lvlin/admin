@@ -1,5 +1,5 @@
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import React, { useState } from 'react'
 import { Button } from 'antd'
 import moment from 'moment'
