@@ -103,7 +103,7 @@ const UserRelationship = () => {
       dataIndex: 'phoneNumber',
       valueType: 'text',
       search: false,
-      render: (_) => <a onClick={() => { setPhoneNumber(_); setPhoneNumber2(_) }}>{_}</a>
+      render: (_) => <a onClick={() => { setPhoneNumber(_); setPhoneNumber2(_);setMemberId('');setMemberId2('') }}>{_}</a>
     },
     {
       title: '用户手机号',
