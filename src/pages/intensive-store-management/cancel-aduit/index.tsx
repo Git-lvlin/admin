@@ -73,11 +73,9 @@ const CancelAduit: FC = () => {
       title: '店铺类型',
       dataIndex: 'memberShopType',
       align: 'center',
-      valueType: 'select',
       hideInSearch: true,
-      valueEnum: {
-        10: '普通社区店',
-        20: '生鲜社区店'
+      render: (_,data) => {
+        return data?.memberShopType?.desc
       }
     },
     {
