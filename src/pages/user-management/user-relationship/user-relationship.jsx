@@ -17,6 +17,8 @@ const UserRelationship = () => {
   const actionRef = useRef();
   const [phoneNumber, setPhoneNumber] = useState();
   const [phoneNumber2, setPhoneNumber2] = useState();
+  const [memberId, setMemberId] = useState();
+  const [memberId2, setMemberId2] = useState();
   const [indexData, setIndexData] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +36,7 @@ const UserRelationship = () => {
   const getInitData = () => {
     console.log('initialData', phoneNumber)
     const json = {
-      phoneNumber: phoneNumber
+      phoneNumber: phoneNumber,
     }
     const batchs = JSON.stringify(json);
     console.log('batchs', batchs)
@@ -62,7 +64,8 @@ const UserRelationship = () => {
   const getFieldValue = () => {
     return {
       ...form.current?.getFieldsValue(),
-      phoneNumber: phoneNumber
+      phoneNumber: phoneNumber,
+      memberId: memberId
     }
   }
 
@@ -308,11 +311,30 @@ const UserRelationship = () => {
             placeholder="请输入用户手机号码"
             onSearch={(value) => {
               setPhoneNumber(Number(value))
-              // setIndexData('');
+              setMemberId('')
+              setMemberId2('')
             }}
             onChange={(e) => { setPhoneNumber2(e.target.value) }}
             value={phoneNumber2}
             enterButton={'查询'} />
+          <Search
+            style={
+              {
+                width: 300,
+                marginLeft: 24,
+                marginTop: 20,
+                marginBottom: 20,
+              }
+            }
+            placeholder="请输入用户ID"
+            onSearch={(value) => {
+              setMemberId(value)
+              setPhoneNumber('')
+              setPhoneNumber2('')
+            }}
+            onChange={(e) => { setMemberId2(e.target.value) }}
+            value={memberId2}
+            enterButton={'用户ID查询'} />
         </ProForm.Group>
         <ProForm.Group>
           &nbsp;&nbsp;手机号码：{indexData?.phoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;Ta的邀请人手机号：{indexData?.invitePhoneNumber}&nbsp;&nbsp;&nbsp;&nbsp;是否为生鲜店主：{indexData?.memberShopType ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;是否为社区店主：{indexData?.userType ? '是' : '不是'}
@@ -327,14 +349,17 @@ const UserRelationship = () => {
         <ProForm.Group>
           &nbsp;&nbsp;是否为AED团长：{indexData?.isAEDLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.aedLeaderPhone?indexData?.aedLeaderPhone:'-'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED子公司：{indexData?.subsidiaryName?indexData?.subsidiaryName:'-'}
         </ProForm.Group>
+        <ProForm.Group>
+          &nbsp;&nbsp;用户ID：{indexData?.id}
+        </ProForm.Group>
       </ProCard>
 
-      {!!phoneNumber && <ProTable
+      {(!!phoneNumber || !!memberId) && <ProTable
         formRef={form}
         rowKey="id"
         columns={columns}
         actionRef={actionRef}
-        params={phoneNumber && { phoneNumber: phoneNumber }}
+        params={((phoneNumber|| memberId)&& { phoneNumber: phoneNumber, id: memberId }) }
         request={userRelationShip}
         postData={(data) => {
           setIndexData(data.memberInviteInfoDTO)
