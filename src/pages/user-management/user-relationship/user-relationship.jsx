@@ -65,7 +65,7 @@ const UserRelationship = () => {
     return {
       ...form.current?.getFieldsValue(),
       phoneNumber: phoneNumber,
-      memberId: memberId
+      pid: memberId
     }
   }
 
