@@ -74,9 +74,6 @@ const CancelAduit: FC = () => {
       dataIndex: 'memberShopType',
       align: 'center',
       hideInSearch: true,
-      render: (_,data) => {
-        return data?.memberShopType?.desc
-      }
     },
     {
       title: '店铺名称',
@@ -248,7 +245,7 @@ const CancelAduit: FC = () => {
       return (
         {
           ...ele,
-          memberShopType: ele.memberShopType?.code,
+          memberShopType: ele.memberShopType?.desc,
           freshVerifyStatus: ele.freshVerifyStatus?.code,
           shopMemberStatus: ele.shopMemberStatus?.code,
           depositStatus: ele.depositStatus?.code,
