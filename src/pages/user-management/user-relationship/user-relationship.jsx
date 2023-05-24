@@ -359,7 +359,7 @@ const UserRelationship = () => {
         rowKey="id"
         columns={columns}
         actionRef={actionRef}
-        params={((phoneNumber|| memberId)&& { phoneNumber: phoneNumber, id: memberId }) }
+        params={((phoneNumber|| memberId)&& { phoneNumber: phoneNumber, pid: memberId }) }
         request={userRelationShip}
         postData={(data) => {
           setIndexData(data.memberInviteInfoDTO)
