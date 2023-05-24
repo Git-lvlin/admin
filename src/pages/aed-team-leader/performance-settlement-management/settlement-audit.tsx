@@ -154,12 +154,6 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
-      title: '审核时间',
-      dataIndex: 'auditTime',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
       title: '结算状态',
       dataIndex: 'status',
       align: 'center',
