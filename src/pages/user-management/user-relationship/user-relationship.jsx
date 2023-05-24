@@ -214,10 +214,11 @@ const UserRelationship = () => {
       title: '是否签到',
       dataIndex: 'inviteStatus',
       search: false,
-      valueEnum: {
-        0: '未签到',
-        1: '未签到',
-        2: '已签到',
+      render: (_) => {
+        if(_ == 2){
+          return '已签到'
+        }
+        return '未签到'
       }
     },
     {
