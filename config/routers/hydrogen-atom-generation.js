@@ -22,5 +22,11 @@ export default {
       component: './hydrogen-atom-generation/health-package-order-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'settings-page',
+      path: '/hydrogen-atom-generation/settings-page',
+      component: './hydrogen-atom-generation/settings-page',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

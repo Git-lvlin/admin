@@ -16,26 +16,41 @@ type DataSourceType = {
 const defaultData: DataSourceType[] = [
   {
     id: 1,
-    orderType: '氢原子月租/管理费(本省)',
+    orderType: '氢原子启动费',
     performancePeriod: ['2022-01-01', '2022-01-31'],
   },
   {
     id: 2,
-    orderType: '氢原子月租/管理费(全国)',
+    orderType: '氢原子月租/管理费(本市)',
     performancePeriod: ['2022-02-01', '2022-02-28'],
   },
   {
     id: 3,
-    orderType: '健康套餐(孝爱礼包)',
+    orderType: '氢原子月租/管理费(全国)',
     performancePeriod: ['2022-02-01', '2022-02-28'],
   },
   {
     id: 4,
-    orderType: '氢原子启动费',
+    orderType: '新集约批发单',
     performancePeriod: ['2022-02-01', '2022-02-28'],
   },
   {
     id: 5,
+    orderType: '氢原子全款销售单',
+    performancePeriod: ['2022-02-01', '2022-02-28'],
+  },
+  {
+    id: 6,
+    orderType: '氢原子业绩',
+    performancePeriod: ['2022-02-01', '2022-02-28'],
+  },
+  {
+    id: 7,
+    orderType: '健康礼包',
+    performancePeriod: ['2022-02-01', '2022-02-28'],
+  },
+  {
+    id: 8,
     orderType: 'AED培训服务套餐',
     performancePeriod: ['2022-02-01', '2022-02-28'],
   },
@@ -62,7 +77,7 @@ const EditableTable: React.FC = () => {
       editable: false
     },
     {
-      title: '大健康省代平台可展示业绩时段',
+      title: '氢原子市代平台可展示业绩时段',
       dataIndex: 'performancePeriod',
       valueType: 'dateRange',
       renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
