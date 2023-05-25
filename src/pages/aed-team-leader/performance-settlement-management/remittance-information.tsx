@@ -82,6 +82,7 @@ export default (props) => {
           minLength:5,
           placeholder:'请输入5-30个字符'
         }}
+        disabled
       />
       <ProFormText
         name="id"
