@@ -314,7 +314,7 @@ export default (props:CumulativeProps)=>{
         placeholder:'请输入5-50个字符'
       }}
       width={400}
-      extra={<span style={{ color:'red' }}>此备注内容将会在AED子公司后台展示，请注意隐私，谨慎填写。</span>}
+      // extra={<span style={{ color:'red' }}>此备注内容将会在AED子公司后台展示，请注意隐私，谨慎填写。</span>}
     />
     <Divider />
 
