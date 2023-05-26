@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { history, connect } from 'umi';
 import { PageContainer } from '@/components/PageContainer';
 import { queryConsumeList,getConsumeData } from '@/services/sign-activity-management/packet-record-query-consume-list';

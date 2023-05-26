@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { exportList} from '@/services/intensive-activity-management/intensive-activity-profit-detail';
 import { PageContainer } from '@ant-design/pro-layout';
 import moment from 'moment'

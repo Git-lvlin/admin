@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Space, Button } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { shopkeeperInvited } from '@/services/intensive-store-management/shopkeeper-user';
 import { useParams, useLocation, history } from 'umi';

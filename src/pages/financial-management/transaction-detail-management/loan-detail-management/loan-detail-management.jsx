@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
@@ -49,12 +49,16 @@ const LoanDetailManagement = () =>{
       valueType: 'indexBorder'
     },
     {
-      title: '受益方ID',
+      title: '收益店铺ID',
       dataIndex: 'accountId'
     },
     {
       title: '受益方手机',
       dataIndex: 'accountMobile'
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId'
     },
     {
       title: '会员类型',
@@ -142,6 +146,7 @@ const LoanDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
+        scroll={{x: 'max-content'}}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

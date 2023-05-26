@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Table, Spin } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 // import XLSX from 'xlsx'
 import { PageContainer } from '@/components/PageContainer';
 import * as api from '@/services/product-management/product-list';

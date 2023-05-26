@@ -77,6 +77,10 @@ const Upload = (props) => {
           arr = imgSort(arr);
         }
 
+        if (maxCount !== 1 && arr.length > maxCount) {
+          arr.length = maxCount;
+        }
+
         fileData.current = arr;
         setFileList(fileData.current);
         onChange(maxCount === 1 ? res : arr.map(item => item.url))

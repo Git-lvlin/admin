@@ -1,6 +1,6 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps, Detail } from "./data"
 import { Descriptions } from 'antd';
@@ -24,7 +24,8 @@ export default function TransactionData () {
       cityBusinessDeptId:time?.cityBusinessDeptId,
       cityBusinessDeptName:time?.cityBusinessDeptName,
       begin:time?.createTime&&time?.createTime[0],
-      end:time?.createTime&&time?.createTime[1]
+      end:time?.createTime&&time?.createTime[1],
+      hasTeamLeader:time?.hasTeamLeader
     }
     cityBusinessDeptSum(params).then(res=>{
       if(res.code==0){
@@ -55,19 +56,6 @@ export default function TransactionData () {
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true
-    },
-    {
-      title: '业绩类型',
-      dataIndex: 'type',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        0: '没有大团队长',
-        1: '有大团队长'
-      },
-      fieldProps:{
-        placeholder:'请选择业绩类型'
-      }
     },
     {
       title: '累计业绩（元）',

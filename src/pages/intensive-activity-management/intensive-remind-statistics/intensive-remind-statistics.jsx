@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
 import { remindStatisticsList } from '@/services/intensive-activity-management/intensive-remind-statistics';

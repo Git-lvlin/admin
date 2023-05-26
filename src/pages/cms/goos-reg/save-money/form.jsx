@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { saveMoneyAdd } from '@/services/cms/member/member';
 import { saveMoneyFormList } from '@/services/cms/member/member';

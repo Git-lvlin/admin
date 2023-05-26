@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Button } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
@@ -59,12 +59,16 @@ const BonusDetailManagement = () =>{
       }
     },
     {
-      title: '受益方ID',
+      title: '收益店铺ID',
       dataIndex: 'accountId'
     },
     {
       title: '受益方手机',
       dataIndex: 'accountMobile'
+    },
+    {
+      title: '收益用户ID',
+      dataIndex: 'memberId'
     },
     {
       title: '交易类型',
@@ -144,7 +148,8 @@ const BonusDetailManagement = () =>{
       title: '操作',
       dataIndex: 'optoion',
       valueType: 'option',
-      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('bonus')}}>详情</a>
+      render: (_, records)=> <a onClick={()=> {setRoyaltyVisible(true); setSelectItem(records?.orderNo); setType('bonus')}}>详情</a>,
+      fixed: 'right'
     }
 
   ]
@@ -154,6 +159,7 @@ const BonusDetailManagement = () =>{
         rowKey='id'
         columns={columns}
         toolBarRender={false}
+        scroll={{x: 'max-content'}}
         search={{
           optionRender: ({searchText, resetText}, {form}) => [
             <Button

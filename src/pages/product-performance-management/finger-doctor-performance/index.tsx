@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import moment from 'moment'
 
 import type { FC } from "react"
@@ -66,6 +66,11 @@ const NewIntensivePerformance = (props:propsType) => {
       dataIndex: 'buyerMobile',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
     },
     {
       title: '订单编号',
@@ -224,6 +229,7 @@ const NewIntensivePerformance = (props:propsType) => {
           </Descriptions>
         )}
         formRef={form}
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

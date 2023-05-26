@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { consumerOrderPage } from '@/services/hydrogen-atom-management/hydrogen-atom-start-recording'
 import moment from 'moment'
@@ -75,6 +75,11 @@ export default () => {
         placeholder:'请输入用户手机'
       },
       order:6
+    },
+    {
+      title: '启动人用户ID',
+      dataIndex: 'occupantId',
+      align: 'center',
     },
     {
       title: '社区店主',

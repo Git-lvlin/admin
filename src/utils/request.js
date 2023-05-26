@@ -58,6 +58,13 @@ const getPrefix = () => {
 
 }
 
+const checkId = (data) => {
+  if (data?.memberId) {
+    return /^\d{19}$/g.test(data?.memberId)
+  }
+  return true
+}
+
 
 /** 配置request请求时的默认参数 */
 
@@ -122,6 +129,11 @@ const request = (url, options = {}) => {
     }, 1000)
     return null;
   }
+
+  if (!checkId(options.data)) {
+    message.error('用户ID只能是19位纯数字')
+    return Promise.reject()
+  }
   if (options.data && !options.noFilterParams) {
     // eslint-disable-next-line no-param-reassign
     options.data = paramsEmptyFilter(options.data)
@@ -141,7 +153,6 @@ const request = (url, options = {}) => {
     // eslint-disable-next-line no-param-reassign
     options.params = paramsUndefinedToEmpty(options.params)
   }
-
   return instance(url, {
     ...options,
     ...ops,

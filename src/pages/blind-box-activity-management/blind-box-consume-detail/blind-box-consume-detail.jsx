@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button,Image,Descriptions} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getBlindboxUseList } from '@/services/blind-box-activity-management/blindbox-get-use-list';
 import { history } from 'umi';
@@ -43,6 +43,14 @@ export default () => {
         title: '用户手机号',
         dataIndex: 'memberMobile',
         valueType: 'text',
+        render: (_,record) => {
+          return <div>{record.memberMobile?record.memberMobile:<span style={{ color:'red' }}>{record.memberMobile}（第1次注销）</span>}</div>
+        }
+      },
+      {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        align: 'center',
       },
       {
         title: '用户名',

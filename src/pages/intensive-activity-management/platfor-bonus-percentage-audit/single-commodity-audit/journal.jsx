@@ -4,7 +4,7 @@ import ProForm, {
   DrawerForm,
 } from '@ant-design/pro-form';
 import { skuPercentLog  } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 
 export default (props) => {
   const { visible, setVisible, logId,onClose} = props;

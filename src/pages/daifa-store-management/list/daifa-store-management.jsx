@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Button, Space } from 'antd';
 import { PageContainer } from '@/components/PageContainer';
 import { storeList, storeDetail } from '@/services/daifa-store-management/list'

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Button } from 'antd'
 import { PageContainer } from '@ant-design/pro-layout'
 
@@ -47,7 +47,15 @@ const FoundationDonationRecords =  () => {
       title: '附言手机号',
       dataIndex: 'phone',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,record) => {
+        return <div>{record.phone?record.phone:<span style={{ color:'red' }}>{record.phone}（第1次注销）</span>}</div>
+      }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       title: '付款人姓名',
@@ -138,7 +146,8 @@ const FoundationDonationRecords =  () => {
         pagination={{
           showQuickJumper: true,
           pageSize: 10
-        }} 
+        }}
+        scroll={{x:'max-content'}} 
         actionRef={actRef}
         options={false}
         search={{

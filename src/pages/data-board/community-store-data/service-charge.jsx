@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import AddressCascader from '@/components/address-cascader'
 import Export from '@/pages/export-excel/export'

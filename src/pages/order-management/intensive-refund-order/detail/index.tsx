@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Form,Button,Descriptions,Typography,Divider,Image } from 'antd'
 import { DrawerForm,ProFormRadio,ProFormTextArea} from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
 import { getAuditInfo,operationRefundAudit } from '@/services/order-management/intensive-refund-order'
 import styles from './styles.less'

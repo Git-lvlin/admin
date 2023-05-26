@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { DatePicker } from 'antd'
 import moment from 'moment'
 
@@ -41,6 +41,19 @@ const HealthPackageCommission: FC = () => {
       title: '用户手机',
       dataIndex: 'phoneNumber',
       hideInTable: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '佣金类型',

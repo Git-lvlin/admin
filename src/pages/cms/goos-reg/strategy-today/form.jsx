@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { ModalForm } from '@ant-design/pro-form';
 import { hotGoosAdd } from '@/services/cms/member/member';
 import { todayAllGoodsList } from '@/services/cms/member/member';

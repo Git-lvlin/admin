@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { PageContainer } from '@ant-design/pro-layout'
 
 import type { ProColumns } from '@ant-design/pro-table'
@@ -33,6 +33,11 @@ const FundReceiptRecord = () => {
       dataIndex: 'phone', 
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       dataIndex: 'phone', 

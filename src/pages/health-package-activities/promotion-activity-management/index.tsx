@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -49,6 +49,12 @@ const PromotionActivityManagement: FC = () => {
       dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '店主用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      order:-1
     },
     {
       title: '店主姓名',

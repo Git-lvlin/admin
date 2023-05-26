@@ -1,6 +1,6 @@
 import React, { useRef,useState,useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { history } from 'umi';
 import { Button,Image,Tabs,Switch,message,Tooltip } from 'antd';
 import ContentModel from './content-model';

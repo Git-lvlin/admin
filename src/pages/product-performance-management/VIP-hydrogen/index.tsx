@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
 
@@ -53,7 +53,7 @@ const Aggregate: FC<any> = ({form}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={4}
+      column={{xl: 2, xxl: 3}}
       bordered
       dataSource={data}
     />
@@ -80,6 +80,11 @@ const VIPHydrogen: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'memberPhone',
+      align: 'center'
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
       align: 'center'
     },
     {
@@ -130,6 +135,12 @@ const VIPHydrogen: FC = () => {
     {
       title: '推荐人手机号',
       dataIndex: 'storeMemberPhone',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '推荐人用户ID',
+      dataIndex: 'recomMemberId',
       align: 'center',
       hideInSearch: true
     },
@@ -188,6 +199,7 @@ const VIPHydrogen: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x: 'max-content'}}
         formRef={form}
         headerTitle={<Aggregate form={searchConfig}/>}
         options={false}

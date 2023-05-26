@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { history } from 'umi';
 import { Divider, Button, message, Typography, Table, Space, Modal, Input, Popconfirm } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getResList, getDeleteRes, getVersionAllList, inputVersionList } from '@/services/resource'
 import { platformType, platformTypeSearch } from '@/constants/index'

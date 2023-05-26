@@ -1,4 +1,4 @@
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { useRef } from 'react'
 import moment from 'moment'
 

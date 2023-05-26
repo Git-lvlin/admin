@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Tooltip, Space } from 'antd'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -57,15 +57,23 @@ const CancelAduit: FC = () => {
       },
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '店铺类型',
       dataIndex: 'memberShopType',
       align: 'center',
-      valueType: 'select',
       hideInSearch: true,
-      valueEnum: {
-        10: '普通社区店',
-        20: '生鲜社区店'
-      }
     },
     {
       title: '店铺名称',
@@ -237,7 +245,7 @@ const CancelAduit: FC = () => {
       return (
         {
           ...ele,
-          memberShopType: ele.memberShopType?.code,
+          memberShopType: ele.memberShopType?.desc,
           freshVerifyStatus: ele.freshVerifyStatus?.code,
           shopMemberStatus: ele.shopMemberStatus?.code,
           depositStatus: ele.depositStatus?.code,

@@ -3,7 +3,7 @@ import { Form,List,Divider } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { 
   cityAgentHydrogenComm,
   cityAgentWholesaleComm,
@@ -68,6 +68,19 @@ export default (props) => {
       hideInTable: true,
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单号',
       dataIndex: 'orderSn',
       align: 'center',
@@ -108,10 +121,9 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agentId:msgDetail?.agentId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderType:time?.orderType
+      ...time
     }
     if(type==2){
       cityAgentHydrogenCommStats(params).then(res=>{

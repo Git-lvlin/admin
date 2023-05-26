@@ -4,7 +4,7 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Button, message, Popconfirm } from 'antd';
 import ProForm, { ProFormSwitch, ProFormRadio, } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { goodsClassList, openSwitch, hideItem } from '@/services/cms/member/member';
 import Edit from './form';

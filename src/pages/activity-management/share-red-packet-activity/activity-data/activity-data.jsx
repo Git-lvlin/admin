@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { couponInviteLogList } from '@/services/activity-management/share-red-packet-activity';
 import { history, connect } from 'umi';
@@ -46,6 +46,14 @@ export default () => {
         title: '用户手机号',
         dataIndex: 'memberMobile',
         valueType: 'text',
+        render: (_,record) => {
+          return <div>{record.memberMobile?record.memberMobile:<span style={{ color:'red' }}>{record.memberMobile}（第1次注销）</span>}</div>
+        }
+      },
+      {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
       },
       {
         title: '用户名',
@@ -58,6 +66,12 @@ export default () => {
         dataIndex: 'inviteeMobile',
         valueType: 'text',
         hideInSearch:true
+      },
+      {
+        title: '被邀请用户ID',
+        dataIndex: 'inviteeId',
+        valueType: 'text',
+        hideInSearch: true
       },
       {
         title: '被邀请时间',

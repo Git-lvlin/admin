@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { ModalForm } from '@ant-design/pro-form'
 import { ProFormTextArea } from '@ant-design/pro-form'
 import { Space, message, Form, Button} from 'antd'
@@ -27,7 +27,6 @@ const MemberStoreFundManagement = () => {
 
   useEffect(()=> {
     subtotal({
-      accountType: 'store',
       ...search,
       page,
       settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
@@ -74,7 +73,6 @@ const MemberStoreFundManagement = () => {
   const getValues = (form) => {
     return {
       ...form?.getFieldValue(),
-      accountType: "store",
       settleTimeBegin: form?.getFieldValue()?.settleTime?.[0].format('YYYY-MM-DD'),
       settleTimeEnd: form?.getFieldValue()?.settleTime?.[1].format('YYYY-MM-DD'),
       registTimeBegin: form?.getFieldValue()?.registTime?.[0].format('YYYY-MM-DD'),
@@ -140,6 +138,10 @@ const MemberStoreFundManagement = () => {
       dataIndex: 'registMobile'
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId'
+    },
+    {
       title: '注册日期',
       dataIndex: 'registTime',
       hideInSearch: true
@@ -200,6 +202,7 @@ const MemberStoreFundManagement = () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
+      fixed: 'right',
       render: (_, records)=>(
         <Space size='large'>
           <a onClick={

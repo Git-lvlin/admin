@@ -338,3 +338,11 @@ export const removeEmpty = (arr) => {
   }
   return arr
 }
+
+export const numberTransform = (number) => {
+  if(!number) {
+    return 0
+  } else {
+    return Number(number)
+  }
+}

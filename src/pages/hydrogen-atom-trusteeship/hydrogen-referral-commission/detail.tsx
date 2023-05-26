@@ -5,7 +5,7 @@ import { amountTransform } from '@/utils/utils'
 import type { ProColumns } from "@ant-design/pro-table"
 import type { DescriptionsProps } from "./data"
 import type { FormInstance } from "@ant-design/pro-form"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import style from './style.less'

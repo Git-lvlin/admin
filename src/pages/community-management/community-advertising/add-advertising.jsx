@@ -7,7 +7,7 @@ import ProForm, { ProFormText,ProFormRadio,ProFormSelect} from '@ant-design/pro-
 import { history } from 'umi';
 import SelectProductModal from '@/components/select-product-modal'
 import { message, Form,Button } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import Upload from '@/components/upload';
 

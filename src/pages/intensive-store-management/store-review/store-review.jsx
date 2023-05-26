@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space, Image, Tooltip } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';
@@ -25,6 +25,19 @@ const StoreReview = () => {
         placeholder: '请输入店铺ID'
       },
       width: 80,
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     // {
     //   title: '店铺图片',
@@ -260,25 +273,8 @@ const StoreReview = () => {
         search={{
           labelWidth: 120,
           defaultCollapsed: true,
-          optionRender: ({ searchText, resetText }, { form }) => [
-            <Button
-              key="search"
-              type="primary"
-              onClick={() => {
-                form?.submit();
-              }}
-            >
-              {searchText}
-            </Button>,
-            <Button
-              key="rest"
-              onClick={() => {
-                form?.resetFields();
-              }}
-            >
-              {resetText}
-            </Button>,
-            // <Button key="out" onClick={() => { exportExcel(form) }}>导出</Button>,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse()
           ],
         }}
         columns={columns}

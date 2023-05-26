@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { getCommissionList } from '@/services/product-management/designated-commodity-settlement';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Button, Card, Col, Row } from 'antd';

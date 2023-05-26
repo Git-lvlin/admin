@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 
 import type { ProColumns } from "@ant-design/pro-table"
 import type { TableProps } from "./data"

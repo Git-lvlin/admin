@@ -1,6 +1,6 @@
 import React from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { standLetterList } from '@/services/message-management/message-template-config'
 
 import '../styles.less'

@@ -1,7 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {Form,Button,Modal,message} from 'antd';
 import {connect} from 'umi';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency } from '@ant-design/pro-form';
 import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'

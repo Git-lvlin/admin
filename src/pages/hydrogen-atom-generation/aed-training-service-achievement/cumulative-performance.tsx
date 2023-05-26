@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { cityAgentAedTrainOrder,cityAgentAedTrainOrderStats } from "@/services/hydrogen-atom-generation/aed-training-service-achievement"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem,CumulativeProps } from "./data"
@@ -63,6 +63,19 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单金额',
       dataIndex: 'payAmount',
       align: 'center',
@@ -85,10 +98,9 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      scopeDesc:time?.scopeDesc
+      ...time
     }
     cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){

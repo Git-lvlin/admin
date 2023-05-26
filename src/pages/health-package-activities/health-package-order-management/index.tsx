@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Select } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
@@ -49,6 +49,19 @@ const StoreHealthCardManagement = () => {
       title: '下单人手机号',
       dataIndex: 'memberPhone',
       align: 'center'
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '套餐名称',

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { Button, Dropdown, Menu } from "antd"
 import { EllipsisOutlined } from "@ant-design/icons"
 
@@ -323,7 +323,15 @@ export default function EquipmentManagement() {
     {
       title: '用户手机',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      render: (_,record) => {
+        return <div>{record.memberPhone?record.memberPhone:<span style={{ color:'red' }}>{record.memberPhone}（第1次注销）</span>}</div>
+      }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
     },
     {
       title: '使用状态',

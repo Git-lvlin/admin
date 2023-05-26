@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
 
@@ -38,7 +38,7 @@ const Aggregate: FC<any> = ({data}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={4}
+      column={{xl: 2, xxl: 3}}
       bordered
       dataSource={data}
     />
@@ -65,6 +65,14 @@ const HydrogenStartFee: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'memberPhone',
+      align: 'center',
+      render: (_,record) => {
+        return <div>{record.memberPhone?record.memberPhone:<span style={{ color:'red' }}>{record.memberPhone}（第1次注销）</span>}</div>
+      }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
       align: 'center'
     },
     {
@@ -101,6 +109,12 @@ const HydrogenStartFee: FC = () => {
     {
       title: '店主手机号',
       dataIndex: 'storeMemberPhone',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '店主用户ID',
+      dataIndex: 'recomMemberId',
       align: 'center',
       hideInSearch: true
     },
@@ -154,6 +168,7 @@ const HydrogenStartFee: FC = () => {
           setData(v[0].total)
           return (v[0].res)
         }}
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

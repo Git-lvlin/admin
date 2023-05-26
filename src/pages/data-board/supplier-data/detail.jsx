@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { 
   Button,
   Image 

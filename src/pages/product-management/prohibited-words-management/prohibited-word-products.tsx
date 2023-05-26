@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -27,6 +27,15 @@ const ProhibitedWordProducts: React.FC = () => {
         })
       }
     })
+  }
+
+  const getFieldsValue = () => {
+    const { gc, ...rest } = form.current?.getFieldsValue()
+    return {
+      gcId1: gc && gc[0],
+      gcId2: gc && gc[1],
+      ...rest
+    }
   }
 
   const columns: ProColumns[] = [
@@ -143,7 +152,7 @@ const ProhibitedWordProducts: React.FC = () => {
             <Export
               key='export'
               type='sensitive-goods-list'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={getFieldsValue}
             />
           ]
         }}

@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Space, Image } from 'antd'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -30,6 +30,11 @@ const AEDVolunteerIDInfo = () => {
       dataIndex: 'orderSn',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      order: -1,
     },
     {
       title: '手机号码',
@@ -113,6 +118,7 @@ const AEDVolunteerIDInfo = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, r) => (
         <Space size='middle'>
           <a onClick={() => { setVisible(true); setData(r) }}>更新</a>
@@ -145,6 +151,7 @@ const AEDVolunteerIDInfo = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: 'max-content'}}
         rowSelection={{
           selectedRowKeys: selectedKeys,
           preserveSelectedRowKeys: true,

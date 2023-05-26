@@ -1,15 +1,16 @@
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import React, { useRef,useState } from 'react'
 import { Button } from 'antd'
 import moment from 'moment'
 import { history } from 'umi'
 import { amountTransform } from '@/utils/utils'
 import { getRefundStoreOrderList } from '@/services/order-management/intensive-after-sale-orders'
-import './styles.less'
+
 import DrawerDetail from './detail'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import styles from './styles.less'
 
 
 const afterSalesOrder = () => {
@@ -129,7 +130,7 @@ const afterSalesOrder = () => {
     }
   }
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} className={styles.desc}>
       <ProTable
         rowKey="refundId"
         options={false}

@@ -457,9 +457,10 @@ const TableList = () => {
                     <span>主单号：{item.sumOrderId}</span>
                     <span>下单用户：{item.store.linkman}</span>
                     <span>用户手机号：{item.store.phone}</span>
-                    <span>下单店主ID：{item.storeNo}</span>
+                    <span>下单店铺ID：{item.storeNo}</span>
                     {!!+item.wsId && <span>商品归属集约活动ID：{item.wsId}</span>}
                     {!isDocumentary && <span>总金额：{amountTransform(item.totalFee, '/')}元</span>}
+                    <span>用户ID：{item.memberId}</span>
                   </Space>
                 </div>
                 {item.businessType === 30

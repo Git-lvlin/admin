@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { couponCrowdList } from '@/services/crowd-management/coupon-crowd';
 
 export default (props) => {

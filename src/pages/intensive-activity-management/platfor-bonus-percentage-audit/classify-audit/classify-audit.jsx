@@ -3,7 +3,7 @@ import { Spin, Empty, Switch,Form,Tooltip } from 'antd'
 import { categoryAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit'
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import Journal from './journal';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import AuditModel from './audit-model'
 import { amountTransform } from '@/utils/utils'
 import styles from './style.less'

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Button} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PlusOutlined } from '@ant-design/icons';
 import { getActiveConfigList} from '@/services/intensive-activity-management/penny-activity';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';

@@ -1,6 +1,6 @@
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps } from "./data"
 import EditInformation from './edit-information'
@@ -73,7 +73,10 @@ export default function TransactionData () {
       title: '负责人手机',
       dataIndex: 'managerPhone',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,record) => {
+        return <div>{record.managerPhone?record.managerPhone:<span style={{ color:'red' }}>{record.managerPhone}（第1次注销）</span>}</div>
+      }
     },
     {
       title: '团长数量',

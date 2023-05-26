@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { Input, InputNumber } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"
@@ -44,6 +44,11 @@ function ReferralCommission () {
       title: '推荐人手机',
       dataIndex: 'pMobile',
       align: 'center'
+    },
+    {
+      title: '推荐人用户ID',
+      dataIndex: 'pMemId',
+      align: 'center',
     },
     {
       title: '总提成金额(元)',

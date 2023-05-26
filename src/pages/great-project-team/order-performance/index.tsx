@@ -1,6 +1,6 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns, ActionType} from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
@@ -49,6 +49,19 @@ export default function TransactionData () {
         placeholder:'请输入大团队长手机号码',
         labelCol:4
       },
+    },
+    {
+      title: '团长用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '团长用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '交易时间',
@@ -153,7 +166,7 @@ export default function TransactionData () {
 
   return (
     <PageContainer title={false}>
-      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
+      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={{ xl: 3, xxl: 7 }} layout="vertical" bordered>
         <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总氢原子全款销售提成">{amountTransform(detailList?.hydrogenCommission,'/').toFixed(2)}  </Descriptions.Item>

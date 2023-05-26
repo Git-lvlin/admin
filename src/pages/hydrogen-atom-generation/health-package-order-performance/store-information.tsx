@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { cityAgentHealthyGiftOrder,cityAgentHealthyGiftOrderStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
@@ -55,6 +55,19 @@ export default (props) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单号',
       dataIndex: 'orderSn',
       align: 'center',
@@ -101,11 +114,10 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderType:time?.orderType,
-      scope:scope
+      scope:scope,
+      ...time
     }
     cityAgentHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){

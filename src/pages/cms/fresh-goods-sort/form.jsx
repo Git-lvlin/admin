@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { Select, Form, Input, Tooltip, Button, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import {

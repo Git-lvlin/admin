@@ -3,7 +3,7 @@ import { Form,List,Divider } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { findItemOrderPage,itemOrderSum } from "@/services/office-management/office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"

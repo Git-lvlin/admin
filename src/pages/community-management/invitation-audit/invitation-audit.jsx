@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProForm,{ ModalForm,ProFormRadio,ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import { adminList } from '@/services/community-management/dynamic-admin-list';

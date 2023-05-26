@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Tooltip } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { skuAuditList } from '@/services/intensive-activity-management/platfor-bonus-percentage-audit';
 import AuditModel from './audit-model'
 import Journal from './journal';

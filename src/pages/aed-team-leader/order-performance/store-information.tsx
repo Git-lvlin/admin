@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import ProCard from "@ant-design/pro-card"
 import { AEDOrder, AEDOrderStats, AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
@@ -36,7 +36,7 @@ const StoreInformation = (props:CumulativeProps) => {
     {
       title: '订单日期',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      valueType: 'dateTimeRange',
       align: 'center',
       hideInTable: true,
     },
@@ -93,6 +93,11 @@ const StoreInformation = (props:CumulativeProps) => {
       hideInSearch: true
     },
     {
+      title: '下单用户ID',
+      dataIndex: 'memberId',
+      valueType: 'text',
+    },
+    {
       title: '客户手机',
       dataIndex: 'teamPhone',
       align: 'center',
@@ -107,7 +112,7 @@ const StoreInformation = (props:CumulativeProps) => {
       dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -125,12 +130,17 @@ const StoreInformation = (props:CumulativeProps) => {
       order: -2
     },
     {
+      title: '团长用户ID',
+      dataIndex: 'teamMemberId',
+      valueType: 'text',
+    },
+    {
       title: '收益',
       dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -144,7 +154,7 @@ const StoreInformation = (props:CumulativeProps) => {
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_){
           return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
         }else{
           return '-'
@@ -254,12 +264,60 @@ const StoreInformation = (props:CumulativeProps) => {
       fieldProps: {
         placeholder: '全部'
       },
-      hideInSearch: activeKey == '1',
       hideInTable: true
     },
     {
       title: '线下培训状态',
       dataIndex: 'offTrainStatus',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '已下保证金单状态',
+      dataIndex: 'depositStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '已下保证金订单',
+        2: '未下保证金订单',
+      },
+      fieldProps: {
+        placeholder: '全部'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '保证金订单号',
+      dataIndex: 'depositOrderSn',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey == '1'
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'auditStatus',
+      align: 'center',
+      valueType: 'select',
+      valueEnum:{
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '审核通过待汇款',
+        6: '已结算',
+        7: '审核不通过',
+        8: '已失效'
+      },
+      fieldProps: {
+        placeholder: '请选择结算状态'
+      },
+      hideInSearch: activeKey == '1',
+      hideInTable: true
+    },
+    {
+      title: '业绩结算状态',
+      dataIndex: 'auditStatusDesc',
       align: 'center',
       hideInSearch: true,
       hideInTable: activeKey == '1'
@@ -268,16 +326,9 @@ const StoreInformation = (props:CumulativeProps) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone,
-      orderType:time?.orderType,
-      contractStatus:time?.contractStatus,
-      learnStatus:time?.learnStatus,
-      examStatus:time?.examStatus,
-      teamLeaderPhone:time?.teamLeaderPhone,
-      offTrainStatus:time?.offTrainStatus
+      ...time
     }
     const api=activeKey=='1'?AEDOrderStats:AEDTrainingsServiceStats
     api(params).then(res=>{
@@ -310,6 +361,7 @@ const StoreInformation = (props:CumulativeProps) => {
           pageSize: 10,
           showQuickJumper: true,
         }}
+        scroll={{ x: 'max-content' }}
         onSubmit={(val)=>{
           setOrderSum(0)
           setTime(val)
@@ -354,9 +406,9 @@ export default (props:CumulativeProps)=>{
   const divideName=()=>{
     switch (type) {
       case 1:
-        return '累计业绩'
+        return '业绩明细'
       case 2:
-        return '提成'
+        return '提成明细'
       default:
         return ''
     }
@@ -364,7 +416,7 @@ export default (props:CumulativeProps)=>{
   return (
     <DrawerForm
       layout="horizontal"
-      title={`${msgDetail?.managerPhone} ${divideName()} （ID:${msgDetail?.agencyId}）`}
+      title={`AED子公司：${msgDetail?.name} （${msgDetail?.managerPhone}） ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

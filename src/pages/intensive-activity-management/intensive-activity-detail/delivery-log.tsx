@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { deliveryLog } from '@/services/intensive-activity-management/intensive-activity-list';
 import type { ProColumns } from '@ant-design/pro-table';
 

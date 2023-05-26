@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 // import XLSX from 'xlsx'

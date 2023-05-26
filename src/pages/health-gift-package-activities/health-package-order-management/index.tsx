@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Select } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
@@ -48,7 +48,15 @@ const StoreHealthCardManagement = () => {
     {
       title: '下单人手机号',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      render: (_,record) => {
+        return <div>{record.memberPhone?record.memberPhone:<span style={{ color:'red' }}>{record.memberPhone}（第1次注销）</span>}</div>
+      }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       title: '套餐名称',
@@ -103,6 +111,8 @@ const StoreHealthCardManagement = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
+      width: 50,
       render: (_, r)=> <a onClick={()=> {setVisible(true); setId(r.orderId)}}>详情</a>
     },
   ]
@@ -118,6 +128,7 @@ const StoreHealthCardManagement = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x:'max-content'}}
         options={false}
         formRef={form}
         search={{

@@ -1,5 +1,5 @@
 import React from 'react';;
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { listReportType } from '@/services/community-management/report-list-report-type'
 
 

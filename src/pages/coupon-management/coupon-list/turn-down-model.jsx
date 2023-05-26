@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import { ModalForm} from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { couponVerifyList } from '@/services/coupon-management/coupon-audit';
 import styles from './style.less'
 

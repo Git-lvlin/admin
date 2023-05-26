@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { ManOutlined, WomanOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -31,6 +31,11 @@ const TableList = () => {
   const actionRef = useRef();
   const location = useLocation();
   const columns = [
+    {
+      title: '用户ID',
+      dataIndex: 'id',
+      order: -1,
+    },
     {
       title: '昵称',
       dataIndex: 'nickName',

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps,DescriptionsProps } from "./data"
 import EditInformation from './edit-information'
@@ -27,7 +27,23 @@ export default function TransactionData () {
       align: 'center',
       fieldProps:{
         placeholder:'请输入大团长手机号码'
+      },
+      render: (_,record) => {
+        return <div>{record.managerPhone?record.managerPhone:<span style={{ color:'red' }}>{record.managerPhone}（第1次注销）</span>}</div>
       }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '大团队长姓名',

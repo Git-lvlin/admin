@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { history } from 'umi'
 import { Button } from 'antd'
 
@@ -31,12 +31,16 @@ const WithdrawalAuditManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
+      title: '店铺ID',
       dataIndex: 'accountId',
     },
     {
       title: '注册手机号',
       dataIndex: 'registMobile',
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId'
     },
     {
       title: '用户类型',

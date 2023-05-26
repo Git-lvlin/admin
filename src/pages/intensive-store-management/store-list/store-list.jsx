@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Space, Tooltip, Image, Menu, Dropdown, Input } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProCard from '@ant-design/pro-card';
 import { QuestionCircleOutlined } from '@ant-design/icons'
 import { PageContainer } from '@/components/PageContainer';
@@ -161,7 +161,24 @@ const StoreList = (props) => {
       dataIndex: 'phone',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
+      render: (_, data) => 
+      <div>
+        <div>{data.memberPhone?data.memberPhone:<span style={{ color:'red' }}>1881111100（第1次注销）</span>}</div>
+        <div>{data.nickname === data.memberPhone ? '' : data.nickname}</div>
+      </div>
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺类型',
@@ -1152,6 +1169,19 @@ const ShopHealthPackages = (props) => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺名称',
