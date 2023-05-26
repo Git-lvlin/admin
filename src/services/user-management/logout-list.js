@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export const cancelList = async (params = {}, options = {}) => {
   const { current, pageSize,type, ...rest } = params;
-  const res = await request('/auth/java-admin/memberInfo//cancel/cancelList', {
+  const res = await request('/auth/java-admin/memberInfo/cancel/cancelList', {
     method: 'POST',
     data: {
       page: current,
