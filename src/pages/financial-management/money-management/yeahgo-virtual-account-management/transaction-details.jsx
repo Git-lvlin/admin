@@ -240,8 +240,12 @@ const TransactionDetails = ({
     },
     {
       title: '交易渠道',
-      dataIndex: '',
-      render: (_) => amountTransform(Number(_), '/')
+      dataIndex: 'withdrawType',
+      valueType: 'select',
+      valueEnum: {
+        'commission': '薪宝',
+        'youfuCommission': '优付'
+      }
     },
     {
       title: '交易后余额',

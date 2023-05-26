@@ -140,6 +140,7 @@ const WithdrawalAuditManagement = () => {
         rowKey='sn'
         columns={columns}
         toolBarRender={false}
+        scroll={{x: "max-content"}}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,

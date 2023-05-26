@@ -26,11 +26,8 @@ import { amountTransform } from '@/utils/utils'
 const PopModal = ({sn, callback, types}) => {
   const [type,setType] = useState('online')
 
-  const typeEnum1 = {
+  const typeEnum = {
     'online': '线上转帐',
-    'offline': '线下转账'
-  }
-  const typeEnum2 = {
     'offline': '线下转账'
   }
 
@@ -76,7 +73,7 @@ const PopModal = ({sn, callback, types}) => {
               setType(e)
             }
           }}
-          valueEnum={ types === 'commission' ? typeEnum2 : typeEnum1 }
+          valueEnum={ typeEnum }
         />
       </div>
       {
