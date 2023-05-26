@@ -61,11 +61,6 @@
   }
 }
 
-.description {
-  margin-top: 30;
-  background: #fff;
-  padding: 20px;
-}
 .timelineWarp{
   height: auto;
   max-height: 600px;
@@ -100,11 +95,20 @@
   }
 }
 
-:scope .ant-descriptions-bordered .ant-descriptions-item-label {
-  width: 200px;
-}
-:scope .ant-pro-table-list-toolbar-title {
-  font-weight: bold;
+.desc {
+  :global {
+    .description {
+      margin-top: 30;
+      background: #fff;
+      padding: 20px;
+    }
+    .ant-descriptions-bordered .ant-descriptions-item-label {
+      width: 200px;
+    }
+    .ant-pro-table-list-toolbar-title {
+      font-weight: bold;
+    }
+  }
 }
 
 .goodsInfo {

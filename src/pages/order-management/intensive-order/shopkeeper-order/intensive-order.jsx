@@ -356,6 +356,7 @@ const TableList = () => {
                     <span>下单用户：{item.buyerName}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
                     {!!+item.orderItemList[0].wsId &&<span>商品归属集约活动ID：{item.orderItemList[0].wsId}</span>}
+                    <span>用户ID：{item.buyerId}</span>
                   </Space>
                 </div>
 

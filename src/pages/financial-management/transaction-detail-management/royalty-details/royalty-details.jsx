@@ -10,7 +10,6 @@ import {
   operationCommissionDetail
 } from "@/services/financial-management/transaction-detail-management"
 import { orderTypes } from '@/services/financial-management/common'
-import './styles.less'
 import styles from './styles.less'
 import { fashionableType } from '../../common-function'
 
@@ -272,7 +271,7 @@ const TransactionDetails = (props) => {
       render: (_, data)=> {
         return data?.divideInfos.map(item=> (
           <div key={item?.type}>
-            {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight)}
+            {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight, item?.hnCollect)}
           </div>
         ))
       } 
@@ -325,6 +324,7 @@ const TransactionDetails = (props) => {
           <Button onClick={() => { setVisible(false) }}>返回</Button>
         </div>
       }
+      className={styles.desc}
     >
       <ProDescriptions
         loading={loading}

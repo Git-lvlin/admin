@@ -63,6 +63,19 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单金额',
       dataIndex: 'payAmount',
       align: 'center',
@@ -84,10 +97,9 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agentId:msgDetail?.agentId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      storeHouseNumber:time?.storeHouseNumber
+      ...time
     }
     cityAgentCommStats(params).then(res=>{
       if(res.code==0){

@@ -68,6 +68,11 @@ const NewIntensivePerformance = (props:propsType) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center',
@@ -224,6 +229,7 @@ const NewIntensivePerformance = (props:propsType) => {
           </Descriptions>
         )}
         formRef={form}
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

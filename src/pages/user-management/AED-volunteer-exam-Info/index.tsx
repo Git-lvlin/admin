@@ -58,7 +58,7 @@ const AEDVolunteerExamInfo = () => {
       title: '考试状态',
       dataIndex: 'resultStatus',
       hideInTable: true,
-      valueType: 'radio',
+      valueType: 'select',
       valueEnum: {
         1: '通过',
         2: '未通过',
@@ -69,7 +69,7 @@ const AEDVolunteerExamInfo = () => {
       title: '视频学习状态',
       dataIndex: 'isLearned',
       hideInTable: true,
-      valueType: 'radio',
+      valueType: 'select',
       valueEnum: {
         1: '已学习',
         2: '未学习'
@@ -96,8 +96,7 @@ const AEDVolunteerExamInfo = () => {
     {
       title: '订单号',
       dataIndex: 'subOrderSn',
-      align: 'center',
-      hideInSearch: true
+      align: 'center'
     },
     {
       title: '订单类型',
@@ -129,6 +128,11 @@ const AEDVolunteerExamInfo = () => {
       dataIndex: 'teamTypeStr',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '所属子公司ID',
+      dataIndex: 'subId',
+      align: 'center',
     },
     {
       title: '线下培训状态',
@@ -182,6 +186,7 @@ const AEDVolunteerExamInfo = () => {
             />
           ],
         }}
+        scroll={{x: 'max-content'}}
         columns={columns}
         toolBarRender={()=> [
           <Export

@@ -52,6 +52,11 @@ export default (props) => {
         hideInSearch: true,
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        align: 'center',
+      },
+      {
         title: '银行账户',
         dataIndex: 'withdrawAccount',
         valueType: 'text',

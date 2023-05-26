@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
+import { Image } from 'antd'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
-import { FormInstance, Image } from "antd"
+import type { FormInstance } from "antd"
 
 import { trainServerSum, trainServerPage } from "@/services/product-performance-management/AED-program-performance"
 import { amountTransform } from '@/utils/utils'
@@ -59,7 +60,8 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={5}
+      labelStyle={{width: '10%'}}
+      column={{ xl: 3, xxl: 5 }}
       bordered
       dataSource={data}
     />
@@ -85,6 +87,11 @@ const TrainServicePackage: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'buyerMobile',
+      align: 'center'
+    },
+    {
+      title: '下单人用户Id',
+      dataIndex: 'buyerId',
       align: 'center'
     },
     {
@@ -182,6 +189,12 @@ const TrainServicePackage: FC = () => {
       title: '推荐人手机号',
       dataIndex: 'memberMobile',
       align: 'center'
+    },
+    {
+      title: '推荐人用户Id',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '团长手机号',
@@ -282,6 +295,29 @@ const TrainServicePackage: FC = () => {
       align: 'center',
       hideInSearch: true,
     },
+    {
+      title: '业绩结算状态',
+      dataIndex: 'auditStatusDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'auditStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '审核不通过',
+        8: '已失效',
+        9: '已线下结算'
+      }
+    },
   ]
 
   return (
@@ -290,6 +326,7 @@ const TrainServicePackage: FC = () => {
         columns={columns}
         request={trainServerPage}
         formRef={form}   
+        scroll={{x: 'max-content'}}
         pagination={{
           showQuickJumper: true,
           pageSize: 10

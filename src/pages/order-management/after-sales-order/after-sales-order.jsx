@@ -144,6 +144,11 @@ const afterSalesOrder = () => {
       order: 3
     },
     {
+      title: '用户ID',
+      dataIndex: 'userId',
+      align: 'center'
+    },
+    {
       title: '商家名称',
       dataIndex: 'storeName',
       align: 'center',

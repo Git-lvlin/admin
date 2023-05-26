@@ -161,7 +161,24 @@ const StoreList = (props) => {
       dataIndex: 'phone',
       valueType: 'text',
       hideInSearch: true,
-      render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
+      render: (_, data) => 
+      <div>
+        <div>{data.memberPhone?data.memberPhone:<span style={{ color:'red' }}>1881111100（第1次注销）</span>}</div>
+        <div>{data.nickname === data.memberPhone ? '' : data.nickname}</div>
+      </div>
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺类型',
@@ -1152,6 +1169,19 @@ const ShopHealthPackages = (props) => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => <div><div>{data.memberPhone}</div><div>{data.nickname === data.memberPhone ? '' : data.nickname}</div></div>
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '店铺名称',

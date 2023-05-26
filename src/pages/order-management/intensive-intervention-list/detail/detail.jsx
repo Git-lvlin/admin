@@ -44,7 +44,7 @@ const Detail = () => {
   }, [detail])
   const handleBack = () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
   return(
-    <PageContainer title={false}>
+    <PageContainer title={false} className={styles.desc}>
       <Spin spinning={loading}>
         <InterventionDetailStatus
           orderId={detail?.refundId}

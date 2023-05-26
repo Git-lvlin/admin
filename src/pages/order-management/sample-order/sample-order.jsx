@@ -299,7 +299,15 @@ const TableList = () => {
             />
           </>
         }
-
+        <ProFormText
+          name="buyerId"
+          label="用户ID"
+          fieldProps={{
+            style: {
+              marginBottom: 20
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -371,6 +379,7 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerNickname}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
+                    <span>用户ID：{item.buyerId}</span>
                   </Space>
                 </div>
 

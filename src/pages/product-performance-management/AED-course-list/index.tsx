@@ -36,6 +36,11 @@ export default () => {
       align: 'center'
     },
     {
+      title: '下单人用户ID',
+      dataIndex: 'buyerId',
+      align: 'center'
+    },
+    {
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center',
@@ -128,7 +133,7 @@ export default () => {
             <span style={{color: '#d9d9d9'}}>修改收款信息</span>:
             <a onClick={()=>{setPaymentVisible(true); setData(r)}}>修改收款信息</a>
           }
-           {
+          {
             r.aedInfoStatusDesc === '未填写' ?
             <span style={{color: '#d9d9d9'}}>修改记录</span>:
             <a onClick={()=>{setModifyRecordVisible(true); setData(r)}}>修改记录</a>

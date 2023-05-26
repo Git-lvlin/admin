@@ -143,6 +143,19 @@ export default (props) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单号',
       dataIndex: 'orderSn',
       align: 'center',
@@ -182,10 +195,9 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      teamPhone:time?.teamPhone,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderSn:time?.orderSn,
+      ...time
     }
     const api=hydrogenSum()
     api(params).then(res=>{

@@ -18,18 +18,17 @@ export default ()=> {
 
   const tableColumns: ProColumns<TableProps>[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
       title: '手机号',
       dataIndex: 'memberPhone',
       align: 'center',
       fieldProps:{
         placeholder:'请输入手机号码'
       }
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
     },
     {
       title: '每日可启用次数',

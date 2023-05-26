@@ -38,7 +38,22 @@ export default function TransactionData (props:RegimentProps) {
       align: 'center',
       fieldProps: {
         placeholder: '请输入团长手机号码'
+      },
+      render: (_,record) => {
+        return <div>{record.phone?record.phone:<span style={{ color:'red' }}>{record.phone}（第1次注销）</span>}</div>
       }
+    },
+    {
+      title: '团长用户ID',
+      dataIndex: 'memberId',
+      valueType: 'text',
+      hideInTable: true,
+    },
+    {
+      title: '团长用户ID',
+      dataIndex: 'memberId',
+      valueType: 'text',
+      hideInSearch: true
     },
     {
       title: '团长姓名',

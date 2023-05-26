@@ -60,6 +60,19 @@ export default (props) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单类型',
       dataIndex: 'orderType',
       align: 'center',
@@ -101,10 +114,9 @@ export default (props) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      orderType:time?.orderType
+      ...time
     }
     cityAgentAedTrainOrderStats(params).then(res=>{
       if(res.code==0){
