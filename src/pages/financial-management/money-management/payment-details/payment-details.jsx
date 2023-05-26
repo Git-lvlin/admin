@@ -144,12 +144,12 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
-    {
-      title: '交易渠道',
-      dataIndex: 'withdrawType',
-      hideInSearch: true,
-      hideInTable: title !== '社区店'
-    },
+    // {
+    //   title: '交易渠道',
+    //   dataIndex: 'withdrawType',
+    //   hideInSearch: true,
+    //   hideInTable: title !== '社区店'
+    // },
     {
       title: '交易金额',
       dataIndex: 'changeAmount',

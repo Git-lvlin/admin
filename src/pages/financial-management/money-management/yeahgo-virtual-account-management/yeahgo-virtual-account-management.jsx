@@ -260,7 +260,7 @@ const YeahgoVirtualAccountManagement = () => {
           bordered
           title={
             <div className={styles.content}>
-              <div>提现代发虚拟户总余额：-879232323 元</div>
+              <div>提现代发虚拟户总余额：<span>{amountTransform(account?.platformXinbao?.balance, '/')}元</span></div>
               <Button>交易明细</Button>
             </div>
           }

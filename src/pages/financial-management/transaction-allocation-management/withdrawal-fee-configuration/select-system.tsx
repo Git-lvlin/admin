@@ -35,12 +35,12 @@ const SelectSystem: React.FC = () => {
           <ProFormRadio.Group
             label='请选择'
             name='withdrawType'
-            disabled
             initialValue='youfuCommission'
-            valueEnum={{
-              'youfuCommission': '优付',
-              'xinbaoCommission ': '薪宝'
-            }}
+            disabled
+            options={[
+             {label: '优付', value: 'youfuCommission'},
+             {label: '薪宝', value: 'xinbaoCommission'}
+            ]}
             extra='修改待审核提现及以后订单使用的提现代发系统'
             width='md'
           />
