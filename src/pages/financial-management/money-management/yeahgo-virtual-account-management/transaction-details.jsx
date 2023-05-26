@@ -143,9 +143,6 @@ const TransactionDetails = ({
   const columns = [
     {
       title: '序号',
-      dataIndex:'id',
-      width: '4%',
-      hideInSearch: true,
       valueType: 'indexBorder'
     },
     {
@@ -158,7 +155,6 @@ const TransactionDetails = ({
     {
       title: '交易类型',
       dataIndex:'tradeTypeDesc',
-      width: '7%',
       hideInSearch: true
     },
     {
@@ -173,13 +169,11 @@ const TransactionDetails = ({
       title: '订单类型',
       dataIndex:'orderTypeDesc',
       hideInSearch: true,
-      width: '7%',
       hideInTable: query.accountId==='platform' ? false : true
     },
     {
       title: '订单号',
       dataIndex:'billNo',
-      width: '10%',
       render: (_, records) => {
         const isGoodsOrder = records.orderType === 'hydrogenRent' || records.orderType === 'manageFee'
         if(isGoodsOrder) {
@@ -196,7 +190,6 @@ const TransactionDetails = ({
     {
       title: '支付单号',
       dataIndex:'payNo',
-      width: '10%',
       hideInSearch: query.accountId==='platformXinbao' ? true : false,
       hideInTable: query.accountId==='platformXinbao' ? true : false,
       render: (_, records)=> (
@@ -208,12 +201,10 @@ const TransactionDetails = ({
     {
       title: '资金流水号',
       dataIndex:'transactionId',
-      width: '10%'
     },
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      width: '10%',
       hideInSearch: true
     },
     {
@@ -226,42 +217,41 @@ const TransactionDetails = ({
     {
       title: '分账金额',
       dataIndex: 'divideAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '手续费',
       dataIndex: 'fee',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '其他扣款',
       dataIndex: 'deductAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易金额',
       dataIndex: 'changeAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
+      title: '交易渠道',
+      dataIndex: '',
+      render: (_) => amountTransform(Number(_), '/')
+    },
+    {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易描述',
       dataIndex: 'description',
-      width: '5%',
       hideInSearch: true
     }
   ]

@@ -65,7 +65,8 @@ const WithdrawalAuditManagement = () => {
       valueType: 'select',
       valueEnum: {
         'goodsAmount': '汇付',
-        'commission': '薪宝'
+        'commission': '薪宝',
+        'youfuCommission': '优付'
       }
     },
     {

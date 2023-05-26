@@ -255,11 +255,17 @@ const YeahgoVirtualAccountManagement = () => {
           </div>
         </ProCard>
         <ProCard
+          className={styles.fb}
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
-          title='薪宝虚拟户'
+          title={
+            <div className={styles.content}>
+              <div>提现代发虚拟户总余额：-879232323 元</div>
+              <Button>交易明细</Button>
+            </div>
+          }
         >
-          <div className={styles.platformXinbao}>
+          {/* <div className={styles.platformXinbao}>
             <div>账户号码: </div>
             <div><span className={styles.sn}>{account?.platformXinbao?.sn}</span></div>
             <div className={styles.balance}>
@@ -275,14 +281,34 @@ const YeahgoVirtualAccountManagement = () => {
                 交易明细
               </Button>
             </div>
+          </div> */}
+          <div className={styles.platformXinbao}>
+            <div className={styles.fs}>
+              <div className={styles.halfw}>优付虚拟户</div>
+              <div className={styles.halfw}>薪宝虚拟户</div>
+            </div>
+            <div className={styles.fs}>
+              <div><span className={styles.sn}>{account?.platformXinbao?.sn}</span></div>
+              <div><span className={styles.sn}>{account?.platformXinbao?.sn}</span></div>
+            </div>
+            <div>
+              <div className={styles.balance}>
+                <div>
+                  优付虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.balance, '/')}元`}</span>
+                </div>
+                <div>
+                  薪宝虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.balance, '/')}元`}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </ProCard>
         <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
-          title='平台运营中心0'
+          title='汇能虚拟户-汇付交易'
         >
-          <div className={styles.operation}>
+          {/* <div className={styles.operation}>
             <div>账户名称：{account?.operation?.bindCard?.realname}</div>
             <div className={styles.balance}>
               <Space size={40}>
@@ -328,6 +354,64 @@ const YeahgoVirtualAccountManagement = () => {
                 <Button
                    onClick={() => {
                     skipToDetail({ accountId: account?.operation?.accountId, accountType: account?.operation?.accountType, amountType: 'freeze'})
+                  }}
+                >
+                  交易明细
+                </Button>
+              </Space>
+            </div>
+          </div> */}
+           <div className={styles.withdrawal}>
+            {
+              account?.bindCard?.cardNo &&
+              <WithdrawalModal
+                val={account?.bindCard}
+                update={setChange}
+                change={change}
+                type="platform"
+              />
+            }
+          </div>
+          <div className={styles.platform}>
+            <div>账户号码： </div>
+            <div className={styles.balance}>
+              <span className={styles.sn}>{account?.platform?.sn}</span>
+              {
+                account?.platform?.sn&&
+                <Button onClick={()=>{ setPayVisible(true) }}>充值</Button>
+              }
+            </div>
+            <div className={styles.balance}>
+              <div>
+                <span>总余额：{`${amountTransform(account?.platform?.balance, '/')}元`}</span>
+              </div>
+              <Button
+                type='default'
+                onClick={() => {
+                  skipToDetail({ accountId: account?.platform?.accountId, accountType: account?.platform?.accountType })
+                }}
+              > 
+                交易明细
+              </Button>
+            </div>
+            <div className={styles.balanceBootom}>
+              <Space size="middle">
+                <span>可提现余额：{`${amountTransform(account?.platform?.balanceAvailable, '/')}元`}</span>
+                <Button
+                  type='default'
+                  onClick={() => {
+                    skipToDetail({ accountId: account?.platform?.accountId, accountType: account?.platform?.accountType, amountType: 'available'})
+                  }}
+                >
+                  交易明细
+                </Button>
+              </Space>
+              <Space size="middle">
+                <span>冻结余额：{`${amountTransform(account?.platform?.balanceFreeze, '/')}元`}</span>
+                <Button
+                  type='default'
+                  onClick={() => {
+                    skipToDetail({ accountId: account?.platform?.accountId, accountType: account?.platform?.accountType, amountType: 'freeze'  })
                   }}
                 >
                   交易明细
