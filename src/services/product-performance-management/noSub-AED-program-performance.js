@@ -3,10 +3,12 @@ import moment from 'moment';
 
 // 无子公司AED课程业绩
 export const aednoSubOrder = async (params, options = {}) => {
-  const { payTime, ...rest } = params
+  const { pageSize, current, payTime, ...rest } = params
   const res = await request('/auth/stats/report/aed/aednoSubOrder', {
     method: 'POST',
     data: {
+      page: current,
+      size: pageSize,
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
