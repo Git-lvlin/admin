@@ -113,6 +113,7 @@ const AEDVolunteerIDInfo = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, r) => (
         <Space size='middle'>
           <a onClick={() => { setVisible(true); setData(r) }}>更新</a>
@@ -145,6 +146,7 @@ const AEDVolunteerIDInfo = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{x: 'max-content'}}
         rowSelection={{
           selectedRowKeys: selectedKeys,
           preserveSelectedRowKeys: true,

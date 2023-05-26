@@ -29,6 +29,15 @@ const ProhibitedWordProducts: React.FC = () => {
     })
   }
 
+  const getFieldsValue = () => {
+    const { gc, ...rest } = form.current?.getFieldsValue()
+    return {
+      gcId1: gc && gc[0],
+      gcId2: gc && gc[1],
+      ...rest
+    }
+  }
+
   const columns: ProColumns[] = [
     {
       title: '违禁词/敏感词',
@@ -143,7 +152,7 @@ const ProhibitedWordProducts: React.FC = () => {
             <Export
               key='export'
               type='sensitive-goods-list'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={getFieldsValue}
             />
           ]
         }}

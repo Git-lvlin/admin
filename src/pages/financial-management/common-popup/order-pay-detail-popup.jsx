@@ -243,9 +243,8 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       dataIndex: 'sellerType'
     },
     {
-      title: '',
-      dataIndex: '',
-      render: () => ''
+      title: '买家会员ID',
+      dataIndex: 'buyerId',
     },
     {
       title: '卖家会员信息',
@@ -308,26 +307,31 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
   ]
 
   const payInfo = [
+    // {
+    //   title: '支付阶段',
+    //   dataIndex: 'stageName'
+    // },
     {
-      title: '支付阶段',
-      dataIndex: 'stageName'
+      title: '支付渠道',
+      dataIndex: 'payTpyeName'
     },
     {
       title: '支付时间',
       dataIndex: 'payTime'
     },
     {
-      title: '支付渠道',
-      dataIndex: 'payTpyeName'
+      title: '实付金额',
+      dataIndex: 'amount',
+      render: (_, records) => `¥${amountTransform((Number(_)-Number(records.couponAmount)), '/')}`
     },
     {
       title: 'skuID',
       dataIndex: 'skuIds'
     },
     {
-      title: '实付金额',
-      dataIndex: 'amount',
-      render: (_, records) => `¥${amountTransform((Number(_)-Number(records.couponAmount)), '/')}`
+      title: ' ',
+      dataIndex: '',
+      render: () => ' '
     },
     {
       title: '虚拟分账计算',
@@ -338,7 +342,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
             {
               data?.divideInfos?.map(item=> (
                 <div key={item?.type}>
-                  {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight)}
+                  {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight, item?.hnCollect)}
                 </div>
               ))
             }

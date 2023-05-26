@@ -13,11 +13,12 @@ export type TableProps = {
 }
 
 export type Refer = {
-  managerPhone: string;
+  name: string;
   dateRange: Array;
 }
 
 export type DrtailItem = {
+  offTrainStatus: any;
   orderSn?: string; 
   dateRange?: [string, string]; 
   teamPhone?: string;
@@ -35,7 +36,8 @@ export type CumulativeProps = {
     totalPayAmount: number;
     totalCommissionDesc: string;
     managerPhone: string;
-    dateRange:Array
+    dateRange: Array;
+    name: string;
   } | undefined;
   type: number;
   visible: boolean;

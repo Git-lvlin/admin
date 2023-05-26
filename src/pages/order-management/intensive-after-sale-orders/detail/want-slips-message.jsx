@@ -1,7 +1,6 @@
 import React from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import styles from './styles.less'
-import './styles.less'
 
 const WantSlipsMessage = ({data}) => {
   const columns = [

@@ -422,6 +422,7 @@ const TableList = () => {
                     <span>订单号：{item.orderSn}</span>
                     <span>下单用户：{item.buyerNickname}</span>
                     <span>用户手机号：{item.buyerPhone}</span>
+                    <span>用户ID：{item.buyerId}</span>
                     {
                       (item.subType === 2 || item.subType === 21)
                       &&

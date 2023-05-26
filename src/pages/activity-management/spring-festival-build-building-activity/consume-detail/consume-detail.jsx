@@ -36,6 +36,9 @@ export default () => {
         title: '用户手机号',
         dataIndex: 'memberMobile',
         valueType: 'text',
+        render: (_,record) => {
+          return <div>{record.memberMobile?record.memberMobile:<span style={{ color:'red' }}>{record.memberMobile}（第1次注销）</span>}</div>
+        }
       },
       {
         title: '使用时间',

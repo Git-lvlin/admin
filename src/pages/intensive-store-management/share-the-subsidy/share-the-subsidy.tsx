@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import ProTable from '@ant-design/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns,ActionType  } from '@ant-design/pro-table';
 import { storeShareCommission } from '@/services/intensive-store-management/share-the-subsidy'
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@ant-design/pro-layout';
@@ -14,7 +14,7 @@ export default () => {
   const [visit, setVisit] = useState<boolean>(false)
   const [orderVisible, setOrderVisible] = useState<boolean>(false)
   const [orderDetail,setOrderDetail]=useState<ConsumerOrderPage>()
-  const ref=useRef()
+  const ref=useRef<ActionType>()
   const columns:ProColumns<ConsumerOrderPage>[]= [
     {
       title: '店主手机',
@@ -30,6 +30,19 @@ export default () => {
       title: '店主手机',
       dataIndex: 'storeMobile',
       valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1,
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
       hideInSearch: true
     },
     {
@@ -126,7 +139,7 @@ export default () => {
           orderDetail={orderDetail}
           visible={orderVisible}
           setVisible={setOrderVisible}
-          onClose={()=>{ref?.current?.reload();setOrderDetail(null)}}
+          onClose={()=>{ref?.current?.reload();setOrderDetail(undefined)}}
         />
       }
   </PageContainer>
