@@ -4,7 +4,7 @@ import {
   Modal, 
   Image,
 } from 'antd'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 
 import type { FC } from 'react'

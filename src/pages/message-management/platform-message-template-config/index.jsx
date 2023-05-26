@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import * as api from '@/services/message-management/message-template-config'
 import Form from './form'

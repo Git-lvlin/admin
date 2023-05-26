@@ -1,6 +1,6 @@
 import React,{ useState, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProForm from '@ant-design/pro-form'
 import { useParams, history } from 'umi'
 import { Button, Typography, Spin, message, Image } from 'antd'

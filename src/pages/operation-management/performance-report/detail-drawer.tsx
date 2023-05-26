@@ -1,6 +1,6 @@
 import { Drawer } from "antd"
 import moment from "moment"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 
 import type{ DetailDrawerProps } from "./data"
 import type{ ProColumns } from "@ant-design/pro-table"

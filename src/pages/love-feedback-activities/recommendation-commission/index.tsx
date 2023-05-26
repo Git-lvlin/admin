@@ -58,6 +58,11 @@ const RecommendationCommission:FC = ()=>  {
         }
       },
       {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
+      },
+      {
         title: '用户店铺编号',
         dataIndex: 'shopMemberAccount',
         align: 'center',

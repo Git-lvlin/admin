@@ -1,7 +1,7 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Form, Button, Modal,Select, message} from 'antd';
 import { ModalForm,ProFormSelect,ProFormRadio,ProFormDependency} from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import styles from '../style.less'
 import { amountTransform } from '@/utils/utils'
 import {commonSpuList}  from '@/services/coupon-construction/coupon-common-spu-list';

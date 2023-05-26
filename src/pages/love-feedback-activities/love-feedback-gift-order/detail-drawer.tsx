@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Button, Drawer } from 'antd'
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import ProCard from '@ant-design/pro-card'
 
 import type { FC } from 'react'

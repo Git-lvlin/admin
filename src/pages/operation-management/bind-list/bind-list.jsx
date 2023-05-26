@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Button, Tooltip } from 'antd';
 import { PageContainer } from '@/components/PageContainer';
 import { bindOperationPage } from '@/services/operation-management/bind-list'

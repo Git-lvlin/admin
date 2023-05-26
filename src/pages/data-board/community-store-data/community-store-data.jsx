@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import { Space, Radio, Tooltip } from 'antd'
 import moment from 'moment'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import BarChart from './bar-chart'

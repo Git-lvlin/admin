@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button,Tabs} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { couponList } from '@/services/coupon-management/coupon-list';
 import styles from './style.less'

@@ -1,4 +1,4 @@
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { Drawer, Typography } from "antd"
 
 import type { ProColumns } from "@ant-design/pro-table"

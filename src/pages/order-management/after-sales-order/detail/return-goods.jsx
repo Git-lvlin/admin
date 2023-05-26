@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { Image } from 'antd'
 

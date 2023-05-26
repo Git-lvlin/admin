@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProField from '@ant-design/pro-field';
 import ProCard from '@ant-design/pro-card';
 import { Button, Input, Space, Tag, Form } from 'antd';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Modal } from 'antd'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import type { FC } from 'react'
 import type { ServiceProps } from './data'

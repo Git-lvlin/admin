@@ -1,6 +1,6 @@
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Checkbox,message, Space} from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import { latedeliveryAreaIndex,addLateDeliveryDesc,addLatedeliveryArea,updateLatedeliveryAreaStatus } from '@/services/setting/shipments-area-configuration'

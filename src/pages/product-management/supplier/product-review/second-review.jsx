@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Drawer, Button, Image, Space } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import Overrule from './overrule';
 import * as api from '@/services/product-management/product-review'
 

@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -31,6 +31,11 @@ const AEDVolunteerExamInfo = () => {
       valueType: 'indexBorder',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      order: -1,
     },
     {
       title: '手机号码',
@@ -151,6 +156,7 @@ const AEDVolunteerExamInfo = () => {
       valueType: 'option',
       align: 'center',
       fixed: 'right',
+      width: 100,
       render: (_, r) => {
         if(r.trainingStatus === 2 || r.trainingStatus === 0) {
           return <a onClick={()=> {setVisible(true); setPhone(r.phoneNumber); setId(r.sumOrderId)}}>线下培训</a>
@@ -199,6 +205,7 @@ const AEDVolunteerExamInfo = () => {
           pageSize: 10,
           showQuickJumper: true
         }}
+        scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         rowSelection={{
           selectedRowKeys: selectedKeys,
           preserveSelectedRowKeys: true,

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Button, Space, Modal, Menu, Dropdown } from 'antd';
 import { getCommonList, statusSwitch, detailExt, delSupplier, resetPwd } from '@/services/supplier-management/supplier-list'
 import { history } from 'umi';

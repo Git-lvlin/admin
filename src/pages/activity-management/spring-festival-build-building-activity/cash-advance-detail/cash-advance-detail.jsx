@@ -1,5 +1,5 @@
 import React, { useState, useRef,useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
 import { PageContainer } from '@/components/PageContainer';
 import { amountTransform } from '@/utils/utils'
@@ -46,6 +46,11 @@ export default () => {
         dataIndex: 'withdrawAccount',
         valueType: 'text',
         hideInSearch: true,
+      },
+      {
+        title: '用户ID',
+        dataIndex: 'memberId',
+        order: -1,
       },
       {
         title: '银行账户',

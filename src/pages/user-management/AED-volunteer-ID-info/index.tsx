@@ -1,6 +1,6 @@
 import { PageContainer } from '@ant-design/pro-layout'
 import { useState, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Space, Image } from 'antd'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -30,6 +30,11 @@ const AEDVolunteerIDInfo = () => {
       dataIndex: 'orderSn',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'buyerId',
+      order: -1,
     },
     {
       title: '手机号码',

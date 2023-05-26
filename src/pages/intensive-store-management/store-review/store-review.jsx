@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Space, Image, Tooltip } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { getStoreList } from '@/services/intensive-store-management/store-review';
 import AddressCascader from '@/components/address-cascader';

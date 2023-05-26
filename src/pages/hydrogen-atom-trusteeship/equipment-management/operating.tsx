@@ -1,5 +1,5 @@
 import { useState, useRef } from "react"
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Dropdown, Button, Menu, Tooltip, Space } from "antd"
 import { EllipsisOutlined, ExclamationCircleOutlined } from "@ant-design/icons"
 

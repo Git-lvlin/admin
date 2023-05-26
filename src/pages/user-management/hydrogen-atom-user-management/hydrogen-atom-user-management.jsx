@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import AddedEnabledHydrogen from './added-enabled-hydrogen'
 import StoreInformation from './store-information'
 import { Descriptions } from 'antd';
@@ -21,10 +21,9 @@ export default function TransactionData () {
   const form = useRef()
   const tableColumns= [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      align: 'center',
-      hideInSearch: true
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       title: '手机号',
@@ -143,6 +142,7 @@ export default function TransactionData () {
             ...dom.reverse(),
           ],
         }}
+        scroll={{ x: 'max-content' }}
       />
       {
         visible&&

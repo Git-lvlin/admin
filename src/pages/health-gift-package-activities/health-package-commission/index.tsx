@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { DatePicker } from 'antd'
 
 import type {ProColumns} from '@ant-design/pro-table'
@@ -43,6 +43,11 @@ const HealthPackageCommission: FC = () => {
       title: '用户手机',
       dataIndex: 'phoneNumber',
       hideInTable: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       title: '店铺编号',
@@ -113,6 +118,7 @@ const HealthPackageCommission: FC = () => {
           showQuickJumper: true,
           pageSize: 10
         }}
+        scroll={{x:'max-content'}}
         options={false}
         search={{
           labelWidth: 100,

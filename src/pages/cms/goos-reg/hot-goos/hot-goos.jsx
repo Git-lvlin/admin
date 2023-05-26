@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { PlusOutlined, MinusOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
 import { Button, Space, message } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProForm from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';

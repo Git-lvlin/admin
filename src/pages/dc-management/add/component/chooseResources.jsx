@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, message, Table, Space, Modal, Typography } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { getResList, getVersionAllList, inputVersionList } from '@/services/resource'
 import { platformType } from '@/constants/index'
 

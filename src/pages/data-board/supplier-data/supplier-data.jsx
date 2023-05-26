@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { history } from 'umi'
 import moment from 'moment'
 import { Space, Tooltip, Radio } from 'antd'

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import ProCard from '@ant-design/pro-card'
 import { Drawer } from 'antd'
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 
 import type { FC } from 'react'
 import type { DetailProps, DataProps, ListDataProps } from './data'

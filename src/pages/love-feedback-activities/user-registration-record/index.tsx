@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Image } from 'antd'
 import moment from 'moment'
 import { PageContainer } from '@ant-design/pro-layout'
@@ -47,6 +47,11 @@ const UserRegistrationRecord = () => {
       dataIndex: 'memberMobile',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      order: -1,
     },
     {
       dataIndex: 'memberMobile',

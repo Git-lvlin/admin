@@ -1,5 +1,5 @@
 import React, {useRef,useState} from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { adminReportList } from '@/services/community-management/report-admin-report-list';
 import { reportHandle } from '@/services/community-management/report-handle';
 import { history } from 'umi';

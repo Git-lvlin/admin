@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { Button, Card, Space, Table, Spin, Modal, Tooltip, Menu, Dropdown } from 'antd';
 import { PlusOutlined, QuestionCircleOutlined } from '@ant-design/icons';

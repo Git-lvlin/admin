@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { productList } from '@/services/intensive-activity-management/intensive-activity-create'
 import { ModalForm } from '@ant-design/pro-form';
 import _ from 'lodash'

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect  } from 'react';
 import { Button, message, Form, Space } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import ProForm, {
   ModalForm,
 } from '@ant-design/pro-form';

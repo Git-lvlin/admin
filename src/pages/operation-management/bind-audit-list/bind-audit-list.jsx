@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button, Radio, Space, Modal, Image } from 'antd';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
 import { bindingOperationApply, approve, refuse } from '@/services/operation-management/bind-audit-list';
 import { ExclamationCircleOutlined } from '@ant-design/icons'

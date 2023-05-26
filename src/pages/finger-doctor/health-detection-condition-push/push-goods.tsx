@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { Drawer, Button, Image } from 'antd'
 
 import type { FC } from 'react'

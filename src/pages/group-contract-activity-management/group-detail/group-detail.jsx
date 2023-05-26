@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Space, Table, Spin } from 'antd';
 import { PageContainer } from '@/components/PageContainer';
 import { useParams, useLocation } from 'umi';

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import { useLocation, history } from "umi"
 import { Button, Drawer } from 'antd'
 import moment from 'moment'

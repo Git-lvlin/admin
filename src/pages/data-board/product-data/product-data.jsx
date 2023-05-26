@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
 import { QuestionCircleOutlined } from '@ant-design/icons'

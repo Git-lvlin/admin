@@ -3,7 +3,7 @@ import { Input, Form, Divider, message, Button,Space } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
 import ProForm, { ProFormText, ProFormRadio, ProFormDateTimeRangePicker,ProFormTextArea,ProFormDependency,ProFormSelect } from '@ant-design/pro-form';
 import { getMemberShopServicepoint,setMemberShopServicepoint,getMemberShopServicepointLog } from '@/services/intensive-store-management/shop-area'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import moment from 'moment';
 import { amountTransform } from '@/utils/utils'
 

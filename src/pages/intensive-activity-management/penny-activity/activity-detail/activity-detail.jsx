@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getActiveConfigById } from '@/services/intensive-activity-management/penny-activity';
 import { Divider, Form, Spin, Button,Image,InputNumber,Row,Col,Descriptions,Typography } from 'antd';
 import ProForm,{ ModalForm,ProFormRadio,ProFormText,ProFormDateTimeRangePicker,ProFormTextArea,ProFormCheckbox,DrawerForm} from '@ant-design/pro-form';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { amountTransform } from '@/utils/utils'
 import { PageContainer } from '@/components/PageContainer';
 import moment from 'moment'

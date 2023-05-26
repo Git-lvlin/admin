@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { Table, Spin } from 'antd';
 import { singleGroupList, groupMemberList } from '@/services/single-contract-activity-management/group-detail'
 import { useParams } from 'umi';

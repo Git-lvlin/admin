@@ -4,7 +4,7 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { chooseWholesaleList } from '@/services/intensive-activity-management/penny-activity';
 import { PlusOutlined } from '@ant-design/icons';
 import { amountTransform } from '@/utils/utils'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table';
 import { ModalForm,ProFormText } from '@ant-design/pro-form';
 import _ from 'lodash'
 import moment from 'moment';

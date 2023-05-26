@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { cityTotalTradeItemListPage,cityTotalTradeItemSum } from "@/services/city-office-management/city-office-achievements"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem, DevicesProps,CumulativeProps } from "./data"
