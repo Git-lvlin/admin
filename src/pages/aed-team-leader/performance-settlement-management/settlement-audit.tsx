@@ -155,20 +155,6 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '结算状态',
-      dataIndex: 'status',
-      align: 'center',
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        '10': '待审核',
-        '11': '待结算',
-        '12': '审核拒绝',
-        '21': '已结算'
-      },
-      initialValue: '10'
-    },
-    {
-      title: '结算状态',
       dataIndex: 'statusDesc',
       align: 'center',
       hideInSearch: true
@@ -298,7 +284,8 @@ export default (props:CumulativeProps)=>{
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          settlementId:msgDetail?.settlementId
+          settlementId:msgDetail?.settlementId,
+          status: 10
         }}
         scroll={{ x: 'max-content' }}
         pagination={{

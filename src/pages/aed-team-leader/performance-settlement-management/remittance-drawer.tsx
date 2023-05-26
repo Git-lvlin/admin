@@ -334,6 +334,7 @@ export default (props:CumulativeProps)=>{
       setVisible={setRemittanceVisible}
       msgDetail={dataDatil}
       onClose={()=>{}}
+      orderArr={orderArr}
       callback={(rows: SetStateAction<never[]>)=>{ setOrderArr(rows) }}
     />
     }

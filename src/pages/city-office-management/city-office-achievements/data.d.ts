@@ -21,7 +21,8 @@ export type TableProps = {
   createTime:Array,
   orderType:string,
   orderNo:string,
-  dateRange:Array
+  dateRange:Array,
+  hasTeamLeader: string
 }
 
 
