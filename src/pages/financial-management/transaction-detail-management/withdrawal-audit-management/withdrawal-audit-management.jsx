@@ -31,12 +31,16 @@ const WithdrawalAuditManagement = () => {
       valueType: 'indexBorder'
     },
     {
-      title: '会员ID',
+      title: '店铺ID',
       dataIndex: 'accountId',
     },
     {
       title: '注册手机号',
       dataIndex: 'registMobile',
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId'
     },
     {
       title: '用户类型',

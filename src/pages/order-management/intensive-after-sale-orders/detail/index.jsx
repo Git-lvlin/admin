@@ -28,6 +28,7 @@ const Detail = ({id, visible, setVisible }) => {
       onClose={()=>setVisible(false)}
       title={false}
       width={1200}
+      className={styles.desc}
     >
        <Spin spinning={loading}>
         <OrderDetailStatus data={orderDetail}

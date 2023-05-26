@@ -460,6 +460,7 @@ const TableList = () => {
                     <span>下单店主ID：{item.storeNo}</span>
                     {!!+item.wsId && <span>商品归属集约活动ID：{item.wsId}</span>}
                     {!isDocumentary && <span>总金额：{amountTransform(item.totalFee, '/')}元</span>}
+                    <span>用户ID：{item.memberId}</span>
                   </Space>
                 </div>
                 {item.businessType === 30

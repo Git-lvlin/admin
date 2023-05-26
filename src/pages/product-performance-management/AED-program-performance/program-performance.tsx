@@ -58,7 +58,8 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   return (
     <ProDescriptions
       columns={columns}
-      column={5}
+      labelStyle={{width: '10%'}}
+      column={{ xl: 3, xxl: 5 }}
       bordered
       dataSource={data}
     />
@@ -82,6 +83,11 @@ const ProgramPerformance: FC = () => {
     {
       title: '下单人手机号码',
       dataIndex: 'buyerMobile',
+      align: 'center'
+    },
+    {
+      title: '下单人用户ID',
+      dataIndex: 'buyerId',
       align: 'center'
     },
     {
@@ -140,6 +146,12 @@ const ProgramPerformance: FC = () => {
       title: '推荐人手机号',
       dataIndex: 'memberMobile',
       align: 'center'
+    },
+    {
+      title: '推荐人用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '团长手机号',
@@ -215,7 +227,47 @@ const ProgramPerformance: FC = () => {
         1: '已通过',
         2: '未通过'
       }
-    }
+    },
+    {
+      title: '线下培训状态',
+      dataIndex: 'trainStatusDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '线下培训',
+      dataIndex: 'trainStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        0: '未录入',
+        1: '已培训',
+        2: '未培训',
+      }
+    },
+    {
+      title: '业绩结算状态',
+      dataIndex: 'auditStatusDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'auditStatus',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        1: '未解冻',
+        2: '未到期',
+        3: '待申请',
+        4: '待审核',
+        5: '待汇款',
+        6: '已结算',
+        7: '审核不通过',
+        8: '已失效',
+        9: '已线下结算'
+      }
+    },
   ]
 
   return (
@@ -227,6 +279,7 @@ const ProgramPerformance: FC = () => {
         showQuickJumper: true,
         pageSize: 10
       }}
+      scroll={{x: 'max-content'}}
       onSubmit={()=>{
         setSearchConfig(form.current?.getFieldsValue())
       }}

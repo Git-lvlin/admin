@@ -117,7 +117,7 @@ const OperatorFundManagement = () => {
       dataIndex: 'sn'
     },
     {
-      title: '注册手机',
+      title: '负责人手机',
       dataIndex: 'registMobile'
     },
     {

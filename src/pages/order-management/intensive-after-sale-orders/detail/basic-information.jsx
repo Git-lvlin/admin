@@ -1,7 +1,6 @@
 import React from 'react'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import styles from './styles.less'
-import './styles.less'
 
 const BasicInformation = ({data}) => {
   const columns = [
@@ -27,10 +26,7 @@ const BasicInformation = ({data}) => {
     },
     {
       title: '商家手机号',
-      dataIndex: 'storePhone',
-      render:(_,data)=>{
-        return <p>-</p>
-      },
+      dataIndex: 'storePhone'
     },
   ]
   return (

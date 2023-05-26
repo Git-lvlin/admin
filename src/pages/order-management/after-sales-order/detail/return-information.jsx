@@ -6,9 +6,7 @@ import moment from 'moment'
 
 import { amountTransform } from '@/utils/utils'
 import { expressInfo } from '@/services/order-management/after-sales-order'
-
 import styles from './styles.less'
-import './styles.less'
 
 const { Item } = Timeline
 
