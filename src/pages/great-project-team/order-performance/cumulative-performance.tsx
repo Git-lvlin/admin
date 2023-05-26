@@ -132,6 +132,19 @@ const CumulativePerformance=(props:DevicesProps) => {
       hideInSearch: true
     },
     {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '订单金额',
       dataIndex: 'payAmount',
       align: 'center',
@@ -153,10 +166,9 @@ const CumulativePerformance=(props:DevicesProps) => {
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      teamPhone:time?.teamPhone
+      ...time
     }
     var api=hydrogenSum()
     api(params).then(res=>{

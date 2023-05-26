@@ -51,6 +51,12 @@ const PromotionActivityManagement: FC = () => {
       hideInSearch: true
     },
     {
+      title: '店主用户ID',
+      dataIndex: 'memberId',
+      align: 'center',
+      order:-1
+    },
+    {
       title: '店主姓名',
       dataIndex: 'realName',
       align: 'center',

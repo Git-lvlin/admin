@@ -40,6 +40,18 @@ const StoreHealthCardManagement = () => {
       align: 'center'
     },
     {
+      title: '店主用户ID',
+      dataIndex: 'storeMemberId',
+      align: 'center',
+      hideInTable: true,
+    },
+    {
+      title: '店主用户ID',
+      dataIndex: 'storeMemberId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '服务号',
       dataIndex: 'cardNo',
       align: 'center',
@@ -102,6 +114,19 @@ const StoreHealthCardManagement = () => {
       title: '服务所属人手机号',
       dataIndex: 'ownerMobile',
       align: 'center'
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'ownerMemberId',
+      align: 'center',
+      hideInTable: true,
+      order:-1
+    },
+    {
+      title: '用户ID',
+      dataIndex: 'ownerMemberId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '所属套餐名称',

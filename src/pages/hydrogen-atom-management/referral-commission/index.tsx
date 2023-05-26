@@ -46,6 +46,11 @@ function ReferralCommission () {
       align: 'center'
     },
     {
+      title: '推荐人用户ID',
+      dataIndex: 'pMemId',
+      align: 'center',
+    },
+    {
       title: '总提成金额(元)',
       dataIndex: 'totalAccount',
       align: 'center',
