@@ -164,8 +164,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
             <tr>
               <th>业务项</th>
               <th colSpan={2}>单独SPU保证金</th>
-              <th colSpan={5 }>销售课程数</th>
-              <th colSpan={6 }>课程的保证金</th>
+              <th colSpan={6}>销售课程数</th>
+              <th colSpan={6}>课程的保证金</th>
               <th colSpan={4}>保证金的合同：合同签署情况</th>
             </tr> 
           </thead>
@@ -214,7 +214,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
                 ))
               }
               <td>
-                <ProFormDependency name={['onlineCourseNum', 'offlineCourseNum', 'onlineDcNum', 'offlineDcNum']}>
+                <ProFormDependency name={['onlineCourseNum', 'offlineCourseNum', 'onlineDcNum', 'offlineDcNum', 'oteOrderNum']}>
                   {
                     ({onlineCourseNum, offlineCourseNum, onlineDcNum, offlineDcNum, oteOrderNum}) => (
                       <div>{numberTransform(onlineCourseNum) + numberTransform(offlineCourseNum) + numberTransform(onlineDcNum) + numberTransform(offlineDcNum) + numberTransform(oteOrderNum)}</div>
