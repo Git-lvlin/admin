@@ -674,7 +674,7 @@ const AEDProgramTransaction: React.FC = () => {
 
   return (
     <PageContainer title={false}>
-      <div style={{background: '#fff', paddingLeft: '40px'}}>截至至昨日（{moment(+new Date()).subtract(1, 'days').format('YYYY-MM-DD')}）</div>
+      <div style={{background: '#fff', paddingLeft: '40px'}}>截止至昨日（{moment(+new Date()).subtract(1, 'days').format('YYYY-MM-DD')}）</div>
       <ProTable
         rowKey='id'
         columns={columns}
