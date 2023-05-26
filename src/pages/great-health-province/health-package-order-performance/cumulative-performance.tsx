@@ -4,7 +4,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
-import { hpaAedTrainOrder,hpaAedTrainOrderStats } from "@/services/great-health-province/aed-training-service-achievement"
+import { hpaHealthyGiftOrder,hpaHealthyGiftOrderStats } from "@/services/great-health-province/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem,CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -30,7 +30,7 @@ const formItemLayout = {
 
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible,msgDetail,onClose,scope} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState<GithubIssueItem>()
@@ -76,10 +76,16 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
+      title: '店铺编号',
+      dataIndex: 'storeHouseNumber',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '业绩范围',
       dataIndex: 'scopeDesc',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
     }
   ]
   useEffect(()=>{
@@ -88,9 +94,10 @@ export default (props:CumulativeProps)=>{
       orderSn:time?.orderSn,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      scopeDesc:time?.scopeDesc
+      storeHouseNumber:time?.storeHouseNumber,
+      scope:scope
     }
-    hpaAedTrainOrderStats(params).then(res=>{
+    hpaHealthyGiftOrderStats(params).then(res=>{
       if(res.code==0){
         setOrderSum(res?.data?.[0]?.payAmount)
       }
@@ -103,12 +110,13 @@ export default (props:CumulativeProps)=>{
       agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      scope:scope,
       ...rest,
     }
   }
   return (
       <DrawerForm
-        title={`${msgDetail?.name} AED培训及服务套餐单业绩 （ID:${msgDetail?.agencyId}）`}
+        title={`${msgDetail?.name} 健康礼包订单业绩 （ID:${msgDetail?.agencyId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}
@@ -131,11 +139,12 @@ export default (props:CumulativeProps)=>{
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={hpaAedTrainOrder}
+        request={hpaHealthyGiftOrder}
         columnEmptyText={false}
         actionRef={ref}
         params={{
           agencyId:msgDetail?.agencyId,
+          scope:scope
         }}
         pagination={{
           pageSize: 10,
@@ -154,10 +163,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'hpaAedTrainOrderPm'}
+              type={'hpaHealthyGiftOrderPm'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaAedTrainOrderPm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hpaHealthyGiftOrderPm'}/>
           ],
         }}
         tableRender={(_, dom) => {

@@ -1,7 +1,7 @@
 import { useRef,useEffect, useState } from "react"
 import ProTable from "@ant-design/pro-table"
 import ProCard from "@ant-design/pro-card"
-import { cityAgentHealthyGift,cityAgentHealthyGiftStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
+import { hpaHealthyGift,hpaHealthyGiftStats } from "@/services/great-health-province/health-package-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
@@ -28,9 +28,9 @@ const GenerationManagement =(props) => {
         agentName:time?.agentName,
         startTime:time?.createTime&&time?.createTime[0],
         endTime:time?.createTime&&time?.createTime[1],
-        scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
+        scope:activeKey == 1?'hyProvinceAgentAllCommission':'hyProvinceAgentCommission'
       }
-      cityAgentHealthyGiftStats(params).then(res=>{
+      hpaHealthyGiftStats(params).then(res=>{
         if(res.code==0){
           setDetailList(res.data[0])
         }
@@ -46,12 +46,12 @@ const GenerationManagement =(props) => {
         hideInSearch: true
       },
       {
-        title: '氢原子市代名称',
+        title: '大健康省代名称',
         dataIndex: 'name',
         align: 'center',
         order: 4,
         fieldProps:{
-          placeholder:'请输入氢原子市代名称'
+          placeholder:'请输入大健康省代名称'
         },
       },
       {
@@ -98,7 +98,7 @@ const GenerationManagement =(props) => {
     return (
       <>
         <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-          <Descriptions.Item  label="氢原子市代总数量">{detailList?.totalNum}  </Descriptions.Item>
+          <Descriptions.Item  label="大健康省代数量">{detailList?.totalNum}  </Descriptions.Item>
           <Descriptions.Item  label="健康礼包订单业绩">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
           <Descriptions.Item  label="健康礼包订单提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
         </Descriptions>
@@ -106,7 +106,7 @@ const GenerationManagement =(props) => {
           rowKey="agencyId"
           headerTitle='列表'
           columns={tableColumns}
-          request={cityAgentHealthyGift}
+          request={hpaHealthyGift}
           columnEmptyText={false}
           actionRef={form}
           onSubmit={(val)=>{
@@ -116,7 +116,7 @@ const GenerationManagement =(props) => {
             setTime({})
           }}
           params={{
-            scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
+            scope:activeKey == 1?'hyProvinceAgentAllCommission':'hyProvinceAgentCommission'
           }}
           pagination={{
             pageSize: 10,
@@ -136,7 +136,7 @@ const GenerationManagement =(props) => {
             visible={storeVisible}
             setVisible={setStoreVisible}
             msgDetail={msgDetail}
-            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
+            scope={activeKey == 1?'hyProvinceAgentAllCommission':'hyProvinceAgentCommission'}
             onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           />
         }
@@ -146,7 +146,7 @@ const GenerationManagement =(props) => {
             visible={visible}
             setVisible={setVisible}
             msgDetail={msgDetail}
-            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
+            scope={activeKey == 1?'hyProvinceAgentAllCommission':'hyProvinceAgentCommission'}
             onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
           />
         }
