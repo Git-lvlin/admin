@@ -288,16 +288,16 @@ const YeahgoVirtualAccountManagement = () => {
               <div className={styles.halfw}>薪宝虚拟户</div>
             </div>
             <div className={styles.fs}>
-              <div><span className={styles.sn}>{account?.platformXinbao?.sn}</span></div>
-              <div><span className={styles.sn}>{account?.platformXinbao?.sn}</span></div>
+              <div><span className={styles.sn}>{account?.platformXinbao?.youfuSn}</span></div>
+              <div><span className={styles.sn}>{account?.platformXinbao?.xinbaoSn}</span></div>
             </div>
             <div>
               <div className={styles.balance}>
                 <div>
-                  优付虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.balance, '/')}元`}</span>
+                  优付虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.youfuBalance, '/')}元`}</span>
                 </div>
                 <div>
-                  薪宝虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.balance, '/')}元`}</span>
+                  薪宝虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.xinbaoBalance, '/')}元`}</span>
                 </div>
               </div>
             </div>
