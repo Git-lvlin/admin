@@ -96,6 +96,7 @@ export type CumulativeProps = {
   onClose: function;
   activeKey?: string;
   callback: function;
+  orderArr: TableProps | undefined;
 }
 
 export type Statistics = {

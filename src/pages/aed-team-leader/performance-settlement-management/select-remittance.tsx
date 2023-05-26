@@ -17,11 +17,12 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps) => {
-  const { visible, setVisible,msgDetail,onClose,callback} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,orderArr} = props;
   const [form] = Form.useForm();
   const [selectedRows, setSelectedRows] = useState([]);
   const ref = useRef<ActionType>()
   useEffect(()=>{
+    setSelectedRows(orderArr)
     form.setFieldsValue({
       ...msgDetail
     })
@@ -175,6 +176,7 @@ export default (props:CumulativeProps) => {
       />
       <p>总计订单业绩：{amountTransform(selectedRows.reduce((sum, item) => sum + item.payAmount, 0),'/').toFixed(2)}元，分账金额：{amountTransform(selectedRows.reduce((sum, item) => sum + item.amount, 0),'/').toFixed(2)}元（共{selectedRows.length}单）</p>
       <p>预计提成金额：{amountTransform(selectedRows.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}元（扣除通道费：{amountTransform(selectedRows.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}元）</p>
+
       <ProFormText
         name="id"
         hidden
