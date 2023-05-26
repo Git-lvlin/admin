@@ -52,3 +52,41 @@ export const changeMemberStatus = (params = {}, options = {}) => {
     ...options
   });
 }
+
+//修改手机号
+export const modifyPhoneNumber = (params = {}, options = {}) => {
+  return request('/auth/java-admin/memberInfo/modifyPhoneNumber', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+//修改手机号记录
+export const modifyPhoneNumberPage = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/java-admin/memberInfo/modifyPhoneNumber/page', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+//获取修改手机号验证码
+export const getAuthCodePhone = (params = {}, options = {}) => {
+  return request('/auth/java-admin/memberInfo/getAuthCodePhone', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

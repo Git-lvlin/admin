@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button } from 'antd';
-import { getMemberDetail } from '@/services/user-management/user-list';
-// import ModifyMobilePhone from './modify-mobile-phone'
+import React, { useEffect, useState, useRef } from 'react';
+import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button, Image } from 'antd';
+import { getMemberDetail,modifyPhoneNumberPage } from '@/services/user-management/user-list';
+import ModifyMobilePhone from './modify-mobile-phone'
+import ProTable from '@ant-design/pro-table';
+import type { ActionType } from "@ant-design/pro-table"
 
 
 const { Title } = Typography;
@@ -31,32 +33,37 @@ const columns = [
   },
 ];
 
-// const phoneColumns = [
-//   {
-//     title: '原手机号',
-//     dataIndex: 'index',
-//   },
-//   {
-//     title: '修改后手机号',
-//     dataIndex: 'consignee',
-//   },
-//   {
-//     title: '修改说明',
-//     dataIndex: 'phone',
-//   },
-//   {
-//     title: '修改凭证',
-//     dataIndex: 'fullAddress',
-//   },
-//   {
-//     title: '修改时间',
-//     dataIndex: 'isDefault',
-//   },
-//   {
-//     title: '修改人',
-//     dataIndex: 'isDefault',
-//   },
-// ];
+const phoneColumns = [
+  {
+    title: '原手机号',
+    dataIndex: 'value',
+  },
+  {
+    title: '修改后手机号',
+    dataIndex: 'newValue',
+  },
+  {
+    title: '修改说明',
+    dataIndex: 'remark',
+  },
+  {
+    title: '修改凭证',
+    dataIndex: 'voucher',
+    render: (_) => {
+      if(_&&_!='-'){
+        return JSON.parse(_)?.map((item,index)=><div key={index} style={{ display:'inline-block', margin: '0 10px'}}><Image src={item} width={50} height={50}/></div>)
+      }
+    }
+  },
+  {
+    title: '修改时间',
+    dataIndex: 'createTime',
+  },
+  {
+    title: '修改人',
+    dataIndex: 'operator',
+  },
+];
 
 const sourceType = {
   1: 'vivo',
@@ -75,7 +82,7 @@ const sourceType = {
 type DetailProps = {
   visible: boolean,
   setVisible: (v: boolean) => void,
-  id: string,
+  id: string
 }
 
 type DataType = {
@@ -100,7 +107,9 @@ const Detail: React.FC<DetailProps> = (props) => {
   const [detailData, setDetailData] = useState<DataType>({});
   const { memberInfoToAdminResponse: info } = detailData;
   const [loading, setLoading] = useState(false);
-  // const [editPhoneVisible,setEditPhoneVisible] = useState<boolean>(false)
+  const [editPhoneVisible,setEditPhoneVisible] = useState<boolean>(false)
+  const [toLoad, setToLoad] = useState<number>(0)
+  const actionRef = useRef<ActionType>()
 
   useEffect(() => {
     (getMemberDetail({
@@ -112,7 +121,7 @@ const Detail: React.FC<DetailProps> = (props) => {
     }).finally(() => {
       setLoading(false);
     })
-  }, [id])
+  }, [id,toLoad])
 
   return (
     <Drawer
@@ -134,7 +143,7 @@ const Detail: React.FC<DetailProps> = (props) => {
             <Descriptions style={{ flex: 1 }} labelStyle={{ textAlign: 'right', width: 100, display: 'inline-block' }}>
               <Descriptions.Item label="下单手机号">
                 {info?.phoneNumber}
-                {/* <Button style={{ marginLeft: '20px' }} onClick={()=>{ setEditPhoneVisible(true) }}>修改</Button> */}
+                <Button style={{ marginLeft: '20px' }} onClick={()=>{ setEditPhoneVisible(true) }}>修改</Button>
               </Descriptions.Item>
               <Descriptions.Item label="注册来源">{sourceType[info?.sourceType as string]}</Descriptions.Item>
               <Descriptions.Item label="邀请码">
@@ -174,35 +183,51 @@ const Detail: React.FC<DetailProps> = (props) => {
               <Descriptions.Item label="关注的品类">
                 {info?.categoryIds}
               </Descriptions.Item>
-              {/* <Descriptions.Item label="用户ID">
-                {info?.userIds}
-              </Descriptions.Item> */}
+              <Descriptions.Item label="用户ID">
+                {info?.id}
+              </Descriptions.Item>
             </Descriptions>
           </Row>
 
           <Row style={{ marginTop: 50 }}>
             <Title style={{ marginBottom: -10 }} level={5}>收货地址</Title>
             <Divider />
-            <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={columns} />
+            <Table rowKey="id" style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={columns} />
           </Row>
 
-          {/* <Row style={{ marginTop: 50 }}>
+          <Row style={{ marginTop: 50 }}>
             <Title style={{ marginBottom: -10 }} level={5}>手机号修改记录</Title>
             <Divider />
-            <Table style={{ width: '100%' }} pagination={false} dataSource={detailData?.memberAddressResp} columns={phoneColumns} />
-          </Row> */}
+            <ProTable
+              rowKey="id"
+              options={false}
+              actionRef={actionRef}
+              params={{
+                memberId: id,
+                name: 'phone'
+              }}
+              style={{ width: '100%' }}
+              request={modifyPhoneNumberPage}
+              search={false}
+              columns={phoneColumns}
+              pagination={{
+                pageSize: 10,
+                showQuickJumper: true,
+              }}
+            />
+          </Row>
         </div>
       </Spin>
 
-      {/* {editPhoneVisible&&
+      {editPhoneVisible&&
         <ModifyMobilePhone
           visible={editPhoneVisible}
           setVisible={setEditPhoneVisible}
-          msgDetail={detailData}
+          msgDetail={info}
           onClose={()=>{}}
-          callback={()=>{}}
+          callback={()=>{ setToLoad(toLoad+1);actionRef?.current?.reload(); }}
         />
-      } */}
+      }
     </Drawer>
   )
 }
