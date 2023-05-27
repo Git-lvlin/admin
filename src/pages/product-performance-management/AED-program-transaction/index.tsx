@@ -518,6 +518,18 @@ const AEDProgramTransaction: React.FC = () => {
       hideInTable: true
     },
     {
+      title: '旧3800订单金额',
+      dataIndex: 'oteAmountDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '旧3800订单数量',
+      dataIndex: 'oteOrderNum',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '已下保证金单状态',
       dataIndex: 'depositStatus',
       valueType: 'select',
