@@ -524,7 +524,7 @@ const AEDProgramTransaction: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '旧3800订单数量',
+      title: '旧3800订单商品数量',
       dataIndex: 'oteOrderNum',
       align: 'center',
       hideInSearch: true
