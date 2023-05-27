@@ -312,9 +312,9 @@ const YeahgoVirtualAccountManagement = () => {
         <ProCard
           colSpan={{ xs: 24, sm: 12, md: 12, lg: 12, xl: 12 }}
           bordered
-          title='汇能虚拟户-汇付交易'
+          title='平台运营中心0'
         >
-          {/* <div className={styles.operation}>
+          <div className={styles.operation}>
             <div>账户名称：{account?.operation?.bindCard?.realname}</div>
             <div className={styles.balance}>
               <Space size={40}>
@@ -366,8 +366,8 @@ const YeahgoVirtualAccountManagement = () => {
                 </Button>
               </Space>
             </div>
-          </div> */}
-           <div className={styles.withdrawal}>
+          </div>
+          {/* <div className={styles.withdrawal}>
             {
               account?.bindCard?.cardNo &&
               <WithdrawalModal
@@ -482,7 +482,7 @@ const YeahgoVirtualAccountManagement = () => {
                 </Button>
               </Space>
             </div>
-          </div>
+          </div> */}
         </ProCard>
       </ProCard>
       {

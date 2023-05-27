@@ -33,7 +33,7 @@ const SelectSystem: React.FC = () => {
           formRef={form}
         >
           <ProFormRadio.Group
-            label='请选择'
+            label='当前选择'
             name='withdrawType'
             initialValue='youfuCommission'
             disabled
@@ -41,7 +41,6 @@ const SelectSystem: React.FC = () => {
              {label: '优付', value: 'youfuCommission'},
              {label: '薪宝', value: 'xinbaoCommission'}
             ]}
-            extra='修改待审核提现及以后订单使用的提现代发系统'
             width='md'
           />
         </ProForm>
