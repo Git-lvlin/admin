@@ -109,18 +109,15 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
     {
       title: '平台单号',
       dataIndex:'payNo',
-      width: '10%',
     },
     {
       title: '资金流水号',
       dataIndex: 'transactionId',
-      width: '10%',
       hideInSearch: true
     },
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      width: '10%',
       hideInSearch: true
     },
     {
@@ -132,42 +129,42 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
     {
       title: '分账金额',
       dataIndex: 'divideAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '手续费',
       dataIndex: 'fee',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '其他扣款',
       dataIndex: 'deductAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
+    // {
+    //   title: '交易渠道',
+    //   dataIndex: 'withdrawType',
+    //   hideInSearch: true,
+    //   hideInTable: title !== '社区店'
+    // },
     {
       title: '交易金额',
       dataIndex: 'changeAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易后余额',
       dataIndex: 'balanceAmount',
-      width: '5%',
       render: (_) => amountTransform(Number(_), '/'),
       hideInSearch: true
     },
     {
       title: '交易描述',
       dataIndex: 'description',
-      width: '5%',
       hideInSearch: true
     }
   ]
