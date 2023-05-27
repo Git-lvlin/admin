@@ -260,7 +260,7 @@ const YeahgoVirtualAccountManagement = () => {
           bordered
           title={
             <div className={styles.content}>
-              <div>提现代发虚拟户总余额：<span>{amountTransform(account?.withdrawPayment?.balance, '/')}元</span></div>
+              <div>提现代发虚拟户总余额：<span>{amountTransform(account?.withdrawPayment?.totalBalance, '/')}元</span></div>
               <Button
                  onClick={() => {
                   skipToDetail({ accountIds: [account?.withdrawPayment?.xinbaoAccountId, account?.withdrawPayment?.youfuAccountId], accountType: account?.withdrawPayment?.accountType })
