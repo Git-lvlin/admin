@@ -13,6 +13,7 @@ import { trainServerSum, trainServerPage } from "@/services/product-performance-
 import { amountTransform } from '@/utils/utils'
 import Export from '@/components/export'
 import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
+import styles from './styles.less'
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -58,13 +59,16 @@ const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   ]
 
   return (
-    <ProDescriptions
-      columns={columns}
-      labelStyle={{width: '10%'}}
-      column={{ xl: 3, xxl: 5 }}
-      bordered
-      dataSource={data}
-    />
+    <>
+      <div className={styles.desc}>2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻</div>
+      <ProDescriptions
+        columns={columns}
+        labelStyle={{width: '10%'}}
+        column={{ xl: 3, xxl: 5 }}
+        bordered
+        dataSource={data}
+      />
+    </>
   )
 }
 
