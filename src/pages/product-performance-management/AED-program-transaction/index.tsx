@@ -59,6 +59,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
         onlineDopNoNum: detailData?.onlineDopNoNum,
         onlineContractNum: detailData?.onlineContractNum,
         noSignContractNum: detailData?.noSignContractNum,
+        oteAmount: amountTransform(parseInt(detailData?.oteAmount), '/'),
+        oteOrderNum: detailData?.oteOrderNum
       })
     }
   }, [detailData])
@@ -66,6 +68,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   const orderNum1 = [
     {name: 'onlineDopSimpleNum', type: true},
     {name: 'offlineDopSimpleNum', type: false},
+    {name: 'oteOrderNum', type: true},
     {name: 'onlineCourseNum', type: true},
     {name: 'offlineCourseNum', type: false},
     {name: 'onlineDcNum', type: true}, 
@@ -109,7 +112,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   ]
 
   const submit = (type: number) => {
-    const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, ...rest} = form.current?.getFieldsValue()
+    const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, oteAmount, ...rest} = form.current?.getFieldsValue()
     const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
     return new Promise<void>((_resolve, _reject) => {
       aedCoursesTradeStatsSave({
@@ -118,6 +121,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
         onlineCourseAmount: amountTransform(onlineCourseAmount, '*'),
         offlineCourseAmount: amountTransform(offlineCourseAmount, '*'),
         onlineDcAmount: amountTransform(onlineDcAmount, '*'),
+        oteAmount: amountTransform(oteAmount, '*'),
         exportType: type,
         scope: {
           startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
@@ -141,41 +145,28 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   }
 
   return (
-    <div className={styles.mTable}>
+    <div>
+      <Space>
+        <div>明细汇总说明：线上订单汇总统计数据根据筛选结果得来，与下面明细数据的合计一致；线下订单数据由管理员手工编辑录入，查询后线下数据置0。</div>
+        <a onClick={()=>{setExportVisible(true)}}>查看历史录入记录</a>
+      </Space>
+      <h2>AED销售明细汇总</h2>
+      {/* <div className={styles.mTable}>
+        
+      </div> */}
       <ProForm
+        className={styles.mTable}
         layout='vertical'
         formRef={form}
-        submitter={{
-          render: () => [
-            <Space size='middle' className={styles.mTableSave}>
-              <Button type='primary' onClick={()=> {submit(1)}} key="submit">
-                确认保存
-              </Button>
-              <Button type='primary' onClick={()=> {submit(2)}} key="export">
-                确认保存并导出
-              </Button>
-              <ExportHistory
-                key='exportHistory'
-                show={visible}
-                setShow={setVisible}
-                type='exportAedStats'
-              />
-            </Space>
-          ]
-        }}
+        submitter={false}
       >
-        <Space>
-          <div>明细汇总说明：线上订单汇总统计数据根据筛选结果得来，与下面明细数据的合计一致；线下订单数据由管理员手工编辑录入，查询后线下数据置0。</div>
-          <a onClick={()=>{setExportVisible(true)}}>查看历史录入记录</a>
-        </Space>
-        <h2>AED销售明细汇总</h2>
         <table>
           <thead>
             <tr>
               <th>业务项</th>
               <th colSpan={2}>单独SPU保证金</th>
-              <th colSpan={5 }>销售课程数</th>
-              <th colSpan={6 }>课程的保证金</th>
+              <th colSpan={6}>销售课程数</th>
+              <th colSpan={6}>课程的保证金</th>
               <th colSpan={4}>保证金的合同：合同签署情况</th>
             </tr> 
           </thead>
@@ -184,6 +175,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
               <th>订单项</th>
               <th>线上已交10000元保证金订单</th>
               <th>线下已交10000元保证金订单</th>
+              <th>旧3800订单</th>
               <th>线上 5&3800&13800&14300&4300订单</th>
               <th>线下 5&3800&13800&14300&4300订单</th>
               <th>线上4800区县订单</th>
@@ -223,10 +215,10 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
                 ))
               }
               <td>
-                <ProFormDependency name={['onlineCourseNum', 'offlineCourseNum', 'onlineDcNum', 'offlineDcNum']}>
+                <ProFormDependency name={['onlineCourseNum', 'offlineCourseNum', 'onlineDcNum', 'offlineDcNum', 'oteOrderNum']}>
                   {
-                    ({onlineCourseNum, offlineCourseNum, onlineDcNum, offlineDcNum}) => (
-                      <div>{numberTransform(onlineCourseNum) + numberTransform(offlineCourseNum) + numberTransform(onlineDcNum) + numberTransform(offlineDcNum)}</div>
+                    ({onlineCourseNum, offlineCourseNum, onlineDcNum, offlineDcNum, oteOrderNum}) => (
+                      <div>{numberTransform(onlineCourseNum) + numberTransform(offlineCourseNum) + numberTransform(onlineDcNum) + numberTransform(offlineDcNum) + numberTransform(oteOrderNum)}</div>
                     )
                   }
                 </ProFormDependency>
@@ -284,6 +276,12 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
               </td>
               <td>
                 <ProFormText 
+                  name='oteAmount'
+                  readonly
+                />
+              </td>
+              <td>
+                <ProFormText 
                   name='onlineCourseAmount'
                   readonly
                 />
@@ -313,10 +311,10 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
                 </ProFormDependency>
               </td>
               <td>
-                <ProFormDependency name={['onlineCourseAmount', 'offlineCourseAmount', 'onlineDcAmount', 'offlineDcNum']}>
+                <ProFormDependency name={['onlineCourseAmount', 'offlineCourseAmount', 'onlineDcAmount', 'offlineDcNum', 'oteAmount']}>
                   {
-                    ({onlineCourseAmount, offlineCourseAmount, onlineDcAmount, offlineDcNum}) => (
-                      <div>{numberTransform(onlineCourseAmount) + numberTransform(offlineCourseAmount) + numberTransform(onlineDcAmount) + (numberTransform(offlineDcNum) *4800)}</div>
+                    ({onlineCourseAmount, offlineCourseAmount, onlineDcAmount, offlineDcNum, oteAmount}) => (
+                      <div>{numberTransform(onlineCourseAmount) + numberTransform(offlineCourseAmount) + numberTransform(onlineDcAmount) + (numberTransform(offlineDcNum) *4800) + numberTransform(oteAmount)}</div>
                     )
                   }
                 </ProFormDependency>
@@ -344,11 +342,11 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
             </tr>
             <tr>
               <th>总计金额</th>
-              <td colSpan={6}>
-                <ProFormDependency name={['onlineDopSimpleAmount', 'offlineDopSimpleNum', 'onlineCourseAmount', 'offlineCourseAmount', 'onlineDcAmount', 'offlineDcNum']}>
+              <td colSpan={7}>
+                <ProFormDependency name={['onlineDopSimpleAmount', 'offlineDopSimpleNum', 'onlineCourseAmount', 'offlineCourseAmount', 'onlineDcAmount', 'offlineDcNum', 'oteAmount']}>
                   {
-                    ({onlineDopSimpleAmount, offlineDopSimpleNum, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, offlineDcNum}) => (
-                      <div>{ numberTransform(onlineDopSimpleAmount) + numberTransform(offlineDopSimpleNum * 10000) + numberTransform(onlineCourseAmount) + numberTransform(offlineCourseAmount) + numberTransform(offlineDcNum * 4800) + numberTransform(onlineDcAmount)}</div>
+                    ({onlineDopSimpleAmount, offlineDopSimpleNum, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, offlineDcNum, oteAmount}) => (
+                      <div>{ numberTransform(onlineDopSimpleAmount) + numberTransform(offlineDopSimpleNum * 10000) + numberTransform(onlineCourseAmount) + numberTransform(offlineCourseAmount) + numberTransform(offlineDcNum * 4800) + numberTransform(onlineDcAmount) + numberTransform(oteAmount)}</div>
                     )
                   }
                 </ProFormDependency>
@@ -377,7 +375,21 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
           </tbody>
         </table>
       </ProForm>
-      <div>线上订单数据明细</div>
+      <Space size='middle' className={styles.mTableSave}>
+        <Button type='primary' onClick={()=> {submit(1)}} key="submit">
+          确认保存
+        </Button>
+        <Button type='primary' onClick={()=> {submit(2)}} key="export">
+          确认保存并导出
+        </Button>
+        <ExportHistory
+          key='exportHistory'
+          show={visible}
+          setShow={setVisible}
+          type='exportAedStats'
+        />
+      </Space>
+      <div className={styles.title}>线上订单数据明细</div>
       {
         exportVisible &&
         <ExportLog 
@@ -673,7 +685,7 @@ const AEDProgramTransaction: React.FC = () => {
   ]
 
   return (
-    <PageContainer title={false}>
+    <PageContainer title={false} className={styles.desc}>
       <div style={{background: '#fff', paddingLeft: '40px'}}>截止至昨日（{moment(+new Date()).subtract(1, 'days').format('YYYY-MM-DD')}）</div>
       <ProTable
         rowKey='id'
