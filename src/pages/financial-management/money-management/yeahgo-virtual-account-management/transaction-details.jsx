@@ -107,11 +107,6 @@ const TransactionDetails = ({
         'fee': '代收交易费',
         'feeReturn': '交易费退回'
       }
-    }else if(query.accountId==='platformXinbao'){
-      return {
-        'recharge': '充值',
-        'giveOut': '划扣'
-      }
     }else if(query.accountId==='supplyChain'){
       return {
         'goodsAmount': '货款',
@@ -126,12 +121,18 @@ const TransactionDetails = ({
         'recharge': '充值',
         'rechargeReturn': '充值回退'
       }
+    } else {
+      return {
+        'recharge': '充值',
+        'giveOut': '划扣'
+      }
     }
   }
 
   const getValues = (form) => {
     return {
       accountId: query.accountId,
+      accountIds: query.accountIds,
       accountType: query.accountType,
       amountType: query.amountType,
       begin: form?.getFieldValue().createTime?.[0],
@@ -240,11 +241,11 @@ const TransactionDetails = ({
     },
     {
       title: '交易渠道',
-      dataIndex: 'withdrawType',
+      dataIndex: 'tradeChannel',
       valueType: 'select',
       valueEnum: {
-        'commission': '薪宝',
-        'youfuCommission': '优付'
+        'xinbao': '薪宝',
+        'youfu': '优付'
       }
     },
     {

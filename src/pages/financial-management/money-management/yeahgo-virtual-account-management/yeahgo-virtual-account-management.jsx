@@ -144,8 +144,8 @@ const YeahgoVirtualAccountManagement = () => {
     })
   }, [change])
 
-  const skipToDetail = ({ accountType, accountId, amountType }) => {
-    setQuery({accountType, accountId, amountType})
+  const skipToDetail = ({ accountType, accountId, amountType, accountIds }) => {
+    setQuery({accountType, accountId, amountType, accountIds})
     setVisable(true)
   }
 
@@ -260,8 +260,14 @@ const YeahgoVirtualAccountManagement = () => {
           bordered
           title={
             <div className={styles.content}>
-              <div>提现代发虚拟户总余额：<span>{amountTransform(account?.platformXinbao?.balance, '/')}元</span></div>
-              <Button>交易明细</Button>
+              <div>提现代发虚拟户总余额：<span>{amountTransform(account?.withdrawPayment?.balance, '/')}元</span></div>
+              <Button
+                 onClick={() => {
+                  skipToDetail({ accountIds: [account?.withdrawPayment?.xinbaoAccountId, account?.withdrawPayment?.youfuAccountId], accountType: account?.withdrawPayment?.accountType })
+                }}
+              >
+                交易明细
+              </Button>
             </div>
           }
         >
@@ -288,16 +294,16 @@ const YeahgoVirtualAccountManagement = () => {
               <div className={styles.halfw}>薪宝虚拟户</div>
             </div>
             <div className={styles.fs}>
-              <div><span className={styles.sn}>{account?.platformXinbao?.youfuSn}</span></div>
-              <div><span className={styles.sn}>{account?.platformXinbao?.xinbaoSn}</span></div>
+              <div><span className={styles.sn}>{account?.withdrawPayment?.youfuSn}</span></div>
+              <div><span className={styles.sn}>{account?.withdrawPayment?.xinbaoSn}</span></div>
             </div>
             <div>
               <div className={styles.balance}>
                 <div>
-                  优付虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.youfuBalance, '/')}元`}</span>
+                  优付虚拟户余额： <span>{`${amountTransform(account?.withdrawPayment?.youfuBalance, '/')}元`}</span>
                 </div>
                 <div>
-                  薪宝虚拟户余额： <span>{`${amountTransform(account?.platformXinbao?.xinbaoBalance, '/')}元`}</span>
+                  薪宝虚拟户余额： <span>{`${amountTransform(account?.withdrawPayment?.xinbaoBalance, '/')}元`}</span>
                 </div>
               </div>
             </div>
