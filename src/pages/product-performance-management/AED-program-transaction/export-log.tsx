@@ -60,7 +60,7 @@ const ExportLog: React.FC<exportLogProps> = ({visible, setVisible}) => {
                     <th>序号</th>
                     <th>业务项</th>
                     <th colSpan={2}>单独SPU保证金</th>
-                    <th colSpan={5}>销售课程</th>
+                    <th colSpan={6}>销售课程</th>
                     <th colSpan={6}>AED保证金订单</th>
                     <th colSpan={4}>AED合同签署情况</th>
                     <th>范围</th>
@@ -74,6 +74,7 @@ const ExportLog: React.FC<exportLogProps> = ({visible, setVisible}) => {
                     <th>订单项</th>
                     <th>线上已交10000元保证金订单</th>
                     <th>线下已交10000元保证金订单</th>
+                    <th>旧3800订单</th>
                     <th>线上 5&3800&13800&14300&4300订单</th>
                     <th>线下 5&3800&13800&14300&4300订单</th>
                     <th>线上4800区县订单</th>
@@ -97,6 +98,7 @@ const ExportLog: React.FC<exportLogProps> = ({visible, setVisible}) => {
                     <th>订单数量</th>
                     <td>{res.onlineDopSimpleNum}</td>
                     <td>{res.offlineDopSimpleNum}</td>
+                    <td>{res.oteOrderNum}</td>
                     <td>{res.onlineCourseNum}</td>
                     <td>{res.offlineCourseNum}</td>
                     <td>{res.onlineDcNum}</td>
@@ -117,6 +119,7 @@ const ExportLog: React.FC<exportLogProps> = ({visible, setVisible}) => {
                     <th>小计金额（元）</th>
                     <td>{res.onlineDopSimpleAmount}</td>
                     <td>{res.offlineDopSimpleAmount}</td>
+                    <td>{res.oteAmount}</td>
                     <td>{res.onlineCourseAmount}</td>
                     <td>{res.offlineCourseAmount}</td>
                     <td>{res.onlineDcAmount}</td>
@@ -135,7 +138,7 @@ const ExportLog: React.FC<exportLogProps> = ({visible, setVisible}) => {
                   </tr>
                   <tr>
                     <th>总计金额（元）</th>
-                    <td colSpan={6}>{res.totalAmount}</td>
+                    <td colSpan={7}>{res.totalAmount}</td>
                     <td>-</td>
                     <td>-</td>
                     <td>-</td>

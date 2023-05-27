@@ -112,7 +112,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   ]
 
   const submit = (type: number) => {
-    const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, ...rest} = form.current?.getFieldsValue()
+    const {onlineDopSimpleAmount, onlineCourseAmount, offlineCourseAmount, onlineDcAmount, oteAmount, ...rest} = form.current?.getFieldsValue()
     const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
     return new Promise<void>((_resolve, _reject) => {
       aedCoursesTradeStatsSave({
@@ -121,6 +121,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
         onlineCourseAmount: amountTransform(onlineCourseAmount, '*'),
         offlineCourseAmount: amountTransform(offlineCourseAmount, '*'),
         onlineDcAmount: amountTransform(onlineDcAmount, '*'),
+        oteAmount: amountTransform(oteAmount, '*'),
         exportType: type,
         scope: {
           startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
