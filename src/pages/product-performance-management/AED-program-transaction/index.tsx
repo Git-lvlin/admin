@@ -146,10 +146,16 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
 
   return (
     <div>
-      <Space>
-        <div>明细汇总说明：线上订单汇总统计数据根据筛选结果得来，与下面明细数据的合计一致；线下订单数据由管理员手工编辑录入，查询后线下数据置0。</div>
-        <a onClick={()=>{setExportVisible(true)}}>查看历史录入记录</a>
-      </Space>
+      <div className={styles.export}>
+        <Space>
+          <div>明细汇总说明：线上订单汇总统计数据根据筛选结果得来，与下面明细数据的合计一致；线下订单数据由管理员手工编辑录入，查询后线下数据置0。</div>
+          <a onClick={()=>{setExportVisible(true)}}>查看历史录入记录</a>
+        </Space>
+        <Export
+          type='aedAllOrder'
+          text='导出实时全部业绩'
+        />
+      </div>
       <h2>AED销售明细汇总</h2>
       {/* <div className={styles.mTable}>
         
