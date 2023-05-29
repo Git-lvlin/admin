@@ -392,7 +392,10 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
           type='exportAedStats'
         />
       </Space>
-      <div className={styles.title}>线上订单数据明细（2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻）</div>
+      <div className={styles.title}>
+        线上订单数据明细
+        <span>2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻</span>
+      </div>
       {
         exportVisible &&
         <ExportLog 
