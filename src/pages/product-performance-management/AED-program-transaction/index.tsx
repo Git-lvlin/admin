@@ -698,7 +698,14 @@ const AEDProgramTransaction: React.FC = () => {
       title: '备注',
       dataIndex: 'trainingRemark',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.trainingRemark) {
+          return <span style={{color: '#ff0000'}}>{_}</span>
+        } else {
+          return _
+        }
+      }
     }
   ]
 
