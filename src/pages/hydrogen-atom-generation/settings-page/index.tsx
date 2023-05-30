@@ -1,67 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ProForm, { ProFormFieldSet, ProFormDatePicker } from '@ant-design/pro-form';
 import { EditableProTable } from '@ant-design/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import PageContainer from "@/components/PageContainer"
-import { Button } from 'antd';
+import { Button, message } from 'antd';
+import {getConfig, addConfig } from '@/services/hydrogen-atom-generation/settings-page'
 
 
 
 type DataSourceType = {
   id: React.Key;
-  orderType: string;
-  performancePeriod: [string, string];
+  desc: string;
+  code: string;
+  time: [string, string] | [];
 };
 
-const defaultData: DataSourceType[] = [
-  {
-    id: 1,
-    orderType: '氢原子启动费',
-    performancePeriod: ['2022-01-01', '2022-01-31'],
-  },
-  {
-    id: 2,
-    orderType: '氢原子月租/管理费(本市)',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 3,
-    orderType: '氢原子月租/管理费(全国)',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 4,
-    orderType: '新集约批发单',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 5,
-    orderType: '氢原子全款销售单',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 6,
-    orderType: '氢原子业绩',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 7,
-    orderType: '健康礼包',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-  {
-    id: 8,
-    orderType: 'AED培训服务套餐',
-    performancePeriod: ['2022-02-01', '2022-02-28'],
-  },
-];
 
-const EditableTable: React.FC = () => {
-  const [dataSource, setDataSource] = React.useState<DataSourceType[]>(defaultData);
+const EditableTable: React.FC<void> = () => {
+  const [dataSource, setDataSource] = React.useState<DataSourceType[]>([]);
   const [editableKeys, setEditableKeys] = useState<React.Key[]>([]);
+  const ref=useRef<ActionType>()
 
   useEffect(()=>{
-    setEditableKeys(dataSource?.map(item => item.id))
+    getConfig({ code:'hydrogenCityAgentTime' }).then(res=>{
+      if(res.code==0){
+        setDataSource(res.data.map((ele: any,index: number)=>({id:index+1,...ele})))
+        setEditableKeys(res.data.map((ele: any,index: number)=>index+1))
+      }
+    })
+    
   },[])
 
   const columns: ProColumns<DataSourceType>[] = [
@@ -73,22 +40,22 @@ const EditableTable: React.FC = () => {
     },
     {
       title: '业绩订单类型',
-      dataIndex: 'orderType',
+      dataIndex: 'desc',
       editable: false
     },
     {
       title: '氢原子市代平台可展示业绩时段',
-      dataIndex: 'performancePeriod',
+      dataIndex: 'time',
       valueType: 'dateRange',
-      renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
-        return (
-          <ProFormFieldSet> 
-            <ProFormDatePicker name="startTime" />
-            至 
-            <ProFormDatePicker name="endTime" />
-          </ProFormFieldSet>
-        );
-      },
+      // renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
+      //   return (
+      //     <ProFormFieldSet> 
+      //       <ProFormDatePicker name="startTime" />
+      //       至 
+      //       <ProFormDatePicker name="endTime" />
+      //     </ProFormFieldSet>
+      //   );
+      // },
     },
   ];
 
@@ -96,19 +63,33 @@ const EditableTable: React.FC = () => {
     <PageContainer>
       <ProForm
         onFinish={async (values) => {
-          console.log(values);
+          console.log(values)
+          try {
+            const params={
+              code: 'hydrogenCityAgentTime',
+              content: dataSource?.map(ele=>({code:ele.code,desc:ele.desc,time:ele.time}))
+            }
+            addConfig(params).then(res=>{
+              if(res.code==0){
+                message.success('提交成功')
+                ref?.current?.reload()
+              }
+            })
+          } catch (error) {
+            console.log('error',error)
+          }
         }}
         style={{ backgroundColor: '#fff' }}
         submitter={
           {
             render: (props, defaultDoms) => {
               return [
-                <Button type="primary" style={{ margin: '20px 0 20px 100px' }} key="submit" onClick={() => {
+                <Button type="primary" style={{ margin: '20px 0 20px 100px' }} key="button-submit" onClick={() => {
                   props.form?.submit?.()
                 }}>
                   提交
                 </Button>,
-                <Button type="default" onClick={() => { props.form?.resetFields?.() }}>
+                <Button type="default" key="button-default" onClick={() => { setDataSource(dataSource.map((ele,index)=>({...ele,id:index+1,time:[]}))) }}>
                   重置
                 </Button>
               ];
@@ -120,6 +101,7 @@ const EditableTable: React.FC = () => {
           rowKey="id"
           columns={columns}
           value={dataSource}
+          actionRef={ref}
           search={false}
           editable={{
               type: 'multiple',
@@ -132,6 +114,7 @@ const EditableTable: React.FC = () => {
               setDataSource(recordList)
               },
             }}
+            controlled
           recordCreatorProps={false}
         />
       </ProForm>
