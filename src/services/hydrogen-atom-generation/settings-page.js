@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export const getConfig = async (params = {}, options = {}) => {
-    const res = await request('/auth/stats/report/getConfig', {
+    const res = await request(`/auth/stats/report/getConfig/${params?.code}`, {
         method: 'POST',
         data:params,
         ...options
@@ -15,7 +15,7 @@ export const getConfig = async (params = {}, options = {}) => {
 }
 
 export const addConfig = async (params = {}, options = {}) => {
-    const res = await request('/auth/stats/report/addConfig', {
+    const res = await request(`/auth/stats/report/addConfig/${params?.code}`, {
         method: 'POST',
         data:params,
         ...options
