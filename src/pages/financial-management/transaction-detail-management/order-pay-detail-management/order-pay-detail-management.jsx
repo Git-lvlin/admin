@@ -132,7 +132,7 @@ const OrderPayDetailManagement = () =>{
       render:(_, r)=> (
         <>
           {
-            (r.auditStatus === 0 || r.auditStatus === 4) &&
+            (r.auditStatus === 0 || r.auditStatus === 4) && (r.refundAmount > 0) &&
             <Auth name="order/auditRecord/apply20">
               <Popconfirm
                 title="确认操作?"
@@ -155,7 +155,7 @@ const OrderPayDetailManagement = () =>{
             </Auth>
           }
           {
-            (r.auditStatus === 3) &&
+            (r.auditStatus === 3 && r.refundAmount > 0) &&
             <Auth name="order/auditRecord/audit20">
             <Popconfirm
               title="确认操作?"
