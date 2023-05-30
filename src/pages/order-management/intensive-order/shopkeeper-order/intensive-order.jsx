@@ -271,6 +271,10 @@ const TableList = () => {
             {
               value: 1,
               label: '精装生鲜'
+            },
+            {
+              value: 30,
+              label: '新集约'
             }
           ]}
           fieldProps={{
