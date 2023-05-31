@@ -44,7 +44,7 @@ const EditableTable: React.FC<void> = () => {
       editable: false
     },
     {
-      title: '氢原子市代平台可展示业绩时段',
+      title: '大健康省代平台可展示业绩时段',
       dataIndex: 'time',
       valueType: 'dateRange',
       // renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
@@ -71,7 +71,7 @@ const EditableTable: React.FC<void> = () => {
             }
             addConfig(params).then(res=>{
               if(res.code==0){
-                message.success('提交成功')
+                message.success('提交成功') 
                 ref?.current?.reload()
               }
             })
