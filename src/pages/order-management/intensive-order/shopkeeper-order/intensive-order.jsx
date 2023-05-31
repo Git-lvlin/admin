@@ -273,7 +273,7 @@ const TableList = () => {
               label: '精装生鲜'
             },
             {
-              value: 30,
+              value: 151,
               label: '新集约'
             }
           ]}
