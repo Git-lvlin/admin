@@ -13,6 +13,7 @@ type DataSourceType = {
   desc: string;
   code: string;
   time: [string, string] | [];
+  roleCode: string;
 };
 
 
@@ -57,6 +58,11 @@ const EditableTable: React.FC<void> = () => {
       //   );
       // },
     },
+    {
+      dataIndex: 'roleCode',
+      editable: false,
+      hideInTable: true
+    },
   ];
 
   return (
@@ -67,7 +73,7 @@ const EditableTable: React.FC<void> = () => {
           try {
             const params={
               code: 'healthyProvinceAgentTime',
-              content: dataSource?.map(ele=>({code:ele.code,desc:ele.desc,time:ele.time}))
+              content: dataSource?.map(ele=>({code:ele.code,desc:ele.desc,time:ele.time,roleCode:ele.roleCode}))
             }
             addConfig(params).then(res=>{
               if(res.code==0){
