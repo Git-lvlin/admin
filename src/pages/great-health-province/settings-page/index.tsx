@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import ProForm, { ProFormFieldSet, ProFormDatePicker } from '@ant-design/pro-form';
+import ProForm from '@ant-design/pro-form';
 import { EditableProTable } from '@ant-design/pro-table';
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import PageContainer from "@/components/PageContainer"
@@ -48,15 +48,6 @@ const EditableTable: React.FC<void> = () => {
       title: '大健康省代平台可展示业绩时段',
       dataIndex: 'time',
       valueType: 'dateRange',
-      // renderFormItem: (_, { type, defaultRender, ...rest }, form) => {
-      //   return (
-      //     <ProFormFieldSet> 
-      //       <ProFormDatePicker name="startTime" />
-      //       至 
-      //       <ProFormDatePicker name="endTime" />
-      //     </ProFormFieldSet>
-      //   );
-      // },
     },
     {
       dataIndex: 'roleCode',
