@@ -1,7 +1,18 @@
-import ProTable from '@ant-design/pro-table';
+import ProTable from "@ant-design/pro-table"
 
 const P = (props) => {
-  return <ProTable revalidateOnFocus={true} {...props} />
+  const { pagination, paginationProps = {},...rest } = props
+  return <ProTable
+    revalidateOnFocus={true}
+    pagination={{
+      pageSize: 10,
+      showQuickJumper: true,
+      hideOnSinglePage: false,
+      showSizeChanger: true,
+      ...paginationProps,
+    }}
+    {...rest}
+  />
 }
 
 P.Summary = ProTable.Summary;

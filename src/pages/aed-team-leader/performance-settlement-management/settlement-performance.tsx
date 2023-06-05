@@ -3,7 +3,7 @@ import { Form } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { applySubPage, applyDetail } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, Refer, Statistics } from "./data"

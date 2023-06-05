@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, Descriptions, Divider, Row, Avatar, Typography, Spin} from 'antd';
 import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
-import ProTable  from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { TableColumn, DetailProps, DataType } from './data'
 
 const { Title } = Typography;

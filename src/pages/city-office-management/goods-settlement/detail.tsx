@@ -129,6 +129,9 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
             pageSize={pageSize}
             current={page}
             onChange={pageChange}
+            showQuickJumper
+            showSizeChanger
+            hideOnSinglePage={false}
           />
         </div>
       }
