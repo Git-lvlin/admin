@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { Drawer, Pagination, Spin, Empty, Divider } from "antd"
+import { Drawer, Spin, Empty, Divider } from "antd"
+import Pagination from '@/components/pagination'
 import moment from "moment"
 
 import type { FC } from "react"

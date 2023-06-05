@@ -100,7 +100,7 @@ export default () => {
         <a key='preview' onClick={()=>{setPreviewVisible(true);setDetailId(record)}}>预览</a>,
         <a key='edit' onClick={()=>{setVisible(true);setDetailId(record)}}>编辑</a>,
         <a key='detele' onClick={()=>{setEndVisible(true);setDetailId(record.id)}}>{record?.status?'终止':null}</a>,
-        <a key='copy' onClick={()=>{setVisible(true);setDetailId(record.id);setCopy('copy')}}>复制</a>
+        <a key='copy' onClick={()=>{setVisible(true);setDetailId(record);setCopy('copy')}}>复制</a>
     ],
     }
   ];
