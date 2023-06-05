@@ -10,6 +10,8 @@ export type detailDataProps = {
   onlineContractNum: string
   noSignContractNum: string
   onlineDcAmount: string
+  oteAmount: string
+  oteOrderNum: string
 }
 
 export type exportLogProps = {

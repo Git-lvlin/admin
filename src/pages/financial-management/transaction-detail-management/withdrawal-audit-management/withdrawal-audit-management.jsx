@@ -69,7 +69,8 @@ const WithdrawalAuditManagement = () => {
       valueType: 'select',
       valueEnum: {
         'goodsAmount': '汇付',
-        'commission': '薪宝'
+        'commission': '薪宝',
+        'youfuCommission': '优付'
       }
     },
     {
@@ -139,6 +140,7 @@ const WithdrawalAuditManagement = () => {
         rowKey='sn'
         columns={columns}
         toolBarRender={false}
+        scroll={{x: "max-content"}}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,
