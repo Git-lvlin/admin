@@ -344,7 +344,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       )
     },
     {
-      title: '结算状态',
+      title: '业绩记账',
       dataIndex: 'divideInfo',
       render: (_, data)=> {
         return (
