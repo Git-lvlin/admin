@@ -1,6 +1,7 @@
 import { Pagination } from 'antd';
+import type { PaginationProps } from 'antd';
 
-const P = (props) => {
+const P = (props: PaginationProps) => {
   return <Pagination
     pageSize={10}
     showSizeChanger
@@ -12,5 +13,3 @@ const P = (props) => {
 
 
 export default P
-
-
