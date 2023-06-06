@@ -3,7 +3,7 @@ import type { ProTableProps } from '@ant-design/pro-table';
 import type { TablePaginationConfig } from 'antd';
 
 interface I extends ProTableProps<Record<string, unknown>, Record<string, unknown>> {
-  paginationProps: false | TablePaginationConfig
+  paginationProps?: false | TablePaginationConfig
 }
 
 const P = (props: I) => {
