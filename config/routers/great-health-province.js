@@ -22,5 +22,11 @@ export default {
       component: './great-health-province/health-package-order-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'settings-page',
+      path: '/great-health-province/settings-page',
+      component: './great-health-province/settings-page',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
