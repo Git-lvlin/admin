@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
-import { Drawer, Pagination, Spin, Empty, Divider, Space, Button, DatePicker } from "antd"
+import { Drawer, Spin, Empty, Divider, Space, Button, DatePicker } from "antd"
+import Pagination from '@/components/pagination'
 import ProForm from '@ant-design/pro-form'
 
 import type { FC } from "react"

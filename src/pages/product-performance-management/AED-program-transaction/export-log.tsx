@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Drawer, Pagination, Spin, Empty } from 'antd'
-
+import { Drawer, Spin, Empty } from 'antd'
+import Pagination from '@/components/pagination'
 import type { exportLogProps } from './data'
 
 import { aedStatsRecord } from '@/services/product-performance-management/AED-program-transaction'

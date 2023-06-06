@@ -6,12 +6,12 @@ import {
   Space,
   Tooltip,
   Form,
-  Pagination,
   Spin,
   Empty,
   Progress,
   Drawer
 } from 'antd'
+import Pagination from '@/components/pagination'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
 

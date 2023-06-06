@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination } from 'antd';
+import { Button, Space, Radio, Descriptions } from 'antd';
+import Pagination from '@/components/pagination'
 import styles from './style.less';
 
 const TableList = () => {
