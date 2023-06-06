@@ -1,8 +1,13 @@
-import ProTable from "@ant-design/pro-table"
-import type { ProTableProps } from "@ant-design/pro-table"
+import ProTable from '@ant-design/pro-table';
+import type { ProTableProps } from '@ant-design/pro-table';
+import type { TablePaginationConfig } from 'antd';
 
-const P = (props: ProTableProps<{},{}>) => {
-  const { pagination, paginationProps = {},...rest } = props
+interface I extends ProTableProps<Record<string, unknown>, Record<string, unknown>> {
+  paginationProps?: false | TablePaginationConfig
+}
+
+const P = (props: I) => {
+  const { pagination, paginationProps = {}, ...rest } = props
   return <ProTable
     revalidateOnFocus={false}
     pagination={{
