@@ -83,6 +83,8 @@ export default {
   'menu.product-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-management.merchandise-settlement-record': '商品结算记录',
   'menu.product-management.prohibited-words-management': '违禁词管理',
+  'menu.product-management.public.qualification-management': '资质管理',
+  'menu.product-management.public.front-category': '前台分类',
 
 
 

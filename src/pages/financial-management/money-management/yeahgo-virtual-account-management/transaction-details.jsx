@@ -104,8 +104,8 @@ const TransactionDetails = ({
       }
     }else if(query.accountId==='platformFee'){
       return {
-        'fee': '代收交易费',
-        'feeReturn': '交易费退回'
+        'fee': '交易通道费',
+        'feeReturn': '交易通道费回退'
       }
     }else if(query.accountId==='supplyChain'){
       return {
