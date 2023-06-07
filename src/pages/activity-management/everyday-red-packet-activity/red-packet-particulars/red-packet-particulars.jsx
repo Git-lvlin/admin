@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions,Space} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -65,7 +66,7 @@ export default () => {
         title: '领取时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {
@@ -85,7 +86,7 @@ export default () => {
         title: '使用时间',
         key: 'dateTimeRange2',
         dataIndex: 'actTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {

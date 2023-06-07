@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Space, Tooltip, Image, Menu, Dropdown, Input } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -865,7 +866,7 @@ const StoreList = (props) => {
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       hideInSearch: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
@@ -879,7 +880,7 @@ const StoreList = (props) => {
     {
       title: '申请入驻审核通过时间',
       dataIndex: 'auditTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       hideInSearch: storeType === 'freshStores' || storeType == 'vip' || storeType === 'life_house'
     },
@@ -893,7 +894,7 @@ const StoreList = (props) => {
     {
       title: '注销时间',
       dataIndex: 'cancleTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       hideInSearch: storeType !== 'cancelled'
     },

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -95,7 +96,7 @@ const HydrogenStartFee: FC = () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       initialValue: ['2022-9-24 00:00:00', moment(+new Date()).format("YYYY-MM-DD HH:mm:ss")],
       hideInTable: true
     },

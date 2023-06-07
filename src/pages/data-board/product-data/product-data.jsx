@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
@@ -397,7 +398,7 @@ const ProductData = () => {
     {
       title: '统计时间范围',
       dataIndex: 'date',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true
     },

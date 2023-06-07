@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 
@@ -89,7 +90,7 @@ const EscrowPurchaseOrder = () => {
       title: '支付时间',
       dataIndex: 'payTime',
       align: 'center',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import ProTable from '@/components/pro-table'
 import ProCard from "@ant-design/pro-card"
@@ -57,7 +58,7 @@ const GenerationManagement =(props) => {
       {
         title: '交易时间',
         dataIndex: 'dateRange',
-        valueType: 'dateRange',
+        renderFormItem: () => <TimeSelect showTime={false}/>,
         hideInTable: true
       },
       {

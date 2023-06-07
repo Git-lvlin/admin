@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef, useState } from 'react'
 import ProTable from '@/components/pro-table'
 import moment from "moment"
@@ -60,7 +61,7 @@ const StopHosting: FC = () => {
     {
       title: '托管购买下单支付时间',
       dataIndex: 'hostingPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {
@@ -72,7 +73,7 @@ const StopHosting: FC = () => {
     {
       title: '终止托管时间',
       dataIndex: 'stopHostingTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

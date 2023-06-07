@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable  from "@ant-design/pro-table"
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -134,7 +135,7 @@ const HealthGiftPackagePerformance: FC = () => {
     {
       title: '交易时间',
       dataIndex: 'time',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     }
   ]

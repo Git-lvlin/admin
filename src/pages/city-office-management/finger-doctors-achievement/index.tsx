@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable  from "@ant-design/pro-table"
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -116,7 +117,7 @@ const FingerDoctorsAchievement = () => {
     {
       title: '交易时间',
       dataIndex: 'payTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

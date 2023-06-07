@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import { Button,Tabs,Image} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -44,7 +45,7 @@ const EmployDetail=(props) => {
         title: '使用时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {
@@ -232,7 +233,7 @@ const UserDetail=(props) => {
       title: '发放时间',
       key: 'dateTimeRange',
       dataIndex: 'usefulTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {

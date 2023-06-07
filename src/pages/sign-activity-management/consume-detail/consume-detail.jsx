@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Descriptions} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -40,7 +41,7 @@ export default () => {
         title: '使用时间',
         key: 'dateTimeRange',
         dataIndex: 'usedTime',
-        valueType: 'dateTimeRange', 
+        renderFormItem: () => <TimeSelect />, 
         hideInTable:true  
       },
       {

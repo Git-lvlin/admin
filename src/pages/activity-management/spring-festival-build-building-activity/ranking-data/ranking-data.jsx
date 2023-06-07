@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Descriptions} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -44,7 +45,7 @@ const InviteRegister=(props) => {
         title: '活动时间',
         key: 'dateTimeRange',
         dataIndex: 'startTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {
@@ -194,7 +195,7 @@ const BuildBuilding=(props) => {
         title: '活动时间',
         key: 'dateTimeRange',
         dataIndex: 'startTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {

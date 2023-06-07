@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form } from 'antd';
 import {
@@ -55,7 +56,7 @@ const CumulativePerformance=(props:DevicesProps) => {
     {
       title: '订单日期',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true,
     },

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react'
 import ProTable from '@/components/pro-table';
 import type { ProColumns } from '@ant-design/pro-table';
@@ -121,7 +122,7 @@ export default () => {
     {
       title: '启动时间',
       dataIndex: 'dateTimeRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       order:2
     },

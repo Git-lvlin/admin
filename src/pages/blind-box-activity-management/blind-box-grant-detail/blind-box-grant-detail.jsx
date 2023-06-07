@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { getBlindboxIncomeList } from '@/services/blind-box-activity-management/blindbox-blindbox-get-lncome';
@@ -63,7 +64,7 @@ export default () => {
         title: '发放时间',
         key: 'dateTimeRange',
         dataIndex: 'usefulTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input, Divider } from 'antd';
 import ProTable from '@/components/pro-table'
@@ -296,7 +297,7 @@ const UserRelationship = () => {
     {
       title: '邀请注册时间',
       dataIndex: 'regTm',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
   ];

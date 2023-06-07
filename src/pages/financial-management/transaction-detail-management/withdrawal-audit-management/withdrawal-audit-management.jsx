@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
@@ -98,7 +99,7 @@ const WithdrawalAuditManagement = () => {
     {
       title: '提现时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from 'react'
 import ProTable from '@/components/pro-table'
 import { Space } from 'antd'
@@ -55,7 +56,7 @@ export default () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

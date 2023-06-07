@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import { Button, Radio, Space } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -62,7 +63,7 @@ const TableList = () => {
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {

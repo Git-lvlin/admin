@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 
 import React, { useRef, useState, useEffect } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
@@ -69,7 +70,7 @@ const Coupon = () => {
       title: '开始领取时间',
       key: 'start',
       dataIndex: 'addTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
       search: {
         transform: (value) => {
@@ -84,7 +85,7 @@ const Coupon = () => {
       title: '截止领取时间',
       key: 'end',
       dataIndex: 'addTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
       search: {
         transform: (value) => {

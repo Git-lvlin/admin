@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React from 'react';
 import { Button, Divider, Image } from 'antd';
 import { deviceDoctorPage } from "@/services/finger-doctor/device-management-period-management"
@@ -20,7 +21,7 @@ const columns: ProColumns[] = [
   {
     title: '',
     dataIndex: 'dateTimeRange',
-    valueType: 'dateTimeRange',
+    renderFormItem: () => <TimeSelect />,
     align: 'center',
     hideInTable: true,
     fieldProps: {

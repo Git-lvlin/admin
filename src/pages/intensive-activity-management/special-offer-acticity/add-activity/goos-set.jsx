@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form,Modal,Select,Switch, Input,InputNumber,message} from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -107,7 +108,7 @@ const GoosModel=(props)=>{
       {
           title: '活动开始时间',
           dataIndex: 'wholesaleStartTime',
-          valueType: 'dateRange',
+          renderFormItem: () => <TimeSelect showTime={false}/>,
           hideInTable:true,
       },
       {
