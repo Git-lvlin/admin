@@ -67,7 +67,7 @@ const QualificationManagement: React.FC = () => {
         params={{}}
         options={false}
         toolBarRender={()=> [
-          <Button type='primary'>添加</Button>
+          <Button type='primary' onClick={()=> {}}>添加</Button>
         ]}
         // request={}
         search={false}
@@ -80,6 +80,9 @@ const QualificationManagement: React.FC = () => {
           visible={visible}
           setVisible={setVisible}
         />
+      }
+      {
+        
       }
     </PageContainer>
   )

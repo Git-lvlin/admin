@@ -15,6 +15,7 @@ import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 import NotGoodsOrderDetail from '../../common-popup/notGoodsOrderDetail'
 import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
+import TimeSelect from '@/components/time-select'
 
 const TransactionDetails = ({
   visible,
@@ -213,7 +214,8 @@ const TransactionDetails = ({
       dataIndex: 'createTime',
       valueType: 'dateRange',
       hideInTable: true,
-      initialValue: [moment(+new Date()).subtract(7, 'days').format('YYYY-MM-DD'), moment(+new Date()).format('YYYY-MM-DD')]
+      initialValue: [moment().subtract(7, 'days'), moment()],
+      renderFormItem: () => <TimeSelect showTime={false}/>
     },
     {
       title: '分账金额',

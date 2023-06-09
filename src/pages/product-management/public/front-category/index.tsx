@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Spin, Empty } from 'antd'
 import { PageContainer } from '@/components/PageContainer';
-import { category, categoryDel, categorySorts } from '@/services/product-management/product-category'
+import { categoryApp, categoryAppSorts } from '@/services/product-management/front-category'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import Form from './form';
 import styles from './style.less'
+import GoodsDetail from './goods-detail'
 
 
 const SortableItem = SortableElement(({ children }: any) => children);
@@ -14,14 +15,19 @@ const SortContainer = SortableContainer(({ children }: any) => {
 });
 
 const List = (props: any) => {
-  const { parentId = 0, onClick = () => { }, edit, selectItem, } = props;
+  const { parentId = 0, onClick = () => { }, edit, selectItem, level } = props;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [selectId, setSelectId] = useState(null);
+  const [visible, setVisible] = useState(false)
+  const [appGcId1, setAppGcId1] = useState<number>(0)
+  const [appGcId2, setAppGcId2] = useState<number>(0)
+  const [title, setTitle] = useState<string>('')
+  const [subTitle, setSubTitle] = useState<string>('')
 
   const getData = () => {
     setLoading(true);
-    category({ gcParentId: parentId })
+    categoryApp({ gcParentId: parentId })
       .then(res => {
         if (res.code === 0) {
           setData(res.data.records)
@@ -37,7 +43,7 @@ const List = (props: any) => {
       return;
     }
     setLoading(true);
-    categorySorts({
+    categoryAppSorts({
       moveId: data[oldIndex].id,
       // eslint-disable-next-line no-nested-ternary
       afterId: newIndex === 0 ? 0 : (newIndex > oldIndex ? data[newIndex].id : data[newIndex - 1].id)
@@ -54,6 +60,22 @@ const List = (props: any) => {
     getData();
   }, [parentId])
 
+  const goodsDetail = (props: any) => {
+    const { id, item } = props
+  
+    if(level === 1) {
+      setAppGcId1(id)
+      setAppGcId2(0)
+      setTitle(item.gcName)
+      setSubTitle('')
+    } else {
+      setAppGcId1(item.gcParentId)
+      setAppGcId2(id)
+      setTitle(item.gcName)
+      setSubTitle(selectItem.gcName)
+    }
+  }
+
   return (
     <Spin
       spinning={loading}
@@ -61,14 +83,14 @@ const List = (props: any) => {
       <div style={{ marginRight: 50 }}>
         <div className={styles.header}>
           <a
-            onClick={() => { edit({ selectItem, parentId, id: parentId, type: 'add', callback: () => { getData(); } }); }}
+            onClick={() => { edit({ level, selectItem, parentId, type: 'add', id: parentId, callback: () => { getData(); } }); }}
           >
             添加{parentId === 0 ? '一' : '二'}级分类
           </a>
         </div>
         <div className={styles.th}>
           <span>分类名称</span>
-          <span className={styles.state}>在售商品数(款)</span>
+          <span className={styles.state}>商品</span>
           <span className={styles.action}>操作</span>
         </div>
         {
@@ -84,12 +106,19 @@ const List = (props: any) => {
                     >
                       <img src={item.gcIcon} />
                       <div className={styles.gcName}>{item.gcName}</div>
-                      <div className={styles.state}
-                      >
-                        <a onClick={()=> {}}>{123}</a>
+                      <div className={styles.state}>
+                        <a 
+                          onClick={(e)=> {
+                            setVisible(true);
+                            goodsDetail({id: item.id, item})
+                            e.stopPropagation()
+                          }}
+                        >
+                          查看商品
+                        </a>
                       </div>
                       <div className={styles.action}>
-                        <a onClick={(e) => { edit({ selectItem, id: item.id, parentId, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
+                        <a onClick={(e) => { edit({ level, selectItem, id: item.id, parentId, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
                       </div>
                     </li>
                   </SortableItem>
@@ -100,6 +129,17 @@ const List = (props: any) => {
             <Empty />
         }
       </div>
+      {
+        visible &&
+        <GoodsDetail
+          visible={visible}
+          setVisible={setVisible}
+          appGcId1={appGcId1}
+          appGcId2={appGcId2}
+          title={title}
+          subTitle={subTitle}
+        />
+      }
     </Spin>
   )
 }
@@ -114,18 +154,6 @@ const FrontCategory = () => {
     setVisible(true)
   }
 
-  const remove = (id: string, cb: ()=> void) => {
-    categoryDel({
-      id
-    }, { showSuccess: true }).then(res => {
-      if (res.code === 0) {
-        if (cb) {
-          cb();
-        }
-      }
-    })
-  }
-
   return (
     <PageContainer>
       {visible && <Form
@@ -134,8 +162,8 @@ const FrontCategory = () => {
         {...formParams}
       />}
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center', paddingTop: 30 }}>
-        <List onClick={(item: any) => { setSelectItem(item) }} edit={edit} remove={remove} />
-        {selectItem && <List selectItem={selectItem} parentId={selectItem.id} edit={edit} remove={remove} />}
+        <List onClick={(item: any) => { setSelectItem(item) }} edit={edit} level={1}/>
+        {selectItem && <List selectItem={selectItem} parentId={selectItem.id} edit={edit} level={2}/>}
       </div>
     </PageContainer>
   )

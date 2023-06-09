@@ -40,7 +40,7 @@ const freshType = {
 }
 
 export default (props) => {
-  const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
+  const { visible, setVisible, callback, data, id, type, selectItem, parentId, level } = props;
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
   const ref = useRef();
@@ -409,7 +409,7 @@ export default (props) => {
 
   return (
     <ModalForm
-      title={type === 'edit' ? '编辑分类' : `添加${id === 0 ? '一' : '二'}级分类`}
+      title={type === 'edit' ? '编辑分类' : `添加${level === 1 ? '一' : level === 2 ? '二' : '三'}级分类`}
       modalProps={{
       }}
       onVisibleChange={setVisible}
