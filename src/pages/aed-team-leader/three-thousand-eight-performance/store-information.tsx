@@ -230,6 +230,12 @@ const formItemLayout = {
         hideInSearch: true,
         hideInTable: type == 2
       },
+      {
+        title: '结算状态',
+        dataIndex: 'settlementStatusDesc',
+        align: 'center',
+        hideInSearch: true,
+      },
     ]
     useEffect(()=>{
       const params={

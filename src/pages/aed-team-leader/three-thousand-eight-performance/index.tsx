@@ -1,21 +1,25 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { DescriptionsProps, MsgDetailProps, Refer } from "./data"
+import type { DescriptionsProps, MsgDetailProps } from "./data"
 import { Descriptions } from 'antd';
 
 import { AEDRecordSubPage,AEDRecordSubSum } from "@/services/aed-team-leader/three-thousand-eight-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
+import Export from "@/pages/export-excel/export"
+import ExportHistory from "@/pages/export-excel/export-history"
+import moment from "moment"
 
 export default function TransactionData () {
   const [type, setType] = useState<number>(0)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<MsgDetailProps>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState<Refer>()
+  const [time,setTime]=useState<MsgDetailProps>()
   const form = useRef<ActionType>()
+  const [visit, setVisit] = useState<boolean>(false)
 
   useEffect(() => {
     const params={
@@ -30,6 +34,16 @@ export default function TransactionData () {
     })
 
   }, [time])
+
+  const getFieldValue = (searchConfig: any) => {
+    const { subName, dateRange } = searchConfig.form.getFieldsValue()
+    const params = {
+      subName: subName,
+      startTime: dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+    }
+    return params
+  }
 
   const tableColumns: ProColumns[] = [
     {
@@ -97,7 +111,7 @@ export default function TransactionData () {
             <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
           </Descriptions>
         }
-        onSubmit={(val)=>{
+        onSubmit={(val:MsgDetailProps)=>{
           setTime({
             subName: val.subName,
             dateRange: val.dateRange,
@@ -114,8 +128,15 @@ export default function TransactionData () {
         search={{
           defaultCollapsed: true,
           labelWidth: 110,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'invitation-friend-red-packet-detail-export'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
           ],
         }}
       />

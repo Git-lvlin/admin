@@ -8,8 +8,8 @@ export const cityAgentHealthyGift = async (params = {}, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD'),
+      endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options

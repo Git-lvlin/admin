@@ -57,18 +57,18 @@ export default (props) => {
         msgDetail?.status?<>
           <p><span>业绩订单金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2) }</span><span>业绩订单数：{msgDetail.status?parseInt(msgDetail?.allOrder)-msgDetail?.hasRemitOrder:msgDetail?.orderArr?.length}单</span></p>
           <p><span>业绩分账金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item.amount, 0),'/').toFixed(2) }</span><span>扣除通道费金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}</span></p>
-          <p><span>提成金额：￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}</span></p>
+          <p>提成金额：<span style={{ color: 'red', fontWeight: 'bold', fontSize:'20px' }}>￥{amountTransform(msgDetail?.orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}</span></p>
         </>:
         <>
           <p><span>业绩订单金额：￥{amountTransform(orderArr?.reduce((sum, item) => sum + item?.payAmount, 0),'/').toFixed(2) }</span><span>业绩订单数：{orderArr.length}单</span></p>
           <p><span>业绩分账金额：￥{amountTransform(orderArr?.reduce((sum, item) => sum + item.amount, 0),'/').toFixed(2) }</span><span>扣除通道费金额：￥{amountTransform(orderArr?.reduce((sum, item) => sum + item.fee, 0),'/').toFixed(2)}</span></p>
-          <p><span>提成金额：￥{amountTransform(orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}</span></p>
+          <p>提成金额：<span style={{ color: 'red', fontWeight: 'bold', fontSize:'20px' }}>￥{amountTransform(orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)}</span></p>
         </>
       }
         
       <Divider />
       <strong>确认汇款信息</strong>
-        <p><span>实际汇款金额：￥{msgDetail?.remitAmount}</span><span>汇款时间：{moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')}</span></p>
+        <p>实际汇款金额：<span style={{ color: 'red', fontWeight: 'bold', fontSize:'20px' }}>￥{msgDetail?.remitAmount}</span><span>汇款时间：{moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')}</span></p>
         <p>
           <span>汇款凭证：{msgDetail?.urlArr?.map(item=><div style={{ margin: '0 5px', display: 'inline-block' }}><Image src={item} style={{ width: '50px', height: '50px'}}/></div>)}</span>
           <span>收款账号：{msgDetail?.bankNo}</span>

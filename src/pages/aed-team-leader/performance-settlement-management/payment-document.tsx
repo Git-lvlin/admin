@@ -9,7 +9,7 @@ import ProCard from "@ant-design/pro-card"
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
 import moment from "moment";
-import type { CumulativeProps } from "./data"
+import type { CumulativeProps } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 
 const formItemLayout = {
     labelCol: { span: 5 },

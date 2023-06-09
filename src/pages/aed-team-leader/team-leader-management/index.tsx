@@ -10,6 +10,8 @@ import OnOffModel from './on-off-model'
 import HeadRegimentManagement from './head-regiment-management'
 import { subCompanyGetList } from "@/services/aed-team-leader/team-leader-management"
 import { Button } from "antd"
+import Export from "@/pages/export-excel/export"
+import ExportHistory from "@/pages/export-excel/export-history"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -18,8 +20,9 @@ export default function TransactionData () {
   const [onOffVisible, setOnOffVisible] = useState<boolean>(false)
   const [regimentVisible, setRegimentVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
+  const [visit, setVisit] = useState<boolean>(false)
   const form = useRef<ActionType>()
-  const tableColumns: ProColumns<TableProps>[] = [
+  const tableColumns: ProColumns[] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -129,9 +132,15 @@ export default function TransactionData () {
       ])
     },
   ]
+  const getFieldValue = (searchConfig: any) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+        ...rest,
+        }
+    }
   return (
     <PageContainer title={false}>
-      <ProTable<TableProps>
+      <ProTable
         headerTitle='列表'
         rowKey="id"
         columns={tableColumns}
@@ -146,9 +155,16 @@ export default function TransactionData () {
         search={{
           defaultCollapsed: true,
           labelWidth: 110,
-          optionRender: (searchConfig, formProps, dom) => [
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
             <Button type="primary" onClick={()=>{ setEnteringVisible(true) }}>录入</Button>,
             ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'invitation-friend-red-packet-detail-export'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
           ],
         }}
       />

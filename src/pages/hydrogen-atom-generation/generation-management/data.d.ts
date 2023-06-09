@@ -8,18 +8,19 @@ export type DescriptionsProps = {
 }
 
 export type TableProps = {
-  hydrogenAmount: number;
-  accountId: number;
+  hydrogenAmount?: number;
+  accountId?: number;
   agentId: number;
-  manager: string;
-  accountName: string;
-  hydrogenCommission: number;
-  wholesaleCommission: number;
-  managerPhone: string;
-  agentName: string;
-  totalCommission: number;
-  wholesaleAmount: string;
-  totalAmount: string;
+  manager?: string;
+  accountName?: string;
+  hydrogenCommission?: number;
+  wholesaleCommission?: number;
+  managerPhone?: string;
+  agentName?: string;
+  totalCommission?: number;
+  wholesaleAmount?: string;
+  totalAmount?: string;
+  createTime?: Array
 }
 
 
@@ -43,11 +44,8 @@ export type DevicesProps = {
 }
 
 export type CumulativeProps = {
-  msgDetail: {
-    agentId: String;
-    agentName: string;
-  }
-  type: string;
+  msgDetail: TableProps | undefined;
+  type?: number | undefined;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;

@@ -5,6 +5,8 @@ import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';
 import Detail from '@/pages/user-management/user-list/detail';
 import { Image } from 'antd'
+import WriteModal from './write-modal';
+import WriteDetail from './write-detail';
 
 
 type CancelListItem={
@@ -23,9 +25,11 @@ type CancelListItem={
 
 export default () => {
   const [detailVisible, setDetailVisible] = useState(false);
-  const [selectItem, setSelectItem] = useState({});
+  const [writeVisible, setWriteVisible] = useState(false);
+  const [writeDetailVisible, setWriteDetailVisible] = useState(false);
+  const [msgDetail, setMsgDetail] = useState({});
   const ref=useRef()
-  const columns:ProColumns<CancelListItem>[]= [
+  const columns:ProColumns[]= [
     {
       title: '用户ID',
       dataIndex: 'memberId',
@@ -68,7 +72,7 @@ export default () => {
       dataIndex: 'phoneNumber',
       valueType: 'text',
       render:(_,data)=>{
-        return <a onClick={()=>{setDetailVisible(true);setSelectItem(data);}}>{_}</a>
+        return <a onClick={()=>{setDetailVisible(true);setMsgDetail(data);}}>{_}</a>
       },
       hideInSearch:true
     },
@@ -147,11 +151,20 @@ export default () => {
       dataIndex: 'finishTime',
       valueType: 'text',
       hideInSearch: true
+    },
+    {
+      title: '操作',
+      dataIndex: 'option',
+      valueType: 'option',
+      render: (_,data) => [
+        <a key='write' onClick={()=>{setWriteVisible(true);setMsgDetail(data);}}>确认注销</a>,
+        <a key='detail' onClick={()=>{setWriteDetailVisible(true);setMsgDetail(data);}}>注销明细</a>
+      ]
     }
   ];
   return (
     <PageContainer>
-        <ProTable<CancelListItem>
+        <ProTable
           actionRef={ref}
           rowKey="id"
           options={false}
@@ -170,12 +183,28 @@ export default () => {
           }}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         />
-        {
+      {
         detailVisible &&
         <Detail
-          id={selectItem?.memberId}
+          id={msgDetail?.memberId}
           visible={detailVisible}
           setVisible={setDetailVisible}
+        />
+      }
+      {
+        writeVisible &&
+        <WriteModal
+          msgDetail={msgDetail}
+          visible={writeVisible}
+          setVisible={setWriteVisible}
+        />
+      }
+      {
+        writeDetailVisible &&
+        <WriteDetail
+          msgDetail={msgDetail}
+          visible={writeDetailVisible}
+          setVisible={setWriteDetailVisible}
         />
       }
   </PageContainer>

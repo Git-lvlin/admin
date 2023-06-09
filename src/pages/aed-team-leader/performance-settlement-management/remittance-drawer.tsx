@@ -10,7 +10,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { remitSave,getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem,Weather } from "./data"
+import type { CumulativeProps, DrtailItem,Weather } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 import styles from './styles.less'
 import SelectRemittance from './select-remittance'
 import Upload from '@/components/upload';
@@ -240,8 +240,10 @@ export default (props:CumulativeProps)=>{
                 width={400}
                 fieldProps={{
                   addonAfter: '元',
-                  value: amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)
+                  value: amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2),
+                  className:styles.my_input
                 }}
+
                 disabled
               />
             </>
@@ -268,7 +270,8 @@ export default (props:CumulativeProps)=>{
                 width={400}
                 fieldProps={{
                   addonAfter: '元',
-                  value: amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)
+                  value: amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2),
+                  className:styles.my_input
                 }}
                 disabled
               />
@@ -286,12 +289,13 @@ export default (props:CumulativeProps)=>{
         {pattern: /^([1-9]\d*|0)(\.\d{1,2})?$/, message: '请输入正确的金额格式'}
       ]}  
       fieldProps={{ 
-        addonAfter: '元'
+        addonAfter: '元',
+        className:styles.my_input
       }}
     />
 
     <ProFormDateTimePicker 
-      label='汇款时间'
+      label='实际汇款时间'
       name='remitTime'
       rules={[{ required: true, message: '请选择汇款时间' }]}
     />
@@ -300,22 +304,53 @@ export default (props:CumulativeProps)=>{
       label="上传汇款凭证"
       name="urlArr"
       width={400}
-      rules={[{ required: true, message: '请上传汇款凭证!' }]}
     >
       <Upload multiple  maxCount={3} accept="image/*"/>
     </Form.Item>
 
-    <ProFormTextArea
-      label='备注'
-      name="remark"
-      fieldProps={{
-        maxLength:50,
-        minLength:5,
-        placeholder:'请输入5-50个字符'
-      }}
-      width={400}
-      // extra={<span style={{ color:'red' }}>此备注内容将会在AED子公司后台展示，请注意隐私，谨慎填写。</span>}
-    />
+    <ProFormDependency name={['remitAmount','status']}>
+        {({ remitAmount, status }) => {
+          if((status==1&&remitAmount)&& remitAmount != amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)){
+            return <ProFormTextArea
+                    label='备注'
+                    name="remark"
+                    fieldProps={{
+                      maxLength:50,
+                      minLength:5,
+                      placeholder:'请输入5-50个字符'
+                    }}
+                    rules={[{required: true, message: '请输入备注'}]}
+                    width={400}
+                    extra={<span style={{ color:'red' }}>实际汇款金额与提成金额不相等，请核实确认并填写备注进行详细说明！</span>}
+                  />
+          }else if((status==0&&remitAmount)&& remitAmount != amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)){
+            return <ProFormTextArea
+                    label='备注'
+                    name="remark"
+                    fieldProps={{
+                      maxLength:50,
+                      minLength:5,
+                      placeholder:'请输入5-50个字符'
+                    }}
+                    rules={[{required: true, message: '请输入备注'}]}
+                    width={400}
+                    extra={<span style={{ color:'red' }}>实际汇款金额与提成金额不相等，请核实确认并填写备注进行详细说明！</span>}
+                  />
+          }else{
+            return <ProFormTextArea
+                    label='备注'
+                    name="remark"
+                    fieldProps={{
+                      maxLength:50,
+                      minLength:5,
+                      placeholder:'请输入5-50个字符'
+                    }}
+                    width={400}
+                  />
+          }  
+        }}
+    </ProFormDependency>
+
     <Divider />
 
     <ProFormText

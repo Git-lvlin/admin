@@ -10,6 +10,8 @@ import CollocationAtomicity from './collocation-atomicity'
 import RentalAtomicity from './rental-atomicity'
 import InvestorHeadcount from './investor-headcount'
 import OperatorHeadcount from './operator-headcount'
+import Export from "@/pages/export-excel/export"
+import ExportHistory from "@/pages/export-excel/export-history"
 
 import { Descriptions } from 'antd';
 
@@ -26,8 +28,9 @@ export default function TransactionData () {
   const [detailList,setDetailList]=useState<DescriptionsProps>()
   const [type, setType] = useState<number>(0)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
+  const [visit, setVisit] = useState<boolean>(false)
   const form = useRef<ActionType>()
-  const tableColumns: ProColumns<TableProps>[] = [
+  const tableColumns: ProColumns[] = [
     {
       title: 'ID',
       dataIndex: 'agencyId',
@@ -141,6 +144,13 @@ export default function TransactionData () {
     })
 
   }, [])
+
+  const getFieldValue = (searchConfig: any) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
   return (
     <PageContainer title={false}>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff',marginBottom:'20px'}} column={9} layout="vertical" bordered>
@@ -151,7 +161,7 @@ export default function TransactionData () {
         <Descriptions.Item  label="投资商总人数">{detailList?.hostingUserNum}  </Descriptions.Item>
         <Descriptions.Item  label="运营商总人数">{detailList?.operateUserNum}  </Descriptions.Item>
       </Descriptions>
-      <ProTable<TableProps>
+      <ProTable
         headerTitle='列表'
         rowKey="agencyId"
         columns={tableColumns}
@@ -166,8 +176,15 @@ export default function TransactionData () {
         search={{
           defaultCollapsed: true,
           labelWidth: 100,
-          optionRender: (searchConfig, formProps, dom) => [
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
             ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'invitation-friend-red-packet-detail-export'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
           ],
         }}
       />
@@ -177,8 +194,8 @@ export default function TransactionData () {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -187,8 +204,8 @@ export default function TransactionData () {
           visible={resetVisible}
           setVisible={setResetVisible}
           msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -197,7 +214,7 @@ export default function TransactionData () {
           visible={storeVisible1}
           setVisible={setStoreVisible1}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -207,7 +224,7 @@ export default function TransactionData () {
           visible={storeVisible2}
           setVisible={setStoreVisible2}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -217,7 +234,7 @@ export default function TransactionData () {
           visible={storeVisible3}
           setVisible={setStoreVisible3}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -227,7 +244,7 @@ export default function TransactionData () {
           visible={storeVisible4}
           setVisible={setStoreVisible4}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -237,7 +254,7 @@ export default function TransactionData () {
           visible={storeVisible5}
           setVisible={setStoreVisible5}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }

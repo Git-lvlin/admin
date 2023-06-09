@@ -11,6 +11,7 @@ import BasicInfo from './basic-info';
 import AccountInfo from './account-info';
 import DisableModal from './disable-modal';
 import BankCard from './bind-card';
+import SupplierQualification from './supplier-qualification';
 
 const { confirm } = Modal;
 
@@ -22,6 +23,7 @@ const TableList = () => {
   const [bandCardVisible, setBandCardVisible] = useState(false);
   const [detailData, setDetailData] = useState(null);
   const [disableModalVisible, setDisableModalVisible] = useState(false);
+  const [supplierVisible, setSupplierVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const location = useLocation();
   const actionRef = useRef();
@@ -238,6 +240,17 @@ const TableList = () => {
       },
     },
     {
+      title: '资质证书',
+      dataIndex: 'qlfNum',
+      valueType: 'text',
+      hideInSearch: true,
+      render: (_, data) => {
+        if(_){
+          return <a onClick={() => { setSupplierVisible(true); setDetailData(data) }}>{_}</a>
+        }
+      }
+    },
+    {
       title: '绑卡状态',
       dataIndex: 'bankStatus',
       valueType: 'text',
@@ -381,6 +394,14 @@ const TableList = () => {
         <BankCard
           detailData={detailData}
           setVisible={setBandCardVisible}
+          callback={() => { actionRef.current.reload(); setDetailData(null) }}
+        />
+      }
+
+      {supplierVisible && <SupplierQualification
+          detailData={detailData}
+          setVisible={setSupplierVisible}
+          visible={supplierVisible}
           callback={() => { actionRef.current.reload(); setDetailData(null) }}
         />
       }

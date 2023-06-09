@@ -9,7 +9,7 @@ import ProTable from "@ant-design/pro-table"
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import moment from "moment";
-import type { CumulativeProps } from "./data"
+import type { CumulativeProps } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 
 const formItemLayout = {
     labelCol: { span: 4 },

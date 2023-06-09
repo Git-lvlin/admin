@@ -61,7 +61,11 @@ const EditAddress = ({
     form.setFieldsValue({
       rawAddress:primaryAddress?.address,
       rawPhone:primaryAddress?.phone,
-      rawConsignee:primaryAddress?.consignee
+      rawConsignee:primaryAddress?.consignee,
+      consignee:primaryAddress?.consignee,
+      phone:primaryAddress?.phone,
+      // area:[primaryAddress?.addressInfo?.provinceId, primaryAddress?.addressInfo?.cityId, primaryAddress?.addressInfo?.districtId],
+      address:primaryAddress?.address
     })
     document.body.style.overflow = 'hidden'
     return () => {
