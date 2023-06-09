@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, {useRef} from 'react';
 import ProTable from '@/components/pro-table';
 import { CommentReplyList } from '@/services/community-management/dynamic-comment-reply-list';
@@ -48,7 +49,7 @@ export default props => {
             title: '评论时间',
             key: 'dateRange',
             dataIndex: 'createTime',
-            valueType: 'dateRange',
+            renderFormItem: () => <TimeSelect showTime={false}/>,
             hideInTable: true
         },
         {

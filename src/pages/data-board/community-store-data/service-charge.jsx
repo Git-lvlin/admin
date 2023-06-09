@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef, useEffect } from 'react'
 import ProTable from '@/components/pro-table'
 
@@ -90,7 +91,7 @@ const ServiceCharge = () => {
     {
       title: '缴费时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true
     },

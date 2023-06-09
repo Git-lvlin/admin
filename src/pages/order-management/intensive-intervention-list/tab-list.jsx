@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React from 'react'
 import ProTable from '@/components/pro-table'
 import { history } from 'umi'
@@ -32,7 +33,7 @@ const TabList =({done})=> {
     {
       title: '处理时间',
       dataIndex: 'applyTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

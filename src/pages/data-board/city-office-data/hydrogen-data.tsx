@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import ProTable from '@/components/pro-table'
 import { useRef } from 'react'
 import moment from 'moment'
@@ -39,7 +40,7 @@ const HydrogenData = () => {
     {
       title: '统计时间范围',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {

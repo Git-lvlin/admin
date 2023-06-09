@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect } from 'react';
 import ProTable from '@/components/pro-table';
 import { Space, Table, Spin } from 'antd';
@@ -66,7 +67,7 @@ const TableList = () => {
     {
       title: '开团时间',
       dataIndex: 'createGroupTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {
@@ -108,7 +109,7 @@ const TableList = () => {
     {
       title: '参团时间',
       dataIndex: 'joinGroupTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
   ];

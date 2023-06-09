@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
@@ -23,7 +24,7 @@ export default () => {
     {
       title: '操作时间',
       dataIndex: 'updateTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
       order: 3

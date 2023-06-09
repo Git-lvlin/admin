@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form } from 'antd';
 import {
@@ -125,7 +126,7 @@ export default (props:CumulativeProps)=>{
     {
       title: '订单时间',
       dataIndex: 'dateRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
       fieldProps:{
@@ -146,7 +147,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '汇款时间',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       dataIndex: 'remittanceTime',
       align: 'center',
       hideInTable: true,

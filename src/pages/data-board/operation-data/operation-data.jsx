@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import { Space, Radio, Tooltip } from 'antd'
@@ -97,7 +98,7 @@ const OperationData = () => {
     {
       title: '统计时间范围',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

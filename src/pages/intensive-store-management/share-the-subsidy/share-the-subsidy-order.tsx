@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState } from "react"
 import { 
   DrawerForm,
@@ -103,7 +104,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     {
       title: '下单时间',
       dataIndex: 'dateTimeRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       order:2
     },

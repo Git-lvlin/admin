@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -107,7 +108,7 @@ const BrandAuthorizationFee: FC = () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

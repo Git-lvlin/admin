@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect,useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
@@ -118,7 +119,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

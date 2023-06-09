@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
 import React, { useState } from 'react'
@@ -124,7 +125,7 @@ const afterSalesOrder = () => {
     {
       title: '申请时间',
       dataIndex: 'applyTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       width: '7%',
       order: 5,

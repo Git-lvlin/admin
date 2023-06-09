@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@ant-design/pro-table'
@@ -514,7 +515,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '保证金订单支付时间',
       dataIndex: 'depositPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },
@@ -569,7 +570,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '课程订单支付时间 ',
       dataIndex: 'aedPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },
@@ -673,7 +674,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '区县订单支付时间',
       dataIndex: 'dcPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },

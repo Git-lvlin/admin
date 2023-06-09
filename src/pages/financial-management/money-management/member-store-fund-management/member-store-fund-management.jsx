@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
@@ -150,7 +151,7 @@ const MemberStoreFundManagement = () => {
       title: '注册日期',
       dataIndex: 'registTime',
       hideInTable: true,
-      valueType: 'dateRange'
+      renderFormItem: () => <TimeSelect showTime={false}/>,
     },
     {
       title: '货款',
@@ -190,7 +191,7 @@ const MemberStoreFundManagement = () => {
       title: '入驻时间',
       dataIndex: 'settleTime',
       hideInTable: true,
-      valueType: 'dateRange'
+      renderFormItem: () => <TimeSelect showTime={false}/>,
     },
     {
       title: '收支明细',

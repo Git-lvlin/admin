@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef, useEffect } from 'react'
 import ProTable from '@/components/pro-table'
 import { Button } from 'antd'
@@ -47,7 +48,7 @@ const DailyDataOverview = () => {
       title: '日期范围',
       dataIndex: 'dateTime',
       align: 'center',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

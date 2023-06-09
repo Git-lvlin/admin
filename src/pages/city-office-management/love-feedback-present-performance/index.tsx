@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable  from "@ant-design/pro-table"
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -94,7 +95,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
       title: '交易时间',
       dataIndex: 'time',
       hideInTable: true,
-      valueType: 'dateTimeRange'
+      renderFormItem: () => <TimeSelect />,
     },
     {
       title: '社区店数量',

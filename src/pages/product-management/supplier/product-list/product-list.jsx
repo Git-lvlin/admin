@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Tooltip, Table, Spin, Space, Menu, Dropdown } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -476,25 +477,25 @@ const TableList = (props) => {
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {
       title: '审核时间',
       dataIndex: 'auditTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {
       title: '运营配置时间',
       dataIndex: 'lastOperateTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {
       title: '最近上架时间',
       dataIndex: 'lastPutonTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import ProTable from '@/components/pro-table'
 import { Space } from "antd"
@@ -77,7 +78,7 @@ const StopOperate: FC = () => {
     {
       title: '激活时间',
       dataIndex: 'activationTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {
@@ -89,7 +90,7 @@ const StopOperate: FC = () => {
     {
       title: '停止运营时间',
       dataIndex: 'stopOperateTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

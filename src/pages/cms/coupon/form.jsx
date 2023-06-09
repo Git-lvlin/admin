@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useRef, useState } from 'react';
 import { message, Space } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -35,7 +36,7 @@ export default (props) => {
       title: '开始领取时间',
       key: 'start',
       dataIndex: 'addTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
       search: {
         transform: (value) => {
@@ -50,7 +51,7 @@ export default (props) => {
       title: '截止领取时间',
       key: 'end',
       dataIndex: 'addTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
       search: {
         transform: (value) => {
