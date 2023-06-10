@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { Button, Form } from 'antd';
+import { Button, Form, Space } from 'antd';
 import {
   ProFormText,
   ModalForm,
@@ -55,11 +55,12 @@ export default (props) => {
       title: '操作',
       align: 'center',
       valueType: 'option',
-      render:(_,data)=>{
-        if(data.auditStatus == -1 ){
-          return <a onClick={()=>{ setFormVisible(true); setMsgDetail(data) }}>上传资质</a>
-        }
-      }
+      render:(_,data)=>(
+        <Space>
+          {data.auditStatus == 2 && <a onClick={() => { setMsgDetail(data); setFormVisible(true) }}>编辑</a>}
+          {data.auditStatus == -1 && <a onClick={() => { setMsgDetail(data); setFormVisible(true) }}>上传资质</a>}
+        </Space>
+      )
     }
   ]
   return (
