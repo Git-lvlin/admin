@@ -21,7 +21,7 @@ export default (props:CumulativeProps) => {
     cancelConfirm({id:msgDetail?.id,remark:values.remark,voucher:values.voucher}).then(res=>{
       if(res.code==0){
         message.success('操作成功')
-        callback(values)
+        callback()
         setVisible(false)
       }
     })

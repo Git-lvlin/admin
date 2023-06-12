@@ -1,34 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import ProTable from '@/components/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
+import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';
 import Detail from '@/pages/user-management/user-list/detail';
 import { Image, Space } from 'antd'
 import WriteModal from './write-modal';
 import WriteDetail from './write-detail';
-
-
-type CancelListItem={
-  createTime: any;
-  id: number;
-  loginTime: any;
-  memberId: any;
-  phoneNumber: string;
-  reason: string;
-  regTime: any;
-  sourceTypeDesc: string;
-  type: number;
-  userType: number;
-  icon: string
-}
+import type { TableProps } from './data';
 
 export default () => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [writeVisible, setWriteVisible] = useState(false);
   const [writeDetailVisible, setWriteDetailVisible] = useState(false);
-  const [msgDetail, setMsgDetail] = useState({});
-  const ref=useRef()
+  const [msgDetail, setMsgDetail] = useState<TableProps>();
+  const ref=useRef<ActionType>()
   const columns:ProColumns[]= [
     {
       title: '用户ID',
@@ -199,6 +185,7 @@ export default () => {
           msgDetail={msgDetail}
           visible={writeVisible}
           setVisible={setWriteVisible}
+          callback={()=>{ref?.current?.reload()}}
         />
       }
       {

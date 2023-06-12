@@ -19,8 +19,6 @@ export type CumulativeProps = {
   msgDetail: TableProps | undefined;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onClose: function;
   activeKey?: string;
-  callback: function;
-  orderArr: TableProps | undefined;
+  callback?: function;
 }
