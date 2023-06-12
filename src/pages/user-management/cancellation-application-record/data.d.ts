@@ -1,20 +1,18 @@
 export type TableProps = {
-    settlementId: number;
-    orderType: string;
-    subOrderCount: number;
-    settlementStatus: number;
-    auditRemark: string;
-    applyTime: string;
-    auditTime: string;
-    lastRemittanceTime: string;
-    settlementStatusDesc: string;
-    orderTypeDesc: string;
-    applyRemark: string;
-    applyAttach?: (null)[] | null;
-    applyId: number;
-    confirmedAmount: number;
-    applyName: string;
-    commissionAmount: number;
+  createTime: string;
+  finishTime?: string | null;
+  icon: string;
+  id: string;
+  loginTime: string;
+  memberId: string;
+  nickName: string;
+  phoneNumber: string;
+  reason: string;
+  regTime: string;
+  sourceType?: number | null;
+  sourceTypeDesc: string;
+  type: number;
+  userType: number;
 }
 
 export type CumulativeProps = {

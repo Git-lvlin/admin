@@ -7,6 +7,7 @@ import {
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import { CumulativeProps } from './data';
+import { cancelConfirm } from '@/services/user-management/cancellation-application-record'
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -16,9 +17,14 @@ const formItemLayout = {
 export default (props:CumulativeProps) => {
   const { visible, setVisible, msgDetail, callback } = props;
   const [form] = Form.useForm();
-  const waitTime = (values) => {
-    callback(values)
-    setVisible(false)
+  const waitTime = (values: { id:string,remark:string,voucher:string}) => {
+    cancelConfirm({id:msgDetail?.id,remark:values.remark,voucher:values.voucher}).then(res=>{
+      if(res.code==0){
+        message.success('操作成功')
+        callback(values)
+        setVisible(false)
+      }
+    })
   };
   useEffect(()=>{
     form.setFieldsValue(msgDetail)
@@ -38,7 +44,6 @@ export default (props:CumulativeProps) => {
       }}
       onFinish={async (values) => {
         await waitTime(values);
-        message.success('操作成功');
         return true;
       }}
       {...formItemLayout}
@@ -55,9 +60,9 @@ export default (props:CumulativeProps) => {
       />
       <Form.Item
         label="申请凭证"
-        name="urlArr"
+        name="voucher"
         >
-        <Upload multiple  maxCount={3} accept="image/*"/>
+        <Upload multiple  maxCount={1} accept="image/*"/>
       </Form.Item>
       
       <ProFormTextArea

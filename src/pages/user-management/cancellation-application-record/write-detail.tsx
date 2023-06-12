@@ -17,7 +17,10 @@ export default (props:CumulativeProps) => {
   const { visible, setVisible, msgDetail } = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    form.setFieldsValue(msgDetail)
+    form.setFieldsValue({
+      ...msgDetail,     
+    })
+  
   },[msgDetail])
   return (
     <ModalForm
@@ -51,24 +54,32 @@ export default (props:CumulativeProps) => {
       />
       <ProFormText
         label='确认注销类型'
-        name="type"
+        name="sourceType"
+        fieldProps={{
+          value: msgDetail?.sourceType == 1?'管理员确认注销':'过反悔期系统注销'
+        }}
         readonly
       />
-      <Form.Item
-        label="申请凭证"
-        name="urlArr"
-        >
-        <Upload multiple  maxCount={3} accept="image/*" readonly/>
-      </Form.Item>
-      
-      <ProFormTextArea
-        label='备注'
-        name="remark"
-        readonly
-      />
+      {
+        msgDetail?.sourceType == 1 &&<>
+          <Form.Item
+            label="申请凭证"
+            name="voucher"
+            >
+            <Upload multiple  maxCount={1} accept="image/*" disabled/>
+          </Form.Item>
+          
+          <ProFormTextArea
+            label='备注'
+            name="remark"
+            readonly
+          />
+        </>
+      }
+    
        <ProFormText
         label='确认注销操作人'
-        name={["operator","nickName"]}
+        name="operator"
         readonly
       />
        <ProFormText

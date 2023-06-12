@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import { cancelList } from '@/services/user-management/logout-list'
 import { PageContainer } from '@ant-design/pro-layout';
 import Detail from '@/pages/user-management/user-list/detail';
-import { Image } from 'antd'
+import { Image, Space } from 'antd'
 import WriteModal from './write-modal';
 import WriteDetail from './write-detail';
 
@@ -156,10 +156,12 @@ export default () => {
       title: '操作',
       dataIndex: 'option',
       valueType: 'option',
-      render: (_,data) => [
-        <a key='write' onClick={()=>{setWriteVisible(true);setMsgDetail(data);}}>确认注销</a>,
-        <a key='detail' onClick={()=>{setWriteDetailVisible(true);setMsgDetail(data);}}>注销明细</a>
-      ]
+      render: (_,data) => (
+        <Space>
+        {data?.type == 0&&<a key='write' onClick={()=>{setWriteVisible(true);setMsgDetail(data);}}>确认注销</a>}
+        {data?.type == 3&&<a key='detail' onClick={()=>{setWriteDetailVisible(true);setMsgDetail(data);}}>注销明细</a>}
+        </Space>
+      )
     }
   ];
   return (

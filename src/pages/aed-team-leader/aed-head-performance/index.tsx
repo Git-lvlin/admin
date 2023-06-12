@@ -175,10 +175,10 @@ export default function TransactionData () {
             <Export
             key='export'
             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-            type={'export3800AEDSubCommissionList'}
+            type={'aedTeamPm'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'export3800AEDSubCommissionList'}/>
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'aedTeamPm'}/>
           ],
         }}
       />

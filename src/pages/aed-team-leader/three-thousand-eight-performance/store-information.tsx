@@ -232,9 +232,10 @@ const formItemLayout = {
       },
       {
         title: '结算状态',
-        dataIndex: 'settlementStatusDesc',
+        dataIndex: 'settleStatusDesc',
         align: 'center',
         hideInSearch: true,
+        hideInTable: type == 2
       },
     ]
     useEffect(()=>{
