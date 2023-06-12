@@ -255,10 +255,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'invitation-friend-red-packet-detail-export'}
+              type={'export_SettlementAudit_applySubPage'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type='invitation-friend-red-packet-detail-export'/>,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applySubPage'/>,
           ],
         }}
       />

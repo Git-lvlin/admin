@@ -14,7 +14,9 @@ export type TableProps = {
     typeDesc: string;
     goodsQlfId: string;
     gc: string;
-
+    settlementId: string;
+    applyId: string;
+    applyName: string;
 }
 
 export type CumulativeProps = {
@@ -25,4 +27,28 @@ export type CumulativeProps = {
   activeKey?: string;
   callback?: function;
   orderArr?: TableProps | undefined;
+}
+
+
+export type Statistics = {
+    settlementId: number;
+    settlementStatus: number;
+    orderType: string;
+    applyTime: string;
+    applyId: string;
+    applyName: string;
+    applyAttach?: (string)[] | null;
+    applyRemark: string;
+    subOrderCount: number;
+    statsConfirmedAmount: number;
+    statsCommissionAmount: number;
+    orderTypeDesc: string;
+    settlementStatusDesc: string;
+    statsAmount: number;
+    statsFee: number;
+    statsCount10: number;
+    statsCount11: number;
+    statsCount21: number;
+    statsCount12: number;
+    statsRemitAmount: number;
 }
