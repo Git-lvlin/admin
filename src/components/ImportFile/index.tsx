@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import ProForm, { ModalForm, ProFormDateTimeRangePicker } from '@ant-design/pro-form'
+import ProForm, { ModalForm } from '@ant-design/pro-form'
 import {
   Button,
   message,
@@ -28,6 +28,7 @@ import Upload from '../upload'
 import { createImportTask } from '@/services/import-file/import-file'
 import { findPage } from '@/services/import-file/import-file'
 import styles from './styles.less'
+import TimeSelect from '@/components/time-select'
 
 const ImportHistroy: FC<historyProps> = ({ visible, setVisible, code }) => {
   const [form] = Form.useForm()
@@ -206,10 +207,12 @@ const ImportHistroy: FC<historyProps> = ({ visible, setVisible, code }) => {
             }
           }}
         >
-          <ProFormDateTimeRangePicker
+          <ProForm.Item
             name="time"
             label="导入时间"
-          />
+          >
+            <TimeSelect />
+          </ProForm.Item>
         </ProForm>
         <Spin delay={500} spinning={load}>
           {

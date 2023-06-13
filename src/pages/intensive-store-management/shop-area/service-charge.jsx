@@ -315,23 +315,6 @@ export default  () => {
                 }
                 if(currentType==='limitTopNum'){
                     return <>
-                        {/* <ProFormDateTimeRangePicker
-                            label='优惠时间段'
-                            name="dateRange2"
-                            fieldProps={{
-                                disabledDate:(current)=>disabledDate(current)
-                            }}
-                            placeholder={[
-                                formatMessage({
-                                id: 'formandbasic-form.placeholder.start',
-                                }),
-                                formatMessage({
-                                id: 'formandbasic-form.placeholder.end',
-                                }),
-                            ]}
-                            readonly={true}
-                            labelCol={2}
-                        /> */}
                         <ProFormText
                           width="md"
                           name="dateRange2"

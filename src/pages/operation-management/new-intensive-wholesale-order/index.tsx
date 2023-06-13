@@ -15,6 +15,7 @@ import { newWholesaleOperationPm, newWholesaleOperationPmStats } from "@/service
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
+import CommissionDetail from "./commission-detail"
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -66,6 +67,7 @@ const NewIntensivePerformance: FC = () => {
   const [agencyId, setAgencyId] = useState<string>()
   const [visible, setVisible] = useState<boolean>(false)
   const [amount, setAmount] = useState<number>(0)
+  const [commissionVisible, setCommissionVisible] = useState<boolean>(false)
   const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
@@ -130,7 +132,24 @@ const NewIntensivePerformance: FC = () => {
       title: '累计提成（元）',
       dataIndex: 'commission',
       align: 'center',
-      render: _ => amountTransform(_, '/'),
+      render: (_, r) => {
+        if(r.commission === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> { 
+                setCommissionVisible(true)
+                setAgencyId(r.operationId)
+                setName(`${r.name} 提成明细`)
+                setAmount(r.commission)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
       hideInSearch: true
     },
   ]
@@ -175,6 +194,16 @@ const NewIntensivePerformance: FC = () => {
           setVisible={setVisible}
           totalAmount={amount}
           title={name}
+        />
+      }
+      {
+        commissionVisible &&
+        <CommissionDetail
+          id={agencyId}
+          visible={commissionVisible}
+          setVisible={setCommissionVisible}
+          title={name}
+          totalAmount={amount}
         />
       }
     </PageContainer>

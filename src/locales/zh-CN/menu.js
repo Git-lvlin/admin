@@ -354,6 +354,8 @@ export default {
   'menu.financial-management.subsidy-summary' : '优惠补贴',
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
   'menu.financial-management.unfrozen-list' : 'AED4300订单分账超时未解冻列表',
+  'menu.financial-management.offline-settlement-records' : '线下结算记录',
+  'menu.financial-management.offline-settlement-records.city-office' : '市办事处',
 
   'menu.data-board': '数据看板',
   'menu.data-board.summary-of-data': '数据概况',

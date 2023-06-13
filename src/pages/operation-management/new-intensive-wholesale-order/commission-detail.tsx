@@ -7,7 +7,7 @@ import type { FC } from "react"
 import type { FormInstance } from "antd"
 import type { DetailProps, DataProps } from "./data"
 
-import { newWholesaleAgencyWebPm } from "@/services/city-office-management/new-intensive-performance"
+import { newWholesaleOperationComDetail } from "@/services/operation-management/new-intensive-performance"
 import styles from "./styles.less"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
@@ -26,8 +26,8 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
   useEffect(()=>{
     const { time, ...rest } = form.current?.getFieldsValue()
     setLoad(true)
-    newWholesaleAgencyWebPm({
-      agencyId: id,
+    newWholesaleOperationComDetail({
+      operationId: id,
       startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
       endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
       page,
@@ -42,19 +42,19 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
     
   }, [pageSize, page, query])
 
+  const pageChange = (a: number, b?: number) => {
+    setPage(a)
+    setPageSize(b)
+  }
+
   const getFieldsValue = () => {
-    const { time, ...rest } = form.current?.getFieldsValue()
+    const {time, ...rest} = form.current?.getFieldsValue()
     return {
-      agencyId: id,
+      operationId: id,
       startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
       endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
       ...rest
     }
-  }
-
-  const pageChange = (a: number, b?: number) => {
-    setPage(a)
-    setPageSize(b)
   }
 
   return (
@@ -80,15 +80,13 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
                 <Space size={10} key='1' className={styles.search}>
                   <Button type='primary' onClick={()=>form?.submit()}>查询</Button>
                   <Button onClick={()=>{form?.resetFields(); setQuery(query + 1)}}>重置</Button>
-                  <Export type="newWholesaleCityAgencyPmDetail" conditions={getFieldsValue} key='export'/>
+                  <Export type="newWholesaleOperationComDetail" conditions={getFieldsValue}/>
                 </Space>
               ]
             }}
           >
-            <ProForm.Item
-              name='time'
-            >
-              <TimeSelect showTime={false}/>
+            <ProForm.Item name='time'>
+              <TimeSelect showTime={false} />
             </ProForm.Item>
             <ProFormText
               name='orderSn'
@@ -106,16 +104,20 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
             data?.map((item, idx) => (
               <div key={idx}>
                 <div className={styles.cardList}>
-                  <div>{amountTransform(item.payAmount, '/')}元</div>
-                  <div>{item.payTime}</div>
+                  <div>{item.commissionDesc}元</div>
+                  <div>{item.createTime}</div>
                 </div>
                 <div className={styles.cardListContent}>
                   <div>{item.memberPhone}</div>
-                  <div>订单号：{item.orderSn}</div>
+                  <div>订单号：{item.orderNo}</div>
+                </div>
+                <div className={styles.cardListContent}>
+                  <div>{item.goodsName}</div>
+                  <div>店铺编号：{item.doorNumber}</div>
                 </div>
                 <div className={styles.cardListContent}>
                   <div></div>
-                  <div>店铺编号：{item.homeNumber}</div>
+                  <div>skuID：{item.skuId}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>
               </div>

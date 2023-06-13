@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormText, ProFormDateRangePicker, ProFormSelect } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination } from 'antd';
 import styles from './style.less';
 
@@ -96,7 +96,7 @@ const TableList = () => {
             }
           ]}
         />
-        <ProFormDateRangePicker
+        <ProForm.Item
           width="md"
           label="下单时间"
           fieldProps={{
@@ -104,7 +104,9 @@ const TableList = () => {
               marginBottom: 20
             }
           }}
-        />
+        >
+          <TimeSelect showTime={false}/>
+        </ProForm.Item>
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}

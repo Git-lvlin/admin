@@ -16,7 +16,6 @@ import NormalOrderDetail from '@/pages/order-management/normal-order/detail'
 import ShopkeeperOrderDetail from '@/pages/order-management/intensive-order/supplier-order/detail'
 import NotGoodsOrderDetail from '../../common-popup/notGoodsOrderDetail'
 import NewShopkeeperOrderDetail from '../../common-popup/newShopkeeperOrderDetail'
-import TimeSelect from '@/components/time-select'
 
 const TransactionDetails = ({
   visible,
@@ -261,7 +260,18 @@ const TransactionDetails = ({
       title: '交易描述',
       dataIndex: 'description',
       hideInSearch: true
-    }
+    },
+    {
+      title: '解冻记录',
+      dataIndex: 'unfreeze',
+      valueType: 'select',
+      initialValue: '1',
+      valueEnum: {
+        1: '显示解冻记录',
+        2: '不显示解冻记录'
+      },
+      hideInTable: true
+    },
   ]
 
   return (

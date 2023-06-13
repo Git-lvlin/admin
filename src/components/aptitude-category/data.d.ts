@@ -7,7 +7,9 @@ export type categoryDataProps = {
 }
 
 export type cascaderProps = {
-  value: number[]
-  setValue: React.Dispatch<React.SetStateAction<number[]>>
+  value?: number[]
   pId?: number
+  maxLength: number
+  onChange?: (value: T) => void
+  [x: string]
 }

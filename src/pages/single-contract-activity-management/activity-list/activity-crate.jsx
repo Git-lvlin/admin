@@ -9,13 +9,12 @@ import {
   ProFormDigit,
   ProFormCheckbox,
   ProFormTextArea,
-  ProFormDateTimeRangePicker,
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import { ruleSub, ruleEdit } from '@/services/single-contract-activity-management/activity-list'
 import SelectProductModal from '@/components/select-product-modal'
 import ExcelModal from './excel-modal';
-
+import TimeSelect from '@/components/time-select'
 
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose = () => { } } = props;
@@ -219,13 +218,14 @@ export default (props) => {
         }}
         width="md"
       />
-      <ProFormDateTimeRangePicker
+      <ProForm.Item
         name="activityTime"
         label="活动时间"
         rules={[{ required: true, message: '请选择活动时间' }]}
         width="md"
-      />
-
+      >
+        <TimeSelect />
+      </ProForm.Item>
       <ProFormDigit
         placeholder="请输入参团人数"
         label="参团(单约)人数"

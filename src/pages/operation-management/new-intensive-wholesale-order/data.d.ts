@@ -10,6 +10,11 @@ export type DataProps = {
   payAmount: number
   payTime: string
   memberPhone: string
-  orderSn: string
+  orderNo: string
   homeNumber: string
+  skuId: number
+  doorNumber: string
+  goodsName: string
+  commissionDesc: string
+  createTime: string
 }

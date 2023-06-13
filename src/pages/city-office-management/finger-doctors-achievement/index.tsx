@@ -15,6 +15,7 @@ import { sum, cityOffice,  } from "@/services/city-office-management/finger-doct
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
+import CommissionDetail from '../components/commission-detail'
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -66,6 +67,8 @@ const FingerDoctorsAchievement = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [visible, setVisible] = useState<boolean>(false)
   const [agencyId, setAgencyId] = useState<string>()
+  const [commissionVisible, setCommissionVisible] = useState<boolean>(false)
+  const [type, setType] = useState<number>(0)
   const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
@@ -125,7 +128,24 @@ const FingerDoctorsAchievement = () => {
       dataIndex: 'totalCommission',
       hideInSearch: true,
       align: 'center',
-      render: _ => amountTransform(_, '/')
+      render: (_, r) => {
+        if(r.commission === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> { 
+                setCommissionVisible(true)
+                setAgencyId(r.cityOfficeId)
+                setType(7)
+                setName(`${r.cityOfficeName} 提成明细`)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
     },
     {
       title: '累计订单数（单）',
@@ -174,6 +194,16 @@ const FingerDoctorsAchievement = () => {
           visible={visible}
           setVisible={setVisible}
           title={name}
+        />
+      }
+      {
+        commissionVisible &&
+        <CommissionDetail
+          id={agencyId}
+          visible={commissionVisible}
+          setVisible={setCommissionVisible}
+          title={name}
+          type={type}
         />
       }
     </PageContainer>

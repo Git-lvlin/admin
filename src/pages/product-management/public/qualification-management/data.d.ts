@@ -1,11 +1,13 @@
 export type CategoryProps = {
-  title: string
+  title?: string
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  id?: string
 }
 
 export type editProps = {
-  id: string
+  id?: string
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  callback: () => void
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
 import { history, useLocation } from 'umi';
 import styles from './style.less';
@@ -14,6 +14,7 @@ import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import EditAddress from './edit-address'
 import CloseOrder from './close-order'
+import TimeSelect from '@/components/time-select'
 
 
 const TableList = () => {
@@ -260,16 +261,12 @@ const TableList = () => {
             }
           }}
         />}
-        <ProFormDateTimeRangePicker
+        <ProForm.Item
           name="time"
           label="下单时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
+        >
+          <TimeSelect/>
+        </ProForm.Item>
         <ProFormText
           name="consignee"
           label="收件人"
@@ -336,17 +333,12 @@ const TableList = () => {
             />
           </>
         }
-        <ProFormDateTimeRangePicker
+       <ProForm.Item
           name="payTime"
           label="支付时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
-
+        >
+          <TimeSelect/>
+        </ProForm.Item>
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}

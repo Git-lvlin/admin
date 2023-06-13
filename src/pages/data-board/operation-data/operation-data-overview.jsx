@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import { Button, Typography } from 'antd'
 import moment from 'moment'
@@ -9,6 +9,7 @@ import Yuan from '../components/Yuan'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import { operationDataTotalView } from '@/services/data-board/operation-data'
+import TimeSelect from '@/components/time-select'
 
 const { Text, Title } = Typography
 
@@ -52,12 +53,16 @@ const CardTitle = ({times, setTimes}) => {
       }}
     >
       <h3 className={styles.title}>运营中心数据总览</h3>
-      <ProFormDateRangePicker 
+      <ProForm.Item
         label="时间范围"
         name="time"
-        initialValue={times}
-        allowClear={false}
-      />
+      >
+        <TimeSelect 
+          showTime={false}
+          initialValue={times}
+          allowClear={false}
+        />
+      </ProForm.Item>
     </ProForm>
   )
 }

@@ -16,6 +16,7 @@ import ProCard from '@ant-design/pro-card'
 import { findPage } from '@/services/import-file/import-file'
 import moment from 'moment'
 import styles from './styles.less'
+import TimeSelect from '@/components/time-select'
 
 const ImportHistroy = ({ show, setShow, type }) => {
   const [form] = Form.useForm()
@@ -191,10 +192,12 @@ const ImportHistroy = ({ show, setShow, type }) => {
             }
           }}
         >
-          <ProFormDateTimeRangePicker
+          <ProForm.Item
             name="time"
             label="导入时间"
-          />
+          >
+            <TimeSelect />
+          </ProForm.Item>
         </ProForm>
         <Spin delay={500} spinning={load}>
           {

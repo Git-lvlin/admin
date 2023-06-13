@@ -35,3 +35,56 @@ export const hydrogenStartUpPm = async (params, options = {}) => {
     success: res.success
   }
 }
+
+// 氢原子启动费月统计
+export const hyStartUpMonthStats = async (params, options = {}) => {
+  const { pageSize, current, years, quarter, ...rest } = params
+  let startTime, endTime
+  switch (quarter) {
+    case 'q1':
+      startTime = years + '-1-1',
+      endTime = years + '-3-31'
+      break;
+    case 'q2':
+      startTime = years + '-4-1',
+      endTime = years + '-6-30'
+      break;
+    case 'q3':
+      startTime = years + '-7-1',
+      endTime = years + '-9-30'
+      break;
+    case 'q3':
+      startTime = years + '-10-1',
+      endTime = years + '-12-31'
+      break;
+    default:
+      startTime = undefined,
+      endTime = undefined
+      break;
+  }
+  const res = await request('/auth/stats/report/php/hyStartUpMonth', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      startTime,
+      endTime,
+      ...rest
+    },
+    ...options
+  })
+  const item = await request('/auth/stats/report/php/hyStartUpMonthStats', {
+    method: 'POST',
+    data: {
+      startTime,
+      endTime,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: [{res: res.data.records, total: item.data[0]}],
+    total: res.data.total,
+    success: res.success
+  }
+}

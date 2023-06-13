@@ -49,7 +49,7 @@ export default (props) => {
       if(type === 'edit') {
         api.categoryAppEdit({
           ...values,
-          relCategory: selectKeys.join(','),
+          relCategory: values.relCategory.join(','),
           gcShow: 1,
           id,
           gcParentId: data.gcParentId
@@ -65,7 +65,7 @@ export default (props) => {
           ...values,
           id: 0,
           gcShow: 1,
-          relCategory: selectKeys.join(','),
+          relCategory: values.relCategory.join(','),
           gcParentId: parentId
         }, {showSuccess: true}).then(res => {
           if(res.code === 0) {
@@ -87,13 +87,13 @@ export default (props) => {
 
   useEffect(() => {
     if (data) {
-      form?.setFieldsValue({
-        gcName: data.gcName,
-        gcIcon: data.gcIcon
-      })
       const arr = data.relCategory.split(',')
       const newArr = arr.map(res=> Number(res))
-      setSelectKeys(newArr)
+      form?.setFieldsValue({
+        gcName: data.gcName,
+        gcIcon: data.gcIcon,
+        relCategory: newArr
+      })
     }
   }, [data])
 
@@ -155,17 +155,19 @@ export default (props) => {
       </Form.Item>
       {
         level === 2 &&
-        <Space size={5} style={{marginLeft: '60px'}}>
-          <div>映射后台商品分类：</div>
+        <Form.Item
+          label='映射后台商品分类'
+          name='relCategory'
+          rules={[{ required: true, message: '请选择映射后台商品分类' }]}
+        >
           <AptitudeCategory
             renderExtraFooter={()=> <div style={{padding: '10px'}}>已选条件：最多可以选择30个分类</div>}
             style={{ width: 470 }}
-            value={selectKeys}
-            setValue={setSelectKeys}
             searchable={false}
+            maxLength={30}
             height={140}
           />
-        </Space>
+        </Form.Item>
       }
     </ModalForm >
   );

@@ -3,7 +3,8 @@ export type DetailProps = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   title?: string
-  totalAmount: number
+  totalAmount?: number
+  type: number
 }
 
 export type DataProps = {
@@ -12,4 +13,11 @@ export type DataProps = {
   memberPhone: string
   orderSn: string
   homeNumber: string
+  goodsName: string
+  skuId: number
+  commissionDesc: string
+  createTime: string
+  orderNo: string
+  doorNumber: string
+  quantity: string
 }

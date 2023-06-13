@@ -15,6 +15,7 @@ import { newWholesaleCityAgencyPm, newWholesaleCityAgencyPmStats } from "@/servi
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
+import CommissionDetail from "../components/commission-detail"
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -65,8 +66,10 @@ const NewIntensivePerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [agencyId, setAgencyId] = useState<string>()
   const [visible, setVisible] = useState<boolean>(false)
+  const [commissionVisible, setCommissionVisible] = useState<boolean>(false)
   const [amount, setAmount] = useState<number>(0)
   const [name, setName] = useState<string>()
+  const [type, setType] = useState<number>(0)
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
@@ -141,7 +144,25 @@ const NewIntensivePerformance: FC = () => {
       title: '累计提成（元）',
       dataIndex: 'commission',
       align: 'center',
-      render: _ => amountTransform(_, '/'),
+      render: (_, r) => {
+        if(r.commission === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> { 
+                setCommissionVisible(true);
+                setAgencyId(r.agencyId);
+                setType(1);
+                setName(`${r.name} 提成明细`)
+                setAmount(r.commission)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
       hideInSearch: true
     },
   ]
@@ -186,6 +207,17 @@ const NewIntensivePerformance: FC = () => {
           setVisible={setVisible}
           totalAmount={amount}
           title={name}
+        />
+      }
+      {
+        commissionVisible &&
+        <CommissionDetail
+          id={agencyId}
+          visible={commissionVisible}
+          setVisible={setCommissionVisible}
+          title={name}
+          totalAmount={amount}
+          type={type}
         />
       }
     </PageContainer>

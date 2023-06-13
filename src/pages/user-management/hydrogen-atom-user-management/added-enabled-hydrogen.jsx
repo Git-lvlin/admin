@@ -3,11 +3,11 @@ import { Form,message } from 'antd';
 import {
   ProFormText,
   ModalForm,
-  ProFormTextArea,
-  ProFormDateTimeRangePicker
+  ProFormTextArea
 } from '@ant-design/pro-form';
 import { amountTransform } from '@/utils/utils'
 import { deviceFreeUseSave,queryByMobile } from "@/services/user-management/hydrogen-atom-user-management"
+import TimeSelect from '@/components/time-select'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -130,11 +130,13 @@ export default (props) => {
           addonAfter:'次'
         }}
       />
-      <ProFormDateTimeRangePicker 
+      <ProForm.Item
         label="免费有效期"
         rules={[{ required: true, message: '请选择有效期' }]}
         name="time"
-      />
+      >
+        <TimeSelect/>
+      </ProForm.Item>
       <ProFormTextArea
         label='免费原因'
         name="freeReason"

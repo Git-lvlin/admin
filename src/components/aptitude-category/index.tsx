@@ -8,10 +8,12 @@ import './style.less'
 
 import type { categoryDataProps, cascaderProps } from './data'
 
-const CategoryMultiCascader: React.FC<cascaderProps> = ({ value, setValue, pId = 0, ...rest }) => {
+const CategoryMultiCascader: React.FC<cascaderProps> = (props) => {
+  const { value, pId = 0, maxLength, onChange, ...rest } = props
   const [data, setData] = useState<categoryDataProps[]>([])
   const [categoryData, setCategoryData] = useState<categoryDataProps[]>([])
   const [uncheckData, setUncheckData] = useState<number[]>([])
+  const [selectAreaKey, setSelectAreaKey] = useState<number[]>(value || [])
 
   useEffect(()=> {
     categoryAll()?.then(res => {
@@ -36,6 +38,9 @@ const CategoryMultiCascader: React.FC<cascaderProps> = ({ value, setValue, pId =
     if(categoryData && categoryData.length) {
       const newVal = categoryData.filter(item => item.level === 1)
       setUncheckData(newVal.map(res => res.value))
+    }
+    return () => {
+      setUncheckData([])
     }
   }, [categoryData])
 
@@ -68,7 +73,7 @@ const CategoryMultiCascader: React.FC<cascaderProps> = ({ value, setValue, pId =
               color="blue"
               style={{ marginBottom: 10 }}
               onClose={() => {
-                setValue(value.filter(it => it !== item.value))
+                setSelectAreaKey(selectAreaKey.filter(it => it !== item.value))
               }}
             >
               {item.label}
@@ -78,15 +83,20 @@ const CategoryMultiCascader: React.FC<cascaderProps> = ({ value, setValue, pId =
       </div>
     );
   }
-  
+
+  useEffect(() => {
+    setSelectAreaKey(value || [])
+  }, [value])
+
   return (
     <MultiCascader
-      value={value}
+      value={selectAreaKey}
       onChange={(e) => {
-        if(value.length < 5) {
-          setValue(e)
+        if(e.length <= maxLength) {
+          onChange?.(e)
+          setSelectAreaKey(e)
         } else {
-          message.error('最多可以选择30个分类')
+          message.error(`最多可以选择${maxLength}个分类`)
           return
         }
       }}

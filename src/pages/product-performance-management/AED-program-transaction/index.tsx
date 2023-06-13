@@ -30,7 +30,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
+    const { depositPayTime, aedPayTime, dcPayTime, specialTime, ...r } = search
     aedCoursesTradeStats({
       startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
       endDcPayTime: dcPayTime && moment(dcPayTime[1]).format('YYYY-MM-DD'),
@@ -38,6 +38,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
       endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
       startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      specialStartTime: specialTime && moment(specialTime[0]).format('YYYY-MM-DD'),
+      specialEndTime: specialTime && moment(specialTime[1]).format('YYYY-MM-DD'),
       ...r
     }).then(res => {
       if(res.code === 0) {
@@ -411,7 +413,7 @@ const AEDProgramTransaction: React.FC = () => {
   const [searchConfig, setSearchConfig] = useState<FormInstance| any>(form.current?.getFieldsValue())
 
   const getFieldsValue = () => {
-    const { depositPayTime, aedPayTime, dcPayTime, ...rest } = form.current?.getFieldsValue()
+    const { depositPayTime, aedPayTime, dcPayTime, specialTime, ...rest } = form.current?.getFieldsValue()
     return {
       startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
       endDcPayTime: dcPayTime && moment(dcPayTime[1]).format('YYYY-MM-DD'),
@@ -419,6 +421,8 @@ const AEDProgramTransaction: React.FC = () => {
       endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
       startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      specialStartTime: specialTime && moment(specialTime[0]).format('YYYY-MM-DD'),
+      specialEndTime: specialTime && moment(specialTime[1]).format('YYYY-MM-DD'),
       ...rest
     }
   }
@@ -697,6 +701,12 @@ const AEDProgramTransaction: React.FC = () => {
       dataIndex: 'trainingRemark',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '任意订单支付时间',
+      dataIndex: 'specialTime',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
+      hideInTable: true
     }
   ]
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
@@ -15,6 +15,7 @@ import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import Auth from '@/components/auth';
 import EditAddress from './edit-address'
+import TimeSelect from '@/components/time-select'
 
 const { confirm } = Modal;
 
@@ -250,16 +251,12 @@ const TableList = () => {
             }
           }}
         /> */}
-        <ProFormDateTimeRangePicker
+         <ProForm.Item
           name="time"
           label="下单时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
+        >
+          <TimeSelect/>
+        </ProForm.Item>
         {
           !isPurchase && <ProFormSelect
             label="活动订单"

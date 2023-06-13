@@ -203,7 +203,7 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
             ...dom.reverse(),
             <Export
               key='1'
-              type='exportAppGcGoods'
+              type='goods-app-gc-export'
               conditions={getFieldsValue}
             />
           ]
