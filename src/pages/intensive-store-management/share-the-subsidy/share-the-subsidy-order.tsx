@@ -14,6 +14,7 @@ import ProductDetailDrawer from '@/components/product-detail-drawer'
 import UserDetail from '@/pages/user-management/user-list/detail';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment";
 
 
 const formItemLayout = {
@@ -163,8 +164,10 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
   ];
 
   const getFieldValue = (searchConfig: any) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
+    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
     return {
+      orderTimeBegin: dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      orderTimeEnd: dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
@@ -213,10 +216,10 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
           <Export
           key='export'
           change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-          type={'export3800AEDSubCommissionList'}
+          type={'storeShareCommissionItem'}
           conditions={()=>{return getFieldValue(searchConfig)}}
         />,
-        <ExportHistory key='task' show={visit} setShow={setVisit} type={'export3800AEDSubCommissionList'}/>
+        <ExportHistory key='task' show={visit} setShow={setVisit} type={'storeShareCommissionItem'}/>
         ],
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
