@@ -84,6 +84,7 @@ export default () => {
     {
       title: '市办事处',
       dataIndex: 'cityManageFee',
+      hideInSearch: true,
       align: 'center',
       render: (_)=>{
         return amountTransform(_,'/').toFixed(2)
