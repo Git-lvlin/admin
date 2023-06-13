@@ -10,6 +10,7 @@ export const checkList = async (params = {}, options = {}) => {
       size: pageSize,
       gcId1: gcId[0],
       gcId2: gcId[1],
+      gcId3: gcId[2],
       createTimeStart: createTime[0] && moment(createTime[0]).unix(),
       createTimeEnd: createTime[1] && moment(createTime[1]).unix(),
       ...rest

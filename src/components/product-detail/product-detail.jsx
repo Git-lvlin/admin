@@ -6,6 +6,8 @@ import styles from './edit.less'
 import { EyeOutlined } from '@ant-design/icons'
 import Big from 'big.js';
 import FreightTemplateDetail from '@/components/freight-template-detail'
+import UploadQualification from '@/components/upload-qualification-multiple'
+import { checkGoodQlf } from '@/services/common';
 
 
 Big.RM = 0;
@@ -15,6 +17,8 @@ export default (props) => {
   const [tableData, setTableData] = useState([]);
   const [freightTemplateId, setFreightTemplateId] = useState(null);
   const [freightTemplateDetailVisible, setFreightTemplateDetailVisible] = useState(false);
+  const [uploadQualificationReadonlyVisible, setUploadQualificationReadonlyVisible] = useState(false);
+  const [goodQlfData, setGoodQlfData] = useState({});
 
   const { goods } = detailData;
   const formItemLayout = {
@@ -29,6 +33,23 @@ export default (props) => {
       },
     }
   };
+
+  const checkGoodQlfHandle = (v = []) => {
+    if (v.length > 2) {
+      checkGoodQlf({
+        supId: detailData?.supplierId,
+        gcId1: v[0],
+        gcId2: v[1],
+        gcId3: v[2],
+        type: 1,
+      })
+        .then(res => {
+          if (res.code === 0) {
+            setGoodQlfData(res.data)
+          }
+        })
+    }
+  }
 
   useEffect(() => {
     if (detailData) {
@@ -109,6 +130,10 @@ export default (props) => {
           }
         }))
       }
+
+      if (goods.gcId3) {
+        checkGoodQlfHandle([goods.gcId1, goods.gcId2, goods.gcId3])
+      }
     }
 
   }, [detailData]);
@@ -156,8 +181,21 @@ export default (props) => {
       <Form.Item
         label="商品品类"
       >
-        {`${goods.gcId1Display}/${goods.gcId2Display}`}{detailData.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[detailData.fresh]})</span>}
+        {`${goods.gcId1Display}/${goods.gcId2Display}${goods.gcId3Display && `/${goods.gcId3Display}`}`}{detailData.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[detailData.fresh]})</span>}
       </Form.Item>
+      {goodQlfData?.qlf?.success && <Form.Item
+        label="资质证书"
+      >
+        <a onClick={() => { setUploadQualificationReadonlyVisible(true) }}>查看资质证书</a>
+      </Form.Item>}
+      {goodQlfData?.qlf?.success &&
+        <UploadQualification
+          supId={detailData?.supplierId}
+          msgDetail={goodQlfData?.qlf?.success}
+          visible={uploadQualificationReadonlyVisible}
+          setVisible={setUploadQualificationReadonlyVisible}
+          readonly
+        />}
       <Form.Item
         label="商品编号"
       >

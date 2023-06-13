@@ -147,6 +147,12 @@ const HotGoos = () => {
       search: false,
     },
     {
+      title: '三级分类',
+      dataIndex: 'gcId3Display',
+      valueType: 'text',
+      search: false,
+    },
+    {
       title: '状态',
       dataIndex: 'status',
       filters: true,

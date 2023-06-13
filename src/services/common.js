@@ -51,3 +51,18 @@ export const getChildArea = (params = {}, options = {}) => {
     ...options
   });
 }
+export const qlfModifyMul = async (params, options = {}) => {
+  return request('/auth/supplier/qlf/modifyMul', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const checkGoodQlf = (params = {}, options = {}) => {
+  return request('/auth/supplier/qlf/checkGoodQlf', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

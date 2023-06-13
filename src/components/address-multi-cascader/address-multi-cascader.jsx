@@ -60,6 +60,8 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, pId = 0,
   }, [value])
   return (
     <MultiCascader
+      block
+      countable
       value={selectAreaKey}
       data={areaData}
       style={{ width: '100%' }}

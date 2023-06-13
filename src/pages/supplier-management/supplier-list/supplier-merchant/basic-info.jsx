@@ -120,39 +120,52 @@ export default (props) => {
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
-          if (findItem) {
-            const { gcParentId, id } = findItem;
-
-            if (gcParentId !== 0) {
-              if (obj[gcParentId]) {
-                obj[gcParentId].push(id)
-              } else {
-                obj[gcParentId] = [id];
-              }
-            }
+          if (findItem.level === 1) {
+            gcArr.push({
+              id: item,
+              children: []
+            })
           }
-
         })
 
-        let hasError = false;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in obj) {
-          if (Object.hasOwnProperty.call(obj, key)) {
-            const g = { gc1: key };
-            if (obj[key].length) {
-              g.gc2 = obj[key]
-            } else {
-              hasError = true;
-            }
-            gcArr.push(g)
-          }
-        }
 
-        if (hasError) {
-          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-          reject()
-          return;
-        }
+        gcData.forEach(item => {
+          const findItem = originData.current.find(it => item === it.id);
+          if (findItem.level === 2) {
+            gcArr.forEach((it, index) => {
+              if (it.id === findItem.gcParentId) {
+                gcArr[index].children.push({
+                  id: item,
+                  children: []
+                })
+              }
+            })
+          }
+        })
+
+
+        gcData.forEach(item => {
+          const findItem = originData.current.find(it => item === it.id);
+          if (findItem.level === 3) {
+            gcArr.forEach((it, index) => {
+              it.children.forEach((it2, i) => {
+                if (it2.id === findItem.gcParentId) {
+                  gcArr[index].children[i].children.push({
+                    id: item,
+                    children: []
+                  })
+                }
+              })
+              
+            })
+          }
+        })
+
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
