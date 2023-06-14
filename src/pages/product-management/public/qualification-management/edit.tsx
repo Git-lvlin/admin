@@ -13,6 +13,7 @@ import { arrayToTree } from '@/utils/utils'
 
 const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   const [category, setCategory] = useState([])
+  const [originData, setOriginData] = useState([])
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
 
@@ -33,6 +34,34 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     }
   }, [id])
 
+  const getAreaDatas = (v) => {
+    const arr = [];
+    let str = JSON.stringify(originData)
+    str = str.replace(/gcParentId/g, 'pid')
+    const data = arrayToTree(JSON.parse(str))
+    console.log('data', data);
+    v?.forEach?.(item => {
+      let node = data.find(it => it.id === item);
+      if(node.children) {
+        const toTreeData = (data) => {
+          data?.forEach(item => {
+            if (item.level === 3) {
+              arr.push(item.id)
+            }
+            if (item.children) {
+              toTreeData(item.children)
+            }
+            
+          })
+        }
+        toTreeData(node?.children)
+      } else {
+        arr.push(node.id)
+      }
+    })
+    return arr;
+  }
+
   useEffect(()=> {
     setFlag(true)
     categoryAll()?.then(res => {
@@ -40,6 +69,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         const arr1: any[] = []
         const arr2: any[] = []
         const arr3: any[] = []
+        
         res.data.records.forEach((item: any) => {
           if(item.level === 3) {
             arr1.push(item)
@@ -59,6 +89,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         let str = JSON.stringify(arr)
         str = str.replace(/gcName/g, 'label').replace(/id/g, 'value')
         const newArr = JSON.parse(str)
+        setOriginData(data)
         setCategory(newArr)
       }
     }).finally(()=> {
@@ -68,18 +99,24 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
 
   const submit = (values: any) => {
     return new Promise<void>((resolve, reject) => {
-      modifyGoodsGlf({
-        ...values,
-        id,
-        operateType: id ? 'edit' : 'add'
-      }, {showSuccess: true}).then(res => {
-        if(res.code === 0) {
-          callback()
-          resolve()
-        } else {
-          reject()
-        }
-      })
+      
+      try {
+        console.log('values', getAreaDatas(values.category));
+      } catch (error) {
+        console.log('error',error);
+      }
+      // modifyGoodsGlf({
+      //   ...values,
+      //   id,
+      //   operateType: id ? 'edit' : 'add'
+      // }, {showSuccess: true}).then(res => {
+      //   if(res.code === 0) {
+      //     callback()
+      //     resolve()
+      //   } else {
+      //     reject()
+      //   }
+      // })
     })
   }
 
