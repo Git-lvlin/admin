@@ -41,8 +41,8 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     const data = arrayToTree(JSON.parse(str))
     console.log('data', data);
     v?.forEach?.(item => {
-      let node = data.find(it => it.id === item);
-      if(node.children) {
+      let node = data?.find(it => it.id === item);
+      if(node?.children) {
         const toTreeData = (data) => {
           data?.forEach(item => {
             if (item.level === 3) {
