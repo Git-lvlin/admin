@@ -39,10 +39,9 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     let str = JSON.stringify(originData)
     str = str.replace(/gcParentId/g, 'pid')
     const data = arrayToTree(JSON.parse(str))
-    console.log('data', data);
     v?.forEach?.(item => {
-      let node = data.find(it => it.id === item);
-      if(node.children) {
+      let node = data?.find(it => it.id === item);
+      if(node?.children) {
         const toTreeData = (data) => {
           data?.forEach(item => {
             if (item.level === 3) {
@@ -55,11 +54,13 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           })
         }
         toTreeData(node?.children)
+      } else if(!node){
+        arr.push(item)
       } else {
         arr.push(node.id)
       }
     })
-    return arr;
+    return arr
   }
 
   useEffect(()=> {
@@ -99,24 +100,19 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
 
   const submit = (values: any) => {
     return new Promise<void>((resolve, reject) => {
-      
-      try {
-        console.log('values', getAreaDatas(values.category));
-      } catch (error) {
-        console.log('error',error);
-      }
-      // modifyGoodsGlf({
-      //   ...values,
-      //   id,
-      //   operateType: id ? 'edit' : 'add'
-      // }, {showSuccess: true}).then(res => {
-      //   if(res.code === 0) {
-      //     callback()
-      //     resolve()
-      //   } else {
-      //     reject()
-      //   }
-      // })
+      modifyGoodsGlf({
+        ...values,
+        id,
+        operateType: id ? 'edit' : 'add',
+        category: getAreaDatas(values.category)
+      }, {showSuccess: true}).then(res => {
+        if(res.code === 0) {
+          callback()
+          resolve()
+        } else {
+          reject()
+        }
+      })
     })
   }
 
