@@ -267,7 +267,8 @@ const Detail = () => {
       dataIndex: 'withdrawType',
       valueEnum: {
         'goodsAmount': '货款提现',
-        'commission': '收益提现'
+        'commission': '收益提现',
+        'youfuCommission': '收益提现'
       }
     },
     {

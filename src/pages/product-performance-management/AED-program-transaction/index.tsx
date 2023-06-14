@@ -395,7 +395,10 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
           type='exportAedStats'
         />
       </Space>
-      <div className={styles.title}>线上订单数据明细（2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻）</div>
+      <div className={styles.title}>
+        线上订单数据明细
+        <span>2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻</span>
+      </div>
       {
         exportVisible &&
         <ExportLog 
@@ -700,7 +703,14 @@ const AEDProgramTransaction: React.FC = () => {
       title: '备注',
       dataIndex: 'trainingRemark',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.trainingRemark) {
+          return <span style={{color: '#ff0000'}}>{_}</span>
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '任意订单支付时间',

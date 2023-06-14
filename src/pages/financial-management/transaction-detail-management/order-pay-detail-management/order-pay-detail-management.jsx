@@ -6,8 +6,8 @@ import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { orderPage,exceptionOrderRefund } from '@/services/financial-management/transaction-detail-management'
 import Detail from '../../common-popup/order-pay-detail-popup'
-import { orderTypes } from '@/services/financial-management/common'
-import { Button, message } from 'antd'
+import { orderTypes, apply20, audit20 } from '@/services/financial-management/common'
+import { Button, message, Popconfirm } from 'antd'
 import Auth from '@/components/auth'
 import RefundModel from './refund-model'
 
@@ -17,7 +17,7 @@ const OrderPayDetailManagement = () =>{
   const [orderType, setOrderType] = useState(null)
   const [visible, setVisible] = useState(false);
   const [msgDatail,setMsgDatail] = useState({})
-  const ref=useRef()
+  const actRef=useRef()
   useEffect(() => {
     orderTypes({}).then(res => {
       setOrderType(res.data)
@@ -128,29 +128,75 @@ const OrderPayDetailManagement = () =>{
       hideInSearch: true,
     },
     {
-      title: '操作',
-      key: 'option',
+      title: '退款申请',
       valueType: 'option',
-      render:(text, record, _, action)=>[
-        <Auth name="orderReturn/exceptionOrderRefund" key='refund' >
-          <Button
-          type='primary' 
-          onClick={()=>{
-            setVisible(true);
-            setMsgDatail(record)
-          }}
-          style={{ display:parseInt(record?.refundAmount)>0?'none':'block' }}
-          >
-            退款
-          </Button>
-        </Auth>
-      ],
+      render:(_, r)=> (
+        <>
+          {
+            (r.auditStatus === 0 || r.auditStatus === 4) && (r.refundAmount == 0) &&
+            <Auth name="order/auditRecord/apply20">
+              <Popconfirm
+                title="确认操作?"
+                okText="通过"
+                cancelText="关闭"
+                onConfirm={() => {
+                  apply20({
+                    objectId: r.orderNo,
+                    payAmount: r.amount
+                  }, { showSuccess: true })
+                    .then(res => {
+                      if (res.code === 0) {
+                        actRef.current?.reload()
+                      }
+                    })
+                }}
+              >
+                <a>退款申请</a>
+              </Popconfirm>
+            </Auth>
+          }
+          {
+            (r.auditStatus === 3 && r.refundAmount == 0) &&
+            <Auth name="order/auditRecord/audit20">
+            <Popconfirm
+              title="确认操作?"
+              okText="通过"
+              cancelText="拒绝"
+              onConfirm={() => {
+                audit20({
+                  objectId: r.orderNo,
+                  action: 'approve'
+                }, { showSuccess: true })
+                  .then(res => {
+                    if (res.code === 0) {
+                      actRef.current?.reload()
+                    }
+                  })
+              }}
+              onCancel={() => {
+                audit20({
+                  objectId: r.orderNo,
+                  action: 'refuse'
+                }, { showSuccess: true })
+                  .then(res => {
+                    if (res.code === 0) {
+                      actRef.current?.reload()
+                    }
+                  })
+              }}
+            >
+              <a>退款审核</a>
+            </Popconfirm>
+          </Auth>
+          }
+        </>
+      ),
     }, 
   ]
   return (
     <PageContainer title={false}>
       <ProTable
-        actionRef={ref}
+        actionRef={actRef}
         rowKey='id'
         columns={columns}
         toolBarRender={false}
