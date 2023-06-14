@@ -49,7 +49,7 @@ export default (props) => {
       if(type === 'edit') {
         api.categoryAppEdit({
           ...values,
-          relCategory: values.relCategory.join(','),
+          relCategory: values.relCategory?.join?.(','),
           gcShow: 1,
           id,
           gcParentId: data.gcParentId
@@ -65,7 +65,7 @@ export default (props) => {
           ...values,
           id: 0,
           gcShow: 1,
-          relCategory: values.relCategory.join(','),
+          relCategory: values.relCategory?.join?.(','),
           gcParentId: parentId
         }, {showSuccess: true}).then(res => {
           if(res.code === 0) {
