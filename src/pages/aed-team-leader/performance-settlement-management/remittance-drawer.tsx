@@ -65,7 +65,8 @@ export default (props:CumulativeProps)=>{
       unfreezeAmount:unfreezeAmount,
       ...values,
       remitAmount:amountTransform(values.remitAmount,'*'),
-      remitTime:moment(values.remitTime).valueOf()
+      remitTime:moment(values.remitTime).valueOf(),
+      urlArr:values.urlArr?values.urlArr:[]
     }
     return new Promise((resolve, reject) => {
       remitSave(params).then((res) => {
