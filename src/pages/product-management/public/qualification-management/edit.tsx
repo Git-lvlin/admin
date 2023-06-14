@@ -13,6 +13,8 @@ import { arrayToTree } from '@/utils/utils'
 
 const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   const [category, setCategory] = useState([])
+  const [data, setData] = useState([])
+  const [selectKeys, setSelectKeys] = useState([])
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
 
@@ -32,46 +34,109 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
       })
     }
   }, [id])
+  
 
   useEffect(()=> {
     setFlag(true)
     categoryAll()?.then(res => {
       if(res.code === 0) {
-        const arr1: any[] = []
-        const arr2: any[] = []
-        const arr3: any[] = []
-        res.data.records.forEach((item: any) => {
-          if(item.level === 3) {
-            arr1.push(item)
-          }
-        })
-        arr1.forEach(item => {
-          arr2.push(res.data.records.find((it: any) => item.gcParentId === it.id))
-        })
-        arr2.forEach(item => {
-          arr3.push(res.data.records.find((it: any) => item.gcParentId === it.id))
-        })
-        const data = Array.from(new Set([...arr1, ...arr2, ...arr3])).map(item => ({
+        // const arr1: any[] = []
+        // const arr2: any[] = []
+        // const arr3: any[] = []
+        // res.data.records.forEach((item: any) => {
+        //   if(item.level === 3) {
+        //     arr1.push(item)
+        //   }
+        // })
+        // arr1.forEach(item => {
+        //   arr2.push(res.data.records.find((it: any) => item.gcParentId === it.id))
+        // })
+        // arr2.forEach(item => {
+        //   arr3.push(res.data.records.find((it: any) => item.gcParentId === it.id))
+        // })
+        // const data = Array.from(new Set([...arr1, ...arr2, ...arr3])).map(item => ({
+        //   ...item,
+        //   pid: item.gcParentId
+        // }))
+        const arr = arrayToTree(res.data.records.map((item: any) => ({
           ...item,
+          level: item.level,
           pid: item.gcParentId
-        }))
-        const arr = arrayToTree(data || [], 0)
+        })) || [], 0)
         let str = JSON.stringify(arr)
-        str = str.replace(/gcName/g, 'label').replace(/id/g, 'value')
+        // str = str.replace(/gcName/g, 'label').replace(/id/g, 'value')
         const newArr = JSON.parse(str)
         setCategory(newArr)
+        setData(res.data.records)
       }
     }).finally(()=> {
       setFlag(false)
     })
   }, [])
 
+  const getAreaData = (v: any) => {
+    const arr: any[] = [];
+    v.forEach?.(item => {
+      let deep = 0;
+      let node = data.find(it => it.id === item);
+      const nodeIds = [node?.id];
+      while (node?.gcParentId) {
+        deep += 1;
+        node = data.find(it => it.id === node?.gcParentId);
+        nodeIds.push(node?.id);
+      }
+      arr.push({
+        gcId1: nodeIds[deep],
+        gcId2: deep > 0 ? nodeIds[deep - 1] : 0,
+        gcId3: deep > 1 ? nodeIds[deep - 2] : 0
+      })
+    })
+  
+    return arr;
+  }
+  const getAreaDatas = (v) => {
+    const arr = [];
+    const brr = []
+    v?.forEach?.(item => {
+      let deep = 0;
+      let node = category.find(it => it.id === item);
+      const nodeIds = [node.id];
+      if(node?.children){
+        const toTreeData = (data) => { 
+          data?.forEach(item => {
+            if(item.level == 3){
+              brr.push(item.id)
+            }
+              toTreeData(item.children)
+          })  
+        }
+        toTreeData(node?.children)
+      }
+      while (node?.gcParentId) {//找父级
+        deep += 1;
+        node = category.find(it => it.id === node?.gcParentId);
+        nodeIds.push(node?.id);
+      }
+      arr.push({
+        gcId1: nodeIds[deep],
+        gcId2: deep > 0 ? nodeIds[deep - 1] : 0,
+        gcId3: deep > 1 ? nodeIds[deep - 2] : 0,
+      })
+    })
+    if(brr.length){
+      return getAreaData(brr)
+    }else{
+      return arr;
+    }
+  }
+
   const submit = (values: any) => {
     return new Promise<void>((resolve, reject) => {
       modifyGoodsGlf({
         ...values,
         id,
-        operateType: id ? 'edit' : 'add'
+        operateType: id ? 'edit' : 'add',
+        category: getAreaDatas(selectKeys)
       }, {showSuccess: true}).then(res => {
         if(res.code === 0) {
           callback()
@@ -114,19 +179,20 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           fieldProps={{
             placeholder: '请填写资质名称'
           }}
-          rules={[{required: true}]}
+          // rules={[{required: true}]}
         />
         <ProForm.Item
           label='选择需要资质的分类'
           name='category'
           rules={[{required: true}]}
         >
-        <AptitudeCategory 
-          maxLength={Number.MAX_SAFE_INTEGER} 
-          data={category} 
-          uncheckableItemValues={[]}
-          searchable={false}
-        />
+          <AptitudeCategory 
+            maxLength={Number.MAX_SAFE_INTEGER}
+            uncheckableItemValues={[]}
+            searchable={false}
+            value={selectKeys}
+            onChange={setSelectKeys}
+          />
         </ProForm.Item>
         <ProFormTextArea
           label='上传说明'
@@ -138,29 +204,29 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
             showCount: true
           }}
           rules={[
-            {required: true},
-            {
-              validator: (_, value)=> {
-                if(value.length < 6) {
-                  return Promise.reject('请填写上传说明，6-60个字')
-                } else {
-                  return Promise.resolve()
-                }
-              }
-            }
+            // {required: true},
+            // {
+            //   validator: (_, value)=> {
+            //     if(value.length < 6) {
+            //       return Promise.reject('请填写上传说明，6-60个字')
+            //     } else {
+            //       return Promise.resolve()
+            //     }
+            //   }
+            // }
           ]}
         />
         <ProForm.Item
           label='示例图'
           name='qlfImg'
-          rules={[{required: true}]}
+          // rules={[{required: true}]}
         >
           <Upload/>
         </ProForm.Item>
         <ProFormRadio.Group
           label='资质类型'
           name='type'
-          rules={[{required: true}]}
+          // rules={[{required: true}]}
           options={[
             {label: '必要资质', value: 1},
             {label: '可选资质', value: 2},
@@ -169,7 +235,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         <ProFormRadio.Group
           label='状态'
           name='status'
-          rules={[{required: true}]}
+          // rules={[{required: true}]}
           options={[
             {label: '开启', value: 1},
             {label: '暂不开启', value: 2},
