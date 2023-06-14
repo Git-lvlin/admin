@@ -112,7 +112,12 @@ export default (props) => {
         gc.forEach(element => {
           originData.current.forEach(it => {
             if (it.id === element) {
-              parentIds.push(it.gcParentId)
+              const pid = it.gcParentId
+              parentIds.push(pid)
+              if (pid !==0) {
+                const findItem = originData.current.find(it => pid === it.id);
+                parentIds.push(findItem.gcParentId)
+              }
             }
           })
         });
