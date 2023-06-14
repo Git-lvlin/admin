@@ -68,9 +68,9 @@ export default (props) => {
         
       <Divider />
       <strong>确认汇款信息</strong>
-        <p>实际汇款金额：<span style={{ color: 'red', fontWeight: 'bold', fontSize:'20px' }}>￥{msgDetail?.remitAmount}</span><span>汇款时间：{moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')}</span></p>
+        <p>实际汇款金额：<span style={{ color: 'red', fontWeight: 'bold', fontSize:'20px' }}>￥{msgDetail?.remitAmount}</span><span>实际汇款时间：{moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')}</span></p>
         <p>
-          <span>汇款凭证：{msgDetail?.urlArr?.map(item=><div style={{ margin: '0 5px', display: 'inline-block' }}><Image src={item} style={{ width: '50px', height: '50px'}}/></div>)}</span>
+          <span>汇款凭证：{msgDetail?.urlArr?.map(item=><div style={{ margin: '0 20px', display: 'inline-block' }}><Image src={item} style={{ width: '50px', height: '50px'}}/></div>)}</span>
           <span>收款账号：{msgDetail?.bankNo}</span>
         </p>
       
