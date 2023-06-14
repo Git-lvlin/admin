@@ -50,7 +50,6 @@ const AddressMultiCascader = ({ value = '', onChange = () => { }, data, pId = 0,
 
   useEffect(() => {
     const arr = arrayToTree(data || window.yeahgo_area || [], pId)
-    console.log('arr', arr);
     let str = JSON.stringify(arr)
     str = str.replace(/name/g, 'label').replace(/id/g, 'value')
     setAreaData(JSON.parse(str))

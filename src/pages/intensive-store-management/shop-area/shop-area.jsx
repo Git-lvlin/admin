@@ -175,7 +175,6 @@ const ShopArea = () => {
     v?.forEach?.(item => {
       let deep = 0;
       let node = window.yeahgo_area.find(it => it.id === item);
-      console.log('yeahgo_area', window.yeahgo_area);
       const nodeIds = [node.id];
       const nodeNames = [node.name]
       if(node.children){
@@ -184,10 +183,10 @@ const ShopArea = () => {
             if(item.deep == 3){
               brr.push(item.id)
             }
-              // toTreeData(item.children)
+              toTreeData(item.children)
           })  
         }
-        // toTreeData(node?.children)
+        toTreeData(node?.children)
       }
       while (node.pid) {//找父级
         deep += 1;
@@ -233,18 +232,16 @@ const ShopArea = () => {
       message.error('请选择要添加的区域')
       return;
     }
-
-    console.log('getAreaDatas(selectKeys)', getAreaDatas(selectKeys));
-    // setApplicableArea({
-    //   areas: getAreaDatas(selectKeys).map((ele)=>({...ele,status:'on'})),
-    //   append: true,
-    // }, { showSuccess: true }).then(res => {
-    //   if (res.code === 0) {
-    //     actionRef.current.reload();
-    //     getUncheckableItemValues();
-    //     document.querySelector('.tips').click()
-    //   }
-    // })
+    setApplicableArea({
+      areas: getAreaDatas(selectKeys).map((ele)=>({...ele,status:'on'})),
+      append: true,
+    }, { showSuccess: true }).then(res => {
+      if (res.code === 0) {
+        actionRef.current.reload();
+        getUncheckableItemValues();
+        document.querySelector('.tips').click()
+      }
+    })
   }
 
   useEffect(() => {
