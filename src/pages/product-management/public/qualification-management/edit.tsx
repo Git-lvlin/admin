@@ -39,7 +39,6 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     let str = JSON.stringify(originData)
     str = str.replace(/gcParentId/g, 'pid')
     const data = arrayToTree(JSON.parse(str))
-    console.log('data', data);
     v?.forEach?.(item => {
       let node = data?.find(it => it.id === item);
       if(node?.children) {
@@ -55,11 +54,13 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           })
         }
         toTreeData(node?.children)
+      } else if(!node){
+        arr.push(item)
       } else {
         arr.push(node.id)
       }
     })
-    return arr;
+    return arr
   }
 
   useEffect(()=> {
