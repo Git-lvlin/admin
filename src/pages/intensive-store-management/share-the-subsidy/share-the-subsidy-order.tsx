@@ -168,6 +168,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     return {
       orderTimeBegin: dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       orderTimeEnd: dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      storeNo: orderDetail?.storeNo,
       ...rest,
     }
   }

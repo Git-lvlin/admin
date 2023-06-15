@@ -45,7 +45,7 @@ export default (props:CumulativeProps) => {
   return (
     <ModalForm
       layout="horizontal"
-      title={<span>质检报告 审核 （供应商名称：哇哈哈有限公司）</span>}
+      title={<span>质检报告 审核 （供应商名称：{msgDetail?.companyName}）</span>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

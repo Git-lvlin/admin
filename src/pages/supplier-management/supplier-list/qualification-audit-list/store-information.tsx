@@ -79,7 +79,7 @@ export default (props) => {
             <div>
               <p style={{float:'right',color:'#262626'}}><span>{row?.supName}</span></p><br/>
               <p style={{color:'#999999',float:'right'}}>{ moment(row?.updateTime*1000).format('YYYY-MM-DD HH:mm:ss') }</p>
-              <p style={{color:'#999999'}}>asdasda</p>
+              <p style={{color:'#999999'}}>{row?.optName}</p>
             </div> 
             ),
             search: false,
