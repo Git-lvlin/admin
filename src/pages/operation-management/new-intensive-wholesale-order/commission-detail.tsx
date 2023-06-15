@@ -99,7 +99,7 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
         data?.length === 0 ?
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} /> :
         <>
-          <div className={styles.cardTitle}>累计业绩金额：{amountTransform(totalAmount, '/')}元</div>
+          <div className={styles.cardTitle}>累计提成金额：{amountTransform(totalAmount, '/')}元</div>
           {
             data?.map((item, idx) => (
               <div key={idx}>

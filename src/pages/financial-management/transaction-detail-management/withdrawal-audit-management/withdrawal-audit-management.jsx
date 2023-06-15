@@ -8,6 +8,7 @@ import { Button } from 'antd'
 import { amountTransform } from '@/utils/utils'
 import { withdrawPage } from '@/services/financial-management/transaction-detail-management'
 import { Export, ExportHistory } from '@/pages/export-excel'
+import moment from 'moment'
 
 const WithdrawalAuditManagement = () => {
   const [visit, setVisit] = useState(false)
@@ -18,8 +19,8 @@ const WithdrawalAuditManagement = () => {
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
     return {
-      begin: createTime?.[0]?.format('YYYY-MM-DD'),
-      end: createTime?.[1]?.format('YYYY-MM-DD'),
+      begin: moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest
     }
   }

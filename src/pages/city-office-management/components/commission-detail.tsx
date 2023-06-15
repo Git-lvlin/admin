@@ -95,8 +95,8 @@ const CommissionDetail: React.FC<DetailProps> = ({id, visible, setVisible, title
     setLoad(true)
     api({
       agencyId: id,
-      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
-      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+      startTime: (type === 6 || type === 7) ? time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss') : time && moment(time?.[0]).format('YYYY-MM-DD'),
+      endTime: (type === 6 || type === 7) ? time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss') : time && moment(time?.[1]).format('YYYY-MM-DD'),
       page,
       pageSize,
       ...rest
@@ -113,8 +113,8 @@ const CommissionDetail: React.FC<DetailProps> = ({id, visible, setVisible, title
     const { time, ...rest } = form.current?.getFieldsValue()
     return {
       agencyId: id,
-      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
-      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+      startTime: (type === 6 || type === 7) ? time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss') : time && moment(time?.[0]).format('YYYY-MM-DD'),
+      endTime: (type === 6 || type === 7) ? time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss') : time && moment(time?.[1]).format('YYYY-MM-DD'),
       ...rest
     }
   }
@@ -170,8 +170,8 @@ const CommissionDetail: React.FC<DetailProps> = ({id, visible, setVisible, title
         <>
           {
             (type === 6 || type === 7) ?
-            <div className={styles.cardTitle}>累计业绩金额：{amountTransform(amount, '/')}元</div> :
-            <div className={styles.cardTitle}>累计业绩金额：{amountTransform(totalAmount, '/')}元</div>
+            <div className={styles.cardTitle}>累计提成金额：{amountTransform(amount, '/')}元</div> :
+            <div className={styles.cardTitle}>累计提成金额：{amountTransform(totalAmount, '/')}元</div>
           }
           {
             data?.map((item, idx) => (

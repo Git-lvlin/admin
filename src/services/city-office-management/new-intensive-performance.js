@@ -164,14 +164,9 @@ export const cityAgencyGoodsStComDetail = async (params = {}, options = {}) => {
 
 // 健康礼包业绩分成详情
 export const listItemCommissionPage = async (params = {}, options = {}) => {
-  const { time, ...rest } = params
   const res = await request('/auth/java-admin/financial/healthyGift/cityOffice/listItemCommissionPage', {
       method: 'POST',
-      data: {
-        startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-        endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-        ...rest
-      },
+      data: params,
       ...options
   });
 

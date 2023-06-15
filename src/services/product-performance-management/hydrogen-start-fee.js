@@ -62,6 +62,12 @@ export const hyStartUpMonthStats = async (params, options = {}) => {
       endTime = undefined
       break;
   }
+
+  if(years && !quarter) {
+    startTime = moment(years).startOf('years').format('YYYY-MM-DD')
+    endTime = moment(years).endOf('years').format('YYYY-MM-DD')
+  }
+
   const res = await request('/auth/stats/report/php/hyStartUpMonth', {
     method: 'POST',
     data: {

@@ -120,7 +120,7 @@ const MonthlyPerformance: FC = () => {
   return (
     <div className={styles.desc}>
       <ProTable
-        rowKey='agencyId'
+        rowKey='id'
         columns={columns}
         params={{}}
         request={hyStartUpMonthStats}

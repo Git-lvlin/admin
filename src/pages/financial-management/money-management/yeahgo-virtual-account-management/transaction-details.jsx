@@ -265,7 +265,7 @@ const TransactionDetails = ({
       title: '解冻记录',
       dataIndex: 'unfreeze',
       valueType: 'select',
-      initialValue: '1',
+      initialValue: '2',
       valueEnum: {
         1: '显示解冻记录',
         2: '不显示解冻记录'

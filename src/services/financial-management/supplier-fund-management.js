@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 账户分页
 export const platforms = async (params, options= {}) => {
@@ -8,10 +9,10 @@ export const platforms = async (params, options= {}) => {
     data: {
       page: current,
       size: pageSize,
-      settleTimeBegin: settleTime&& settleTime[0],
-      settleTimeEnd: settleTime&& settleTime[1],
-      registTimeBegin: registTime&&registTime[0],
-      registTimeEnd: registTime&&registTime[1],
+      settleTimeBegin: settleTime&& moment(settleTime?.[0]).format('YYYY-MM-DD'),
+      settleTimeEnd: settleTime&& moment(settleTime?.[1]).format('YYYY-MM-DD'),
+      registTimeBegin: registTime&& moment(registTime?.[0]).format('YYYY-MM-DD'),
+      registTimeEnd: registTime&& moment(registTime?.[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options
