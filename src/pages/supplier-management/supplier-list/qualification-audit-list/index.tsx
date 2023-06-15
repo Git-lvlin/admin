@@ -1,17 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
 import ProTable from '@/components/pro-table'
-import { Space } from 'antd';
+import { Button, Space } from 'antd';
 import { qlfAuditList, qlfList } from '@/services/supplier-management/supplier-list'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import QualificationAudit from './qualification-audit'
 import History from './history-log'
+import StoreInformation from './store-information';
 import type { ActionType, ProColumns } from '@ant-design/pro-table';
 import { TableProps } from './data';
 
 const QualificationAuditList = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [msgDetail, setMsgDetail] = useState<TableProps>();
   const [visit, setVisit] = useState<boolean>(false)
   const [qlfSelectList, setQlfSelectList] = useState<Record<string, string>>();
@@ -161,6 +163,7 @@ const QualificationAuditList = () => {
                 conditions={()=>{return getFieldValue(searchConfig)}}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type='qlfAuditList'/>,
+              <Button key='add' type='primary' onClick={() => { setVisible(true) }}>已上传资质</Button>
             ],
           }}
         columns={columns}
@@ -179,6 +182,13 @@ const QualificationAuditList = () => {
         <History
           visible={historyVisible}
           setVisible={setHistoryVisible}
+          msgDetail={msgDetail}
+        />}
+
+      {visible &&
+        <StoreInformation
+          visible={visible}
+          setVisible={setVisible}
           msgDetail={msgDetail}
         />}
     </>

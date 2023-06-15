@@ -337,3 +337,22 @@ export const qlfSupplierQlf = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+export const qlfSupplierAllQlf = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/supplierAllQlf', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
