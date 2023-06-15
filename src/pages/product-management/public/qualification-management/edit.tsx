@@ -20,8 +20,10 @@ const CTree = (props: any) => {
   }
 
   useEffect(() => {
-    onChange(keys)
-    setSelectKeys(keys)
+    if(keys) {
+      onChange(keys)
+      setSelectKeys(keys)
+    }
     return () => {
       setSelectKeys([])
     }
@@ -113,7 +115,6 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
 
   const submit = (values: any) => {
     const arr: React.Key[] = []
-    console.log(values.category);
     originData.current.map((it: any) => {
       values.category.map((res: any) => {
         if(it.level === 3 && it.id === res) {
