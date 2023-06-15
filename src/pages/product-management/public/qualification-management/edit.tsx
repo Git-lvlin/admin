@@ -12,7 +12,7 @@ import Upload from '@/components/upload'
 import { arrayToTree } from '@/utils/utils'
 
 const CTree = (props: any) => {
-  const { value, keys, onChange, treeData, ...rest } = props;
+  const { keys, onChange, treeData, ...rest } = props;
   const [selectKeys, setSelectKeys] = useState<React.Key[]>([])
   
   const onCheck = (checkedKeys: React.Key[]) => {
@@ -23,9 +23,6 @@ const CTree = (props: any) => {
   useEffect(() => {
     onChange(keys)
     setSelectKeys(keys)
-    return () => {
-      setSelectKeys([])
-    }
   }, [keys])
 
   return (
@@ -46,7 +43,6 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
   const [gcInfo, setGcInfo] = useState<React.Key[]>([])
-  
   const originData = useRef([])
 
   useEffect(()=> {
@@ -106,13 +102,9 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         }
       })
     }
-    return () => {
-      setGcInfo([])
-    }
   }, [id])
 
   const submit = (values: any) => {
-    setCategory([])
     const arr: React.Key[] = []
     originData.current.map((it: any) => {
       values.category.map((res: any) => {
@@ -130,6 +122,8 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         operateType: id ? 'edit' : 'add'
       }, {showSuccess: true}).then(res => {
         if(res.code === 0) {
+          setGcInfo([])
+          setCategory([])
           callback()
           resolve()
         } else {
