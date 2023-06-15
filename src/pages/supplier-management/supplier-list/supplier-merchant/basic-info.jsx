@@ -43,10 +43,16 @@ const CTree = (props) => {
   useEffect(() => {
     onChange(keys)
     setSelectKeys(keys)
+    return () => {
+      setSelectKeys([])
+    }
   }, [keys])
 
   useEffect(() => {
     setSelectAll(selectData?.length === data?.length)
+    return () => {
+      setSelectAll(false)
+    }
   }, [selectData, data])
 
   return (
@@ -218,8 +224,6 @@ export default (props) => {
       .then(res => {
         if (res.code === 0) {
           originData.current = res.data.records;
-          const allCount = computedChildCount(originData.current, 'gcParentId')
-          const selfCount = computedChildCount(detailData.gcInfo, 'gcParentId')
           const tree = arrayToTree(res.data.records.map(item => ({
             ...item,
             pid: item.gcParentId,
@@ -230,6 +234,8 @@ export default (props) => {
           })))
           setTreeData(tree)
           if (detailData) {
+            const allCount = computedChildCount(originData.current, 'gcParentId')
+            const selfCount = computedChildCount(detailData.gcInfo, 'gcParentId')
             const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
 
             form.setFieldsValue({
@@ -253,6 +259,9 @@ export default (props) => {
           }
         }
       })
+    return () => {
+      setSelectKeys([])
+    }
   }, [form, detailData]);
 
   return (
