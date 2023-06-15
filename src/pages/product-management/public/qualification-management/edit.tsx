@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ProForm, { DrawerForm, ProFormText, ProFormRadio, ProFormTextArea } from '@ant-design/pro-form'
-import { Spin } from 'antd'
+import { Tree, Spin } from 'antd';
 
 import type { editProps } from './data'
 import type { FormInstance } from 'antd'
@@ -8,22 +8,57 @@ import type { FormInstance } from 'antd'
 import { goodsQlfDetail, modifyGoodsGlf } from '@/services/product-management/qualification-management'
 import { categoryAll } from '@/services/common'
 import Upload from '@/components/upload'
-import AptitudeCategory from '@/components/aptitude-category'
 import { arrayToTree } from '@/utils/utils'
+
+const CTree = (props: any) => {
+  const { value, onChange, treeData, data, keys, ...rest } = props;
+  const [selectKeys, setSelectKeys] = useState<React.Key[]>(keys)
+  
+  const onCheck = (checkedKeys: any) => {
+    setSelectKeys(checkedKeys)
+    onChange(checkedKeys)
+  }
+
+  useEffect(() => {
+    onChange(keys)
+    setSelectKeys(keys)
+    return () => {
+      setSelectKeys([])
+    }
+  }, [keys])
+
+  return (
+    <div style={{ flex: 1 }}>
+      <Tree
+        treeData={treeData}
+        onCheck={onCheck}
+        checkedKeys={selectKeys}
+        {...rest}
+      />
+    </div>
+
+  )
+}
 
 const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   const [category, setCategory] = useState([])
-  const [originData, setOriginData] = useState([])
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
+  const [gcInfo, setGcInfo] = useState<React.Key[]>([])
+  
+  const originData = useRef([])
 
   useEffect(()=> {
     if(id) {
+      const arr: number[] = []
       goodsQlfDetail({id}).then(res => {
         if(res.code === 0) {
+          res.data.category.map((item: any) => {
+            arr.push(item.gcId3)
+          })
+          setGcInfo(arr)
           formRef.current?.setFieldsValue({
             name: res.data.name,
-            category: res.data.category.map((item: any) => item.gcId3),
             intro: res.data.intro,
             qlfImg: res.data.qlfImg,
             type: res.data.type,
@@ -32,41 +67,16 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         }
       })
     }
+    return () => {
+      setGcInfo([])
+    }
   }, [id])
-
-  const getAreaDatas = (v) => {
-    const arr = [];
-    let str = JSON.stringify(originData)
-    str = str.replace(/gcParentId/g, 'pid')
-    const data = arrayToTree(JSON.parse(str))
-    v?.forEach?.(item => {
-      let node = data?.find(it => it.id === item);
-      if(node?.children) {
-        const toTreeData = (data) => {
-          data?.forEach(item => {
-            if (item.level === 3) {
-              arr.push(item.id)
-            }
-            if (item.children) {
-              toTreeData(item.children)
-            }
-            
-          })
-        }
-        toTreeData(node?.children)
-      } else if(!node){
-        arr.push(item)
-      } else {
-        arr.push(node.id)
-      }
-    })
-    return arr
-  }
 
   useEffect(()=> {
     setFlag(true)
     categoryAll()?.then(res => {
       if(res.code === 0) {
+        originData.current = res.data.records
         const arr1: any[] = []
         const arr2: any[] = []
         const arr3: any[] = []
@@ -84,13 +94,16 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         })
         const data = Array.from(new Set([...arr1, ...arr2, ...arr3])).map(item => ({
           ...item,
-          pid: item.gcParentId
+          pid: item.gcParentId,
+          title: item.gcName,
+          key: item.id,
+          value: item.id,
+          selectable: false
         }))
         const arr = arrayToTree(data || [], 0)
         let str = JSON.stringify(arr)
-        str = str.replace(/gcName/g, 'label').replace(/id/g, 'value')
+        str = str.replace(/gcName/g, 'title').replace(/id/g, 'key')
         const newArr = JSON.parse(str)
-        setOriginData(data)
         setCategory(newArr)
       }
     }).finally(()=> {
@@ -99,12 +112,22 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   }, [])
 
   const submit = (values: any) => {
+    const arr: React.Key[] = []
+    console.log(values.category);
+    originData.current.map((it: any) => {
+      values.category.map((res: any) => {
+        if(it.level === 3 && it.id === res) {
+          arr.push(res)
+        }
+      })
+    })
+    
     return new Promise<void>((resolve, reject) => {
       modifyGoodsGlf({
         ...values,
         id,
-        operateType: id ? 'edit' : 'add',
-        category: getAreaDatas(values.category)
+        category: arr,
+        operateType: id ? 'edit' : 'add'
       }, {showSuccess: true}).then(res => {
         if(res.code === 0) {
           callback()
@@ -154,12 +177,13 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           name='category'
           rules={[{required: true}]}
         >
-        <AptitudeCategory 
-          maxLength={Number.MAX_SAFE_INTEGER} 
-          data={category} 
-          uncheckableItemValues={[]}
-          searchable={false}
-        />
+          <CTree
+            treeData={category}
+            checkable
+            data={originData.current}
+            virtual={false}
+            keys={gcInfo}
+          />
         </ProForm.Item>
         <ProFormTextArea
           label='上传说明'

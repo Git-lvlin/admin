@@ -201,7 +201,7 @@ const ProductCategory = () => {
         {...formParams}
       />}
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center', paddingTop: 30 }}>
-        <List onClick={(item) => { setSelectItem(item)}} edit={edit} remove={remove} />
+        <List onClick={(item) => { setSelectItem(item); setSelectLevel(false)}} edit={edit} remove={remove} />
         {selectItem && <List onClick={(item) => { setSelectLevel(item) }} parentId={selectItem.id} selectItem={selectItem} level={2} edit={edit} remove={remove} />}
         {selectLevel && <List parentId={selectLevel.id} selectItem={selectLevel} level={3} edit={edit} remove={remove} />}
       </div>

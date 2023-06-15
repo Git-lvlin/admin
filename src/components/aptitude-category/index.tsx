@@ -104,7 +104,7 @@ const CategoryMultiCascader: React.FC<cascaderProps> = (props) => {
       locale={{ searchPlaceholder: '输入商品分类名称' }}
       placeholder="请选择后台商品分类"
       uncheckableItemValues={uncheckData}
-      renderValue={(value, selectedItems) => renderMultiCascaderTag(selectedItems)}
+      renderValue={(_, selectedItems) => renderMultiCascaderTag(selectedItems)}
       {...rest}
     />
   )
