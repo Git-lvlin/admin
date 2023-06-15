@@ -114,8 +114,12 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
                   <div>订单号：{item.orderSn}</div>
                 </div>
                 <div className={styles.cardListContent}>
-                  <div></div>
+                  <div>{item.goodsName}</div>
                   <div>店铺编号：{item.houseNumber}</div>
+                </div>
+                <div className={styles.cardListContent}>
+                  <div></div>
+                  <div>skuID：{item.skuId}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>
               </div>
