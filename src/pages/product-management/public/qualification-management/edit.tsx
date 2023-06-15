@@ -4,6 +4,7 @@ import { Tree, Spin } from 'antd';
 
 import type { editProps } from './data'
 import type { FormInstance } from 'antd'
+import type { DataNode } from 'antd/es/tree';
 
 import { goodsQlfDetail, modifyGoodsGlf } from '@/services/product-management/qualification-management'
 import { categoryAll } from '@/services/common'
@@ -11,19 +12,17 @@ import Upload from '@/components/upload'
 import { arrayToTree } from '@/utils/utils'
 
 const CTree = (props: any) => {
-  const { value, onChange, treeData, data, keys, ...rest } = props;
-  const [selectKeys, setSelectKeys] = useState<React.Key[]>(keys)
+  const { value, keys, onChange, treeData, ...rest } = props;
+  const [selectKeys, setSelectKeys] = useState<React.Key[]>([])
   
-  const onCheck = (checkedKeys: any) => {
+  const onCheck = (checkedKeys: React.Key[]) => {
     setSelectKeys(checkedKeys)
     onChange(checkedKeys)
   }
 
   useEffect(() => {
-    if(keys) {
-      onChange(keys)
-      setSelectKeys(keys)
-    }
+    onChange(keys)
+    setSelectKeys(keys)
     return () => {
       setSelectKeys([])
     }
@@ -43,36 +42,12 @@ const CTree = (props: any) => {
 }
 
 const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
-  const [category, setCategory] = useState([])
+  const [category, setCategory] = useState<DataNode[]>([])
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
   const [gcInfo, setGcInfo] = useState<React.Key[]>([])
   
   const originData = useRef([])
-
-  useEffect(()=> {
-    if(id) {
-      const arr: number[] = []
-      goodsQlfDetail({id}).then(res => {
-        if(res.code === 0) {
-          res.data.category.map((item: any) => {
-            arr.push(item.gcId3)
-          })
-          setGcInfo(arr)
-          formRef.current?.setFieldsValue({
-            name: res.data.name,
-            intro: res.data.intro,
-            qlfImg: res.data.qlfImg,
-            type: res.data.type,
-            status: res.data.status
-          })
-        }
-      })
-    }
-    return () => {
-      setGcInfo([])
-    }
-  }, [id])
 
   useEffect(()=> {
     setFlag(true)
@@ -104,7 +79,6 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         }))
         const arr = arrayToTree(data || [], 0)
         let str = JSON.stringify(arr)
-        str = str.replace(/gcName/g, 'title').replace(/id/g, 'key')
         const newArr = JSON.parse(str)
         setCategory(newArr)
       }
@@ -113,7 +87,32 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     })
   }, [])
 
+  useEffect(()=> {
+    if(id) {
+      const arr: number[] = []
+      goodsQlfDetail({id}).then(res => {
+        if(res.code === 0) {
+          res.data.category.map((item: any) => {
+            arr.push(item.gcId3)
+          })
+          formRef.current?.setFieldsValue({
+            name: res.data.name,
+            intro: res.data.intro,
+            qlfImg: res.data.qlfImg,
+            type: res.data.type,
+            status: res.data.status
+          })
+          setGcInfo(arr)
+        }
+      })
+    }
+    return () => {
+      setGcInfo([])
+    }
+  }, [id])
+
   const submit = (values: any) => {
+    setCategory([])
     const arr: React.Key[] = []
     originData.current.map((it: any) => {
       values.category.map((res: any) => {
@@ -122,7 +121,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
         }
       })
     })
-    
+
     return new Promise<void>((resolve, reject) => {
       modifyGoodsGlf({
         ...values,
@@ -181,7 +180,6 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           <CTree
             treeData={category}
             checkable
-            data={originData.current}
             virtual={false}
             keys={gcInfo}
           />
