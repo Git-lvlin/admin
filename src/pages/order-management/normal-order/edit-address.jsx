@@ -68,7 +68,7 @@ const EditAddress = ({
           consignee:res?.data?.consignee,
           phone:res?.data?.phone,
           area:[ {label:res?.data?.provinceName,value:res?.data?.provinceId}, {label:res?.data?.cityName,value:res?.data?.cityId}, {label:res?.data?.districtName,value:res?.data?.districtId} ],
-          address:primaryAddress?.address
+          address:res?.data?.address
         })
       }
     })

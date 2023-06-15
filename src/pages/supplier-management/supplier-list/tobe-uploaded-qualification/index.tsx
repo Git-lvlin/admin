@@ -53,6 +53,7 @@ const TobeUploadedQualification = () => {
       dataIndex: 'gcDesc',
       valueType: 'text',
       hideInSearch: true,
+      width: 300
     },
     {
       title: '商品数量',

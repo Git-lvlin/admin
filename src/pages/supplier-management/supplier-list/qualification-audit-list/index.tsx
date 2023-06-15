@@ -59,6 +59,7 @@ const QualificationAuditList = () => {
       dataIndex: 'gcDesc',
       valueType: 'text',
       hideInSearch: true,
+      width: 300
     },
     {
       title: '资质名称',
