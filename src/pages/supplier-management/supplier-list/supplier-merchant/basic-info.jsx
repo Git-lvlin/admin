@@ -203,17 +203,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (detailData) {
-      
-      const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
-
-      form.setFieldsValue({
-        warrantyRatio: warrantyRatioDisplay,
-        defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
-      })
-
-      setSelectData(detailData.supplierIds)
-    } else {
+    if (!detailData) {
       getOnlineList({
         page: 1,
         size: 9999
@@ -227,7 +217,6 @@ export default (props) => {
     categoryAll()
       .then(res => {
         if (res.code === 0) {
-
           originData.current = res.data.records;
           const allCount = computedChildCount(originData.current, 'gcParentId')
           const selfCount = computedChildCount(detailData.gcInfo, 'gcParentId')
@@ -240,16 +229,28 @@ export default (props) => {
             selectable: false
           })))
           setTreeData(tree)
-          const gcInfo = detailData.gcInfo.filter(item => allCount[item.id] === selfCount[item.id])
-          const ids = [];
-          gcInfo.forEach(item => {
-            ids.push(item.id)
-          })
-          form.setFieldsValue({
-            ...detailData,
-            gcInfo
-          })
-          setSelectKeys(ids)
+          if (detailData) {
+            const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
+
+            form.setFieldsValue({
+              warrantyRatio: warrantyRatioDisplay,
+              defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
+            })
+
+            setSelectData(detailData.supplierIds)
+            const gcInfo = detailData.gcInfo.filter(item => allCount[item.id] === selfCount[item.id])
+            const ids = [];
+            gcInfo.forEach(item => {
+              ids.push(item.id)
+            })
+            form.setFieldsValue({
+              ...detailData,
+              gcInfo,
+              warrantyRatio: warrantyRatioDisplay,
+              defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
+            })
+            setSelectKeys(ids)
+          }
         }
       })
   }, [form, detailData]);
