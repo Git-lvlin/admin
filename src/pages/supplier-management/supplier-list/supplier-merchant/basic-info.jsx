@@ -9,7 +9,7 @@ import {
 } from '@ant-design/pro-form';
 import { supplierAdd, supplierEdit, categoryAll, searchUniName, getOnlineList } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
-import { arrayToTree } from '@/utils/utils'
+import { arrayToTree, computedChildCount } from '@/utils/utils'
 import FormModal from './form';
 
 const { Title } = Typography;
@@ -42,7 +42,8 @@ const CTree = (props) => {
 
   useEffect(() => {
     onChange(keys)
-  }, [])
+    setSelectKeys(keys)
+  }, [keys])
 
   useEffect(() => {
     setSelectAll(selectData?.length === data?.length)
@@ -104,7 +105,6 @@ export default (props) => {
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
-      const obj = {};
       let gcArr = []
       if (gc?.length) {
         const parentIds = [];
@@ -204,10 +204,7 @@ export default (props) => {
 
   useEffect(() => {
     if (detailData) {
-      form.setFieldsValue({
-        ...detailData
-      })
-
+      
       const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
 
       form.setFieldsValue({
@@ -216,13 +213,6 @@ export default (props) => {
       })
 
       setSelectData(detailData.supplierIds)
-      const ids = [];
-      detailData.gcInfo.forEach(item => {
-        if (item.gcParentId !== 0) {
-          ids.push(item.id)
-        }
-      })
-      setSelectKeys(ids)
     } else {
       getOnlineList({
         page: 1,
@@ -237,7 +227,10 @@ export default (props) => {
     categoryAll()
       .then(res => {
         if (res.code === 0) {
+
           originData.current = res.data.records;
+          const allCount = computedChildCount(originData.current, 'gcParentId')
+          const selfCount = computedChildCount(detailData.gcInfo, 'gcParentId')
           const tree = arrayToTree(res.data.records.map(item => ({
             ...item,
             pid: item.gcParentId,
@@ -247,6 +240,16 @@ export default (props) => {
             selectable: false
           })))
           setTreeData(tree)
+          const gcInfo = detailData.gcInfo.filter(item => allCount[item.id] === selfCount[item.id])
+          const ids = [];
+          gcInfo.forEach(item => {
+            ids.push(item.id)
+          })
+          form.setFieldsValue({
+            ...detailData,
+            gcInfo
+          })
+          setSelectKeys(ids)
         }
       })
   }, [form, detailData]);
@@ -434,7 +437,7 @@ export default (props) => {
             label="主营商品类型"
             name="gc"
           >
-            <CTree
+            {!!treeData.length &&<CTree
               checkable
               style={{
                 width: '100%',
@@ -446,7 +449,7 @@ export default (props) => {
               virtual={false}
               keys={selectKeys}
               selectData={detailData?.gcInfo}
-            />
+            />}
           </Form.Item>
 
           <Form.Item

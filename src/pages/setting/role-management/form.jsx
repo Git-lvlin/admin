@@ -4,6 +4,7 @@ import {
   ModalForm,
   ProFormText,
 } from '@ant-design/pro-form';
+import { computedChildCount } from '@/utils/utils'
 import * as api from '@/services/setting/role-management'
 
 const getPid = (item, originTreeData) => {
@@ -101,8 +102,11 @@ export default (props) => {
         groupId: data.id
       }).then(res => {
         if (res.code === 0) {
-          const originData = originTreeData;
-          const filterData = res.data.filter(item => !originData.some(it => it.pid === item.id))
+          // const originData = originTreeData;
+          // const filterData = res.data.filter(item => !originData.some(it => it.pid === item.id))
+          const allCount = computedChildCount(originTreeData);
+          const selfCount = computedChildCount(res.data);
+          const filterData = res.data.filter(item => allCount[item.id] === selfCount[item.id])
           setSelectKeys(filterData.map(item => item.id));
         }
       })
