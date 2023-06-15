@@ -2,7 +2,7 @@ import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { TableProps } from "../../supplier-management/supplier-list/qualification-audit-list/data"
+import type { TableProps } from "./data.d"
 import RangeNumberInput from '@/components/range-number-input'
 
 import { applyPage } from "@/services/aed-team-leader/performance-settlement-management"

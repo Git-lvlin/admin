@@ -27,7 +27,7 @@ export default (props) => {
       dataIndex: 'gcDesc',
       align: 'center',
       ellipsis: true,
-      width: 400,
+      width: 200,
     },
     {
       title: '资质',

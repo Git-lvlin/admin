@@ -10,7 +10,7 @@ import ProForm, {
 } from '@ant-design/pro-form';
 import { remitSave,getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem,Weather } from "../../supplier-management/supplier-list/qualification-audit-list/data"
+import type { CumulativeProps, ByAuditSumIdData } from "./data.d"
 import styles from './styles.less'
 import SelectRemittance from './select-remittance'
 import Upload from '@/components/upload';
@@ -27,7 +27,7 @@ export default (props:CumulativeProps)=>{
   const [form] = Form.useForm();
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
-  const [dataDatil, setDataDatil] = useState<DrtailItem>()
+  const [dataDatil, setDataDatil] = useState<ByAuditSumIdData>()
   const [remarkMsg, setRemarkMsg] = useState()
   const [orderArr, setOrderArr] = useState([])
   const [submitMsg, setSubmitMsg] = useState()
@@ -52,7 +52,6 @@ export default (props:CumulativeProps)=>{
     const fee=values?.status?dataDatil?.orderArr?.reduce((sum, item) => sum + item.fee, 0):orderArr.reduce((sum, item) => sum + item.fee, 0)
     const unfreezeAmount=values?.status?dataDatil?.orderArr?.reduce((sum, item) => sum + item.unfreezeAmount, 0):orderArr.reduce((sum, item) => sum + item.unfreezeAmount, 0)
     const params={
-      remark:remarkMsg?.remark,
       auditSumId: msgDetail?.settlementId,
       orderArr:values?.status?dataDatil?.orderArr?.reduce((obj, item) => {
         obj[item.orderId] = item.orderNo;
@@ -66,7 +65,8 @@ export default (props:CumulativeProps)=>{
       ...values,
       remitAmount:amountTransform(values.remitAmount,'*'),
       remitTime:moment(values.remitTime).valueOf(),
-      urlArr:values.urlArr?values.urlArr:[]
+      urlArr:values?.urlArr?values?.urlArr:[],
+      remark:remarkMsg?.remark
     }
     return new Promise((resolve, reject) => {
       remitSave(params).then((res) => {
@@ -346,6 +346,7 @@ export default (props:CumulativeProps)=>{
                       minLength:5,
                       placeholder:'请输入5-50个字符'
                     }}
+                    initialValue={' '}
                     width={400}
                   />
           }  
