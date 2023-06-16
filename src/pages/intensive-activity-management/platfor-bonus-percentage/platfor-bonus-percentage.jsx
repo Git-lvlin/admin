@@ -227,7 +227,7 @@ const PlatforBonusPercentage = () => {
         <p>* 平台总额外奖励占商品盈利比例：90%</p>
       </div>
       <div style={{ display: 'flex', width: '100%' }}>
-        <Category title="一" onClick={(id) => { setSelectId(id)}}/>
+        <Category title="一" onClick={(id) => { setSelectId(id); setSelectId2(null) }}/>
         {selectId && <Category title="二" onClick={(id) => { setSelectId2(id) }} parentId={selectId}/>}
         {selectId2 && <Category title="三" parentId={selectId2}/>}
       </div>

@@ -312,7 +312,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
                 {detailData?.sku?.[0]?.wholesaleFreight / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
-                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}{detailData?.sku?.[0]?.gcId3Display && `-${detailData?.sku?.[0]?.gcId3Display}`}
                 {detailData?.sku?.[0]?.fresh === 1 && <span style={{ color: 'green' }}>(生鲜)</span>}
               </Descriptions.Item>
               <Descriptions.Item label="配送模式">

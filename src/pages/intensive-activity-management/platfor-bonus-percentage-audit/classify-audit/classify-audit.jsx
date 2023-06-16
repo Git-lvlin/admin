@@ -10,7 +10,7 @@ import styles from './style.less'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { },Loading=()=>{},loading} = props;
+  const { parentId = 0, title, onClick = () => { },Loading=()=>{},loading} = props;
   const [visible, setVisible] = useState(false);
   const [auditVisible, setAuditVisible] = useState(false);
   const [formDetail, setFormDetail] = useState({})
@@ -110,7 +110,7 @@ const Category = (props) => {
         <ProTable
           rowKey="id"
           actionRef={actionRef}
-          headerTitle={`${parentId?'二':'一'}级分类`}
+          headerTitle={`${title}级分类`}
           maxLength={5}
           columns={columns}
           params={{
@@ -161,19 +161,32 @@ const Category = (props) => {
 
 export default () => {
   const [selectId, setSelectId] = useState(null);
+  const [selectId2, setSelectId2] = useState(null);
   const [loading, setLoading] = useState(false);
   return (
     <>
-      <div style={{ display: 'flex', width: '100%' }}>
-        <Category onClick={(id) => { setSelectId(id)}} loading={loading}/>
+      <div style={{ display: 'flex', width: '100%', overflow:'auto' }}>
+        <Category title="一" onClick={(id) => { setSelectId(id); setSelectId2(null) }} loading={loading}/>
         {selectId 
         && 
-        <Category 
-          parentId={selectId} 
+        <Category
+          title="二"
+          parentId={selectId}
+          onClick={(id) => { setSelectId2(id) }} 
           Loading={(val)=>{
             setLoading(val);
             }
           }/>
+        }
+        {selectId2
+          &&
+          <Category
+            title="三"
+            parentId={selectId2}
+            Loading={(val) => {
+              setLoading(val);
+            }
+            } />
         }
       </div>
     </>
