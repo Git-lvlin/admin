@@ -64,7 +64,7 @@ export default (props:CumulativeProps)=>{
       unfreezeAmount:unfreezeAmount,
       ...values,
       remitAmount:amountTransform(values.remitAmount,'*'),
-      remitTime:moment(values.remitTime).valueOf(),
+      remitTime:moment(values.remitTime).valueOf()/1000,
       urlArr:values?.urlArr?values?.urlArr:[],
       remark:remarkMsg?.remark
     }
