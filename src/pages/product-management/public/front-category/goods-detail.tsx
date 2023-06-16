@@ -68,11 +68,6 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
 
   const columns: ProColumns[] = [
     {
-      title: 'sku',
-      dataIndex: 'skuId',
-      align: 'center'
-    },
-    {
       title: 'spuID',
       dataIndex: 'spuId',
       align: 'center'
@@ -87,7 +82,8 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
     {
       title: '商品名称',
       dataIndex: 'goodsName',
-      align: 'center'
+      align: 'center',
+      width: '20%'
     },
     {
       title: '供应商ID',
@@ -98,7 +94,14 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
       title: '商品分类',
       dataIndex: 'gcId',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.gcId2Display) {
+          return <span>{r.gcId1Display} {'>'} {r.gcId2Display}</span>
+        } else {
+          return <span>{r.gcId1Display}</span>
+        }
+      }
     },
     {
       title: '商品分类',
@@ -143,9 +146,9 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
     },
     {
       title: '审核状态',
-      dataIndex: 'goodsVerifyStateDisplay',
+      dataIndex: 'goodsVerifyState',
       valueType: 'select',
-      valueEnum: typeTransform(config?.goodsState),
+      valueEnum: typeTransform(config?.goodsVerifyState),
       hideInTable: true,
     },
     {
