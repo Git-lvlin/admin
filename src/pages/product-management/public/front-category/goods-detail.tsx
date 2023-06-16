@@ -4,7 +4,6 @@ import ProTable from '@/components/pro-table'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import type { goodsDetailProps } from './data'
-import type{ ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import { amountTransform, typeTransform } from '@/utils/utils'
@@ -16,13 +15,12 @@ const SubTable: React.FC<any> = (props) => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const columns = [
-    { title: 'skuID', dataIndex: 'skuId' },
-    { title: '规格图', dataIndex: '' },
-    { title: '规格1', dataIndex: '' },
-    { title: '规格2', dataIndex: '' },
-    { title: '销售价', dataIndex: '', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '市场价', dataIndex: '', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '可用库存', dataIndex: 'stockNum' }
+    { title: 'skuID', dataIndex: 'skuId', align: 'center' },
+    { title: '规格图', dataIndex: 'goodsImageUrl', align: 'center', render: (_, r) => <Image src={r.goodsImageUrl} width={50} height={50}/> },
+    { title: '规格', dataIndex: 'skuNameDisplay', align: 'center' },
+    { title: '销售价', dataIndex: 'salePriceDisplay', align: 'center' },
+    { title: '市场价', dataIndex: 'marketPriceDisplay', align: 'center' },
+    { title: '可用库存', dataIndex: 'stockNum', align: 'center' }
   ];
 
   useEffect(() => {
@@ -31,6 +29,8 @@ const SubTable: React.FC<any> = (props) => {
       selectType: 2,
       spuId: props.data.spuId
     }).then(res => {
+      console.log(res.data);
+      
       setData(res?.data)
     }).finally(() => {
       setLoading(false);
@@ -56,12 +56,12 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
   }, [])
 
   const getFieldsValue = () => {
-    const { gcId = [], ...rest } = formRef.current?.getFieldsValue()
+    const { gcId, ...rest } = formRef.current?.getFieldsValue()
     return {
       selectType: 1,
-      gcId1: gcId[0],
-      gcId2: gcId[1],
-      gcId3: gcId[2],
+      gcId1: gcId && gcId?.[0],
+      gcId2: gcId && gcId?.[1],
+      gcId3: gcId && gcId?.[2],
       ...rest
     }
   }
@@ -127,12 +127,14 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
     {
       title: '可用库存',
       dataIndex: 'stockNum',
+      align: 'center',
       hideInSearch: true,
     },
     {
       title: '审核状态',
       dataIndex: 'goodsVerifyStateDisplay',
       valueType: 'text',
+      align: 'center',
       hideInSearch: true,
       render: (_, record) => {
         const { goodsVerifyRemark, goodsVerifyState } = record;
@@ -163,6 +165,7 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
       title: '上架状态',
       dataIndex: 'goodsStateDisplay',
       valueType: 'text',
+      align: 'center',
       hideInSearch: true,
       render: (_, record) => {
         const { goodsStateRemark, goodsState } = record;
