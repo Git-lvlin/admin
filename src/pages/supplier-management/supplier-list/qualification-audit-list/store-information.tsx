@@ -76,11 +76,11 @@ export default (props) => {
           },
           actions:{
             render:(text, row)=>(
-            <div>
-              <p style={{float:'right',color:'#262626'}}><span>{row?.supName}（{row?.supId}）</span></p><br/>
-              <p style={{color:'#999999',float:'right'}}>{row?.updateTime}</p>
+            <>
+              <p style={{color:'#262626'}}><span>{row?.supName}（{row?.supId}）</span></p>
+              <p style={{color:'#999999'}}>{row?.updateTime}</p>
               <p style={{color:'#999999'}}>{row?.optName}</p>
-            </div> 
+            </> 
             ),
             search: false,
           },
