@@ -9,7 +9,7 @@ import ImportFile from '@/components/ImportFile'
 import TimeSelect from '@/components/time-select'
 
 const CityOffice = () => {
-  const [date, setDate] = useState<Moment[]>([])
+  const [date, setDate] = useState<Moment[]>()
 
   return (
     <PageContainer>
