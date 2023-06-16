@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ProForm, { DrawerForm, ProFormText, ProFormRadio, ProFormTextArea } from '@ant-design/pro-form'
-import { Tree, Spin } from 'antd';
+import { Tree, Spin } from 'antd'
 
 import type { editProps } from './data'
 import type { FormInstance } from 'antd'
-import type { DataNode } from 'antd/es/tree';
+import type { DataNode } from 'antd/es/tree'
 
 import { goodsQlfDetail, modifyGoodsGlf } from '@/services/product-management/qualification-management'
 import { categoryAll } from '@/services/common'
@@ -12,7 +12,7 @@ import Upload from '@/components/upload'
 import { arrayToTree } from '@/utils/utils'
 
 const CTree = (props: any) => {
-  const { keys, onChange, treeData, ...rest } = props;
+  const { keys, onChange, treeData, ...rest } = props
   const [selectKeys, setSelectKeys] = useState<React.Key[]>([])
   
   const onCheck = (checkedKeys: React.Key[]) => {
@@ -43,7 +43,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
   const [flag, setFlag] = useState<boolean>(false)
   const formRef = useRef<FormInstance>()
   const [gcInfo, setGcInfo] = useState<React.Key[]>([])
-  const originData = useRef([])
+  const originData = useRef<string[]>([])
 
   useEffect(()=> {
     setFlag(true)
@@ -85,7 +85,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
 
   useEffect(()=> {
     if(id) {
-      const arr: number[] = []
+      const arr: React.Key[] = []
       goodsQlfDetail({id}).then(res => {
         if(res.code === 0) {
           res.data.category.map((item: any) => {
@@ -213,7 +213,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           rules={[{required: true}]}
           options={[
             {label: '必要资质', value: 1},
-            {label: '可选资质', value: 2},
+            {label: '可选资质', value: 2}
           ]}
         />
         <ProFormRadio.Group
@@ -222,7 +222,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
           rules={[{required: true}]}
           options={[
             {label: '开启', value: 1},
-            {label: '暂不开启', value: 2},
+            {label: '暂不开启', value: 2}
           ]}
         />
       </Spin>
