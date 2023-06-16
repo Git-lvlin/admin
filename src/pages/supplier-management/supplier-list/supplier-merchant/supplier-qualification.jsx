@@ -26,8 +26,7 @@ export default (props) => {
       title: '经营需资质的分类',
       dataIndex: 'gcDesc',
       align: 'center',
-      ellipsis: true,
-      width: 200,
+      width: 300,
     },
     {
       title: '资质',
