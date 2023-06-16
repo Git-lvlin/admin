@@ -63,7 +63,7 @@ const formItemLayout = {
           disabled
         />
         <ProFormText
-          label='确认汇款时间'
+          label='实际汇款时间'
           name="remitTime"
           disabled
         />

@@ -189,7 +189,6 @@ const QualificationAuditList = () => {
         <StoreInformation
           visible={visible}
           setVisible={setVisible}
-          msgDetail={msgDetail}
         />}
     </>
 

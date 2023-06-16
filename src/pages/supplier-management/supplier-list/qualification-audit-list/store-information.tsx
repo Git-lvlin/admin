@@ -4,7 +4,6 @@ import {
 } from '@ant-design/pro-form';
 import ProList from '@ant-design/pro-list';
 import { qlfSupplierAllQlf } from '@/services/supplier-management/supplier-list'
-import moment from 'moment';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -12,7 +11,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail} = props;
+  const { visible, setVisible } = props;
   const [form] = Form.useForm();
   return (
     <DrawerForm
@@ -38,9 +37,6 @@ export default (props) => {
       <ProList
         rowKey="id"
         request={qlfSupplierAllQlf}
-        params={{
-          agencyId:msgDetail?.agencyId,
-        }}
         pagination={{
           pageSize: 5,
           showQuickJumper: true,
