@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Space } from 'antd';
 import { EditableProTable } from '@ant-design/pro-table';
 import moment from 'moment';
-import {
+import ProForm, {
   DrawerForm,
   ProFormText,
   ProFormRadio,
