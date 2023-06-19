@@ -102,6 +102,9 @@ export default (props) => {
        <ProFormText
         label='备注'
         name="remark"
+        fieldProps={{
+          placeholder: ''
+        }}
         disabled
         />
       <ProFormText

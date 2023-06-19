@@ -60,6 +60,9 @@ const formItemLayout = {
         <ProFormText
           label='备注'
           name="remark"
+          fieldProps={{
+            placeholder: ''
+          }}
           disabled
         />
         <ProFormText
