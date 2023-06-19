@@ -25,7 +25,7 @@ const formItemLayout = {
         fee: amountTransform(msgDetail?.fee,'/').toFixed(2),
         remitAmount: amountTransform(msgDetail?.remitAmount,'/').toFixed(2),
         SingularAmount:`${msgDetail?.orderCount}单 共${amountTransform(msgDetail?.amount,'/').toFixed(2)} 元 `,
-        remitTime: moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')
+        remitTime: moment(msgDetail?.remitTime*1000).format('YYYY-MM-DD HH:mm:ss')
       })
     },[])
     return (

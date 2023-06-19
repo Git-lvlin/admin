@@ -9,6 +9,7 @@ import Export from './export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import Big from 'big.js'
 import { amountTransform } from '@/utils/utils'
+import moment from 'moment';
 
 Big.RM = 0;
 
@@ -62,10 +63,13 @@ const UserRelationship = () => {
   }
 
   const getFieldValue = () => {
+    const { regTm, ...rest } = form.current?.getFieldsValue()
     return {
-      ...form.current?.getFieldsValue(),
+      startRegTm: regTm[0]&&moment(regTm[0]).format('YYYY-MM-DD'),
+      endTRegTm: regTm[1]&&moment(regTm[1]).format('YYYY-MM-DD'),
       phoneNumber: phoneNumber,
-      pid: memberId
+      pid: memberId,
+      ...rest
     }
   }
 
