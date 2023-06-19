@@ -5,6 +5,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 
 import type { goodsDetailProps } from './data'
 import type { FormInstance } from 'antd'
+import type { ProColumns } from '@ant-design/pro-table'
 
 import { amountTransform, typeTransform } from '@/utils/utils'
 import { productList, getConfig} from '@/services/product-management/product-list'
@@ -62,6 +63,8 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
       gcId1: gcId && gcId?.[0],
       gcId2: gcId && gcId?.[1],
       gcId3: gcId && gcId?.[2],
+      appGcId1,
+      appGcId2,
       ...rest
     }
   }
