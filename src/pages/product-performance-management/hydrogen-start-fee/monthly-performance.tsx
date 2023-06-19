@@ -117,6 +117,44 @@ const MonthlyPerformance: FC = () => {
     }
   ]
 
+  const getFieldsValue = () => {
+    const { years, quarter, ...rest } = form.current?.getFieldsValue()
+    let startTime, endTime
+    const year = moment(years).format('YYYY')
+    switch (quarter) {
+      case 'q1':
+        startTime = year + '-01-01',
+        endTime = year + '-03-31'
+        break;
+      case 'q2':
+        startTime = year + '-04-01',
+        endTime = year + '-06-30'
+        break;
+      case 'q3':
+        startTime = year + '-07-01',
+        endTime = year + '-09-30'
+        break;
+      case 'q4':
+        startTime = year + '-10-01',
+        endTime = year + '-12-31'
+        break;
+      default:
+        startTime = undefined,
+        endTime = undefined
+        break;
+    }
+    
+    if(years && !quarter) {
+      startTime = moment(years).startOf('years').format('YYYY-MM-DD')
+      endTime = moment(years).endOf('years').format('YYYY-MM-DD')
+    }
+    return {
+      startTime: startTime && startTime,
+      endTime: endTime && endTime,
+      ...rest
+    }
+  }
+
   return (
     <div className={styles.desc}>
       <ProTable
@@ -139,7 +177,7 @@ const MonthlyPerformance: FC = () => {
             <Export
               key='export'
               type="hyStartUpMonth"
-              conditions={form.current?.getFieldsValue()}
+              conditions={getFieldsValue}
             />
           ]
         }}
