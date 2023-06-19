@@ -65,7 +65,13 @@ const AfterSalesOrderDetails = () =>{
         'suggestCommissionReturn': '店铺推荐收益回退',
         'feeReturn': '交易通道费回退',
         'agentCompanyCommissionReturn': '运营中心收益回退'
-      }
+      },
+      hideInTable: true
+    },
+    {
+      title: '交易类型',
+      dataIndex: 'tradeTypeName',
+      hideInSearch: true
     },
     {
       title: '买家会员ID',
@@ -137,7 +143,7 @@ const AfterSalesOrderDetails = () =>{
             <Export
                type='financial-trans-refundPage'
               key='1'
-              conditions={{...formRef.current?.getFieldsValue}}
+              conditions={{...formRef.current?.getFieldsValue()}}
             />
           ]
         }}
