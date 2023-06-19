@@ -11,7 +11,6 @@ import type { FormInstance } from "antd"
 
 import { hydrogenStartUpPm } from "@/services/product-performance-management/hydrogen-start-fee"
 import { amountTransform } from '@/utils/utils'
-import AddressCascader from "@/components/address-cascader"
 import styles from "../styles.less"
 import Export from '@/components/export'
 
@@ -50,13 +49,10 @@ const PerformanceDetails: FC = () => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const {payTime, area, ...rest} = form.current?.getFieldsValue()
+    const {payTime, ...rest} = form.current?.getFieldsValue()
     return {
       startTime: payTime && moment(payTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: payTime && moment(payTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area && area?.[0]?.value,
-      cityId: area && area?.[1]?.value,
-      regionId: area && area?.[2]?.value,
       ...rest
     }
   }
@@ -136,10 +132,9 @@ const PerformanceDetails: FC = () => {
       hideInSearch: true
     },
     {
-      title: '设备店铺所属省市区',
-      dataIndex: 'area',
-      hideInTable: true,
-      renderFormItem: () => <AddressCascader changeOnSelect/>
+      title: '设备所属市办事处',
+      dataIndex: 'agencyName',
+      align: 'center'
     },
     {
       title: '店主店铺地址',
