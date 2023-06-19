@@ -311,7 +311,8 @@ export default (props:CumulativeProps)=>{
 
     <ProFormDependency name={['remitAmount','status']}>
         {({ remitAmount, status }) => {
-          if((status==1&&remitAmount)&& remitAmount != amountTransform(dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)){
+          console.log('remitAmount',remitAmount)
+          if((status==1&&remitAmount)&& amountTransform(remitAmount,'*') != dataDatil?.orderArr?.reduce((sum, item) => sum + item?.unfreezeAmount, 0)){
             return <ProFormTextArea
                     label='备注'
                     name="remark"
@@ -324,7 +325,7 @@ export default (props:CumulativeProps)=>{
                     width={400}
                     extra={<span style={{ color:'red' }}>实际汇款金额与提成金额不相等，请核实确认并填写备注进行详细说明！</span>}
                   />
-          }else if((status==0&&remitAmount)&& remitAmount != amountTransform(orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0),'/').toFixed(2)){
+          }else if((status==0&&remitAmount)&& amountTransform(remitAmount,'*') != orderArr.reduce((sum, item) => sum + item?.unfreezeAmount, 0)){
             return <ProFormTextArea
                     label='备注'
                     name="remark"
