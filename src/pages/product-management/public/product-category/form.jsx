@@ -404,6 +404,9 @@ export default (props) => {
         })
       }
     }
+    form.setFieldsValue({
+      cur: selectItem ? selectItem.gcName : '/'
+    })
     // console.log('json',json)
   }, [form, data])
 
@@ -430,6 +433,14 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
+      {
+        type === 'add' &&
+        <ProFormText
+          label='上级类目'
+          name='cur'
+          readonly
+        />
+      }
       <ProFormText
         label="分类名称"
         width="md"
