@@ -209,6 +209,7 @@ export default (props) => {
         label="活动名称"
         placeholder="请输入活动名称"
         rules={[{ required: true, message: '请输入活动名称' }]}
+        disabled={detailData?.status==2&&!copy}
       />
       <ProFormDateTimePicker
         label='开始时间'
