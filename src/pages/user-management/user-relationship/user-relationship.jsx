@@ -63,8 +63,11 @@ const UserRelationship = () => {
   }
 
   const getFieldValue = () => {
+    const { regTm = [], ...rest } = form.current?.getFieldsValue()
     return {
-      ...form.current?.getFieldsValue(),
+      ...rest,
+      startRegTm: regTm[0] &&regTm[0].format('YYYY-MM-DD HH:mm:ss'),
+      endTRegTm: regTm[1] && regTm[1].format('YYYY-MM-DD HH:mm:ss'),
       phoneNumber: phoneNumber,
       pid: memberId
     }
