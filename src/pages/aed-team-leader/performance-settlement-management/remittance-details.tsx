@@ -33,7 +33,7 @@ export default (props) => {
           fee: `${amountTransform(res.data.fee,'/').toFixed(2)}`,
           remitAmount: `${amountTransform(res.data.remitAmount,'/').toFixed(2)}`,
           orderNo:  orderArrValues.toString(),
-          remitTime: moment(res.data.remitTime).format('YYYY-MM-DD HH:mm:ss')
+          remitTime: moment(res.data.remitTime*1000).format('YYYY-MM-DD HH:mm:ss')
         })
       }
     })
@@ -91,6 +91,11 @@ export default (props) => {
         name="remitAmount"
         disabled
       />
+      <ProFormText
+        label='实际汇款时间'
+        name="remitTime"
+        disabled
+      />
       {
         dataDatil?.urlArr?.map(item=><Image src={item} style={{ marginBottom: '20px' }}/>)
       }
@@ -104,11 +109,6 @@ export default (props) => {
         name="operateName"
         disabled
        />
-      <ProFormText
-        label='确认汇款操作时间'
-        name="remitTime"
-        disabled
-    />
     </ModalForm >
   );
 };
