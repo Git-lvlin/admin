@@ -53,7 +53,7 @@ export const hyStartUpMonthStats = async (params, options = {}) => {
       startTime = years + '-7-1',
       endTime = years + '-9-30'
       break;
-    case 'q3':
+    case 'q4':
       startTime = years + '-10-1',
       endTime = years + '-12-31'
       break;
