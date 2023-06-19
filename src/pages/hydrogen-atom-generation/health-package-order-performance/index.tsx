@@ -46,6 +46,7 @@ const GenerationManagement =(props:DevicesProps) => {
         ...rest,
         startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD'),
         endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD'),
+        scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
       }
       return params
     }
