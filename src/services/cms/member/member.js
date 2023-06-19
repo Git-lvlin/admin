@@ -1,5 +1,4 @@
 import request from '@/utils/request';
-import moment from 'moment';
 
 export const spaceInfoList = async (params = {}, options = {}) => {
   const { current, pageSize, status, ...rest } = params;
@@ -1094,8 +1093,8 @@ export const userRelationShip = async (params = {}, options = {}) => {
   const data = {
     page: current,
     size: pageSize,
-    startRegTm: regTm[0]&&moment(regTm[0]).format('YYYY-MM-DD'),
-    endTRegTm: regTm[1]&&moment(regTm[1]).format('YYYY-MM-DD'),
+    startRegTm: regTm[0],
+    endTRegTm: regTm[1],
     ...rest
   }
   const res = await request('/auth/java-admin/memberInfo/getInviteList', {
