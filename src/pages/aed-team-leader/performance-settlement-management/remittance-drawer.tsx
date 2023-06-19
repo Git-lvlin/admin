@@ -66,7 +66,7 @@ export default (props:CumulativeProps)=>{
       remitAmount:amountTransform(values.remitAmount,'*'),
       remitTime:moment(values.remitTime).valueOf()/1000,
       urlArr:values?.urlArr?values?.urlArr:[],
-      remark:remarkMsg?.remark
+      remark:remarkMsg?.remark?remarkMsg?.remark:''
     }
     return new Promise((resolve, reject) => {
       remitSave(params).then((res) => {
@@ -347,7 +347,6 @@ export default (props:CumulativeProps)=>{
                       minLength:5,
                       placeholder:'请输入5-50个字符'
                     }}
-                    initialValue={' '}
                     width={400}
                   />
           }  

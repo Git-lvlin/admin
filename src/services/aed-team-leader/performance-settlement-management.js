@@ -122,7 +122,8 @@ export const remitSave = async (params = {}, options = {}) => {
     data: {
       ...rest
     },
-    ...options
+    ...options,
+    noFilterParams: true
   });
 
   return {
