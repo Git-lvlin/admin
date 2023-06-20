@@ -104,7 +104,7 @@ const VIPHydrogen: FC = () => {
       title: '支付时间',
       dataIndex: 'payTime',
       renderFormItem: () => <TimeSelect showTime={false}/>,
-      initialValue: ['2022-9-24 00:00:00', moment(+new Date()).format("YYYY-MM-DD HH:mm:ss")],
+      initialValue: [moment('2022-9-24'), moment(+new Date())],
       hideInTable: true
     },
     {
