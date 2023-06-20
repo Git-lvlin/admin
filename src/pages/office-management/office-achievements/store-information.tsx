@@ -71,6 +71,7 @@ export default (props) => {
       valueType: 'dateRange',
       align: 'center',
       hideInTable: true,
+      initialValue: [msgDetail?.begin,msgDetail?.end]
     },
     {
       title: '订单号',
@@ -170,8 +171,6 @@ export default (props) => {
         params={{
           type:type,
           businessDeptId:msgDetail?.businessDeptId,
-          begin:msgDetail?.begin,
-          end:msgDetail?.end
         }}
         pagination={{
           pageSize: 10,
