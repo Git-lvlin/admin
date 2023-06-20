@@ -24,7 +24,7 @@ export const logPage = async (params, options = {}) => {
       page: current,
       size: pageSize,
       begin: createTime&& moment(createTime?.[0]).format('YYYY-MM-DD'),
-      end: createTime&& moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: createTime&& moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options
