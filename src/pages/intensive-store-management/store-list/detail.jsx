@@ -159,7 +159,7 @@ const Detail = ({ storeNo, visible, setVisible }) => {
                 </Col>
                 <Col span={8}>
                   <div style={{ display: 'flex', marginBottom: 10 }}>
-                    <div>是否开通健康生活馆：{detailData?.isLifeHouse === 1 ? '已开通' : '没有开通'}</div>
+                    <div>是否开通健康生活馆：{detailData?.lifeHouse?.lifeHouseStatusDesc}</div>
                   </div>
                   {detailData?.isLifeHouse === 1 && <>
                     <div style={{ display: 'flex', marginBottom: 10 }}>
