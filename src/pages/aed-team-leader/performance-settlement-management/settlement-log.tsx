@@ -5,7 +5,7 @@ import {
 } from '@ant-design/pro-form';
 import ProTable from "@ant-design/pro-table"
 import { getLogsListByParams } from "@/services/aed-team-leader/performance-settlement-management"
-import type { CumulativeProps } from "./data"
+import type { CumulativeProps } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import RemittanceDetails from './remittance-details'

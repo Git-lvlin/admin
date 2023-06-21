@@ -1,17 +1,20 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { DescriptionsProps, TableProps, Refer } from "./data"
+import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
 import { aedTeamPm,aedTeamPmStats } from "@/services/aed-team-leader/aed-head-performance"
 import { amountTransform } from '@/utils/utils'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 export default function TransactionData () {
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState<Refer>()
+  const [time,setTime]=useState<TableProps>()
   const form = useRef<ActionType>()
+  const [visit, setVisit] = useState<boolean>(false)
 
   useEffect(() => {
     const params={
@@ -25,7 +28,14 @@ export default function TransactionData () {
 
   }, [time])
 
-  const tableColumns: ProColumns<TableProps>[] = [
+  const getFieldValue = (searchConfig: any) => {
+    const {...rest}=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
+
+  const tableColumns: ProColumns[] = [
     {
       title: '排名',
       dataIndex:'id',
@@ -125,7 +135,7 @@ export default function TransactionData () {
 
   return (
     <PageContainer title={false}>
-      <ProTable<TableProps>
+      <ProTable
         rowKey="id"
         columns={tableColumns}
         request={aedTeamPm}
@@ -140,7 +150,7 @@ export default function TransactionData () {
             <Descriptions.Item  label="团长提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  元</Descriptions.Item>
           </Descriptions>
         }
-        onSubmit={(val)=>{
+        onSubmit={(val:TableProps)=>{
           setTime({
             memberId: val.memberId,
             managerPhone: val.managerPhone,
@@ -160,8 +170,15 @@ export default function TransactionData () {
         search={{
           defaultCollapsed: true,
           labelWidth: 110,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
+            ...dom.reverse(),
+            <Export
+            key='export'
+            change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+            type={'aedTeamPm'}
+            conditions={()=>{return getFieldValue(searchConfig)}}
+          />,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'aedTeamPm'}/>
           ],
         }}
       />

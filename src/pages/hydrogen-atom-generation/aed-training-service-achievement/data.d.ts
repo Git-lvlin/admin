@@ -4,22 +4,27 @@ export type DescriptionsProps = {
   hydrogenCommission: number;
   wholesaleCommission: number;
   totalCommission: number;
-  hydrogenLeaseCommission: number
+  hydrogenLeaseCommission: number;
+  totalNum: number;
+  totalPayAmount: number;
 }
 
 export type TableProps = {
-  hydrogenAmount: number;
-  accountId: number;
-  agentId: number;
-  manager: string;
-  accountName: string;
-  hydrogenCommission: number;
-  wholesaleCommission: number;
-  managerPhone: string;
-  agentName: string;
-  totalCommission: number;
-  wholesaleAmount: string;
-  totalAmount: string;
+  hydrogenAmount?: number;
+  accountId?: number;
+  agentId?: number;
+  manager?: string;
+  accountName?: string;
+  hydrogenCommission?: number;
+  wholesaleCommission?: number;
+  managerPhone?: string;
+  agentName?: string;
+  totalCommission?: number;
+  wholesaleAmount?: string;
+  totalAmount?: string;
+  dateRange?: Array,
+  agencyId?: string | undefined,
+  name?: string,
 }
 
 
@@ -43,11 +48,8 @@ export type DevicesProps = {
 }
 
 export type CumulativeProps = {
-  msgDetail: {
-    agentId: String;
-    agentName: string;
-  }
-  type: string;
+  msgDetail: TableProps | undefined;
+  type?: string;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: function;

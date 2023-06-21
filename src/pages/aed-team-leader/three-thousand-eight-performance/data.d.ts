@@ -4,19 +4,14 @@ export type DescriptionsProps = {
 }
 
 export type MsgDetailProps = { 
-  subId: string | undefined; 
-  totalCommission: number; 
-  totalPayAmount: number; 
-  totalCommissionDesc: string; 
-  subMobile: string; 
-  dateRange: any; 
-  subName: string; 
+  subId?: string | undefined; 
+  totalCommission?: number; 
+  totalPayAmount?: number; 
+  totalCommissionDesc?: string; 
+  subMobile?: string; 
+  subName?: string | undefined; 
+  dateRange?: Array;
 } | undefined
-
-export type Refer = {
-  subName: string;
-  dateRange: Array;
-}
 
 export type DrtailItem = {
   offTrainStatus: any;
@@ -31,15 +26,7 @@ export type DrtailItem = {
 }
 
 export type CumulativeProps = {
-  msgDetail: {
-    subId: string | undefined;
-    totalCommission: number;
-    totalPayAmount: number;
-    totalCommissionDesc: string;
-    subMobile: string;
-    dateRange: Array;
-    subName: string;
-  } | undefined;
+  msgDetail:MsgDetailProps | undefined;
   type: number;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;

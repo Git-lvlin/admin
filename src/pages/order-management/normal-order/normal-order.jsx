@@ -438,6 +438,7 @@ const TableList = () => {
                               {!isDocumentary &&<>{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元</>}
                               <time style={{ marginLeft: !isDocumentary ? 20 : 0 }}>规格：{it.skuName}</time>
                             </div>
+                            {item.activityName && <div>参与活动名称：<span>{item.activityName}</span></div>}
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                             {!isDocumentary &&<div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>}
                             {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
@@ -499,10 +500,10 @@ const TableList = () => {
                     <span>收货人：{item.consignee}</span>
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
-                    {
-                      (orderType === 1 || orderType === 2) &&
+                    {/* {
+                      (orderType === 1 || orderType === 2) && */}
                       <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true); setPrimaryAddress(item) }}>修改地址</Button>
-                    }
+                    {/* } */}
                     {
                       orderType === 2 &&
                       <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>

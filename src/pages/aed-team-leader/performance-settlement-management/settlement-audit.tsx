@@ -8,7 +8,7 @@ import {
 import ProTable from "@ant-design/pro-table"
 import { applySubPage,settlementAuditAudit } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem } from "./data"
+import type { CumulativeProps, DrtailItem } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import ForbiddenModel from './forbidden-model'

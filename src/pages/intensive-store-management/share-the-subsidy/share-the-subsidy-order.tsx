@@ -13,6 +13,9 @@ import Detail from '@/pages/order-management/normal-order/detail';
 import { useLocation } from 'umi';
 import ProductDetailDrawer from '@/components/product-detail-drawer'
 import UserDetail from '@/pages/user-management/user-list/detail';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment";
 
 
 const formItemLayout = {
@@ -29,6 +32,7 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
   const [detailVisible, setDetailVisible] = useState(false);
   const [buyerMobileItem, setBuyerMobileItem] = useState<SubsidyOrderItem>();
   const isPurchase = useLocation().pathname.includes('purchase') 
+  const [visit, setVisit] = useState<boolean>(false)
   const columns:ProColumns<SubsidyOrderItem>[]= [
     {
       title: '订单编号',
@@ -160,6 +164,16 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
     }
   ];
 
+  const getFieldValue = (searchConfig: any) => {
+    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
+    return {
+      orderTimeBegin: dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      orderTimeEnd: dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      storeNo: orderDetail?.storeNo,
+      ...rest,
+    }
+  }
+
   return (
     <DrawerForm
       visible={visible}
@@ -200,7 +214,14 @@ const ShareTheSubsidyOrder: FC<ModalFormProps> = (props) => {
         defaultCollapsed: false,
         labelWidth: 100,
         optionRender: (searchConfig, formProps, dom) => [
-          ...dom.reverse()
+          ...dom.reverse(),
+          <Export
+          key='export'
+          change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+          type={'storeShareCommissionItem'}
+          conditions={()=>{return getFieldValue(searchConfig)}}
+        />,
+        <ExportHistory key='task' show={visit} setShow={setVisit} type={'storeShareCommissionItem'}/>
         ],
         }}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
