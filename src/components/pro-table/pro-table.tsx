@@ -16,7 +16,7 @@ const P = (props: I) => {
       hideOnSinglePage: false,
       showSizeChanger: true,
       ...paginationProps,
-    }}
+    }:false}
     scroll={{ x: 'max-content' }}
     {...rest}
   />
