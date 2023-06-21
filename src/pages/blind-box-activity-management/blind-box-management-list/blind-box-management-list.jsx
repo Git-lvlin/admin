@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import { Button } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -70,7 +71,7 @@ export default () => {
       //   title: '每日签到',
       //   key: 'dateRange',
       //   dataIndex: 'createTime',
-      //   valueType: 'dateRange',
+      //   renderFormItem: () => <TimeSelect showTime={false}/>,
       //   hideInSearch:true,
       //   render:(_,data)=>{
       //     return <p>

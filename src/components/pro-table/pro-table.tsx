@@ -10,13 +10,13 @@ const P = (props: I) => {
   const { pagination, paginationProps = {}, ...rest } = props
   return <ProTable
     revalidateOnFocus={false}
-    pagination={{
+    pagination={paginationProps !== false? {
       pageSize: 10,
       showQuickJumper: true,
       hideOnSinglePage: false,
       showSizeChanger: true,
       ...paginationProps,
-    }}
+    } : false}
     {...rest}
   />
 }

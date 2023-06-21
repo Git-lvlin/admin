@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef } from 'react'
 import ProTable from '@ant-design/pro-table'
 import moment from 'moment'
@@ -41,7 +42,7 @@ const NoSubAEDProgramPerformance = () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

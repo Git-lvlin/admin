@@ -11,12 +11,13 @@ import {
   Drawer,
   message
 } from 'antd'
-import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
+import ProForm from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import { findByWays,cancelTask } from '@/services/export-excel/export-template'
 import moment from 'moment'
 import styles from './styles.less'
+import TimeSelect from '@/components/time-select'
 
 const ExportHistory = ({ show, setShow, type }) => {
   const [form] = Form.useForm()
@@ -184,10 +185,12 @@ const cancelTaskCanbak=(id)=>{
             }
           }}
         >
-          <ProFormDateTimeRangePicker
+          <ProForm.Item
             name="time"
             label="导出时间"
-          />
+          >
+            <TimeSelect />
+          </ProForm.Item>
         </ProForm>
         <Spin delay={500} spinning={load}>
           {

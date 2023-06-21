@@ -329,12 +329,22 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
       dataIndex: 'skuIds'
     },
     {
-      title: ' ',
-      dataIndex: '',
-      render: () => ' '
+      title: '实际资金记账',
+      dataIndex: 'divideItemPaymentList',
+      render: (_, data) => (
+        <>
+          {
+            data?.divideItemPaymentList?.map(item=> (
+              <div key={item?.type}>
+                 {fashionableType(item?.tradeTypeDesc, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight, item?.hnCollect, item.statusDesc)}
+              </div>
+            ))
+          }
+        </>
+      )
     },
     {
-      title: '虚拟分账计算',
+      title: '业绩记账',
       dataIndex: 'divideInfo',
       render: (_, data)=> {
         return (
@@ -342,7 +352,7 @@ const OrderPayDetailPopup = ({ id, visible, setVisible, title }) => {
             {
               data?.divideInfos?.map(item=> (
                 <div key={item?.type}>
-                  {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight, item?.hnCollect)}
+                  {fashionableType(item?.typeName, item?.amount, item?.fee, item?.couponAmount, item?.realAmount, item?.freight, item?.hnCollect, item.statusDesc)}
                 </div>
               ))
             }

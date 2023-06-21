@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
@@ -20,8 +21,7 @@ import {
   unsalableGoodsNums 
 } from '@/services/data-board/product-data'
 import { amountTransform } from '@/utils/utils'
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
+import Export from '@/components/export'
 
 const ProductData = () => {
   const [rangePickerValue, setRangePickerValue] = useState(getTimeDistance('yesterday'))
@@ -397,7 +397,7 @@ const ProductData = () => {
     {
       title: '统计时间范围',
       dataIndex: 'date',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true
     },
@@ -514,15 +514,9 @@ const ProductData = () => {
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),
               <Export
-                change={(e)=> {setVisit(e)}}
-                key="export" 
                 type={type}
+                key='1'
                 conditions={getFieldValue}
-              />,
-              <ExportHistory 
-                key="export-history" 
-                show={visit} setShow={setVisit}
-                type={type}
               />
             ]
           }}
@@ -561,15 +555,9 @@ const ProductData = () => {
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),
               <Export
-                change={(e)=> {setVisit(e)}}
-                key="export" 
-                type="unsalableGoodsList"
+                key='2'
+                type='unsalableGoodsList'
                 conditions={{...unsalableform.current?.getFieldsValue()}}
-              />,
-              <ExportHistory 
-                key="export-history" 
-                show={visit} setShow={setVisit}
-                type="unsalableGoodsList"
               />
             ]
           }}

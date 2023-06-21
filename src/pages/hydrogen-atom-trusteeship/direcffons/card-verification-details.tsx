@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import ProTable from '@/components/pro-table'
 
 import type { ProColumns } from "@ant-design/pro-table"
@@ -31,7 +32,7 @@ const CardVerificationDetails = () => {
     {
       title: '使用时间',
       dataIndex: '',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

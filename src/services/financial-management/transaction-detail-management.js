@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 // 提现审核管理
 export const withdrawPage = async (params, options = {}) => {
   const { current, pageSize, createTime, bindTime, ...rest } = params
@@ -7,8 +8,8 @@ export const withdrawPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin: createTime&& createTime[0],
-      end: createTime&& createTime[1],
+      begin: createTime&& moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: createTime&& moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest 
     },
     ...options
@@ -60,8 +61,8 @@ export const orderPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin: payTime&& payTime[0],
-      end: payTime&& payTime[1],
+      begin: payTime&& moment(payTime?.[0]).format('YYYY-MM-DD'),
+      end: payTime&& moment(payTime?.[1]).format('YYYY-MM-DD'),
       ...rest 
     },
     ...options
@@ -95,8 +96,8 @@ export const commissionPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin: createTime && createTime[0],
-      end: createTime && createTime[1],
+      begin: createTime && moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: createTime && moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest 
     },
     ...options

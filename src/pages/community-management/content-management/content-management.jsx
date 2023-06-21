@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useRef } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table';
@@ -49,7 +50,7 @@ export default props => {
             title: '发布时间',
             key: 'dateRange',
             dataIndex: 'createTime',
-            valueType: 'dateRange',
+            renderFormItem: () => <TimeSelect showTime={false}/>,
             hideInTable: true,
         },
         {

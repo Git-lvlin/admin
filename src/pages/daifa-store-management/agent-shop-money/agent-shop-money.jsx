@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import ProTable from '@/components/pro-table';
 import { commissionSum,commissionPage } from '@/services/daifa-store-management/list';
@@ -62,7 +63,7 @@ export default props => {
             title: '返佣时间',
             key: 'dateRange',
             dataIndex: 'commissionTime',
-            valueType: 'dateRange',
+            renderFormItem: () => <TimeSelect showTime={false}/>,
             hideInTable: true,
         }
     ];

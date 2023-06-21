@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect,useRef } from 'react';
 import { Input, Form, Divider, message, Button,Space,Descriptions } from 'antd';
 import { FormattedMessage, formatMessage } from 'umi';
@@ -46,7 +47,7 @@ export default (props) => {
     {
       title: '日期',
       dataIndex: 'wholesaleStartTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable:true
     },
     {

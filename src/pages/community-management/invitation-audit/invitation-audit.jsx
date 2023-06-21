@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button,Tabs,Image,Form} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -59,7 +60,7 @@ const Message = (props) => {
       title: '发布时间',
       key: 'dateRange',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
@@ -127,7 +128,7 @@ export default function TransactionData () {
     {
       title: '申请时段',
       dataIndex: 'dateRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
         style:{
@@ -149,7 +150,7 @@ export default function TransactionData () {
     {
       title: '最近汇款时段',
       dataIndex: 'remittanceDate',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
         style:{

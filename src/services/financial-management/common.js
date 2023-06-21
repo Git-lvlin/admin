@@ -12,3 +12,19 @@ export const orderTypes = async (params={}, options= {}) => {
     data: res.data
   }
 }
+
+export const apply20 = async (params = {}, options = {}) => {
+  return request('/auth/order/auditRecord/apply20', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const audit20 = async (params = {}, options = {}) => {
+  return request('/auth/order/auditRecord/audit20', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

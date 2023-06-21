@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable  from "@ant-design/pro-table"
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -14,6 +15,7 @@ import { loveGiftOrder, loveGiftOrderStats } from "@/services/city-office-manage
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
+import CommissionDetail from "../components/commission-detail"
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -66,6 +68,8 @@ const LoveFeedbackPresentPerformance: FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [amount, setAmount] = useState<number>(0)
   const [name, setName] = useState<string>()
+  const [commissionVisible, setCommissionVisible] = useState<boolean>(false)
+  const [type, setType] = useState<number>(0)
   const form = useRef<FormInstance>()
 
   const getFieldValue = () => {
@@ -94,7 +98,7 @@ const LoveFeedbackPresentPerformance: FC = () => {
       title: '交易时间',
       dataIndex: 'time',
       hideInTable: true,
-      valueType: 'dateTimeRange'
+      renderFormItem: () => <TimeSelect />,
     },
     {
       title: '社区店数量',
@@ -136,7 +140,25 @@ const LoveFeedbackPresentPerformance: FC = () => {
       title: '累计提成（元）',
       dataIndex: 'commission',
       align: 'center',
-      render: _ => amountTransform(_, '/'),
+      render: (_, r) => {
+        if(r.commission === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> { 
+                setCommissionVisible(true);
+                setAgencyId(r.agencyId);
+                setType(2);
+                setName(`${r.agencyName} 提成明细`)
+                setAmount(r.commission)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
       hideInSearch: true
     },
   ]
@@ -181,6 +203,17 @@ const LoveFeedbackPresentPerformance: FC = () => {
           setVisible={setVisible}
           totalAmount={amount}
           title={name}
+        />
+      }
+      {
+        commissionVisible &&
+        <CommissionDetail
+          id={agencyId}
+          visible={commissionVisible}
+          setVisible={setCommissionVisible}
+          title={name}
+          totalAmount={amount}
+          type={type}
         />
       }
     </PageContainer>

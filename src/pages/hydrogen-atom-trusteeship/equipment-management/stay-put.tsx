@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from 'react'
 import ProTable from '@/components/pro-table'
 import moment from 'moment'
@@ -63,7 +64,7 @@ const StayPut: FC = () => {
     {
       title: '支付时间',
       dataIndex: 'hostingPayTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

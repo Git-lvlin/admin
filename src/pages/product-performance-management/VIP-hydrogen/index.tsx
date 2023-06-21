@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -102,8 +103,8 @@ const VIPHydrogen: FC = () => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
-      initialValue: ['2022-9-24 00:00:00', moment(+new Date()).format("YYYY-MM-DD HH:mm:ss")],
+      renderFormItem: () => <TimeSelect showTime={false}/>,
+      initialValue: [moment('2022-9-24'), moment(+new Date())],
       hideInTable: true
     },
     {

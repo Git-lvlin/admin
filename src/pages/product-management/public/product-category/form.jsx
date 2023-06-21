@@ -40,7 +40,7 @@ const freshType = {
 }
 
 export default (props) => {
-  const { visible, setVisible, callback, data, id, type, selectItem, parentId } = props;
+  const { visible, setVisible, callback, data, id, type, selectItem, parentId, level } = props;
   const [form] = Form.useForm();
   const [formRef] = Form.useForm();
   const ref = useRef();
@@ -404,12 +404,15 @@ export default (props) => {
         })
       }
     }
+    form.setFieldsValue({
+      cur: selectItem ? selectItem.gcName : '/'
+    })
     // console.log('json',json)
   }, [form, data])
 
   return (
     <ModalForm
-      title={type === 'edit' ? '编辑分类' : `添加${id === 0 ? '一' : '二'}级分类`}
+      title={type === 'edit' ? '编辑分类' : `添加${level === 1 ? '一' : level === 2 ? '二' : '三'}级分类`}
       modalProps={{
       }}
       onVisibleChange={setVisible}
@@ -430,6 +433,11 @@ export default (props) => {
       }}
       {...formItemLayout}
     >
+      <ProFormText
+        label='上级类目'
+        name='cur'
+        readonly
+      />
       <ProFormText
         label="分类名称"
         width="md"

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { exportList} from '@/services/intensive-activity-management/intensive-activity-profit-detail';
@@ -33,7 +34,7 @@ const IntensiveActivityProfitDetail=(props:{type:string}) => {
       {
         title: '日期',
         dataIndex: 'wholesaleStartTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable:true
       },
       {

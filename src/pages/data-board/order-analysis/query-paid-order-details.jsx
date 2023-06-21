@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useEffect, useRef } from 'react'
 import ProTable from '@/components/pro-table'
 
@@ -44,7 +45,7 @@ const QueryPaidOrderDetails = () => {
       title: '订单支付时间',
       dataIndex: 'orderPaytime',
       align: 'center',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

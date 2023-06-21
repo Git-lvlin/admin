@@ -58,3 +58,22 @@ export const newWholesaleOperationWebPm = async (params = {}, options = {}) => {
   }
 }
 
+// 新集约提成明细详情
+export const newWholesaleOperationComDetail = async (params = {}, options = {}) => {
+  const { time, ...rest } = params
+  const res = await request('/auth/stats/report/java/newWholesaleOperationComDetail', {
+    method: 'POST',
+    data: {
+      startTime: time && moment(time?.[0]).format('YYYY-MM-DD'),
+      endTime: time && moment(time?.[1]).format('YYYY-MM-DD'),
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
