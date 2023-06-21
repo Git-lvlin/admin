@@ -1,8 +1,8 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
-import type { ProColumns } from "@ant-design/pro-table"
-import type { FormInstance } from "@ant-design/pro-form"
+import type { ProColumns, ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps } from "./data"
 import { Descriptions } from 'antd';
 
@@ -12,6 +12,9 @@ import StoreInformation from './store-information'
 import CumulativePerformance from './cumulative-performance'
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from "moment"
 
 export default function GenerationManagement () {
   const [type, setType] = useState<number>(0)
@@ -19,10 +22,11 @@ export default function GenerationManagement () {
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [editVisible, setEditVisible] = useState<boolean>(false)
   const [resetVisible, setResetVisible] = useState<boolean>(false)
-  const [msgDetail, setMsgDetail] = useState<string>()
+  const [msgDetail, setMsgDetail] = useState<TableProps>()
   const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState()
-  const form = useRef<FormInstance>()
+  const [time,setTime]=useState<TableProps>()
+  const [visit, setVisit] = useState<boolean>(false)
+  const form = useRef<ActionType>()
 
   useEffect(() => {
     const params={
@@ -39,7 +43,17 @@ export default function GenerationManagement () {
 
   }, [time])
 
-  const tableColumns: ProColumns<TableProps>[] = [
+  const getFieldValue = (searchConfig: any) => {
+    const { createTime, ...rest } = searchConfig.form.getFieldsValue()
+    const params = {
+      ...rest,
+      startTime:createTime&&moment(createTime[0]).format('YYYY-MM-DD'),
+      endTime:createTime&&moment(createTime[1]).format('YYYY-MM-DD'),
+    }
+    return params
+  }
+
+  const tableColumns: ProColumns[] = [
     {
       title: 'ID',
       dataIndex: 'agentId',
@@ -58,7 +72,7 @@ export default function GenerationManagement () {
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {
@@ -155,18 +169,22 @@ export default function GenerationManagement () {
         <Descriptions.Item  label="总新集约批发业绩提成">{amountTransform(detailList?.wholesaleCommission,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="氢原子租赁管理费提成">{amountTransform(detailList?.hydrogenLeaseCommission,'/').toFixed(2)}  </Descriptions.Item>
       </Descriptions>
-      <ProTable<TableProps>
+      <ProTable
         rowKey="agentId"
         headerTitle='列表'
         columns={tableColumns}
         request={cityAgentManage}
         columnEmptyText={false}
         actionRef={form}
-        onSubmit={(val)=>{
-          setTime(val)
+        onSubmit={(val:TableProps)=>{
+          setTime({
+            agentId:val.agentId,
+            agentName:val.agentName,
+            createTime:val.createTime
+          })
         }}
         onReset={()=>{
-          setTime({})
+          setTime(undefined)
         }}
         pagination={{
           pageSize: 10,
@@ -175,8 +193,15 @@ export default function GenerationManagement () {
         options={false}
         search={{
           labelWidth: 200,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'cityAgentManage'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='cityAgentManage'/>,
           ],
         }}
       />
@@ -186,7 +211,7 @@ export default function GenerationManagement () {
           visible={storeVisible}
           setVisible={setStoreVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -196,7 +221,7 @@ export default function GenerationManagement () {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           type={type}
         />
       }
@@ -206,8 +231,8 @@ export default function GenerationManagement () {
           visible={editVisible}
           setVisible={setEditVisible}
           msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
       {
@@ -216,8 +241,8 @@ export default function GenerationManagement () {
           visible={resetVisible}
           setVisible={setResetVisible}
           msgDetail={msgDetail}
-          callback={()=>{ form?.current?.reload();setMsgDetail(null)}}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(null)}}
+          callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
         />
       }
     </PageContainer>

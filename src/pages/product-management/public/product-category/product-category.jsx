@@ -17,7 +17,7 @@ const SortableContainer = sortableContainer(({ children }) => {
 });
 
 const List = (props) => {
-  const { parentId = 0, onClick = () => { }, edit, selectItem, } = props;
+  const { parentId = 0, onClick = () => { }, edit, selectItem, level = 1} = props;
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [selectId, setSelectId] = useState(null);
@@ -116,9 +116,9 @@ const List = (props) => {
       <div style={{ marginRight: 50 }}>
         <div className={styles.header}>
           <a
-            onClick={() => { edit({ selectItem, parentId, id: parentId, type: 'add', callback: () => { getData(); } }); }}
+            onClick={() => { edit({ level, selectItem, parentId, id: parentId, type: 'add', callback: () => { getData(); } }); }}
           >
-            添加{parentId === 0 ? '一' : '二'}级分类
+            添加{level === 1 ? '一' : level === 2 ? '二' : '三'}级分类
           </a>
         </div>
         <div className={styles.th}>
@@ -136,7 +136,7 @@ const List = (props) => {
                     <li
                       className={styles.li}
                       onClick={() => { setSelectId(item.id); onClick(item) }}
-                      style={{ backgroundColor: (parentId === 0 && selectId === item.id) ? '#f0f0f0' : '#fff' }}
+                      style={{ backgroundColor: (level !== 3 && selectId === item.id) ? '#f0f0f0' : '#fff' }}
                     >
                       <img src={item.gcIcon} />
                       <div className={styles.gcName}>{item.gcName}</div>
@@ -155,7 +155,7 @@ const List = (props) => {
                         />
                       </div>
                       <div className={styles.action}>
-                        <a onClick={(e) => { edit({ selectItem, id: item.id, parentId, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
+                        <a onClick={(e) => { edit({ level, selectItem, id: item.id, parentId, type: 'edit', data: item, callback: () => { getData(); } }); e.stopPropagation() }}>编辑</a>
                       </div>
                     </li>
                   </SortableItem>
@@ -173,6 +173,7 @@ const List = (props) => {
 const ProductCategory = () => {
   const [visible, setVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
+  const [selectLevel, setSelectLevel] = useState(null);
   const [formParams, setFormParams] = useState({})
 
   const edit = (params) => {
@@ -200,8 +201,9 @@ const ProductCategory = () => {
         {...formParams}
       />}
       <div style={{ display: 'flex', width: '100%', justifyContent: 'center', paddingTop: 30 }}>
-        <List onClick={(item) => { setSelectItem(item) }} edit={edit} remove={remove} />
-        {selectItem && <List selectItem={selectItem} parentId={selectItem.id} edit={edit} remove={remove} />}
+        <List onClick={(item) => { setSelectItem(item); setSelectLevel(false)}} edit={edit} remove={remove} />
+        {selectItem && <List onClick={(item) => { setSelectLevel(item) }} parentId={selectItem.id} selectItem={selectItem} level={2} edit={edit} remove={remove} />}
+        {selectLevel && <List parentId={selectLevel.id} selectItem={selectLevel} level={3} edit={edit} remove={remove} />}
       </div>
     </PageContainer>
   )

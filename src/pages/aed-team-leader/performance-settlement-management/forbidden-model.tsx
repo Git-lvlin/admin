@@ -71,7 +71,6 @@ export default (props) => {
           minLength:5,
           placeholder:'请输入5-30个字符'
         }}
-        rules={[{ required: true, message: '请输入备注信息' },]}
       />
     </ModalForm >
   );

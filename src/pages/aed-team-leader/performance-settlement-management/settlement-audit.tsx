@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form, Image, Divider, Button, Space,Checkbox } from 'antd';
 import {
@@ -7,7 +8,7 @@ import {
 import ProTable from '@/components/pro-table'
 import { applySubPage,settlementAuditAudit } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, DrtailItem } from "./data"
+import type { CumulativeProps, DrtailItem } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import ForbiddenModel from './forbidden-model'
@@ -137,7 +138,7 @@ export default (props:CumulativeProps)=>{
     {
       title: '订单时间',
       dataIndex: 'dateRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
       fieldProps:{

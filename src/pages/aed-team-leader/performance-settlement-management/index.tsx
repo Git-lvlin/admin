@@ -1,8 +1,9 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import type { TableProps } from "./data"
+import type { TableProps } from "./data.d"
 import RangeNumberInput from '@/components/range-number-input'
 
 import { applyPage } from "@/services/aed-team-leader/performance-settlement-management"
@@ -12,6 +13,9 @@ import RemittanceDrawer from './remittance-drawer'
 import SettlementAudit from './settlement-audit'
 import SettlementLog from './settlement-log'
 import PaymentDocument from './payment-document'
+import Export from "@/pages/export-excel/export"
+import ExportHistory from "@/pages/export-excel/export-history"
+import moment from "moment"
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -21,8 +25,9 @@ export default function TransactionData () {
   const [paymentVisible, setPaymentVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
   const form = useRef<ActionType>()
+  const [visit, setVisit] = useState<boolean>(false)
 
-  const tableColumns: ProColumns<TableProps>[] = [
+  const tableColumns: ProColumns[] = [
     {
       title: '结算申请单号',
       dataIndex: 'settlementId',
@@ -40,23 +45,6 @@ export default function TransactionData () {
       fieldProps:{
         placeholder:'请输入子公司名称'
       },
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      align: 'center',
-      valueType: 'select',
-      hideInTable: true,
-      valueEnum: {
-        'aedTrainServer': 'AED培训服务套餐订单'
-      }
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
-      align: 'center',
-      valueType: 'select',
-      hideInSearch: true,
     },
     {
       title: '业绩金额',
@@ -140,7 +128,7 @@ export default function TransactionData () {
     {
       title: '申请时段',
       dataIndex: 'dateRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
         style:{
@@ -162,7 +150,7 @@ export default function TransactionData () {
     {
       title: '最近汇款时段',
       dataIndex: 'remittanceDate',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       fieldProps: {
         placeholder: ['开始时间', '结束时间'],
         style:{
@@ -198,9 +186,23 @@ export default function TransactionData () {
     }, 
   ]
 
+  const getFieldValue = (searchConfig: any) => {
+    const { applyName, dateRange, confirmed, remittanceDate, ...rest } = searchConfig.form.getFieldsValue()
+    const params = {
+      ...rest,
+      applyStartTime: dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      applyEndTime: dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      lastRemittanceStart: remittanceDate&&moment(remittanceDate[0]).format('YYYY-MM-DD HH:mm:ss'),
+      lastRemittanceEnd: remittanceDate&&moment(remittanceDate[1]).format('YYYY-MM-DD HH:mm:ss'),
+      confirmedAmountMin: confirmed&&amountTransform(confirmed.min,'*'),
+      confirmedAmountMax: confirmed&&amountTransform(confirmed.max,'*'),
+    }
+    return params
+  }
+
   return (
     <PageContainer title={false}>
-      <ProTable<TableProps>
+      <ProTable
         rowKey="settlementId"
         columns={tableColumns}
         request={applyPage}
@@ -216,7 +218,14 @@ export default function TransactionData () {
           defaultCollapsed: true,
           labelWidth: 110,
           optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'export_SettlementAudit_applyPage'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applyPage'/>,
           ],
         }}
       />

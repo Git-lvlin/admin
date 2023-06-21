@@ -9,7 +9,7 @@ import ProCard from "@ant-design/pro-card"
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
 import moment from "moment";
-import type { CumulativeProps } from "./data"
+import type { CumulativeProps } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -25,7 +25,7 @@ const formItemLayout = {
         fee: amountTransform(msgDetail?.fee,'/').toFixed(2),
         remitAmount: amountTransform(msgDetail?.remitAmount,'/').toFixed(2),
         SingularAmount:`${msgDetail?.orderCount}单 共${amountTransform(msgDetail?.amount,'/').toFixed(2)} 元 `,
-        remitTime: moment(msgDetail?.remitTime).format('YYYY-MM-DD HH:mm:ss')
+        remitTime: moment(msgDetail?.remitTime*1000).format('YYYY-MM-DD HH:mm:ss')
       })
     },[])
     return (
@@ -60,10 +60,13 @@ const formItemLayout = {
         <ProFormText
           label='备注'
           name="remark"
+          fieldProps={{
+            placeholder: ''
+          }}
           disabled
         />
         <ProFormText
-          label='确认汇款时间'
+          label='实际汇款时间'
           name="remitTime"
           disabled
         />

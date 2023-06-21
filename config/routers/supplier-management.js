@@ -52,6 +52,6 @@ export default {
       path: '/supplier-management/supplier-account-info/:id',
       component: './supplier-management/supplier-account-info',
       hideInMenu: true,
-    },
+    }
   ]
 }

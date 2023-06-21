@@ -16,7 +16,7 @@ const GcCascader = ({ value = [], onChange = () => {}, fieldProps = {},areaData 
     setData(JSON.parse(str))
   }, [])
   return (
-    <Cascader value={value?.map(item => item.value)} onChange={changeHandle} options={data} placeholder="请选择" {...rest} />
+    <Cascader value={value?.map(item => +item.value)} onChange={changeHandle} options={data} placeholder="请选择" {...rest} />
   )
 }
 

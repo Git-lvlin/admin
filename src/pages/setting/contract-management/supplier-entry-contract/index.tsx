@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useEffect, useState, useRef } from "react"
 import ProTable from '@/components/pro-table'
 import { Button, Image, Modal } from "antd"
@@ -165,7 +166,7 @@ const SupplierEntryContract: FC = () => {
     {
       title: '签订日期',
       dataIndex: 'signDate',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

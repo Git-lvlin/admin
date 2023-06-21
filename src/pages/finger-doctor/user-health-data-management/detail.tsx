@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useEffect, useState } from 'react';
 import { Drawer, Descriptions, Divider, Row, Avatar, Typography, Spin} from 'antd';
 import { getUser,userReport } from "@/services/finger-doctor/user-health-data-management"
@@ -10,7 +11,7 @@ const columns: TableColumn[] = [
   {
     title: '',
     dataIndex: 'createTime',
-    valueType: 'dateRange',
+    renderFormItem: () => <TimeSelect showTime={false}/>,
     hideInTable: true,
     search: {
       transform: (value) => ({

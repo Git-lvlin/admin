@@ -51,3 +51,21 @@
   }
 }
 
+.remittance_drawer{
+  .my_input input {
+    color: red;
+    font-weight: bold;
+    font-size: larger;
+  }
+  :global {
+    input:-internal-autofill-selected{
+      color: red !important;
+    }
+    input:-webkit-autofill,
+    input:-webkit-autofill:focus {
+      transition: background-color 600000s 0s, color 600000s 0s;
+    }
+  }
+
+}
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Spin, Empty, Tag, Form } from 'antd';
 import Pagination from '@/components/pagination'
 import { history, useLocation } from 'umi';
@@ -15,6 +15,7 @@ import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import EditAddress from './edit-address'
 import CloseOrder from './close-order'
+import TimeSelect from '@/components/time-select'
 
 
 const TableList = () => {
@@ -261,16 +262,12 @@ const TableList = () => {
             }
           }}
         />}
-        <ProFormDateTimeRangePicker
+        <ProForm.Item
           name="time"
           label="下单时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
+        >
+          <TimeSelect/>
+        </ProForm.Item>
         <ProFormText
           name="consignee"
           label="收件人"
@@ -337,17 +334,12 @@ const TableList = () => {
             />
           </>
         }
-        <ProFormDateTimeRangePicker
+       <ProForm.Item
           name="payTime"
           label="支付时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
-
+        >
+          <TimeSelect/>
+        </ProForm.Item>
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -447,6 +439,7 @@ const TableList = () => {
                               {!isDocumentary &&<>{({ 2: '秒约', 3: '拼团', 4: '团约', 11: '1688' }[item.orderType] || '秒约')}价：{amountTransform(it.skuSalePrice, '/')}元</>}
                               <time style={{ marginLeft: !isDocumentary ? 20 : 0 }}>规格：{it.skuName}</time>
                             </div>
+                            {item.activityName && <div>参与活动名称：<span>{item.activityName}</span></div>}
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                             {!isDocumentary &&<div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>}
                             {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
@@ -508,10 +501,10 @@ const TableList = () => {
                     <span>收货人：{item.consignee}</span>
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
-                    {
-                      (orderType === 1 || orderType === 2) &&
+                    {/* {
+                      (orderType === 1 || orderType === 2) && */}
                       <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true); setPrimaryAddress(item) }}>修改地址</Button>
-                    }
+                    {/* } */}
                     {
                       orderType === 2 &&
                       <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>

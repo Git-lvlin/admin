@@ -87,6 +87,18 @@ export default {
           component: './product-management/public/brand-list',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'qualification-management',
+          path: '/product-management/public/qualification-management',
+          component: './product-management/public/qualification-management',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'front-category',
+          path: '/product-management/public/front-category',
+          component: './product-management/public/front-category',
+          wrappers: [RouteWatcher],
+        },
       ]
     },
     {

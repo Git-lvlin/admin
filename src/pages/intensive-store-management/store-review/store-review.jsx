@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import { Button, Space, Image, Tooltip } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -227,7 +228,7 @@ const StoreReview = () => {
     {
       title: '提交认证时间',
       dataIndex: 'provideTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {

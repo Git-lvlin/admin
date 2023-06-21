@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form,List,Divider } from 'antd';
 import {
@@ -68,9 +69,10 @@ export default (props) => {
     {
       title: '订单日期',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true,
+      initialValue: [msgDetail?.begin,msgDetail?.end]
     },
     {
       title: '订单号',
@@ -170,8 +172,6 @@ export default (props) => {
         params={{
           type:type,
           businessDeptId:msgDetail?.businessDeptId,
-          begin:msgDetail?.begin,
-          end:msgDetail?.end
         }}
         pagination={{
           pageSize: 10,

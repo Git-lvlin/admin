@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form } from 'antd';
 import {
@@ -6,10 +7,13 @@ import {
 import ProTable from '@/components/pro-table'
 import { applySubPage, applyDetail } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
-import type { CumulativeProps, Refer, Statistics } from "./data"
+import type { CumulativeProps, Statistics } from "../../supplier-management/supplier-list/qualification-audit-list/data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import styles from './styles.less'
 import { Descriptions } from 'antd';
+import Export from "@/pages/export-excel/export"
+import ExportHistory from "@/pages/export-excel/export-history"
+import moment from "moment"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -21,6 +25,7 @@ export default (props:CumulativeProps)=>{
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
   const [detailList,setDetailList]=useState<Statistics>()
+  const [visit, setVisit] = useState<boolean>(false)
   useEffect(() => {
     const params={
       settlementId: msgDetail?.settlementId,
@@ -38,6 +43,12 @@ export default (props:CumulativeProps)=>{
       title: '订单编号',
       dataIndex: 'orderSn',
       align: 'center',
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      align: 'center',
+      hideInSearch: true,
     },
     {
       title: '下单用户ID',
@@ -125,7 +136,7 @@ export default (props:CumulativeProps)=>{
     {
       title: '订单时间',
       dataIndex: 'dateRange',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
       fieldProps:{
@@ -146,7 +157,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '汇款时间',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       dataIndex: 'remittanceTime',
       align: 'center',
       hideInTable: true,
@@ -168,13 +179,26 @@ export default (props:CumulativeProps)=>{
     },
   ]
 
+  const getFieldValue = (searchConfig: any) => {
+    const {  dateRange, remittanceTime, ...rest } = searchConfig.form.getFieldsValue()
+    const params = {
+      ...rest,
+      settlementId:msgDetail?.settlementId,
+      payTimeStart: dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      payTimeEnd: dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      remittanceTimeStart: remittanceTime&&moment(remittanceTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      remittanceTimeEnd: remittanceTime&&moment(remittanceTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+    }
+    return params
+  }
+
 
   return (
     <DrawerForm
       layout="horizontal"
       title={<>
         <strong>结算业绩</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
+        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -221,14 +245,21 @@ export default (props:CumulativeProps)=>{
           pageSize: 10,
           showQuickJumper: true,
         }}
-        postData={(data)=>{
+        postData={(data:any)=>{
           return data.records
         }}
         options={false}
         search={{
           labelWidth:120,
-          optionRender: (searchConfig, formProps, dom) => [
-            ...dom.reverse()
+          optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
+            ...dom.reverse(),
+            <Export
+              key='export'
+              change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+              type={'export_SettlementAudit_applySubPage'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+            />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applySubPage'/>,
           ],
         }}
       />

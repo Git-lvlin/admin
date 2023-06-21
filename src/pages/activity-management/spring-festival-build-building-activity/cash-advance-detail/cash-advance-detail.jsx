@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import ProTable from '@/components/pro-table';
 import { withdrawPage } from '@/services/activity-management/spring-festival-build-building-activity';
@@ -71,7 +72,7 @@ export default () => {
         title: '提现申请时间',
         key: 'dateTimeRange',
         dataIndex: 'createTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {
@@ -130,7 +131,7 @@ export default () => {
         title: '提现到账时间',
         key: 'dateTimeRange2',
         dataIndex: 'notifyTime',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {

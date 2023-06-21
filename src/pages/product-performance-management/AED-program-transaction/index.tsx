@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@/components/pro-table'
@@ -29,7 +30,7 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    const { depositPayTime, aedPayTime, dcPayTime, ...r } = search
+    const { depositPayTime, aedPayTime, dcPayTime, specialTime, ...r } = search
     aedCoursesTradeStats({
       startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
       endDcPayTime: dcPayTime && moment(dcPayTime[1]).format('YYYY-MM-DD'),
@@ -37,6 +38,8 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
       endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
       startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      specialStartTime: specialTime && moment(specialTime[0]).format('YYYY-MM-DD'),
+      specialEndTime: specialTime && moment(specialTime[1]).format('YYYY-MM-DD'),
       ...r
     }).then(res => {
       if(res.code === 0) {
@@ -392,7 +395,10 @@ const AEDTable: React.FC<{search?: FormInstance<any> | any, change: number}> = (
           type='exportAedStats'
         />
       </Space>
-      <div className={styles.title}>线上订单数据明细（2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻）</div>
+      <div className={styles.title}>
+        线上订单数据明细
+        <span>2023年5月1日0点之前业绩订单未满足业绩解冻条件也会解冻</span>
+      </div>
       {
         exportVisible &&
         <ExportLog 
@@ -410,7 +416,7 @@ const AEDProgramTransaction: React.FC = () => {
   const [searchConfig, setSearchConfig] = useState<FormInstance| any>(form.current?.getFieldsValue())
 
   const getFieldsValue = () => {
-    const { depositPayTime, aedPayTime, dcPayTime, ...rest } = form.current?.getFieldsValue()
+    const { depositPayTime, aedPayTime, dcPayTime, specialTime, ...rest } = form.current?.getFieldsValue()
     return {
       startDcPayTime: dcPayTime && moment(dcPayTime[0]).format('YYYY-MM-DD'),
       endDcPayTime: dcPayTime && moment(dcPayTime[1]).format('YYYY-MM-DD'),
@@ -418,6 +424,8 @@ const AEDProgramTransaction: React.FC = () => {
       endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
       startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      specialStartTime: specialTime && moment(specialTime[0]).format('YYYY-MM-DD'),
+      specialEndTime: specialTime && moment(specialTime[1]).format('YYYY-MM-DD'),
       ...rest
     }
   }
@@ -514,7 +522,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '保证金订单支付时间',
       dataIndex: 'depositPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },
@@ -569,7 +577,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '课程订单支付时间 ',
       dataIndex: 'aedPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },
@@ -673,7 +681,7 @@ const AEDProgramTransaction: React.FC = () => {
     {
       title: '区县订单支付时间',
       dataIndex: 'dcPayTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       fieldProps: {
         disabledDate: disabledDate
       },
@@ -695,7 +703,20 @@ const AEDProgramTransaction: React.FC = () => {
       title: '备注',
       dataIndex: 'trainingRemark',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.trainingRemark) {
+          return <span style={{color: '#ff0000'}}>{_}</span>
+        } else {
+          return _
+        }
+      }
+    },
+    {
+      title: '任意订单支付时间',
+      dataIndex: 'specialTime',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
+      hideInTable: true
     }
   ]
 

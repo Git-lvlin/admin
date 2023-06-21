@@ -7,17 +7,17 @@ export type DescriptionsProps = {
 }
 
 export type TableProps = {
-  subId: number;
-  commission: number;
-  typeDesc: string;
-  payAmount: number;
-  manager: string;
-  managerPhone: string;
-  subName: string;
-  orderNum: number;
-  id: number;
-  type: number;
-  memberId: string;
+  subId?: number;
+  commission?: number;
+  typeDesc?: string;
+  payAmount?: number;
+  manager?: string;
+  managerPhone?: string;
+  subName?: string;
+  orderNum?: number;
+  id?: number;
+  type?: number;
+  memberId?: string;
 }
 
 export type Refer = {

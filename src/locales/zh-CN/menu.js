@@ -83,6 +83,8 @@ export default {
   'menu.product-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-management.merchandise-settlement-record': '商品结算记录',
   'menu.product-management.prohibited-words-management': '违禁词管理',
+  'menu.product-management.public.qualification-management': '资质管理',
+  'menu.product-management.public.front-category': '前台分类',
 
 
 
@@ -352,6 +354,8 @@ export default {
   'menu.financial-management.subsidy-summary' : '优惠补贴',
   'menu.financial-management.subsidy-summary-detail' : '补贴结算',
   'menu.financial-management.unfrozen-list' : 'AED4300订单分账超时未解冻列表',
+  'menu.financial-management.offline-settlement-records' : '线下结算记录',
+  'menu.financial-management.offline-settlement-records.city-office' : '市办事处',
 
   'menu.data-board': '数据看板',
   'menu.data-board.summary-of-data': '数据概况',
@@ -479,11 +483,13 @@ export default {
   'menu.hydrogen-atom-generation.generation-management': '氢原子市代管理',
   'menu.hydrogen-atom-generation.aed-training-service-achievement': 'AED培训服务套餐订单业绩',
   'menu.hydrogen-atom-generation.health-package-order-performance': '健康礼包订单业绩',
+  'menu.hydrogen-atom-generation.settings-page': '设置',
 
   'menu.great-health-province': '大健康省代',
   'menu.great-health-province.hydrogen-atom-saved-management': '大健康省代管理',
   'menu.great-health-province.aed-training-service-achievement': 'AED培训及服务套餐业绩',
   'menu.great-health-province.health-package-order-performance': '健康礼包订单业绩',
+  'menu.great-health-province.settings-page': '设置',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

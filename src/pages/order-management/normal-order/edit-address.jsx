@@ -4,7 +4,7 @@ import ProForm, {
   ProFormText,
 } from '@ant-design/pro-form'
 
-import { updateDeliveryInfo } from '@/services/order-management/normal-order'
+import { updateDeliveryInfo, findDeliveryInfo } from '@/services/order-management/normal-order'
 import AddressCascader from '@/components/address-cascader'
 import { Form, Typography } from 'antd'
 const { Title } = Typography;
@@ -41,7 +41,8 @@ const EditAddress = ({
           provinceName: v.area?.[0].label,
           cityId: v.area?.[1].value,
           cityName: v.area?.[1].label,
-          districtName: v.area?.[2].label
+          districtName: v.area?.[2].label,
+          districtId: v.area?.[2].value,
         },
         {
           showSuccess: true,
@@ -58,11 +59,20 @@ const EditAddress = ({
   }
 
   useEffect(()=>{
-    form.setFieldsValue({
-      rawAddress:primaryAddress?.address,
-      rawPhone:primaryAddress?.phone,
-      rawConsignee:primaryAddress?.consignee
+    findDeliveryInfo({id:primaryAddress?.id}).then(res=>{
+      if(res.code == 0) {
+        form.setFieldsValue({
+          rawAddress:res?.data?.fullAddress,
+          rawPhone:primaryAddress?.phone,
+          rawConsignee:res?.data?.consignee,
+          consignee:res?.data?.consignee,
+          phone:res?.data?.phone,
+          area:[ {label:res?.data?.provinceName,value:res?.data?.provinceId}, {label:res?.data?.cityName,value:res?.data?.cityId}, {label:res?.data?.districtName,value:res?.data?.districtId} ],
+          address:res?.data?.address
+        })
+      }
     })
+
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = 'auto'

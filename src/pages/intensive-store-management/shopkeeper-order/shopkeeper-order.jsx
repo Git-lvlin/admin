@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
@@ -96,7 +97,7 @@ const TableList = () => {
     {
       title: '下单时间',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {

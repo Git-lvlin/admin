@@ -2,7 +2,7 @@ import { Space } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 
-export const fashionableType = (data, amount, fee, couponAmount, realAmount, freight, hnCollect) =>{
+export const fashionableType = (data, amount, fee, couponAmount, realAmount, freight, hnCollect, statusDesc) =>{
   return (
     <div style={{marginBottom: '10px'}}>
       <div>
@@ -21,7 +21,14 @@ export const fashionableType = (data, amount, fee, couponAmount, realAmount, fre
         (realAmount !== '0' && realAmount)&&
         <div>到账金额: ¥{amountTransform(realAmount, '/')}</div>
       }
-      <div>汇能代收：{hnCollect}</div>
+      {
+        hnCollect&&
+        <div>汇能代收：{hnCollect}</div>
+      }
+      {
+        statusDesc&&
+        <div>解冻状态：{statusDesc}</div>
+      }
     </div>
   )
 }

@@ -12,7 +12,7 @@ import {
   message,
 } from 'antd'
 import Pagination from '@/components/pagination'
-import ProForm, { ModalForm, ProFormDateTimeRangePicker } from '@ant-design/pro-form'
+import ProForm, { ModalForm } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 
 import type { FC } from "react"
@@ -28,6 +28,7 @@ import { findByWays, cancelTask } from '@/services/export-excel/export-template'
 import moment from 'moment'
 import styles from './styles.less'
 import { paramsEmptyFilter } from '@/utils/utils'
+import TimeSelect from '@/components/time-select'
 
 const ExportHistory: FC<ExportHistoryProps> = ({ show, setShow, type, slot, placement }) => {
   const [form] = Form.useForm()
@@ -202,10 +203,12 @@ const cancelTaskCanbak=(id: number)=>{
             }
           }}
         >
-          <ProFormDateTimeRangePicker
+          <ProForm.Item
             name="time"
             label="导出时间"
-          />
+          >
+            <TimeSelect />
+          </ProForm.Item>
         </ProForm>
         <Spin delay={500} spinning={load}>
           {

@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form } from 'antd';
 import {
@@ -48,7 +49,7 @@ const formItemLayout = {
       {
         title: '订单日期',
         dataIndex: 'dateRange',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         align: 'center',
         hideInTable: true,
       },
@@ -226,6 +227,13 @@ const formItemLayout = {
       {
         title: '线下培训状态',
         dataIndex: 'trainStatusDesc',
+        align: 'center',
+        hideInSearch: true,
+        hideInTable: type == 2
+      },
+      {
+        title: '结算状态',
+        dataIndex: 'settleStatusDesc',
         align: 'center',
         hideInSearch: true,
         hideInTable: type == 2

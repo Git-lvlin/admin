@@ -215,3 +215,144 @@ export const getOnlineList = (params = {}, options = {}) => {
     ...options
   });
 }
+
+export const qlfAuditList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/auditList', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+export const qlfAudit = (params = {}, options = {}) => {
+  return request('/auth/supplier/qlf/audit', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const qlfAuditDetail = (params = {}, options = {}) => {
+  return request('/auth/supplier/qlf/auditDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+export const qlfCheckLog = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/checkLog', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
+export const qlfList = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/qlfList', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total,
+    code: res.code
+  }
+}
+
+export const qlfNoUploadQlf= async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/noUploadQlf', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total,
+    code: res.code
+  }
+}
+
+export const qlfModify= async (params, options = {}) => {
+  return request('/auth/supplier/qlf/modify', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}
+
+
+export const qlfSupplierQlf = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/supplierQlf', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data,
+    success: true,
+    total: res.data.total
+  }
+}
+
+export const qlfSupplierAllQlf = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+  const res = await request('/auth/supplier/qlf/supplierAllQlf', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}

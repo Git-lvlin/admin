@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable  from "@ant-design/pro-table"
 import ProDescriptions from '@ant-design/pro-descriptions'
@@ -14,6 +15,7 @@ import { sum, listPage } from "@/services/city-office-management/health-gift-pac
 import styles from "./styles.less"
 import Export from "@/components/export"
 import Detail from "./detail"
+import CommissionDetail from '../components/commission-detail'
 
 const Aggregate: FC<{form?: FormInstance}> = ({form}) => {
   const [data, setData] = useState()
@@ -64,6 +66,8 @@ const HealthGiftPackagePerformance: FC = () => {
   const [searchConfig, setSearchConfig] = useState()
   const [visible, setVisible] = useState<boolean>(false)
   const [agencyId, setAgencyId] = useState<string>()
+  const [commissionVisible, setCommissionVisible] = useState<boolean>(false)
+  const [type, setType] = useState<number>(0)
   const [name, setName] = useState<string>()
   const form = useRef<FormInstance>()
 
@@ -128,13 +132,30 @@ const HealthGiftPackagePerformance: FC = () => {
       title: '累计提成（元）',
       dataIndex: 'totalCommission',
       align: 'center',
-      render: _ => amountTransform(_, '/'),
+      render: (_, r) => {
+        if(r.commission === 0) {
+          return _
+        } else {
+          return (
+            <a 
+              onClick={()=> { 
+                setCommissionVisible(true)
+                setAgencyId(r.cityOfficeId)
+                setType(6)
+                setName(`${r.cityOfficeName} 提成明细`)
+              }}
+            >
+              {amountTransform(_, '/')}
+            </a>
+          )
+        }
+      },
       hideInSearch: true
     },
     {
       title: '交易时间',
       dataIndex: 'time',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     }
   ]
@@ -178,6 +199,16 @@ const HealthGiftPackagePerformance: FC = () => {
           visible={visible}
           setVisible={setVisible}
           title={name}
+        />
+      }
+      {
+        commissionVisible &&
+        <CommissionDetail
+          id={agencyId}
+          visible={commissionVisible}
+          setVisible={setCommissionVisible}
+          title={name}
+          type={type}
         />
       }
     </PageContainer>

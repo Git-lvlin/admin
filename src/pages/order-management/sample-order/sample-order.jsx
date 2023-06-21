@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
-import ProForm, { ProFormText, ProFormDateTimeRangePicker, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
+import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
 import { Button, Space, Radio, Descriptions, Spin, Empty, Tag, Form } from 'antd';
 import Pagination from '@/components/pagination'
 import { history, useLocation } from 'umi';
@@ -14,6 +14,7 @@ import ImportHistory from '@/components/ImportFile/import-history'
 import Import from '@/components/ImportFile/import'
 import Detail from './detail';
 import EditAddress from './edit-address'
+import TimeSelect from '@/components/time-select'
 
 
 const TableList = () => {
@@ -224,16 +225,12 @@ const TableList = () => {
             }
           }}
         />}
-        <ProFormDateTimeRangePicker
+         <ProForm.Item
           name="time"
           label="下单时间"
-          fieldProps={{
-            style: {
-              marginBottom: 20
-            },
-            showTime: true,
-          }}
-        />
+        >
+          <TimeSelect/>
+        </ProForm.Item>
         <ProFormText
           name="consignee"
           label="收件人"

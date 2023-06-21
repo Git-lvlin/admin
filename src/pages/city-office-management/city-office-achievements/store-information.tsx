@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import { Form } from 'antd';
 import {
@@ -75,7 +76,7 @@ export default (props:CumulativeProps) => {
     {
       title: '订单日期',
       dataIndex: 'dateRange',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       align: 'center',
       hideInTable: true,
     },
@@ -117,10 +118,10 @@ export default (props:CumulativeProps) => {
         'hydrogen': '氢原子销售',
         'hydrogenAgent': '氢原子托管',
         'operatorEquipment': '运营设备服务费',
-        'hydrogenAgentRent': '氢原子租金',
+        'hydrogenAgentRent': '氢原子托管租金',
         'hydrogenBoot': '氢原子启动',
         'hydrogenBootForBuy': '氢原子购买启动',
-        'hydrogenRent': '租赁管理费'
+        'hydrogenRent': '氢原子租金'
       },
       hideInTable: true
     },

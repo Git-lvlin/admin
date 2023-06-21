@@ -61,8 +61,8 @@ export const rejectList = async (params, options = {}) => {
   }
 }
 
-export const getConfig = (params = {}, options = {}) => {
-  return request('/auth/goods/product/getConfig', {
+export const getConfig = async(params = {}, options = {}) => {
+  return await request('/auth/goods/product/getConfig', {
     method: 'POST',
     data: params,
     ...options

@@ -160,6 +160,18 @@ export default {
       path: '/financial-management/unfrozen-list',
       component: './financial-management/unfrozen-list',
       wrappers: [RouteWatcher],
-    }
+    },
+    {
+      name: 'offline-settlement-records',
+      path: '/financial-management/offline-settlement-records',
+      routes: [
+        {
+          name: 'city-office',
+          path: '/financial-management/offline-settlement-records/city-office',
+          component: './financial-management/offline-settlement-records/city-office',
+          wrappers: [RouteWatcher],
+        }
+      ]
+    },
   ]
 }

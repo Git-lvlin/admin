@@ -83,3 +83,14 @@ export const findAdminOrderType = async (params = {}, options = {}) => {
     ...options
   });
 }
+
+
+export const findDeliveryInfo = async (params = {}, options = {}) => {
+  return request('/auth/java-admin/order/findDeliveryInfo', {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+    ...options
+  });
+}

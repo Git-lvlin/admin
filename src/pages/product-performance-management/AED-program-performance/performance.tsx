@@ -1,4 +1,5 @@
 import ProTable from '@/components/pro-table'
+import TimeSelect from '@/components/time-select'
 
 import type { ProColumns } from '@ant-design/pro-table'
 
@@ -26,7 +27,7 @@ const Performance = () => {
     {
       title: '支付时段',
       dataIndex: 'payTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Drawer, Spin, Empty, Divider, Space, Button } from "antd"
 import Pagination from '@/components/pagination'
-import ProForm, { ProFormDateRangePicker, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ProFormText } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import type { FC } from "react"
@@ -12,6 +12,7 @@ import { newWholesaleOperationWebPm } from "@/services/operation-management/new-
 import styles from "./styles.less"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
+import TimeSelect from '@/components/time-select'
 
 const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) => {
   const [page, setPage] = useState<number>(1)
@@ -85,9 +86,11 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title, totalAmount}) 
               ]
             }}
           >
-            <ProFormDateRangePicker
+            <ProForm.Item
               name='time'
-            />
+            >
+              <TimeSelect showTime={false}/>
+            </ProForm.Item>
             <ProFormText
               name='orderSn'
               placeholder='请输入订单号'

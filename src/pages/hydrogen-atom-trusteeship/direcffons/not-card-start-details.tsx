@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef } from "react"
 import ProTable from '@/components/pro-table'
 import moment from "moment"
@@ -47,7 +48,7 @@ const NotCardStartDetails = () => {
     {
       title: '使用时间',
       dataIndex: 'useTime', 
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {
