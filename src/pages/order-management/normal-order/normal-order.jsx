@@ -500,10 +500,10 @@ const TableList = () => {
                     <span>收货人：{item.consignee}</span>
                     <span>电话：{item.phone}</span>
                     <span>地址：{item.address}</span>
-                    {/* {
-                      (orderType === 1 || orderType === 2) && */}
+                    {
+                      (orderType === 1 || orderType === 2) &&
                       <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true); setPrimaryAddress(item) }}>修改地址</Button>
-                    {/* } */}
+                    }
                     {
                       orderType === 2 &&
                       <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
