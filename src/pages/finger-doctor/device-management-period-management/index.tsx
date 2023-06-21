@@ -1,5 +1,5 @@
 import {  useRef, useState } from "react"
-import ProTable  from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 
 import type { FC } from "react"
 import type { ProColumns, ActionType } from '@ant-design/pro-table'

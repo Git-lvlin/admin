@@ -13,7 +13,7 @@ export const arrayToTree = (list, parId = 0) => {
     const res = [];
     for (let i = 0; i < len; i += 1) {
       const item = list[i]
-      if (item&&item.pid === pid) {
+      if (item && item.pid === pid) {
         item.children = loop(item.id)
         res.push(item)
       }
@@ -231,12 +231,12 @@ export const getTimeDistance = (type) => {
   if (type === 'last-month') {
     const month = now.getMonth();
     const nextDate = moment(now).add(1, 'months');
-    const nextYear = month === 11 ?  now.getFullYear() : nextDate.year()
-    const lastMonthYear = month === 0 ?  now.getFullYear() - 1 : now.getFullYear()
+    const nextYear = month === 11 ? now.getFullYear() : nextDate.year()
+    const lastMonthYear = month === 0 ? now.getFullYear() - 1 : now.getFullYear()
     return [
       moment(`${lastMonthYear}-${fixedZero(month ? month : 12)}-01 00:00:00`),
       moment(moment(`${nextYear}-${month === 0 ? 1 : month + 1}-01 00:00:00`).valueOf() - 1000),
-    ];  
+    ];
   }
 
   // 近7天
@@ -256,8 +256,8 @@ export const getTimeDistance = (type) => {
     return [moment(beginTime - (7 * oneDay - 1000)), moment(beginTime)];
   }
 
-   // 近15天
-   if (type === 'nearly-15-days') {
+  // 近15天
+  if (type === 'nearly-15-days') {
     let day = now.getDay();
     now.setHours(0);
     now.setMinutes(0);
@@ -273,56 +273,56 @@ export const getTimeDistance = (type) => {
     return [moment(beginTime - (15 * oneDay - 1000)), moment(beginTime)];
   }
 
-    // 近30天
-    if (type === 'nearly-a-month') {
-      let day = now.getDay();
-      now.setHours(0);
-      now.setMinutes(0);
-      now.setSeconds(0);
-  
-      if (day === 0) {
-        day = 6;
-      } else {
-        day -= 1;
-      }
-  
-      const beginTime = now.getTime();
-      return [moment(beginTime - (30 * oneDay - 1000)), moment(beginTime)];
+  // 近30天
+  if (type === 'nearly-a-month') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
     }
 
-    // 近3个月
-    if (type === 'nearly-3-month') {
-      let day = now.getDay();
-      now.setHours(0);
-      now.setMinutes(0);
-      now.setSeconds(0);
-  
-      if (day === 0) {
-        day = 6;
-      } else {
-        day -= 1;
-      }
-  
-      const beginTime = now.getTime();
-      return [moment(beginTime - (90 * oneDay - 1000)), moment(beginTime)];
+    const beginTime = now.getTime();
+    return [moment(beginTime - (30 * oneDay - 1000)), moment(beginTime)];
+  }
+
+  // 近3个月
+  if (type === 'nearly-3-month') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
     }
 
-     // 近6个月
-     if (type === 'nearly-6-month') {
-      let day = now.getDay();
-      now.setHours(0);
-      now.setMinutes(0);
-      now.setSeconds(0);
-  
-      if (day === 0) {
-        day = 6;
-      } else {
-        day -= 1;
-      }
-  
-      const beginTime = now.getTime();
-      return [moment(beginTime - (180 * oneDay - 1000)), moment(beginTime)];
+    const beginTime = now.getTime();
+    return [moment(beginTime - (90 * oneDay - 1000)), moment(beginTime)];
+  }
+
+  // 近6个月
+  if (type === 'nearly-6-month') {
+    let day = now.getDay();
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setSeconds(0);
+
+    if (day === 0) {
+      day = 6;
+    } else {
+      day -= 1;
     }
+
+    const beginTime = now.getTime();
+    return [moment(beginTime - (180 * oneDay - 1000)), moment(beginTime)];
+  }
 
   // 本年
   return [moment(`${year}-01-01 00:00:00`), moment(`${year}-12-31 23:59:59`)];
@@ -340,9 +340,32 @@ export const removeEmpty = (arr) => {
 }
 
 export const numberTransform = (number) => {
-  if(!number) {
+  if (!number) {
     return 0
   } else {
     return Number(number)
   }
+}
+
+export const computedChildCount = (arr, field = 'pid') => {
+  const obj = {}
+  const ids = arr.map(item => item.id)
+  const find = (findId, saveId) => {
+    const children = arr.filter(it => it[field] === findId)
+    obj[saveId] += children.length
+    
+    if (children.length) {
+      children.forEach(it => {
+        find(it.id, saveId)
+      })
+    }
+  }
+  ids.forEach(item => {
+    if (!obj[item]) {
+      obj[item] = 0
+    }
+    find(item, item)
+  })
+
+  return obj
 }

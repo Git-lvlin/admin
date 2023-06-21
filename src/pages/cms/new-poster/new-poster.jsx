@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Space, Pagination, Spin } from 'antd';
+import { Button, Form, Space, Spin } from 'antd';
+import Pagination from '@/components/pagination'
 import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import Edit from './form';

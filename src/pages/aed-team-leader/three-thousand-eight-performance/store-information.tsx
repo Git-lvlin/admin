@@ -4,7 +4,7 @@ import { Form } from 'antd';
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { AEDRecordSubAmountPage, AEDRecordSubAmountSum, AEDRecordSubCommissionPage, AEDRecordSubCommissionSum } from "@/services/aed-team-leader/three-thousand-eight-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, MsgDetailProps } from "./data"

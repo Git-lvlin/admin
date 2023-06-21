@@ -9,7 +9,7 @@ import {
 } from '@ant-design/pro-form';
 import { supplierAdd, supplierEdit, categoryAll, searchUniName, getOnlineList } from '@/services/supplier-management/supplier-list';
 import md5 from 'blueimp-md5';
-import { arrayToTree } from '@/utils/utils'
+import { arrayToTree, computedChildCount } from '@/utils/utils'
 import FormModal from './form';
 
 const { Title } = Typography;
@@ -42,10 +42,17 @@ const CTree = (props) => {
 
   useEffect(() => {
     onChange(keys)
-  }, [])
+    setSelectKeys(keys)
+    return () => {
+      setSelectKeys([])
+    }
+  }, [keys])
 
   useEffect(() => {
     setSelectAll(selectData?.length === data?.length)
+    return () => {
+      setSelectAll(false)
+    }
   }, [selectData, data])
 
   return (
@@ -104,7 +111,6 @@ export default (props) => {
     return new Promise((resolve, reject) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
-      const obj = {};
       let gcArr = []
       if (gc?.length) {
         const parentIds = [];
@@ -112,7 +118,12 @@ export default (props) => {
         gc.forEach(element => {
           originData.current.forEach(it => {
             if (it.id === element) {
-              parentIds.push(it.gcParentId)
+              const pid = it.gcParentId
+              parentIds.push(pid)
+              if (pid !==0) {
+                const findItem = originData.current.find(it => pid === it.id);
+                parentIds.push(findItem.gcParentId)
+              }
             }
           })
         });
@@ -120,39 +131,52 @@ export default (props) => {
         const gcData = [...new Set([...gc, ...parentIds].filter(item => item !== 0))]
         gcData.forEach(item => {
           const findItem = originData.current.find(it => item === it.id);
-          if (findItem) {
-            const { gcParentId, id } = findItem;
-
-            if (gcParentId !== 0) {
-              if (obj[gcParentId]) {
-                obj[gcParentId].push(id)
-              } else {
-                obj[gcParentId] = [id];
-              }
-            }
+          if (findItem.level === 1) {
+            gcArr.push({
+              id: item,
+              children: []
+            })
           }
-
         })
 
-        let hasError = false;
-        // eslint-disable-next-line no-restricted-syntax
-        for (const key in obj) {
-          if (Object.hasOwnProperty.call(obj, key)) {
-            const g = { gc1: key };
-            if (obj[key].length) {
-              g.gc2 = obj[key]
-            } else {
-              hasError = true;
-            }
-            gcArr.push(g)
-          }
-        }
 
-        if (hasError) {
-          message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
-          reject()
-          return;
-        }
+        gcData.forEach(item => {
+          const findItem = originData.current.find(it => item === it.id);
+          if (findItem.level === 2) {
+            gcArr.forEach((it, index) => {
+              if (it.id === findItem.gcParentId) {
+                gcArr[index].children.push({
+                  id: item,
+                  children: []
+                })
+              }
+            })
+          }
+        })
+
+
+        gcData.forEach(item => {
+          const findItem = originData.current.find(it => item === it.id);
+          if (findItem.level === 3) {
+            gcArr.forEach((it, index) => {
+              it.children.forEach((it2, i) => {
+                if (it2.id === findItem.gcParentId) {
+                  gcArr[index].children[i].children.push({
+                    id: item,
+                    children: []
+                  })
+                }
+              })
+              
+            })
+          }
+        })
+
+        // if (hasError) {
+        //   message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        //   reject()
+        //   return;
+        // }
 
       } else {
         gcArr = ''
@@ -185,27 +209,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (detailData) {
-      form.setFieldsValue({
-        ...detailData
-      })
-
-      const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
-
-      form.setFieldsValue({
-        warrantyRatio: warrantyRatioDisplay,
-        defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
-      })
-
-      setSelectData(detailData.supplierIds)
-      const ids = [];
-      detailData.gcInfo.forEach(item => {
-        if (item.gcParentId !== 0) {
-          ids.push(item.id)
-        }
-      })
-      setSelectKeys(ids)
-    } else {
+    if (!detailData) {
       getOnlineList({
         page: 1,
         size: 9999
@@ -229,8 +233,35 @@ export default (props) => {
             selectable: false
           })))
           setTreeData(tree)
+          if (detailData) {
+            const allCount = computedChildCount(originData.current, 'gcParentId')
+            const selfCount = computedChildCount(detailData.gcInfo, 'gcParentId')
+            const { warrantyRatioDisplay, defaultWholesaleTaxRateDisplay } = detailData
+
+            form.setFieldsValue({
+              warrantyRatio: warrantyRatioDisplay,
+              defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
+            })
+
+            setSelectData(detailData.supplierIds)
+            const gcInfo = detailData.gcInfo.filter(item => allCount[item.id] === selfCount[item.id])
+            const ids = [];
+            gcInfo.forEach(item => {
+              ids.push(item.id)
+            })
+            form.setFieldsValue({
+              ...detailData,
+              gcInfo,
+              warrantyRatio: warrantyRatioDisplay,
+              defaultWholesaleTaxRate: defaultWholesaleTaxRateDisplay,
+            })
+            setSelectKeys(ids)
+          }
         }
       })
+    return () => {
+      setSelectKeys([])
+    }
   }, [form, detailData]);
 
   return (
@@ -416,7 +447,7 @@ export default (props) => {
             label="主营商品类型"
             name="gc"
           >
-            <CTree
+            {!!treeData.length &&<CTree
               checkable
               style={{
                 width: '100%',
@@ -428,7 +459,7 @@ export default (props) => {
               virtual={false}
               keys={selectKeys}
               selectData={detailData?.gcInfo}
-            />
+            />}
           </Form.Item>
 
           <Form.Item

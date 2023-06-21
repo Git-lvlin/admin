@@ -9,6 +9,7 @@ export const logList = async (params, options = {}) => {
       size: pageSize,
       gcId1: gcId[0],
       gcId2: gcId[1],
+      gcId3: gcId[2],
       ...rest
     },
     ...options

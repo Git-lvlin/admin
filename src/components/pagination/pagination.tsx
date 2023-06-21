@@ -13,5 +13,3 @@ const P = (props: PaginationProps) => {
 
 
 export default P
-
-

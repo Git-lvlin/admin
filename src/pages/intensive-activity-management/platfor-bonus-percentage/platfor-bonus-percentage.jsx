@@ -9,7 +9,7 @@ import { amountTransform } from '@/utils/utils'
 
 
 const Category = (props) => {
-  const { parentId = 0, onClick = () => { }} = props;
+  const { parentId = 0, onClick = () => { },title=''} = props;
   const actionRef=useRef()
   const [dataSource, setDataSource] = useState([]);
   const [editableKeys, setEditableRowKeys] = useState([]);
@@ -129,7 +129,7 @@ const Category = (props) => {
         <EditableProTable
           rowKey="id"
           actionRef={actionRef}
-          headerTitle={`${parentId?'二':'一'}级分类`}
+        headerTitle={`${title}级分类`}
           maxLength={5}
           recordCreatorProps={false}
           columns={columns}
@@ -219,6 +219,7 @@ const Category = (props) => {
 
 const PlatforBonusPercentage = () => {
   const [selectId, setSelectId] = useState(null);
+  const [selectId2, setSelectId2] = useState(null);
 
   return (
     <PageContainer>
@@ -226,8 +227,9 @@ const PlatforBonusPercentage = () => {
         <p>* 平台总额外奖励占商品盈利比例：90%</p>
       </div>
       <div style={{ display: 'flex', width: '100%' }}>
-        <Category onClick={(id) => { setSelectId(id)}}/>
-        {selectId && <Category parentId={selectId}/>}
+        <Category title="一" onClick={(id) => { setSelectId(id); setSelectId2(null) }}/>
+        {selectId && <Category title="二" onClick={(id) => { setSelectId2(id) }} parentId={selectId}/>}
+        {selectId2 && <Category title="三" parentId={selectId2}/>}
       </div>
     </PageContainer>
   )

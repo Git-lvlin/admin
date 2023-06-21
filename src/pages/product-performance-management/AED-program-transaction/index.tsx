@@ -1,7 +1,7 @@
 import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
-import ProTable from '@ant-design/pro-table'
+import ProTable from '@/components/pro-table'
 import ProForm, { ProFormDependency, ProFormDigit, ProFormText } from '@ant-design/pro-form'
 import { Button, Space } from 'antd'
 import moment from 'moment'

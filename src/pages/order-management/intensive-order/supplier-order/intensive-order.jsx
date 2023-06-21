@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
+import { Button, Space, Radio, Descriptions, Spin, Empty, Form, Modal, Tag, Popconfirm } from 'antd';
+import Pagination from '@/components/pagination'
 import { history, useLocation } from 'umi';
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import moment from 'moment';

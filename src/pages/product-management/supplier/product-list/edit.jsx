@@ -13,6 +13,7 @@ import { uploadImageFormatConversion, amountTransform } from '@/utils/utils'
 import { EyeOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';
+import { checkGoodQlf } from '@/services/common';
 import styles from './edit.less'
 import FormModal from './form';
 import EditTable from './edit-table';
@@ -23,6 +24,7 @@ import ImageSort from './image-sort';
 import Look from '@/components/look';
 import FreightTemplateSelect from '@/components/freight-template-select'
 import FreightTemplateDetail from '@/components/freight-template-detail'
+import UploadQualification from '@/components/upload-qualification-multiple'
 import { useLocation } from 'umi';
 import { preAccountCheck, preAccountShow, checkSensitiveWords } from '@/services/product-management/product-list';
 import ProfitTable from './profit-table';
@@ -50,6 +52,8 @@ const PlatformScale = 0.005
 export default (props) => {
   const { visible, setVisible, detailData, callback, onClose, overrule } = props;
   const [formModalVisible, setFormModalVisible] = useState(false);
+  const [uploadQualificationVisible, setUploadQualificationVisible] = useState(false);
+  const [uploadQualificationReadonlyVisible, setUploadQualificationReadonlyVisible] = useState(false);
   const [tableHead, setTableHead] = useState([]);
   const [tableData, setTableData] = useState([]);
   const [salePriceProfitLoss, setSalePriceProfitLoss] = useState(null);
@@ -67,6 +71,8 @@ export default (props) => {
   const isPurchase = useLocation().pathname.includes('purchase')
   const api = isPurchase ? api2 : api1
   const isLossMoney = useRef(false);
+  const [goodQlfData, setGoodQlfData] = useState({});
+
   let goods = {};
   if (detailData) {
     goods = detailData.goods;
@@ -253,6 +259,7 @@ export default (props) => {
         ...rest,
         gcId1: gcId[0],
         gcId2: gcId[1],
+        gcId3: gcId?.[2] ? gcId?.[2] : 0,
         wholesaleFreight: amountTransform(wholesaleFreight),
         // wholesaleTaxRate: amountTransform(wholesaleTaxRate, '/'),
         goodsSaleType: goods.goodsSaleType,
@@ -677,19 +684,39 @@ export default (props) => {
     });
   }
 
-  const checkSensitiveWordsHandle = (val)=> {
+  const checkSensitiveWordsHandle = (val) => {
     if (!val) {
       return
     }
     checkSensitiveWords({
       words: val,
     }).then(res => {
-      if (res.code ===0) {
+      if (res.code === 0) {
         if (res.data.length) {
           message.warn(`包含敏感词：${res.data.join(',')},建议修改。`)
         }
       }
     })
+  }
+
+  const checkGoodQlfHandle = (v = []) => {
+    if (v.length > 2) {
+      checkGoodQlf({
+        supId: detailData?.supplierId,
+        gcId1: v[0],
+        gcId2: v[1],
+        gcId3: v[2],
+        type: 1,
+      })
+        .then(res => {
+          if (res.code === 0) {
+            setGoodQlfData(res.data)
+            form.setFieldsValue({
+              goodQlf: ''
+            })
+          }
+        })
+    }
   }
 
   useEffect(() => {
@@ -719,7 +746,7 @@ export default (props) => {
         videoUrl: goods.videoUrl,
         brandId: goods.brandId === 0 ? null : goods.brandId,
         settleType: settleType || 1,
-        gcId: [goods.gcId1, goods.gcId2],
+        gcId: goods.gcId3 ? [goods.gcId1, goods.gcId2, goods.gcId3] : [goods.gcId1, goods.gcId2],
         wholesaleFreight: amountTransform(goods.wholesaleFreight, '/'),
         wholesaleTaxRate: amountTransform(goods.wholesaleTaxRate),
         supplierHelperId: !detailData.supplierHelperId ? null : detailData.supplierHelperId,
@@ -897,9 +924,11 @@ export default (props) => {
           }
         })
       }
-    }
 
-    
+      if (goods.gcId3) {
+        checkGoodQlfHandle([goods.gcId1, goods.gcId2, goods.gcId3])
+      }
+    }
 
   }, [form, detailData]);
 
@@ -1012,7 +1041,7 @@ export default (props) => {
               ]}
               fieldProps={{
                 maxLength: 90,
-                onBlur:(e) => {
+                onBlur: (e) => {
                   checkSensitiveWordsHandle(e.target.value);
                 }
               }}
@@ -1094,10 +1123,60 @@ export default (props) => {
       <Form.Item
         label="商品品类"
         name="gcId"
-        rules={[{ required: true, message: '请选择商品品类' }]}
+        rules={[
+          { required: true, message: '请选择商品品类' },
+          () => ({
+            validator(_, value) {
+              if (value.length < 2) {
+                return Promise.reject(new Error('至少选择到2级分类'));
+              }
+              return Promise.resolve();
+            },
+          })
+        ]}
       >
-        <GcCascader disabled />
+        <GcCascader
+          supplierId={detailData?.supplierId}
+          changeOnSelect
+          onChange={(v) => {
+            checkGoodQlfHandle(v)
+          }}
+        />
       </Form.Item>
+      {goodQlfData?.qlf?.error && <Form.Item
+        label="资质证书"
+        name="goodQlf"
+        rules={[
+          { required: true, message: '请上传资质证书' },
+        ]}
+      >
+        <a onClick={() => { setUploadQualificationVisible(true) }}>上传资质证书</a>
+      </Form.Item>}
+      {goodQlfData?.qlf?.success && <Form.Item
+        label="资质证书"
+      >
+        <a onClick={() => { setUploadQualificationReadonlyVisible(true) }}>查看资质证书</a>
+      </Form.Item>}
+      {goodQlfData?.qlf?.error &&
+        <UploadQualification
+          supId={detailData?.supplierId}
+          msgDetail={goodQlfData?.qlf?.error}
+          visible={uploadQualificationVisible}
+          setVisible={setUploadQualificationVisible}
+          callback={() => {
+            form.setFieldsValue({
+              goodQlf: '11111111'
+            })
+          }}
+        />}
+      {goodQlfData?.qlf?.success &&
+        <UploadQualification
+          supId={detailData?.supplierId}
+          msgDetail={goodQlfData?.qlf?.success}
+          visible={uploadQualificationReadonlyVisible}
+          setVisible={setUploadQualificationReadonlyVisible}
+          readonly
+        />}
       <Form.Item
         name="brandId"
         label="商品品牌"
@@ -1847,7 +1926,7 @@ export default (props) => {
       >
         <FromWrap
           content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
-          right={() => {}}
+          right={() => { }}
           bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看零售运费模板不发货地区</a>}
         />
       </Form.Item>}
@@ -1879,7 +1958,7 @@ export default (props) => {
       >
         <FromWrap
           content={(value, onChange) => (<FreightTemplateSelect labelInValue disabled value={value} onChange={onChange} />)}
-          right={() => {}}
+          right={() => { }}
           bottom={(value) => value && <a onClick={() => { setFreightTemplateDetailVisible(true); setFreightTemplateId(value.value) }}>点击查看批发运费模板不发货地区</a>}
         />
       </Form.Item>}

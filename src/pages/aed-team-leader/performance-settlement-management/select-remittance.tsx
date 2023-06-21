@@ -5,7 +5,7 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 // import { getDataByAuditSumId } from "@/services/aed-team-leader/performance-settlement-management"
-import ProTable from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import moment from "moment";

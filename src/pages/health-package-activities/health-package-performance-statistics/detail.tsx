@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import { 
   Drawer, 
-  Pagination, 
   Spin, 
   Empty, 
   Divider, 
 } from "antd"
-
+import Pagination from '@/components/pagination'
 import type { FC } from "react"
 import type { DetailProps, DataProps } from "./data"
 

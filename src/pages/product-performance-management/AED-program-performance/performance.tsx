@@ -1,5 +1,5 @@
+import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
-import ProTable from '@ant-design/pro-table'
 
 import type { ProColumns } from '@ant-design/pro-table'
 

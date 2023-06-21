@@ -4,12 +4,12 @@ import {
   Tooltip,
   Form,
   Space,
-  Pagination,
   Spin,
   Empty,
   Progress,
   Drawer
 } from 'antd'
+import Pagination from '@/components/pagination'
 import ProForm, { ProFormDateTimeRangePicker } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 

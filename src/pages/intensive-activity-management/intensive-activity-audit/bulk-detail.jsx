@@ -100,7 +100,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
       title: '商品分类',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}<span style={{ color: 'green' }}>(散装生鲜)</span></>
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.gcId3Display && `-${data.gcId3Display}`}<span style={{ color: 'green' }}>(散装生鲜)</span></>
     },
     {
       title: '规格',
@@ -314,7 +314,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
                 {detailData?.sku?.[0]?.wholesaleFreight / 100}元/{detailData?.sku?.[0]?.unit}
               </Descriptions.Item>
               <Descriptions.Item label="商品分类">
-                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}
+                {detailData?.sku?.[0]?.gcId1Display}-{detailData?.sku?.[0]?.gcId2Display}{detailData?.sku?.[0]?.gcId3Display && `-${detailData?.sku?.[0]?.gcId3Display}`}
                 <span style={{ color: 'green' }}>(散装生鲜)</span>
               </Descriptions.Item>
               <Descriptions.Item label="配送模式">

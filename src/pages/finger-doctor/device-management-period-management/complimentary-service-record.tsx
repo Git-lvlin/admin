@@ -2,7 +2,7 @@ import TimeSelect from '@/components/time-select'
 import React from 'react';
 import { Button, Divider, Image } from 'antd';
 import { deviceDoctorPage } from "@/services/finger-doctor/device-management-period-management"
-import ProTable  from "@ant-design/pro-table"
+import ProTable from '@/components/pro-table'
 import type { DetailProps } from './data'
 import { DrawerForm } from '@ant-design/pro-form';
 import type { ProColumns }  from "@ant-design/pro-table"

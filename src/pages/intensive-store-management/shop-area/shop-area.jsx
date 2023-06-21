@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {ProTable,EditableProTable} from '@ant-design/pro-table';
+import {EditableProTable} from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table'
 import { PageContainer } from '@/components/PageContainer';
 import AddressMultiCascader from '@/components/address-multi-cascader'
 import AddressCascader from '@/components/address-cascader'

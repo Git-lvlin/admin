@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Drawer, Descriptions, Divider, Table, Row, Avatar, Typography, Spin, Button, Image } from 'antd';
 import { getMemberDetail,modifyPhoneNumberPage } from '@/services/user-management/user-list';
 import ModifyMobilePhone from './modify-mobile-phone'
-import ProTable from '@ant-design/pro-table';
+import ProTable from '@/components/pro-table'
 import type { ActionType } from "@ant-design/pro-table"
 
 

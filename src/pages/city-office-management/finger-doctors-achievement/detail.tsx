@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
-import { Drawer, Pagination, Spin, Empty, Divider, Space, Button } from "antd"
+import { Drawer, Spin, Empty, Divider, Space, Button } from "antd"
+import Pagination from '@/components/pagination'
 import ProForm, { ProFormText } from '@ant-design/pro-form'
 import moment from 'moment'
 
@@ -151,6 +152,9 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
             pageSize={pageSize}
             current={page}
             onChange={pageChange}
+            showQuickJumper
+            showSizeChanger
+            hideOnSinglePage={false}
           />
         </div>
       }

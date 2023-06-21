@@ -222,7 +222,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       valueType: 'text',
       hideInSearch: true,
       editable: false,
-      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[data.fresh]})</span>}</>,
+      render: (_, data) => <>{data.gcId1Display}-{data.gcId2Display}{data.gcId3Display && `-${data.gcId3Display}`}{data.fresh !== 0 && <span style={{ color: 'green' }}>({{ 1: '精装生鲜', 2: '散装生鲜' }[data.fresh]})</span>}</>,
     },
     {
       title: '主图',

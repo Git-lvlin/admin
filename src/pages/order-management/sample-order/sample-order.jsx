@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormSelect, ProFormCheckbox } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Tag, Form } from 'antd';
+import { Button, Space, Radio, Descriptions, Spin, Empty, Tag, Form } from 'antd';
+import Pagination from '@/components/pagination'
 import { history, useLocation } from 'umi';
 import styles from './style.less';
 import Delivery from '@/components/delivery'

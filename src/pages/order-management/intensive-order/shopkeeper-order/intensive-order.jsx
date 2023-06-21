@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
-import { Button, Space, Radio, Descriptions, Pagination, Spin, Empty, Form, Tag } from 'antd';
+import { Button, Space, Radio, Descriptions, Spin, Empty, Form, Tag } from 'antd';
+import Pagination from '@/components/pagination'
 import { history, useLocation } from 'umi';
 import moment from 'moment';
 import styles from './style.less';
@@ -268,6 +269,10 @@ const TableList = () => {
             {
               value: 1,
               label: '精装生鲜'
+            },
+            {
+              value: 151,
+              label: '新集约'
             }
           ]}
           fieldProps={{

@@ -35,14 +35,14 @@ const UserDetail = (props) => {
       },
       hideInTable: true,
     },
-    {
-      title: '操作项',
-      dataIndex: 'actionItem',
-      onFilter: true,
-      valueType: 'select',
-      valueEnum: operatorAction,
-      hideInTable: true,
-    },
+    // {
+    //   title: '操作项',
+    //   dataIndex: 'actionItem',
+    //   onFilter: true,
+    //   valueType: 'select',
+    //   valueEnum: operatorAction,
+    //   hideInTable: true,
+    // },
     {
       title: '操作对象',
       dataIndex: 'operatorName',
