@@ -146,7 +146,7 @@ const Performance = () => {
     },
     {
       title: '结算状态',
-      dataIndex: 'settleStatus',
+      dataIndex: 'settleStatusDesc',
       align: 'center',
       hideInSearch: true
     },
