@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef } from 'react'
 import ProTable from '@/components/pro-table'
 import moment from 'moment'
@@ -40,7 +41,7 @@ const OtherData = () => {
     {
       title: '统计时间范围',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {

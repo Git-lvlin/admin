@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@/components/pro-table'
@@ -186,7 +187,7 @@ export default function EquipmentManagement() {
       title: '交易时间',
       dataIndex: 'createTime',
       align: 'center',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {
@@ -198,7 +199,7 @@ export default function EquipmentManagement() {
     {
       title: '租约到期时间',
       dataIndex: 'leaseDeadline',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {

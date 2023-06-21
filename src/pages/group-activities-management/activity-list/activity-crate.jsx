@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Form, Button, Space, message, InputNumber, Popover } from 'antd'
 import { EditableProTable } from '@ant-design/pro-table'
 import moment from 'moment'
-import {
+import ProForm, {
   DrawerForm,
   ProFormText,
   ProFormRadio,
   ProFormDigit,
   ProFormCheckbox,
   ProFormTextArea,
-  ProFormDateTimeRangePicker,
   ProFormSelect,
 } from '@ant-design/pro-form'
 
@@ -369,13 +368,14 @@ export default (props) => {
         disabled={flag}
         width="md"
       />
-      <ProFormDateTimeRangePicker
+      <ProForm.Item
         name="activityTime"
         label="活动时间"
         rules={[{ required: true, message: '请选择活动时间' }]}
         width="md"
-        disabled={flag}
-      />
+      >
+        <TimeSelect disabled={flag}/>
+      </ProForm.Item>
 
       <ProFormSelect
         placeholder="请选择拼团人数"

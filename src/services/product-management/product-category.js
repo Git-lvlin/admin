@@ -23,16 +23,16 @@ export const categoryAdd = (params = {}, options = {}) => {
   });
 }
 
-export const categorySorts = (params = {}, options = {}) => {
-  return request('/auth/goods/product/categorySorts', {
+export const categorySorts = async(params = {}, options = {}) => {
+  return await request('/auth/goods/product/categorySorts', {
     method: 'POST',
     data: params,
     ...options
   });
 }
 
-export const categoryDel = (params = {}, options = {}) => {
-  return request('/auth/goods/product/categoryDel', {
+export const categoryDel = async (params = {}, options = {}) => {
+  return await request('/auth/goods/product/categoryDel', {
     method: 'POST',
     data: params,
     ...options
@@ -47,16 +47,16 @@ export const categoryEdit = (params = {}, options = {}) => {
   });
 }
 
-export const categorySwitch = (params = {}, options = {}) => {
-  return request('/auth/goods/product/categorySwitch', {
+export const categorySwitch = async (params = {}, options = {}) => {
+  return await request('/auth/goods/product/categorySwitch', {
     method: 'GET',
     params,
     ...options
   });
 }
 
-export const checkGcIdData = (params = {}, options = {}) => {
-  return request('/auth/goods/product/checkGcIdData', {
+export const checkGcIdData = async (params = {}, options = {}) => {
+  return await request('/auth/goods/product/checkGcIdData', {
     method: 'GET',
     params,
     ...options

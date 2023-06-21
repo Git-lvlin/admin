@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import moment from 'moment'
 
 // 平台账户列表
 export const platforms = async (params, options = {}) => {
@@ -22,8 +23,8 @@ export const logPage = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      begin: createTime&& createTime[0],
-      end: createTime&& createTime[1],
+      begin: createTime&& moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: createTime&& moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options

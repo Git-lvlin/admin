@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, message, Input, Divider } from 'antd';
 import ProTable from '@/components/pro-table'
@@ -62,8 +63,11 @@ const UserRelationship = () => {
   }
 
   const getFieldValue = () => {
+    const { regTm = [], ...rest } = form.current?.getFieldsValue()
     return {
-      ...form.current?.getFieldsValue(),
+      ...rest,
+      startRegTm: regTm[0] &&regTm[0].format('YYYY-MM-DD HH:mm:ss'),
+      endTRegTm: regTm[1] && regTm[1].format('YYYY-MM-DD HH:mm:ss'),
       phoneNumber: phoneNumber,
       pid: memberId
     }
@@ -296,7 +300,7 @@ const UserRelationship = () => {
     {
       title: '邀请注册时间',
       dataIndex: 'regTm',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
   ];

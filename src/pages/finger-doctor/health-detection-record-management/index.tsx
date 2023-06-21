@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@/components/pro-table'
@@ -74,7 +75,7 @@ const HealthDetectionRecordManagement = () => {
     {
       dataIndex: 'time',
       hideInTable: true,
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
     },
     {
       title: '手机号',

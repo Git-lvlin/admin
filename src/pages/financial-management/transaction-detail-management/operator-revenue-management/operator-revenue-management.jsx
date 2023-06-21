@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
@@ -120,7 +121,7 @@ const OperatorRevenueManagement = () =>{
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

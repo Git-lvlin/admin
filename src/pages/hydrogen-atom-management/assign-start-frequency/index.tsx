@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
@@ -59,7 +60,7 @@ export default ()=> {
     {
       title: '操作时间',
       dataIndex: 'dataRange',
-      valueType:'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
       fieldProps:{

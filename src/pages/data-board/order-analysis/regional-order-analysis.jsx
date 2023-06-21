@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ProForm, { ProFormDateRangePicker } from '@ant-design/pro-form'
+import ProForm from '@ant-design/pro-form'
 import { Space, Radio, Button } from 'antd'
 import moment from 'moment'
 
@@ -7,6 +7,7 @@ import Histogram from './histogram'
 import styles from './styles.less'
 import { areaOrderAnalysis } from '@/services/data-board/order-analysis'
 import AddressCascader from '@/components/address-cascader'
+import TimeSelect from '@/components/time-select'
 
 const now = new Date()
 const oneDay = 1000 * 60 * 60 * 24
@@ -105,11 +106,15 @@ const RegionalOrderAnalysis = () => {
         }}
       >
         <h3 className={styles.title}>地区订单分析</h3>
-        <ProFormDateRangePicker 
+        <ProForm.Item
           label="统计时间范围"
           name="time"
-          initialValue={times}
-        />
+        >
+          <TimeSelect 
+            showTime={false}
+            initialValue={times}
+          />
+        </ProForm.Item>
         <ProForm.Item
           name="area"
           label="地区范围"

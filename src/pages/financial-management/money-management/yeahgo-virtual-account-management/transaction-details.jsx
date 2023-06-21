@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
@@ -211,9 +212,10 @@ const TransactionDetails = ({
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
-      initialValue: [moment(+new Date()).subtract(7, 'days').format('YYYY-MM-DD'), moment(+new Date()).format('YYYY-MM-DD')]
+      initialValue: [moment().subtract(7, 'days'), moment()],
+      renderFormItem: () => <TimeSelect showTime={false}/>
     },
     {
       title: '分账金额',
@@ -258,7 +260,18 @@ const TransactionDetails = ({
       title: '交易描述',
       dataIndex: 'description',
       hideInSearch: true
-    }
+    },
+    {
+      title: '解冻记录',
+      dataIndex: 'unfreeze',
+      valueType: 'select',
+      initialValue: '2',
+      valueEnum: {
+        1: '显示解冻记录',
+        2: '不显示解冻记录'
+      },
+      hideInTable: true
+    },
   ]
 
   return (

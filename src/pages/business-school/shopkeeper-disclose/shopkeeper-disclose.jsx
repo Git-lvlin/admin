@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 
 import React, { useRef, useState } from 'react';
 import { Button, Space, message,Image } from 'antd';
@@ -17,7 +18,7 @@ export default (props) => {
       title: '吐槽时间',
       key: 'dateTimeRange',
       dataIndex: 'createTime',
-      valueType: 'dateTimeRange', 
+      renderFormItem: () => <TimeSelect />, 
       hideInTable:true  
     },
     {

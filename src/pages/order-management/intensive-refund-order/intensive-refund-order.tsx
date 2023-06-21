@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { getAuditList} from '@/services/order-management/intensive-refund-order';
@@ -101,7 +102,7 @@ interface propertys{
       {
         title: '创建时间',
         dataIndex: 'dateTimeRange',
-        valueType: 'dateTimeRange',
+        renderFormItem: () => <TimeSelect />,
         hideInTable: true,
       },
       {

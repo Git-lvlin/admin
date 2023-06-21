@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -100,7 +101,7 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
     {
       title: '开团时间',
       dataIndex: 'createGroupTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {
@@ -136,20 +137,20 @@ const TableList = ({data, visible, onClose, id, groupState, info}) => {
       title: '参团时间',
       dataIndex: 'joinGroupTime',
       hideInTable: true,
-      valueType: 'dateTimeRange'
+      renderFormItem: () => <TimeSelect />,
     },
     {
       title: '成团时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInSearch: groupState === 3 || groupState === 2
     },
     {
       title: '失败时间',
       dataIndex: 'finishGroupTime',
       hideInTable: true,
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInSearch: groupState === 1 || groupState === 2
     }
   ]

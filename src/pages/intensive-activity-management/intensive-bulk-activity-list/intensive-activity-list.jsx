@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef, useEffect } from 'react';
 import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
@@ -385,7 +386,7 @@ const TableList = () => {
     // {
     //   title: '活动时间',
     //   dataIndex: 'wholesaleTime',
-    //   valueType: 'dateRange',
+    //   renderFormItem: () => <TimeSelect showTime={false}/>,
     //   hideInTable: true,
     // },
     // {
@@ -460,7 +461,7 @@ const TableList = () => {
     {
       title: '创建时间',
       dataIndex: 'createTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
     },
     {

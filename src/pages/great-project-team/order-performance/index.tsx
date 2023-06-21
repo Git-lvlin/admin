@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
@@ -66,7 +67,7 @@ export default function TransactionData () {
     {
       title: '交易时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

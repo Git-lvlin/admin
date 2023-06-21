@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef,useEffect } from 'react';
 import { Button} from 'antd';
 import ProTable from '@/components/pro-table';
@@ -183,7 +184,7 @@ export default props => {
         title: '领红包时间',
         key: 'dateRange',
         dataIndex: 'createdAtRange',
-        valueType: 'dateRange',
+        renderFormItem: () => <TimeSelect showTime={false}/>,
         hideInTable:true
     }
     

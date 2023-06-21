@@ -21,7 +21,7 @@ export const aedCoursesTradeStatsSave = async (params, options = {}) => {
 
 // AED课程交易列表
 export const aedCoursesTradeList = async (params, options = {}) => {
-  const { pageSize = 10, current = 1, depositPayTime, aedPayTime, dcPayTime, ...rest } = params
+  const { pageSize = 10, current = 1, depositPayTime, aedPayTime, dcPayTime, specialTime, ...rest } = params
   const res = await request('/auth/stats/report/aed/aedCoursesTradeList', {
     method: 'POST',
     data: {
@@ -33,6 +33,8 @@ export const aedCoursesTradeList = async (params, options = {}) => {
       endAedPayTime: aedPayTime && moment(aedPayTime[1]).format('YYYY-MM-DD'),
       startDepositPayTime: depositPayTime && moment(depositPayTime[0]).format('YYYY-MM-DD'),
       endDepositPayTime: depositPayTime && moment(depositPayTime[1]).format('YYYY-MM-DD'),
+      specialStartTime: specialTime && moment(specialTime[0]).format('YYYY-MM-DD'),
+      specialEndTime: specialTime && moment(specialTime[1]).format('YYYY-MM-DD'),
       ...rest
     },
     ...options

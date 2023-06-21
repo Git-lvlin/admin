@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useRef } from 'react';
 import { Button, Space } from 'antd';
 import ProTable from '@/components/pro-table';
@@ -157,7 +158,7 @@ const TableList = () => {
     {
       title: '注册时间',
       dataIndex: 'createTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {
@@ -170,7 +171,7 @@ const TableList = () => {
     {
       title: '上次访问时间',
       dataIndex: 'loginTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true,
     },
     {

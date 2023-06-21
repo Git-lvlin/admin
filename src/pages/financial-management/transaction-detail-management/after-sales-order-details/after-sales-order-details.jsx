@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
 
@@ -6,12 +6,14 @@ import { amountTransform } from '@/utils/utils'
 import { refundPage } from '@/services/financial-management/transaction-detail-management'
 import Detail from './detail-popup'
 import { orderTypes } from '@/services/financial-management/common'
+import Export from '@/components/export'
 
 // after sales order detail
 const AfterSalesOrderDetails = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
   const [selectItem, setSelectItem] = useState(null)
   const [orderType, setOrderType] = useState(null)
+  const formRef = useRef()
 
   useEffect(() => {
     orderTypes({}).then(res=> {
@@ -63,7 +65,13 @@ const AfterSalesOrderDetails = () =>{
         'suggestCommissionReturn': '店铺推荐收益回退',
         'feeReturn': '交易通道费回退',
         'agentCompanyCommissionReturn': '运营中心收益回退'
-      }
+      },
+      hideInTable: true
+    },
+    {
+      title: '交易类型',
+      dataIndex: 'tradeTypeName',
+      hideInSearch: true
     },
     {
       title: '买家会员ID',
@@ -123,10 +131,21 @@ const AfterSalesOrderDetails = () =>{
         scroll={{x: 2200}}
         columns={columns}
         toolBarRender={false}
+        formRef={formRef}
         pagination={{
           pageSize:10,
           hideOnSinglePage: true,
           showQuickJumper: true
+        }}
+        search={{
+          optionRender: (search, props, dom) => [
+            ...dom.reverse(),
+            <Export
+               type='financial-trans-refundPage'
+              key='1'
+              conditions={{...formRef.current?.getFieldsValue()}}
+            />
+          ]
         }}
         params={{}}
         request={refundPage}

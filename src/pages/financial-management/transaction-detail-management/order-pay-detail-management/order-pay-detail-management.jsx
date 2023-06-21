@@ -1,6 +1,8 @@
+import TimeSelect from '@/components/time-select'
 import React, { useState, useEffect,useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
+import moment from 'moment'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPage,exceptionOrderRefund } from '@/services/financial-management/transaction-detail-management'
@@ -9,6 +11,7 @@ import { orderTypes, apply20, audit20 } from '@/services/financial-management/co
 import { Button, message, Popconfirm } from 'antd'
 import Auth from '@/components/auth'
 import RefundModel from './refund-model'
+import Export from '@/components/export'
 
 const OrderPayDetailManagement = () =>{
   const [detailVisible, setDetailVisible] = useState(false)
@@ -16,7 +19,8 @@ const OrderPayDetailManagement = () =>{
   const [orderType, setOrderType] = useState(null)
   const [visible, setVisible] = useState(false);
   const [msgDatail,setMsgDatail] = useState({})
-  const actRef=useRef()
+  const actRef = useRef()
+  const formRef = useRef()
   useEffect(() => {
     orderTypes({}).then(res => {
       setOrderType(res.data)
@@ -25,6 +29,15 @@ const OrderPayDetailManagement = () =>{
       setOrderType(null)
     }
   }, [])
+
+  const getFieldsValue = () => {
+    const { payTime, ...rest } = formRef.current?.getFieldsValue()
+    return {
+      begin: payTime&& moment(payTime?.[0]).format('YYYY-MM-DD'),
+      end: payTime&& moment(payTime?.[1]).format('YYYY-MM-DD'),
+      ...rest
+    }
+  }
 
   const columns = [
     {
@@ -118,7 +131,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {
@@ -198,12 +211,23 @@ const OrderPayDetailManagement = () =>{
         actionRef={actRef}
         rowKey='id'
         columns={columns}
+        formRef={formRef}
         toolBarRender={false}
         scroll={{ x: 2100 }}
         pagination={{
           pageSize: 10,
           hideOnSinglePage: true,
           showQuickJumper: true
+        }}
+        search={{
+          optionRender: (search, props, dom) => [
+            ...dom.reverse(),
+            <Export
+              type='financial-trans-orderPage'
+              key='1'
+              conditions={getFieldsValue}
+            />
+          ]
         }}
         params={{}}
         request={orderPage}

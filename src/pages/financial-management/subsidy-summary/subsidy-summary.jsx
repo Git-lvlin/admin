@@ -1,10 +1,11 @@
-import React from 'react'
+import { useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table'
 import { history } from 'umi'
 
 import { allowance } from '@/services/financial-management/subsidy-summary'
 import { amountTransform } from '@/utils/utils'
+import Export from '@/components/export'
 
 const skipToSettlement = (e) => {
   history.push(`/financial-management/subsidy-summary/detail/${e}`)
@@ -19,6 +20,7 @@ const text = (e) => {
 }
 
 const SubsidySummary = ()=> {
+  const formRef = useRef()
 
   const columns = [
     {
@@ -99,6 +101,7 @@ const SubsidySummary = ()=> {
     <PageContainer title={false}>
       <ProTable
         columns={columns}
+        formRef={formRef}
         pagination={{
           pageSize: 10,
           showQuickJumper: true
@@ -107,6 +110,16 @@ const SubsidySummary = ()=> {
         toolBarRender={false}
         params={{}}
         request={allowance}
+        search={{
+          optionRender: (search, props, dom) => [
+            ...dom.reverse(),
+            <Export
+              type='financial-allowance-page'
+              key={1}
+              conditions={{...formRef.current?.getFieldsValue()}}
+            />
+          ]
+        }}
       />
     </PageContainer>
   )

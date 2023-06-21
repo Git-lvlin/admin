@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import moment from 'moment'
@@ -87,7 +88,7 @@ const NewIntensivePerformance = (props:propsType) => {
     {
       title: '支付时间',
       dataIndex: 'payTime',
-      valueType: 'dateTimeRange',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true,
       fieldProps: {
         placeholder: ['开始时间','结束时间'],

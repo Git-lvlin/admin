@@ -1,3 +1,4 @@
+import TimeSelect from '@/components/time-select'
 import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
@@ -42,7 +43,7 @@ function PerformanceReport () {
     {
       title: '统计时间',
       dataIndex: 'time',
-      valueType: 'dateRange',
+      renderFormItem: () => <TimeSelect showTime={false}/>,
       hideInTable: true
     },
     {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Drawer, Pagination, Spin, Empty, Divider, Space, Button } from "antd"
-import ProForm, { ProFormDateTimeRangePicker, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ProFormText } from '@ant-design/pro-form'
 import moment from 'moment'
 
 import type { FC } from "react"
@@ -11,6 +11,7 @@ import { itemSum, listItemPage } from "@/services/city-office-management/finger-
 import styles from "./styles.less"
 import Export from "@/components/export"
 import { amountTransform } from "@/utils/utils"
+import TimeSelect from '@/components/time-select'
 
 const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
   const [page, setPage] = useState<number>(1)
@@ -99,9 +100,11 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
               ]
             }}
           >
-            <ProFormDateTimeRangePicker
+            <ProForm.Item
               name='time'
-            />
+            >
+              <TimeSelect />
+            </ProForm.Item>
             <ProFormText
               name='orderNo'
               placeholder='请输入订单号'
@@ -128,6 +131,10 @@ const Detail: FC<DetailProps> = ({id, visible, setVisible, title}) => {
                 <div className={styles.cardListContent}>
                   <div>设备编号：{item.imei}</div>
                   <div>店铺编号：{item.shopMemberAccount}</div>
+                </div>
+                <div className={styles.cardListContent}>
+                  <div>{item.goodsName}</div>
+                  <div>skuID：{item.skuId}</div>
                 </div>
                 <Divider style={{margin: '10px 0 24px 0'}}/>
               </div>

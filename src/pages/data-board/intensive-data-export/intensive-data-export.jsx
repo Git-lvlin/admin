@@ -7,6 +7,7 @@ import { Form, message } from 'antd'
 
 import Export from './export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import TimeSelect from '@/components/time-select'
 
 // const Export = ({ type, change, conditions, title }) => {
 //   const downExcel = () => {
@@ -125,11 +126,13 @@ const IntensiveDataExport = () => {
           }
         }}
       >
-        <ProFormDateTimeRangePicker
+        <ProForm.Item
           width="md"
           name="time"
           label="选择日期" 
-        />
+        >
+          <TimeSelect />
+        </ProForm.Item>
 
       </ProForm>
     </PageContainer>
