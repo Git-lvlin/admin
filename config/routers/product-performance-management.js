@@ -34,7 +34,12 @@ export default {
       component: './product-performance-management/finger-doctor-performance',
       wrappers: [RouteWatcher],
     },
-    
+    {
+      name: 'share-the-subsidy',
+      path: '/product-performance-management/share-the-subsidy',
+      component: './product-performance-management/share-the-subsidy',
+      wrappers: [RouteWatcher],
+    },
     {
       name: 'AED-performance-management',
       path: '/product-performance-management/AED-performance-management',
@@ -57,12 +62,7 @@ export default {
           component: './product-performance-management/AED-performance-management/AED-program-transaction',
           wrappers: [RouteWatcher],
         },
-        {
-          name: 'share-the-subsidy',
-          path: '/product-performance-management/AED-performance-management/share-the-subsidy',
-          component: './product-performance-management/AED-performance-management/share-the-subsidy',
-          wrappers: [RouteWatcher],
-        },
+        
         {
           name: 'noSub-AED-program-performance',
           path: '/product-performance-management/AED-performance-management/noSub-AED-program-performance',
