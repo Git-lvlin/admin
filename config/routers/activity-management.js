@@ -5,6 +5,93 @@ export default {
   name: 'activity-management',
   routes: [
     {
+      path: '/activity-management/sign-activity-management',
+      name: 'sign-activity-management',
+      routes: [
+        {
+          name: 'sign-rule',
+          path: '/activity-management/sign-activity-management/sign-rule',
+          component: './activity-management/sign-activity-management/sign-rule',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'usable-commodity',
+          path: '/activity-management/sign-activity-management/usable-commodity',
+          component: './activity-management/sign-activity-management/usable-commodity',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'grant-detail',
+          path: '/activity-management/sign-activity-management/grant-detail',
+          component: './activity-management/sign-activity-management/grant-detail',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'consume-detail',
+          path: '/activity-management/sign-activity-management/consume-detail',
+          component: './activity-management/sign-activity-management/consume-detail',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'user-detail',
+          path: '/activity-management/sign-activity-management/user-detail',
+          component: './activity-management/sign-activity-management/user-detail',
+          wrappers: [RouteWatcher],
+          hideInMenu: true
+        },
+        {
+          name: 'show-configuration',
+          path: '/activity-management/sign-activity-management/show-configuration',
+          component: './activity-management/sign-activity-management/show-configuration',
+          wrappers: [RouteWatcher],
+        }
+      ]
+    },
+    {
+      path: '/activity-management/blind-box-activity-management',
+      name: 'blind-box-activity-management',
+      routes: [
+        {
+          name: 'blind-box-management-list',
+          path: '/activity-management/blind-box-activity-management/blind-box-management-list',
+          component: './activity-management/blind-box-activity-management/blind-box-management-list',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'blind-box-consume-detail',
+          path: '/activity-management/blind-box-activity-management/blind-box-consume-detail',
+          component: './activity-management/blind-box-activity-management/blind-box-consume-detail',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'blind-box-grant-detail',
+          path: '/activity-management/blind-box-activity-management/blind-box-grant-detail',
+          component: './activity-management/blind-box-activity-management/blind-box-grant-detail',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'blind-box-employ-detail',
+          path: '/activity-management/blind-box-activity-management/blind-box-employ-detail',
+          component: './activity-management/blind-box-activity-management/blind-box-employ-detail',
+          wrappers: [RouteWatcher],
+          hideInMenu: true
+        },
+        {
+          name: 'bind-box-rule-set',
+          path: '/activity-management/blind-box-activity-management/bind-box-rule-set',
+          component: './activity-management/blind-box-activity-management/bind-box-rule-set',
+          wrappers: [RouteWatcher],
+          hideInMenu: true
+        },
+        {
+          name: 'blind-box-withdraw-deposit-detail',
+          path: '/activity-management/blind-box-activity-management/blind-box-withdraw-deposit-detail',
+          component: './activity-management/blind-box-activity-management/blind-box-withdraw-deposit-detail',
+          wrappers: [RouteWatcher],
+        }
+      ]
+    },
+    {
       name: 'everyday-red-packet-activity',
       path: '/activity-management/everyday-red-packet-activity',
       routes: [
@@ -27,6 +114,24 @@ export default {
           wrappers: [RouteWatcher],
           hideInMenu: true
         }
+      ]
+    },
+    {
+      path: '/activity-management/group-activities-management',
+      name: 'group-activities-management',
+      routes: [
+        {
+          name: 'activity-list',
+          path: '/activity-management/group-activities-management/activity-list',
+          component: './activity-management/group-activities-management/activity-list',
+          wrappers: [RouteWatcher]
+        },
+        {
+          name: 'activity-data',
+          path: '/activity-management/group-activities-management/activity-data',
+          component: './activity-management/group-activities-management/activity-data',
+          wrappers: [RouteWatcher]
+        },
       ]
     },
     {
@@ -110,110 +215,5 @@ export default {
         },
       ]
     },
-    {
-      path: '/activity-management/blind-box-activity-management',
-      name: 'blind-box-activity-management',
-      routes: [
-        {
-          name: 'blind-box-management-list',
-          path: '/activity-management/blind-box-activity-management/blind-box-management-list',
-          component: './activity-management/blind-box-activity-management/blind-box-management-list',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'blind-box-consume-detail',
-          path: '/activity-management/blind-box-activity-management/blind-box-consume-detail',
-          component: './activity-management/blind-box-activity-management/blind-box-consume-detail',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'blind-box-grant-detail',
-          path: '/activity-management/blind-box-activity-management/blind-box-grant-detail',
-          component: './activity-management/blind-box-activity-management/blind-box-grant-detail',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'blind-box-employ-detail',
-          path: '/activity-management/blind-box-activity-management/blind-box-employ-detail',
-          component: './activity-management/blind-box-activity-management/blind-box-employ-detail',
-          wrappers: [RouteWatcher],
-          hideInMenu: true
-        },
-        {
-          name: 'bind-box-rule-set',
-          path: '/activity-management/blind-box-activity-management/bind-box-rule-set',
-          component: './activity-management/blind-box-activity-management/bind-box-rule-set',
-          wrappers: [RouteWatcher],
-          hideInMenu: true
-        },
-        {
-          name: 'blind-box-withdraw-deposit-detail',
-          path: '/activity-management/blind-box-activity-management/blind-box-withdraw-deposit-detail',
-          component: './activity-management/blind-box-activity-management/blind-box-withdraw-deposit-detail',
-          wrappers: [RouteWatcher],
-        }
-      ]
-    },
-    {
-      path: '/activity-management/group-activities-management',
-      name: 'group-activities-management',
-      routes: [
-        {
-          name: 'activity-list',
-          path: '/activity-management/group-activities-management/activity-list',
-          component: './activity-management/group-activities-management/activity-list',
-          wrappers: [RouteWatcher]
-        },
-        {
-          name: 'activity-data',
-          path: '/activity-management/group-activities-management/activity-data',
-          component: './activity-management/group-activities-management/activity-data',
-          wrappers: [RouteWatcher]
-        },
-      ]
-    },
-    {
-      path: '/activity-management/sign-activity-management',
-      name: 'sign-activity-management',
-      routes: [
-        {
-          name: 'sign-rule',
-          path: '/activity-management/sign-activity-management/sign-rule',
-          component: './activity-management/sign-activity-management/sign-rule',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'usable-commodity',
-          path: '/activity-management/sign-activity-management/usable-commodity',
-          component: './activity-management/sign-activity-management/usable-commodity',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'grant-detail',
-          path: '/activity-management/sign-activity-management/grant-detail',
-          component: './activity-management/sign-activity-management/grant-detail',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'consume-detail',
-          path: '/activity-management/sign-activity-management/consume-detail',
-          component: './activity-management/sign-activity-management/consume-detail',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'user-detail',
-          path: '/activity-management/sign-activity-management/user-detail',
-          component: './activity-management/sign-activity-management/user-detail',
-          wrappers: [RouteWatcher],
-          hideInMenu: true
-        },
-        {
-          name: 'show-configuration',
-          path: '/activity-management/sign-activity-management/show-configuration',
-          component: './activity-management/sign-activity-management/show-configuration',
-          wrappers: [RouteWatcher],
-        }
-      ]
-    }
   ]
 }

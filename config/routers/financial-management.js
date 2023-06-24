@@ -151,6 +151,12 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'performance-settlement-management',
+      path: '/financial-management/performance-settlement-management',
+      component: './financial-management/performance-settlement-management',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'subsidy-summary-detail',
       path: '/financial-management/subsidy-summary/detail/:id',
       component: './financial-management/subsidy-summary/detail'
@@ -172,12 +178,6 @@ export default {
           wrappers: [RouteWatcher],
         }
       ]
-    },
-    {
-      name: 'performance-settlement-management',
-      path: '/financial-management/performance-settlement-management',
-      component: './financial-management/performance-settlement-management',
-      wrappers: [RouteWatcher],
     },
   ]
 }

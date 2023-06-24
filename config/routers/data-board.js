@@ -5,6 +5,30 @@ export default {
   path: '/data-board',
   routes: [
     {
+      path: '/data-board/buried-point',
+      name: 'buried-point',
+      routes: [
+        {
+          name: 'incident-analysts',
+          path: '/data-board/buried-point/incident-analysts',
+          component: './data-board/buried-point/incident-analysts',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'metadata-management',
+          path: '/data-board/buried-point/metadata-management',
+          routes: [
+            {
+              name: 'meta-event',
+              path: '/data-board/buried-point/metadata-management/meta-event',
+              component: './data-board/buried-point/metadata-management/meta-event',
+              wrappers: [RouteWatcher],
+            }
+          ]
+        },
+      ]
+    },
+    {
       name: 'summary-of-data',
       path: '/data-board/summary-of-data',
       component: './data-board/summary-of-data',
@@ -124,29 +148,5 @@ export default {
       component: './data-board/order',
       // wrappers: [RouteWatcher],
     },
-    {
-      path: '/data-board/buried-point',
-      name: 'buried-point',
-      routes: [
-        {
-          name: 'incident-analysts',
-          path: '/data-board/buried-point/incident-analysts',
-          component: './data-board/buried-point/incident-analysts',
-          wrappers: [RouteWatcher],
-        },
-        {
-          name: 'metadata-management',
-          path: '/data-board/buried-point/metadata-management',
-          routes: [
-            {
-              name: 'meta-event',
-              path: '/data-board/buried-point/metadata-management/meta-event',
-              component: './data-board/buried-point/metadata-management/meta-event',
-              wrappers: [RouteWatcher],
-            }
-          ]
-        },
-      ]
-    }
   ]
 }

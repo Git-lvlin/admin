@@ -10,6 +10,12 @@ export default {
       path: '/intensive-activity-management/new',
       routes: [
         {
+          name: 'intensive-purchase-setting',
+          path: '/intensive-activity-management/new/intensive-purchase-setting',
+          component: './intensive-activity-management/new/intensive-purchase-setting',
+          wrappers: [RouteWatcher]
+        },
+        {
           name: 'fresh-goods-sort',
           path: '/intensive-activity-management/new/fresh-goods-sort',
           component: './intensive-activity-management/new/fresh-goods-sort',
@@ -20,12 +26,6 @@ export default {
           path: '/intensive-activity-management/new/fresh-goods-class',
           component: './intensive-activity-management/new/fresh-goods-class',
           wrappers: [RouteWatcher],
-        },
-        {
-          name: 'intensive-purchase-setting',
-          path: '/intensive-activity-management/new/intensive-purchase-setting',
-          component: './intensive-activity-management/new/intensive-purchase-setting',
-          wrappers: [RouteWatcher]
         },
       ]
     },
@@ -115,6 +115,18 @@ export default {
           name: 'platfor-bonus-percentage-audit',
           path: '/intensive-activity-management/old/platfor-bonus-percentage-audit',
           component: './intensive-activity-management/old/platfor-bonus-percentage-audit',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'goods-sort',
+          path: '/intensive-activity-management/old/goods-sort',
+          component: './intensive-activity-management/old/goods-sort',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'goods-class',
+          path: '/intensive-activity-management/old/goods-class',
+          component: './intensive-activity-management/old/goods-class',
           wrappers: [RouteWatcher],
         },
       ]
