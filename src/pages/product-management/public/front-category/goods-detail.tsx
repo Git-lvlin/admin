@@ -99,7 +99,9 @@ const GoodsDetail: React.FC<goodsDetailProps> = ({visible, setVisible, appGcId1,
       align: 'center',
       hideInSearch: true,
       render: (_, r) => {
-        if(r.gcId2Display) {
+        if(r.gcId2Display && r.gcId3Display) {
+          return <span>{r.gcId1Display} {'>'} {r.gcId2Display} {'>'} {r.gcId3Display}</span>
+        } else if(r.gcId2Display) {
           return <span>{r.gcId1Display} {'>'} {r.gcId2Display}</span>
         } else {
           return <span>{r.gcId1Display}</span>
