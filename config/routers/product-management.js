@@ -113,24 +113,6 @@ export default {
       component: './product-management/daifa-product',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'designated-commodity-settlement',
-      path: '/product-management/designated-commodity-settlement',
-      component: './product-management/designated-commodity-settlement',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'merchandise-settlement-record',
-      path: '/product-management/merchandise-settlement-record',
-      component: './product-management/merchandise-settlement-record',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'prohibited-words-management',
-      path: '/product-management/prohibited-words-management',
-      component: './product-management/prohibited-words-management',
-      wrappers: [RouteWatcher],
-    },
     
     // {
     //   name: 'freight-template',

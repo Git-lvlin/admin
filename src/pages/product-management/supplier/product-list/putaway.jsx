@@ -12,7 +12,7 @@ import {
 } from '@ant-design/pro-form';
 import { getCommissionConfigBySpuId } from '@/services/product-management/designated-commodity-settlement';
 import { PlusOutlined } from '@ant-design/icons';
-import Edit from '@/pages/product-management/designated-commodity-settlement/form'
+import Edit from '@/pages/product-sharing-management/designated-commodity-settlement/designated-commodity-settlement/form'
 import { useLocation } from 'umi';
 import * as api1 from '@/services/product-management/product-list';
 import * as api2 from '@/services/product-management/product-list-purchase';

@@ -30,28 +30,53 @@ export default {
       hideInMenu: true,
     },
     {
-      name: 'shipments-area-configuration',
-      path: '/setting/shipments-area-configuration',
-      component: './setting/shipments-area-configuration',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'switch-setting',
-      path: '/setting/switch-setting',
-      component: './setting/switch-setting',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'contract-management',
-      path: '/setting/contract-management',
-      component: './setting/contract-management',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'cancel-reason',
-      path: '/setting/cancel-reason',
-      component: './setting/cancel-reason',
-      wrappers: [RouteWatcher],
-    },
+      path: '/setting/dc-management',
+      name: 'dc-management',
+      routes: [
+        {
+          name: 'add',
+          path: '/setting/dc-management/add',
+          component: './setting/dc-management/add',
+          hideInMenu: true
+        },
+        {
+          name: 'list',
+          path: '/setting/dc-management/list',
+          component: './setting/dc-management/list',
+        },
+        {
+          name: 'version',
+          path: '/setting/dc-management/version',
+          component: './setting/dc-management/version',
+        },
+        {
+          name: 'data-board',
+          path: '/setting/dc-management/data-board',
+          component: './setting/dc-management/data-board',
+        },
+        {
+          name: 'data-board-configuration',
+          path: '/setting/dc-management/data-board/data-board-configuration',
+          component: './setting/dc-management/data-board/data-board-configuration',
+          hideInMenu: true
+        },
+        {
+          name: 'import-export',
+          path: '/setting/dc-management/import-export',
+          routes: [
+            {
+              name: 'export-configuration',
+              path: '/setting/dc-management/import-export/export-configuration',
+              component: './setting/dc-management/import-export/export-configuration',
+            },
+            {
+              name: 'import-configuration',
+              path: '/setting/dc-management/import-export/import-configuration',
+              component: './setting/dc-management/import-export/import-configuration'
+            }
+          ]
+        }
+      ]
+    }
   ]
 }

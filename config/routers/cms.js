@@ -131,18 +131,6 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'fresh-goods-sort',
-      path: '/cms/fresh-goods-sort',
-      component: './cms/fresh-goods-sort',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'fresh-goods-class',
-      path: '/cms/fresh-goods-class',
-      component: './cms/fresh-goods-class',
-      wrappers: [RouteWatcher],
-    },
-    {
       name: 'goods-sort',
       path: '/cms/goods-sort',
       component: './cms/goods-sort',
@@ -226,5 +214,166 @@ export default {
       component: './cms/hydrogen-atom-start-window',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'prohibited-words-management',
+      path: '/cms/prohibited-words-management',
+      component: './cms/prohibited-words-management',
+      wrappers: [RouteWatcher],
+    },
+    {
+      path: '/cms/business-school',
+      name: 'business-school',
+      routes: [
+        {
+          name: 'article-list',
+          path: '/cms/business-school/article-list',
+          component: './cms/business-school/article-list',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'shopkeeper-disclose',
+          path: '/cms/business-school/shopkeeper-disclose',
+          component: './cms/business-school/shopkeeper-disclose',
+          wrappers: [RouteWatcher],
+          hideInMenu: true
+        },
+        {
+          name: 'article-category-list',
+          path: '/cms/business-school/article-category-list',
+          component: './cms/business-school/article-category-list',
+          wrappers: [RouteWatcher],
+        },
+      ]
+    },
+    {
+      name: 'cancel-reason',
+      path: '/cms/cancel-reason',
+      component: './cms/cancel-reason',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'shipments-area-configuration',
+      path: '/cms/shipments-area-configuration',
+      component: './cms/shipments-area-configuration',
+      wrappers: [RouteWatcher],
+    },
+    {
+      path: '/cms/coupon-management',
+      name: 'coupon-management',
+      routes: [
+        {
+          name: 'coupon-list',
+          path: '/cms/coupon-management/coupon-list',
+          component: './cms/coupon-management/coupon-list',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'coupon-construction',
+          path: '/cms/coupon-management/coupon-construction',
+          component: './cms/coupon-management/coupon-construction',
+          wrappers: [RouteWatcher],
+          hideInMenu: true,
+        },
+        {
+          name: 'coupon-codebase',
+          path: '/cms/coupon-management/coupon-list/coupon-codebase',
+          component: './cms/coupon-management/coupon-codebase',
+          wrappers: [RouteWatcher],
+          hideInMenu: true,
+        },
+        {
+          name: 'list-details',
+          path: '/cms/coupon-management/coupon-list/list-details',
+          component: './cms/coupon-management/list-details',
+          wrappers: [RouteWatcher],
+          hideInMenu: true,
+        },
+        {
+          name: 'coupon-audit',
+          path: '/cms/coupon-management/coupon-audit',
+          component: './cms/coupon-management/coupon-audit',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'audit-details',
+          path: '/cms/coupon-management/coupon-audit/audit-details',
+          component: './cms/coupon-management/audit-details',
+          wrappers: [RouteWatcher],
+          hideInMenu: true,
+        },
+        {
+          name: 'coupon-crowd',
+          path: '/cms/coupon-management/coupon-crowd',
+          component: './cms/coupon-management/coupon-crowd',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'add-crowd',
+          path: '/cms/coupon-management/coupon-crowd/add-crowd',
+          component: './cms/coupon-management/coupon-crowd/add-crowd',
+          wrappers: [RouteWatcher],
+        }
+      ],
+    },
+    {
+      path: '/cms/message-management',
+      name: 'message-management',
+      routes: [
+        {
+          name: 'member-message-template-config',
+          path: '/cms/message-management/member-message-template-config',
+          component: './cms/message-management/member-message-template-config',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'store-message-template-config',
+          path: '/cms/message-management/store-message-template-config',
+          component: './cms/message-management/store-message-template-config',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'supplier-message-template-config',
+          path: '/cms/message-management/supplier-message-template-config',
+          component: './cms/message-management/supplier-message-template-config',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'platform-message-template-config',
+          path: '/cms/message-management/platform-message-template-config',
+          component: './cms/message-management/platform-message-template-config',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'custom-message',
+          path: '/cms/message-management/custom-message',
+          component: './cms/message-management/custom-message',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'audit',
+          path: '/cms/message-management/custom-message/audit/:id',
+          component: './cms/message-management/custom-message/audit',
+          hideInMenu: true
+        },
+        {
+          name: 'detail',
+          path: '/cms/message-management/custom-message/detail/:id',
+          component: './cms/message-management/custom-message/detail',
+          hideInMenu: true
+        },
+        {
+          name: 'stand-inside-letter-list',
+          path: '/cms/message-management/stand-inside-letter-list',
+          component: './cms/message-management/stand-inside-letter-list',
+          wrappers: [RouteWatcher],
+        },
+        // {
+        //   name: 'popup-template',
+        //   path: '/cms/message-management/popup-template',
+        //   component: './cms/message-management/popup-template',
+        //   wrappers: [RouteWatcher],
+        // }
+      ]
+    }
   ]
 }

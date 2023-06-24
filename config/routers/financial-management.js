@@ -173,5 +173,11 @@ export default {
         }
       ]
     },
+    {
+      name: 'performance-settlement-management',
+      path: '/financial-management/performance-settlement-management',
+      component: './financial-management/performance-settlement-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

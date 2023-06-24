@@ -3,7 +3,7 @@ import ProCard from '@ant-design/pro-card'
 import type { FC } from "react"
 
 import PageContainer from '@/components/PageContainer'
-import styles from "../styles.less"
+import styles from "../../styles.less"
 import ProgramPerformance from './program-performance'
 import TrainServicePackage from './train-service-package'
 import Performance from './performance'

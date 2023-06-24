@@ -52,6 +52,12 @@ export default {
       path: '/supplier-management/supplier-account-info/:id',
       component: './supplier-management/supplier-account-info',
       hideInMenu: true,
-    }
+    },
+    {
+      name: 'switch-setting',
+      path: '/supplier-management/switch-setting',
+      component: './supplier-management/switch-setting',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

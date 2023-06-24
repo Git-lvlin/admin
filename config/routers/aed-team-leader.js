@@ -23,12 +23,6 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'performance-settlement-management',
-      path: '/aed-team-leader/performance-settlement-management',
-      component: './aed-team-leader/performance-settlement-management',
-      wrappers: [RouteWatcher],
-    },
-    {
       name: 'aed-head-performance',
       path: '/aed-team-leader/aed-head-performance',
       component: './aed-team-leader/aed-head-performance',
