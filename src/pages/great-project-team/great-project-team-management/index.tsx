@@ -28,9 +28,6 @@ export default function TransactionData () {
       fieldProps:{
         placeholder:'请输入大团长手机号码'
       },
-      render: (_,record) => {
-        return <div>{record.managerPhone?record.managerPhone:<span style={{ color:'red' }}>{record.managerPhone}（第1次注销）</span>}</div>
-      }
     },
     {
       title: '用户ID',

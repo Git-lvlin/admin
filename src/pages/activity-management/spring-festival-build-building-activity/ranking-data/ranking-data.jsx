@@ -111,8 +111,8 @@ const InviteRegister=(props) => {
     const getFieldValue = (searchConfig) => {
       const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
       return {
-        startTime:dateTimeRange&&dateTimeRange[0],
-        endTime:dateTimeRange&&dateTimeRange[1],
+        startTime:dateTimeRange&&(moment(dateTimeRange[0]).valueOf()/1000).toFixed(0),
+        endTime:dateTimeRange&&(moment(dateTimeRange[1]).valueOf()/1000).toFixed(0),
         ...rest,
       }
     }
