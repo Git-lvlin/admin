@@ -39,9 +39,6 @@ export default function TransactionData (props:RegimentProps) {
       fieldProps: {
         placeholder: '请输入团长手机号码'
       },
-      render: (_,record) => {
-        return <div>{record.phone?record.phone:<span style={{ color:'red' }}>{record.phone}（第1次注销）</span>}</div>
-      }
     },
     {
       title: '团长用户ID',

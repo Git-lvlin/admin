@@ -48,9 +48,6 @@ const FoundationDonationRecords =  () => {
       dataIndex: 'phone',
       align: 'center',
       hideInSearch: true,
-      render: (_,record) => {
-        return <div>{record.phone?record.phone:<span style={{ color:'red' }}>{record.phone}（第1次注销）</span>}</div>
-      }
     },
     {
       title: '用户ID',
