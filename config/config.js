@@ -1,5 +1,6 @@
 // https://umijs.org/config/
 import { defineConfig } from 'umi';
+const RouteWatcher = '@/components/PageTab/RouteWatcher';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import user from './routers/user'
@@ -14,23 +15,23 @@ import operationManagement from './routers/operation-management'
 import intensiveStoreManagement from './routers/intensive-store-management'
 // import singleContractActivityManagement from './routers/single-contract-activity-management'
 // import groupContractActivityManagement from './routers/group-contract-activity-management'
-import couponManagement from './routers/coupon-management'
-import messageManagement from './routers/message-management'
+// import couponManagement from './routers/coupon-management'
+// import messageManagement from './routers/message-management'
 import cms from './routers/cms'
-import businessSchool from './routers/business-school'
+// import businessSchool from './routers/business-school'
 // import communityManagement from './routers/community-management'
 import ProductSharingManagement from './routers/product-sharing-management'
 import DaifaStoreManagement from './routers/daifa-store-management'
 // import pcm from './routers/price-comparsion-management'
 import financialManagement from './routers/financial-management'
 import dataBoard from './routers/data-board'
-import dc from './routers/dc'
-import signActivityManagement from './routers/sign-activity-management'
-import BlindBoxActivityManagement from './routers/blind-box-activity-management'
+// import dc from './routers/dc'
+// import signActivityManagement from './routers/sign-activity-management'
+// import BlindBoxActivityManagement from './routers/blind-box-activity-management'
 import ActivityManagement from './routers/activity-management'
-import GroupActivitiesManagement from './routers/group-activities-management'
+// import GroupActivitiesManagement from './routers/group-activities-management'
 import HydrogenAtomManagement from './routers/hydrogen-atom-management'
-import BuriedPoint from "./routers/buried-point"
+// import BuriedPoint from "./routers/buried-point"
 import OfficeManagement from './routers/office-management'
 import CityOfficeManagement from './routers/city-office-management'
 import AedTeamLeader from './routers/aed-team-leader'
@@ -89,6 +90,7 @@ const config = {
               path: '/workplace',
               name: 'workplace',
               component: './workplace',
+              wrappers: [RouteWatcher],
             },
             userManagement,
             orderManagement,
@@ -101,24 +103,23 @@ const config = {
             intensiveStoreManagement,
             // singleContractActivityManagement,
             // groupContractActivityManagement,
-            messageManagement,
-            couponManagement,
+            // messageManagement,
+            // couponManagement,
             cms,
             // pcm,
             // communityManagement,
-            DaifaStoreManagement,
-            businessSchool,
+            // businessSchool,
             ProductSharingManagement,
             financialManagement,
             dataBoard,
-            dc,
-            signActivityManagement,
-            BlindBoxActivityManagement,
+            // dc,
+            // signActivityManagement,
+            // BlindBoxActivityManagement,
             ActivityManagement,
-            GroupActivitiesManagement,
+            // GroupActivitiesManagement,
             HydrogenAtomManagement,
             HydrogenAtomTrusteeship,
-            BuriedPoint,
+            // BuriedPoint,
             OfficeManagement,
             CityOfficeManagement,
             AedTeamLeader,
@@ -129,6 +130,7 @@ const config = {
             healthPackageActivities,
             loveFeedbackActivities,
             healthGiftPackageActivities,
+            DaifaStoreManagement,
             {
               component: '404',
             },

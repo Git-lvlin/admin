@@ -17,5 +17,23 @@ export default {
       component: './product-sharing-management/settlement-records',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'designated-commodity-settlement',
+      path: '/product-sharing-management/designated-commodity-settlement',
+      routes: [
+        {
+          name: 'designated-commodity-settlement',
+          path: '/product-sharing-management/designated-commodity-settlement/designated-commodity-settlement',
+          component: './product-sharing-management/designated-commodity-settlement/designated-commodity-settlement',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'merchandise-settlement-record',
+          path: '/product-sharing-management/designated-commodity-settlement/merchandise-settlement-record',
+          component: './product-sharing-management/designated-commodity-settlement/merchandise-settlement-record',
+          wrappers: [RouteWatcher],
+        },
+      ]
+    },
   ]
 }

@@ -35,6 +35,12 @@ export default {
         wrappers: [RouteWatcher],
       },
       {
+        name: 'hydrogen-atom-user-management',
+        path: '/hydrogen-atom-management/hydrogen-atom-user-management',
+        component: './hydrogen-atom-management/hydrogen-atom-user-management',
+        wrappers: [RouteWatcher],
+      },
+      {
         name: 'assign-start-frequency',
         path: '/hydrogen-atom-management/assign-start-frequency',
         component: './hydrogen-atom-management/assign-start-frequency',

@@ -35,28 +35,53 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'AED-program-performance',
-      path: '/product-performance-management/AED-program-performance',
-      component: './product-performance-management/AED-program-performance',
+      name: 'share-the-subsidy',
+      path: '/product-performance-management/share-the-subsidy',
+      component: './product-performance-management/share-the-subsidy',
       wrappers: [RouteWatcher],
     },
     {
-      name: 'AED-course-list',
-      path: '/product-performance-management/AED-course-list',
-      component: './product-performance-management/AED-course-list',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'AED-program-transaction',
-      path: '/product-performance-management/AED-program-transaction',
-      component: './product-performance-management/AED-program-transaction',
-      wrappers: [RouteWatcher],
-    },
-    {
-      name: 'noSub-AED-program-performance',
-      path: '/product-performance-management/noSub-AED-program-performance',
-      component: './product-performance-management/noSub-AED-program-performance',
-      wrappers: [RouteWatcher],
+      name: 'AED-performance-management',
+      path: '/product-performance-management/AED-performance-management',
+      routes: [
+        {
+          name: 'AED-program-performance',
+          path: '/product-performance-management/AED-performance-management/AED-program-performance',
+          component: './product-performance-management/AED-performance-management/AED-program-performance',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'AED-course-list',
+          path: '/product-performance-management/AED-performance-management/AED-course-list',
+          component: './product-performance-management/AED-performance-management/AED-course-list',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'AED-program-transaction',
+          path: '/product-performance-management/AED-performance-management/AED-program-transaction',
+          component: './product-performance-management/AED-performance-management/AED-program-transaction',
+          wrappers: [RouteWatcher],
+        },
+        
+        {
+          name: 'noSub-AED-program-performance',
+          path: '/product-performance-management/AED-performance-management/noSub-AED-program-performance',
+          component: './product-performance-management/AED-performance-management/noSub-AED-program-performance',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'AED-volunteer-exam-info',
+          path: '/product-performance-management/AED-performance-management/AED-volunteer-exam-info',
+          component: './product-performance-management/AED-performance-management/AED-volunteer-exam-info',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'AED-volunteer-ID-info',
+          path: '/product-performance-management/AED-performance-management/AED-volunteer-ID-info',
+          component: './product-performance-management/AED-performance-management/AED-volunteer-ID-info',
+          wrappers: [RouteWatcher],
+        },
+      ]
     },
   ]
 }

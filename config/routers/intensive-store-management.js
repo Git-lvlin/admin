@@ -123,11 +123,5 @@ export default {
       component: './intensive-store-management/fresh-shop-configuration',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'share-the-subsidy',
-      path: '/intensive-store-management/share-the-subsidy',
-      component: './intensive-store-management/share-the-subsidy',
-      wrappers: [RouteWatcher],
-    },
   ]
 }

@@ -5,7 +5,7 @@ import {ProFormSwitch} from '@ant-design/pro-form';
 import { PageContainer } from '@/components/PageContainer';
 import { couponCrowdList,couponCrowdStatusSub,couponCrowdDel } from '@/services/crowd-management/coupon-crowd';
 import { history} from 'umi';
-import SubTable from '@/pages/coupon-management/coupon-construction/coupon-subtable'
+import SubTable from '@/pages/cms/coupon-management/coupon-construction/coupon-subtable'
 import AddCrowd from './add-crowd'
 
 
