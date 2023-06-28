@@ -98,6 +98,7 @@ export default {
   'menu.setting.dc-management.import-export': '导入导出配置',
   'menu.setting.dc-management.import-export.export-configuration': '导出配置',
   'menu.setting.dc-management.import-export.import-configuration': '导入配置',
+  'menu.setting.advert-config': '广告配置',
 
   'menu.finger-doctor': '手指医生',
   'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
@@ -494,6 +495,8 @@ export default {
   'menu.product-performance-management.AED-performance-management.noSub-AED-program-performance': '分账时无子公司AED课程业绩',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-exam-info': 'AED志愿者考试信息',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-ID-info': 'AED志愿者证件信息',
+  'menu.product-performance-management.AED-performance-management.early-user-management': '早筛用户管理',
+  'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
 
 
 
