@@ -347,7 +347,7 @@ const TableList = () => {
             >
               {resetText}
             </Button>,
-            <Button key="out" type="primary" onClick={() => { setBasicInfoVisible(true) }}>新建</Button>,
+            <Button key="out" type="primary" onClick={() => { setBasicInfoVisible(true);setDetailData(null) }}>新建</Button>,
             <Export
               key="3"
               change={(e) => { setExportVisible(e) }}
