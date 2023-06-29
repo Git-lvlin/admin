@@ -122,9 +122,9 @@ const SupplierDetail = () => {
             </Space>
           </Form.Item>
 
-          <div style={{textAlign: 'center', marginTop: 100}}>
+          {/* <div style={{textAlign: 'center', marginTop: 100}}>
             <Button type="primary" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
-          </div>
+          </div> */}
         </Form>
 
         

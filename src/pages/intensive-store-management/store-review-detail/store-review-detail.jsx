@@ -232,9 +232,9 @@ const Detail = () => {
                       通过
                     </Button>
                     <RejectForm id={detailData?.id} />
-                    <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
+                    {/* <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
                       返回
-                    </Button>
+                    </Button> */}
                   </Space>
                 </div>
               )

@@ -90,14 +90,14 @@ const GmvDetail = () => {
           columns={columns}
           pagination={false}
         />
-        <Button
+        {/* <Button
           type='primary'
           onClick={
             () => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }
           }
         >
           返回
-        </Button>
+        </Button> */}
       </Spin> 
     </PageContainer>
   )

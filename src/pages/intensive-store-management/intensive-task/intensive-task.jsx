@@ -119,9 +119,9 @@ const IntensiveTask = props => {
           />
         </ProCard.TabPane>
       </ProCard>
-      <div style={{ textAlign: 'center', marginTop: 30 }}>
+      {/* <div style={{ textAlign: 'center', marginTop: 30 }}>
         <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
-      </div>
+      </div> */}
       {
         productDetailDrawerVisible &&
         <ProductDetailDrawer
