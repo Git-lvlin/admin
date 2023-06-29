@@ -39,8 +39,8 @@ const Detail = ({ storeNo, visible, setVisible }) => {
   }
 
   useEffect(() => {
-    if (detailData.storeName) {
-      var marker = new AMap.Marker({
+    if (detailData.storeName && detailData.longitude&&detailData.latitude) {
+      const marker = new AMap.Marker({
         position: new AMap.LngLat(detailData.longitude, detailData.latitude),
       });
 
