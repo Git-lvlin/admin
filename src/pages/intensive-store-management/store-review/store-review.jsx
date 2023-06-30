@@ -166,15 +166,15 @@ const StoreReview = () => {
         </Space>
       )
     },
-    {
-      title: '详情地址',
-      dataIndex: '',
-      valueType: 'text',
-      fieldProps: {
-        placeholder: '请输入详情地址'
-      },
-      hideInTable: true,
-    },
+    // {
+    //   title: '详情地址',
+    //   dataIndex: '',
+    //   valueType: 'text',
+    //   fieldProps: {
+    //     placeholder: '请输入详情地址'
+    //   },
+    //   hideInTable: true,
+    // },
     {
       title: '入驻状态',
       dataIndex: ['verifyStatus', 'code'],
