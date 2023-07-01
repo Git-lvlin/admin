@@ -51,7 +51,7 @@ const WithdrawalBalanceDetails = () =>{
       render: (_) => amountTransform(_, '/'),
     },
     {
-      title: '交易后余额',
+      title: '交易后可提现余额',
       dataIndex: 'balanceAmount',
       render: (_) => amountTransform(_, '/')
     },

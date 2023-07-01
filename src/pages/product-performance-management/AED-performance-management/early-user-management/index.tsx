@@ -233,22 +233,16 @@ const AEDEarlyUserManagement: React.FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, r) => {
-        // if(r.processDesc === '待采样' || r.processDesc === '检测中') {
-        //   return (
-        //     <Space size='small'>
-        //       <a href={`/financial-management/transaction-detail-management/order-pay-detail-management?id=${r.sumOrderId}`} target='blank'>申请退款</a>
-        //       <a onClick={()=> {setCancelRegisterVisible(false); setData(r)}}>取消报名</a>
-        //     </Space>
-        //   )
-        // } else {
-        //   return
-        // }
-        return (
-          <Space size='small'>
-            <a href={`/financial-management/transaction-detail-management/order-pay-detail-management?id=${r.sumOrderId}`} target='blank'>申请退款</a>
-            <a onClick={()=> {setCancelRegisterVisible(false); setData(r)}}>取消报名</a>
-          </Space>
-        )
+        if(r.processDesc === '待采样' || r.processDesc === '检测中') {
+          return (
+            <Space size='small'>
+              <a href={`/financial-management/transaction-detail-management/order-pay-detail-management?id=${r.sumOrderId}`} target='blank'>申请退款</a>
+              <a onClick={()=> {setCancelRegisterVisible(false); setData(r)}}>取消报名</a>
+            </Space>
+          )
+        } else {
+          return
+        }
       }
     }
   ]

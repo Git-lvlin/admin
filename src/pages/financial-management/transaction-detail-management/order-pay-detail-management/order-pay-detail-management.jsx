@@ -99,9 +99,7 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单号',
       dataIndex: 'orderNo',
-      fieldProps: {
-        defaultValue: query.id && query.id
-      },
+      initialValue: query?.id,
       render: (_, records) => (
         records?.orderNo?
         <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
@@ -235,7 +233,7 @@ const OrderPayDetailManagement = () =>{
             />
           ]
         }}
-        params={{orderNo: query.id && query.id}}
+        params={{}}
         request={orderPage}
       />
       {
