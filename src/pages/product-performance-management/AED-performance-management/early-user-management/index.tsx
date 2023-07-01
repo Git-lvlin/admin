@@ -188,6 +188,18 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInTable: true
     },
     {
+      title: '预约采样日期',
+      dataIndex: 'noticeTime',
+      valueType: 'date',
+      hideInTable: true
+    },
+    {
+      title: '预约采样日期',
+      dataIndex: 'noticeTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '查看',
       valueType: 'option',
       align: 'center',
@@ -268,7 +280,6 @@ const AEDEarlyUserManagement: React.FC = () => {
         params={{}}
         formRef={form}
         request={subCompanyUser}
-        headerTitle={<span style={{color: '#ff0000'}}>重要提醒：用户数据属于用户保密，仅用于。。。不要做任何其他用途，不得泄露给任何第三方，否则追究法律责任！！！</span>}
         options={false}
         search={{
           labelWidth: 100,
