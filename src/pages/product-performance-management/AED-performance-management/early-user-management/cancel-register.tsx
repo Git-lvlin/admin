@@ -5,8 +5,9 @@ import type { FormInstance } from 'antd'
 import type { cancelRegisterProps } from './data'
 
 import { cancelSign } from '@/services/product-performance-management/early-user-management'
+import styles from './styles.less'
 
-const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, data}) => {
+const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, data, callback}) => {
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -22,6 +23,7 @@ const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, dat
     return new Promise<void>((resolve, reject) => {
       cancelSign({...value, id: data?.signId}, { showSuccess: true }).then(res => {
         if(res.code === 0) {
+          callback()
           resolve()
         } else {
           reject()
@@ -53,7 +55,7 @@ const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, dat
         }
       }}
     >
-      <div>确认要取消用户的报名么</div>
+      <div className={styles.cancel}>确认要取消用户的报名么？</div>
       <ProFormText
         label='状态'
         name='state'

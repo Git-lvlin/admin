@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import moment from 'moment'
-import { Space } from 'antd'
+import { Space, Button } from 'antd'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
@@ -12,24 +12,33 @@ import TimeSelect from '@/components/time-select'
 import { subCompanyUser } from '@/services/product-performance-management/early-user-management'
 import RegistForm from './regist-form'
 import CancelRegister from './cancel-register'
+import RefundRequestRemarks from './refund-request-remarks'
+import ImportFile from '@/components/ImportFile'
+import Notice from './notice'
+import Sampling from './sampling'
 
 const AEDEarlyUserManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [cancelRegisterVisible, setCancelRegisterVisible] = useState<boolean>(false)
+  const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
+  const [noticeVisible, setNoticeVisible] = useState<boolean>(false)
+  const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [phone, setPhone] = useState<string>()
   const [data, setData] = useState()
+  const [type, setType] = useState<boolean>(false)
   const [time, setTime] = useState<string>()
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const columns: ProColumns[] = [
     {
-      title: '编号',
+      title: '早筛编号',
       dataIndex: 'subOrderSn',
       align: 'center'
     },
     {
-      title: '订单号',
+      title: '总订单号',
       dataIndex: 'sumOrderId',
       align: 'center'
     },
@@ -62,47 +71,41 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInTable: true
     },
     {
-      title: '采样码',
-      dataIndex: '',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '报名人姓名',
+      title: '早筛人姓名',
       dataIndex: 'signUser',
       align: 'center'
     },
     {
-      title: '报名人手机号',
+      title: '早筛人手机号',
       dataIndex: 'signMemberPhone',
       align: 'center',
     },
     {
-      title: '报名时间',
+      title: '早筛报名时间',
       dataIndex: 'signTime',
       renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {
-      title: '报名成功时间',
+      title: '早筛报名时间',
       dataIndex: 'signTime',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '出报告时间',
+      title: '报告上传时间',
       dataIndex: 'reportTime',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '出报告时间',
+      title: '报告上传时间',
       dataIndex: 'reportTime',
       renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {
-      title: '样品编号',
+      title: '活检编号',
       dataIndex: 'detectionNo',
       align: 'center',
       hideInSearch: true
@@ -114,13 +117,7 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '产品名称',
-      dataIndex: 'productName',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '报名人身份证号码',
+      title: '早筛人身份证号码',
       dataIndex: 'idcard',
       align: 'center',
       hideInSearch: true
@@ -138,8 +135,14 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '送检单位',
-      dataIndex: 'company',
+      title: '所属子公司名称',
+      dataIndex: 'subName',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '子公司地址',
+      dataIndex: 'subAddress',
       align: 'center',
       hideInSearch: true
     },
@@ -179,6 +182,8 @@ const AEDEarlyUserManagement: React.FC = () => {
       valueEnum: {
         0: '待报名',
         1: '待采样',
+        2: '已采样',
+        3: '已下单',
         5: '检测中',
         10: '已完成',
         14: '退款中',
@@ -190,7 +195,7 @@ const AEDEarlyUserManagement: React.FC = () => {
     {
       title: '预约采样日期',
       dataIndex: 'noticeTime',
-      valueType: 'date',
+      renderFormItem: () => <TimeSelect />,
       hideInTable: true
     },
     {
@@ -200,11 +205,22 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '所属子公司状态',
+      dataIndex: 'isSub',
+      valueType: 'select',
+      valueEnum: {
+        0: '无所属子公司',
+        1: '有所属子公司'
+      },
+      hideInTable: true
+    },
+    {
       title: '查看',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, r) => {
-        if(r.processDesc === '检测中' || r.processDesc === '待采样' || r.processDesc === '退款成功') {
+        if(r.processDesc !== '待报名') {
           return (
             <a
               onClick={()=> {
@@ -230,7 +246,7 @@ const AEDEarlyUserManagement: React.FC = () => {
               >
                 报名表
               </a>
-              <a>
+              <a href={`${r.reportUrl && r.reportUrl}`} target='_blank'>
                 体检报告
               </a>
             </Space>
@@ -244,13 +260,26 @@ const AEDEarlyUserManagement: React.FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
+      fixed: 'right',
       render: (_, r) => {
-        if(r.processDesc === '待采样' || r.processDesc === '检测中') {
+        if(r.processDesc === '待采样' || r.processDesc === '已下单' || r.processDesc === '已采样') {
           return (
             <Space size='small'>
-              <a href={`/financial-management/transaction-detail-management/order-pay-detail-management?id=${r.sumOrderId}`} target='blank'>申请退款</a>
-              <a onClick={()=> {setCancelRegisterVisible(false); setData(r)}}>取消报名</a>
+              <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(r.subOrderSn); setType(false); setData(undefined)}}>申请退款备注</a>
+              <a onClick={()=> {setCancelRegisterVisible(true); setData(r)}}>取消报名</a>
+              {
+                r.processDesc === '待采样' &&
+                <a onClick={()=> {setNoticeVisible(true); setData(r)}}>通知采样</a>
+              }
+              {
+                r.processDesc === '待采样' &&
+                <a onClick={()=> {setSamplingVisivle(true); setData(r)}}>采样发货</a>
+              }
             </Space>
+          )
+        } else if(r.processDesc === '已退款'){
+          return (
+            <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(r.subOrderSn); setType(true); setData(r.refund)}}>查看退款备注</a>
           )
         } else {
           return
@@ -260,7 +289,7 @@ const AEDEarlyUserManagement: React.FC = () => {
   ]
   
   const getFieldsValue = () => {
-    const { reportTime, signTime, payTime, ...rest } = form.current?.getFieldsValue()
+    const { reportTime, signTime, payTime, noticeTime, ...rest } = form.current?.getFieldsValue()
     return { 
       orderStartTime: payTime && moment(payTime[0]).format('YYYY-MM-DD HH:mm:ss'),
       orderEndTime: payTime && moment(payTime[1]).format('YYYY-MM-DD HH:mm:ss'),
@@ -268,6 +297,8 @@ const AEDEarlyUserManagement: React.FC = () => {
       signEndTime: signTime && moment(signTime[1]).format('YYYY-MM-DD HH:mm:ss'),
       reportStartTime: reportTime && moment(reportTime[0]).format('YYYY-MM-DD HH:mm:ss'),
       reportEndTime: reportTime && moment(reportTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      noticeStartTime: noticeTime && moment(noticeTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      noticeEndTime: noticeTime && moment(noticeTime[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest
     }
   }
@@ -281,15 +312,39 @@ const AEDEarlyUserManagement: React.FC = () => {
         formRef={form}
         request={subCompanyUser}
         options={false}
+        actionRef={actRef}
+        toolBarRender={() => [
+          <Export
+            key='2'
+            type='scrAdmWaitDetectUser'
+            text='导出待采样用户'
+            conditions={getFieldsValue}
+          />,
+          <ImportFile
+            key='3'
+            code='scrAdmDetectUser'
+            title='导入样本编号和物流单号'
+          />
+        ]}
         search={{
-          labelWidth: 100,
+          labelWidth: 120,
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export
               key='1'
               type='scrAdmCompanyUser'
               conditions={getFieldsValue}
-            />
+            />,
+            <Button 
+              type='primary' 
+              key='2'
+              onClick={()=> {
+                setNoticeVisible(true)
+                setData(undefined)
+              }}
+            >
+              通知采样
+            </Button>
           ]
         }}
       />
@@ -309,6 +364,36 @@ const AEDEarlyUserManagement: React.FC = () => {
           visible={cancelRegisterVisible}
           setVisible={setCancelRegisterVisible}
           data={data}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        refundRequestRemarksVisible &&
+        <RefundRequestRemarks
+          visible={refundRequestRemarksVisible}
+          setVisible={setRefundRequestRemarksVisible}
+          id={id}
+          type={type}
+          data={data}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        noticeVisible &&
+        <Notice
+          visible={noticeVisible}
+          setVisible={setNoticeVisible}
+          data={data}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        samplingVisivle &&
+        <Sampling
+          visible={samplingVisivle}
+          setVisible={setSamplingVisivle}
+          data={data}
+          callback={()=> actRef.current?.reload()}
         />
       }
     </PageContainer>

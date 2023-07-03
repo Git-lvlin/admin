@@ -55,20 +55,20 @@ const RegistForm:React.FC<registFormProps> = ({id, visible, setVisible, phone, t
         <Descriptions.Item label="性别">{data?.senderDesc}</Descriptions.Item>
         <Descriptions.Item label="身份证号码">{data?.cardNo}</Descriptions.Item>
         <Descriptions.Item label="年龄">{data?.age}</Descriptions.Item>
-        <Descriptions.Item label=" ">{}</Descriptions.Item>
-        <Descriptions.Item label=" ">{}</Descriptions.Item> 
+        <Descriptions.Item label="身高(cm)">{data?.height}</Descriptions.Item>
+        <Descriptions.Item label="体重(kg)">{data?.weight}</Descriptions.Item> 
       </Descriptions>
       <Table
+        rowKey='index'
         showHeader={false}
         columns={columns}
         bordered
         pagination={false}
-        dataSource={data?.agreeRemark && JSON.parse(data?.agreeRemark)}
+        dataSource={data?.other && JSON.parse(data?.other)}
         style={{margin: '20px 0'}}
       />
       <Image
-        width='100%'
-        height={80}
+        width='300px'
         src={data?.signUrl}
       />
     </Drawer>

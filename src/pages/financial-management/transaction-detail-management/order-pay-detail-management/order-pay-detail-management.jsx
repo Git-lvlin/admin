@@ -3,7 +3,6 @@ import React, { useState, useEffect,useRef } from 'react'
 import { PageContainer } from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
 import moment from 'moment'
-import { useLocation } from 'umi'
 
 import { amountTransform } from '@/utils/utils'
 import { orderPage,exceptionOrderRefund } from '@/services/financial-management/transaction-detail-management'
@@ -22,7 +21,6 @@ const OrderPayDetailManagement = () =>{
   const [msgDatail,setMsgDatail] = useState({})
   const actRef = useRef()
   const formRef = useRef()
-  const { query } = useLocation()
   
   useEffect(() => {
     orderTypes({}).then(res => {
@@ -99,7 +97,6 @@ const OrderPayDetailManagement = () =>{
     {
       title: '订单号',
       dataIndex: 'orderNo',
-      initialValue: query?.id,
       render: (_, records) => (
         records?.orderNo?
         <a onClick={() => { setSelectItem(records.orderNo); setDetailVisible(true); }}>{_}</a>:
