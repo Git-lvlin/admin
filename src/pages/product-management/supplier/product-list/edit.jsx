@@ -142,6 +142,7 @@ export default (props) => {
       profit,
       distributePrice,
       goodsName,
+      declaration,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -270,6 +271,7 @@ export default (props) => {
         invoiceTaxRate: goods.invoiceTaxRate,
         supplyInvoiceType: goods.supplyInvoiceType,
         wholesaleTaxRate: goods.wholesaleTaxRate,
+        declaration,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -760,6 +762,7 @@ export default (props) => {
         goodsVirtualSaleNum: goods.goodsVirtualSaleNum,
         showOn: goods.showOn,
         operateType: goods.operateType,
+        declaration: goods.declaration,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -1982,6 +1985,17 @@ export default (props) => {
       <ProFormTextArea
         name="goodsRemark"
         label="特殊说明"
+        // disabled
+        fieldProps={{
+          placeholder: '',
+          onBlur: (e) => {
+            checkSensitiveWordsHandle(e.target.value);
+          }
+        }}
+      />
+      <ProFormTextArea
+        name="declaration"
+        label="标红温馨提示"
         // disabled
         fieldProps={{
           placeholder: '',

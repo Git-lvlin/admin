@@ -5,6 +5,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import { accountCityDetail,accountCityEdit,checkAccount } from "@/services/aed-team-leader/team-leader-management"
+import Address from '@/pages/supplier-management/after-sale-address/address';
 import md5 from 'blueimp-md5';
 import type { CumulativeProps } from "./data"
 
@@ -33,6 +34,12 @@ export default (props: CumulativeProps) => {
         form.setFieldsValue({
           name:msgDetail?.name,
           ...res.data,
+          address: {
+            provinceId: res.data.provinceId,
+            cityId: res.data.cityId,
+            areaId: res.data.areaId,
+            info: res.data.address,
+          }
         })
       }
     })
@@ -81,10 +88,20 @@ export default (props: CumulativeProps) => {
         }
       }}
       onFinish={async (values) => {
+        const { address } = values
+        const { province, city, area, info } = address;
         const params={
           ...values,
-          password:values?.password&&md5(values?.password)
+          password:values?.password&&md5(values?.password),
+          provinceId: province.id,
+          cityId: city.id,
+          areaId: area.id,
+          provinceName: province.name,
+          cityName: city.name,
+          areaName: area.name,
+          address: info,
         }
+
         accountCityEdit(params).then(res=>{
           if(res.code==0){
             setVisible(false)
@@ -150,6 +167,23 @@ export default (props: CumulativeProps) => {
          { validator: checkConfirm }
         ]}
       />
+      <Form.Item
+        name="address"
+        label="地址"
+        validateFirst
+        rules={[{ required: true,message:'请填写地址' },
+        () => ({
+          validator(_, value = {}) {
+            const { province, city, area, info } = value;
+            if (!province || !city || !area || !info) {
+              return Promise.reject(new Error('请填写地址'));
+            }
+            return Promise.resolve();
+          },
+        })]}
+      >
+        <Address />
+      </Form.Item>
     </DrawerForm >
   );
 };
