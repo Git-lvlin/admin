@@ -496,7 +496,7 @@ const TableList = () => {
                     {
                       item.orderTypeDesc === 'AED早筛订单' &&
                       <div>
-                        <a href={`/product-performance-management/AED-performance-management/early-user-management?id=${item.sumOrderId}`} target='_blank'>早筛检测</a>
+                        <a href={`/product-performance-management/AED-performance-management/early-user-management?id=${item.orderSn}`} target='_blank'>早筛检测</a>
                       </div>
                     }
                   </div>
