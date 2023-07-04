@@ -495,7 +495,7 @@ export default {
   'menu.product-performance-management.AED-performance-management.noSub-AED-program-performance': '分账时无子公司AED课程业绩',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-exam-info': 'AED志愿者考试信息',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-ID-info': 'AED志愿者证件信息',
-  'menu.product-performance-management.AED-performance-management.early-user-management': '早筛用户管理',
+  'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
 
 
