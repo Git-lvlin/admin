@@ -80,7 +80,10 @@ const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, dat
           showCount: true
         }}
         width='md'
-        rules={[{
+        rules={[
+          {
+            required: true
+          },{
           validator: (_, value) => {
             if(value?.length < 5) {
               return Promise.reject("请输入至少5-50个字符")
