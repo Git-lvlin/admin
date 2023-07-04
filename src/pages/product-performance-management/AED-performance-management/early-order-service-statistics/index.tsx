@@ -20,11 +20,6 @@ const EarlyOrderServiceStatistics: React.FC = () => {
 
   const columns:ProColumns[] = [
     {
-      title: '序号',
-      valueType: 'indexBorder',
-      align: 'center'
-    },
-    {
       title: '下单人手机号',
       dataIndex: 'buyerPhone',
       align: 'center',
@@ -71,6 +66,18 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '已采样数',
+      dataIndex: 'gathered',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '已下单数',
+      dataIndex: 'ordered',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '检测中数',
       dataIndex: 'check',
       align: 'center',
@@ -83,14 +90,14 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '退款中数',
-      dataIndex: 'refund',
+      title: '已退款数',
+      dataIndex: 'refunded',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '已退款数',
-      dataIndex: 'refunded',
+      title: '已失效数',
+      dataIndex: 'disable',
       align: 'center',
       hideInSearch: true
     },
@@ -118,6 +125,18 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       dataIndex: 'sumId'
     },
     {
+      title: '总早筛用户数',
+      dataIndex: 'countMemberId'
+    },
+    {
+      title: '已退款数',
+      dataIndex: 'refunded'
+    },
+    {
+      title: '已失效数',
+      dataIndex: 'disable'
+    },
+    {
       title: '待报名数',
       dataIndex: 'signUpPre'
     },
@@ -126,8 +145,12 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       dataIndex: 'signUp'
     },
     {
-      title: '总早筛用户数',
-      dataIndex: 'countMemberId'
+      title: '已采样数',
+      dataIndex: 'gathered'
+    },
+    {
+      title: '已下单数',
+      dataIndex: 'ordered'
     },
     {
       title: '检测中数',
@@ -136,21 +159,13 @@ const EarlyOrderServiceStatistics: React.FC = () => {
     {
       title: '已完成数',
       dataIndex: 'done'
-    },
-    {
-      title: '退款中数',
-      dataIndex: 'refund'
-    },
-    {
-      title: '已退款数',
-      dataIndex: 'refunded'
     }
   ]
 
   return (
     <PageContainer className={styles.desc}>
       <ProDescriptions
-        column={{xxl: 5, xl: 3}}
+        column={{xxl: 6, xl: 3}}
         columns={proDescriptionsColumns}
         request={statisticsOrder}
         bordered
