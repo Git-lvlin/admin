@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import moment from 'moment'
 import { Space, Button } from 'antd'
+import { useLocation } from 'umi'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -31,6 +32,8 @@ const AEDEarlyUserManagement: React.FC = () => {
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
+  const { query } = useLocation()
+
   const columns: ProColumns[] = [
     {
       title: '早筛编号',
@@ -40,7 +43,8 @@ const AEDEarlyUserManagement: React.FC = () => {
     {
       title: '总订单号',
       dataIndex: 'sumOrderId',
-      align: 'center'
+      align: 'center',
+      initialValue: query.id && query.id
     },
     {
       title: '下单人手机号',
