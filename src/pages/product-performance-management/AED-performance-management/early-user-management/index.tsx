@@ -29,6 +29,7 @@ const AEDEarlyUserManagement: React.FC = () => {
   const [type, setType] = useState<boolean>(false)
   const [time, setTime] = useState<string>()
   const [id, setId] = useState<string>()
+  const [select, setSelect] = useState<string>()
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
@@ -170,19 +171,12 @@ const AEDEarlyUserManagement: React.FC = () => {
       )
     },
     {
-      title: '通知状态',
-      dataIndex: 'isNotice',
-      valueType: 'select',
-      valueEnum: {
-        0: '待通知',
-        1: '已通知'
-      },
-      hideInTable: true
-    },
-    {
       title: '状态',
       dataIndex: 'process',
       valueType: 'select',
+      fieldProps: {
+        onChange: (e: string) => setSelect(e)
+      },
       valueEnum: {
         0: '待报名',
         1: '待采样',
@@ -195,6 +189,17 @@ const AEDEarlyUserManagement: React.FC = () => {
         20: '已失效',
       },
       hideInTable: true
+    },
+    {
+      title: '通知状态',
+      dataIndex: 'isNotice',
+      valueType: 'select',
+      valueEnum: {
+        0: '待通知',
+        1: '已通知'
+      },
+      hideInTable: true,
+      hideInSearch: select !== '1'
     },
     {
       title: '预约采样日期',
