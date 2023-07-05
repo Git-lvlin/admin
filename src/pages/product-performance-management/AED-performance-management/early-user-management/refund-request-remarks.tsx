@@ -79,7 +79,10 @@ const RefundRequestRemarks:React.FC<refundRequestRemarksProps> = ({visible, setV
           showCount: true
         }}
         readonly={type}
-        rules={[{validator: (_, value)=> {
+        rules={[
+          {
+            required: true
+          },{validator: (_, value)=> {
           if(value?.length < 5) {
             return Promise.reject('请输入5-50个字符')
           } else {
