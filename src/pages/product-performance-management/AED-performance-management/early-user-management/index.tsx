@@ -11,7 +11,7 @@ import Export from '@/components/export'
 import PageContainer from '@/components/PageContainer'
 import TimeSelect from '@/components/time-select'
 import { subCompanyUser } from '@/services/product-performance-management/early-user-management'
-import RegistForm from './regist-form'
+import RegistForm from './early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
 import ImportFile from '@/components/ImportFile'
@@ -24,10 +24,8 @@ const AEDEarlyUserManagement: React.FC = () => {
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
   const [noticeVisible, setNoticeVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
-  const [phone, setPhone] = useState<string>()
   const [data, setData] = useState()
   const [type, setType] = useState<boolean>(false)
-  const [time, setTime] = useState<string>()
   const [id, setId] = useState<string>()
   const [select, setSelect] = useState<string>()
   const form = useRef<FormInstance>()
@@ -234,12 +232,10 @@ const AEDEarlyUserManagement: React.FC = () => {
             <a
               onClick={()=> {
                 setVisible(true)
-                setPhone(r.signMemberPhone)
                 setId(r.subOrderSn)
-                setTime(r.signTime)
               }}
             >
-              报名表
+              查看同意书
             </a>
           )
         } else if(r.processDesc === '已完成') {
@@ -248,12 +244,10 @@ const AEDEarlyUserManagement: React.FC = () => {
               <a
                 onClick={()=> {
                   setVisible(true)
-                  setPhone(r.signMemberPhone)
                   setId(r.subOrderSn)
-                  setTime(r.signTime)
                 }}
               >
-                报名表
+                查看同意书
               </a>
               <a href={`${r.reportUrl && r.reportUrl}`} target='_blank'>
                 体检报告
@@ -363,8 +357,6 @@ const AEDEarlyUserManagement: React.FC = () => {
           visible={visible}
           setVisible={setVisible}
           id={id}
-          phone={phone}
-          time={time}
         />
       }
       {
