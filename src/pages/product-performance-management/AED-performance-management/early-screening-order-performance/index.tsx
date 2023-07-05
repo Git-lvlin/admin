@@ -4,7 +4,7 @@ import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
 
-import { scrOrderGoodsPm } from "@/services/product-performance-management/early-screening-order-performance"
+import { orderGoodsPm } from "@/services/product-performance-management/early-screening-order-performance"
 import moment from 'moment';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -154,7 +154,7 @@ export default function TransactionData () {
       <ProTable
         rowKey="id"
         columns={tableColumns}
-        request={scrOrderGoodsPm}
+        request={orderGoodsPm}
         columnEmptyText={false}
         actionRef={form}
         pagination={{

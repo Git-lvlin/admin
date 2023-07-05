@@ -4,7 +4,7 @@ import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
 
-import { scrOrderPm } from "@/services/aed-team-leader/aed-early-screening-order-performance"
+import { orderPm } from "@/services/aed-team-leader/aed-early-screening-order-performance"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
@@ -25,7 +25,7 @@ export default function TransactionData () {
   const tableColumns: ProColumns[] = [
     {
       title: '编号',
-      dataIndex:'orderSn',
+      dataIndex:'signCode',
     },
     {
       title: '订单号',
@@ -126,7 +126,7 @@ export default function TransactionData () {
       <ProTable
         rowKey="orderSn"
         columns={tableColumns}
-        request={scrOrderPm}
+        request={orderPm}
         columnEmptyText={false}
         actionRef={form}
         options={false}

@@ -1,8 +1,23 @@
 import request from "@/utils/request";
 
-export const orderPm = async (params = {}, options = {}) => {
+
+export const scrTeamPmStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/stats/report/java/scrTeamPmStats', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+}
+
+export const scrTeamPm = async (params = {}, options = {}) => {
     const { current, pageSize, dateRange, ...rest } = params;
-    const res = await request('/auth/healthy/screening/orderPm', {
+    const res = await request('/auth/stats/report/java/scrTeamPm', {
       method: 'POST',
       data: {
         page: current,

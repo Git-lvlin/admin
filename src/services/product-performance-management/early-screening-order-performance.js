@@ -2,9 +2,9 @@ import request from '@/utils/request';
 import moment from 'moment';
 
 // 产品业绩管理-早筛订单业绩
-export const scrOrderGoodsPm = async (params, options = {}) => {
+export const orderGoodsPm = async (params, options = {}) => {
   const { dateRange, ...rest } = params
-  const res = await request('/auth/stats/report/java/scrOrderGoodsPm', {
+  const res = await request('/auth/healthy/screening/orderGoodsPm', {
     method: 'POST',
     data: {
       startTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
