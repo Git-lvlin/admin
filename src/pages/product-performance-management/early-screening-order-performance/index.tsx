@@ -24,11 +24,11 @@ export default function TransactionData () {
 
   const tableColumns: ProColumns[] = [
     {
-      title: '编号',
+      title: '早筛编号',
       dataIndex:'subOrderSn',
     },
     {
-      title: '订单号',
+      title: '总订单号',
       dataIndex: 'sumOrderId',
       align: 'center',
     },
