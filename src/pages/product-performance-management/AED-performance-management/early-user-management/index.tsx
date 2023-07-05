@@ -35,7 +35,7 @@ const AEDEarlyUserManagement: React.FC = () => {
 
   const columns: ProColumns[] = [
     {
-      title: '早筛编号',
+      title: '子单号',
       dataIndex: 'subOrderSn',
       align: 'center'
     },
@@ -44,6 +44,12 @@ const AEDEarlyUserManagement: React.FC = () => {
       dataIndex: 'sumOrderId',
       align: 'center',
       initialValue: query.id && query.id
+    },
+    {
+      title: '早筛码',
+      dataIndex: 'signCode',
+      align: 'center', 
+      order: 1
     },
     {
       title: '下单人手机号',
