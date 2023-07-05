@@ -75,22 +75,26 @@ const Sampling: React.FC<noticeProps> = ({ visible, setVisible, data, callback})
         label='液体活检编号'
         name='detectionNo'
         width='md'
+        rules={[{required: true}]}
       />
       <ProFormSelect
         label='物流公司名称'
         name='expressId'
         options={companyList}
         width='md'
+        rules={[{required: true}]}
       />
       <ProFormText
         label='物流运单编号'
         name='shippingCode'
         width='md'
+        rules={[{required: true}]}
       />
       <ProFormText
         label='收件人手机号'
         name='consigneePhone'
         width='md'
+        rules={[{required: true}]}
       />
     </ModalForm>
   )
