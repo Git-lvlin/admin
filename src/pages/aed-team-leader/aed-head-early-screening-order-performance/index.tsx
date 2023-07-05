@@ -175,10 +175,10 @@ export default function TransactionData () {
             <Export
             key='export'
             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-            type={'aedTeamPm'}
+            type={'scrTeamPm'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'aedTeamPm'}/>
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'scrTeamPm'}/>
           ],
         }}
       />
