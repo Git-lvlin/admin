@@ -114,6 +114,31 @@ export default (props) => {
       })
   }
 
+  const cropImg = (urls) => {
+    const arr = [];
+    urls.forEach(item => {
+      if (item.indexOf('?') === -1) {
+        arr.push(item);
+      } else {
+        const url = item.split('?');
+        const { imgHeight = 0, imgWidth = 0 } = parse(url[1]);
+        if (imgHeight && imgWidth && imgHeight / imgWidth > 2) {
+          const count = Math.ceil(imgHeight / imgWidth);
+          for (let index = 0; index < count; index += 1) {
+            if (index === count - 1) {
+              arr.push(`${url[0]}?imgWidth=${imgWidth}&imgHeight=${imgHeight - index * imgWidth}&x-oss-process=image/crop,x_0,y_${index * imgWidth},w_${imgWidth},h_${imgHeight - index * imgWidth}&?x-oss-process=image/resize`)
+            } else {
+              arr.push(`${url[0]}?imgWidth=${imgWidth}&imgHeight=${imgWidth}&x-oss-process=image/crop,x_0,y_${index * imgWidth},w_${imgWidth},h_${imgWidth}&?x-oss-process=image/resize`)
+            }
+          }
+        } else {
+          arr.push(item);
+        }
+      }
+    })
+    return arr;
+  }
+
   const submit = (values) => {
     const {
       videoUrl,
@@ -275,7 +300,7 @@ export default (props) => {
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
-      detailImages: urlsTransform(detailImages),
+      detailImages: urlsTransform(cropImg(detailImages)),
       // advImages: advImages?.length ? urlsTransform(advImages) : null,
       videoUrl: detailData?.videoUrl,
       shipAddrs: detailData?.shipAddrs?.map?.(item => ({ shipId: item.shipId }))
