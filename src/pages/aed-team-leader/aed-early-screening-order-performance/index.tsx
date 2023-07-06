@@ -14,7 +14,7 @@ export default function TransactionData () {
   const [visit, setVisit] = useState<boolean>(false)
 
   const getFieldValue = (searchConfig: any) => {
-    const { dateRange, ...rest }=searchConfig.form.getFieldsValue()
+    const { dateRange = [], ...rest }=searchConfig.form.getFieldsValue()
     return {
       startTime: dateRange[0]&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: dateRange[1]&& moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
@@ -66,7 +66,7 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '单品金额',
+      title: '金额',
       dataIndex: 'payAmountDesc',
       align: 'center',
       hideInSearch: true
@@ -111,6 +111,23 @@ export default function TransactionData () {
       dataIndex: 'subTypeDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '状态',
+      dataIndex: 'process',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        0:'待报名',
+        1:'待采样',
+        2:'已采样',
+        3:'已下单', 
+        5:'检测中',
+        10:'已完成',
+        14:'退款中', 
+        15:'已退款',
+        20:'已失效',
+      }
     },
     {
       title: '状态',
