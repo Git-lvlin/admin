@@ -29,6 +29,7 @@ export default (props) => {
         setMsgDetail(res.data)
         if(other) {
           form.setFieldsValue({
+            ...res.data,
             smoke: other[0].select,
             breakfast:other[1].select,
             midnight:other[2].select,
@@ -121,7 +122,7 @@ export default (props) => {
       {...formItemLayout}
     >
       <div className={`${styles.earlyScreening} early` }>
-        <div className={styles.headFixation}>早筛码：{msgDetail?.subOrderSn}</div>
+        <div className={styles.headFixation}>早筛码：{shortId}</div>
         <div className={styles.earlyTitle}>健康问卷+知情书/抽<div>血委托协议</div></div>
         <div className={styles.earlyHint}>所填信息必须和签署知情同意书一致。如信息有误，造成一切结果和责任，由本人承担</div>
         <div className={styles.form}>
@@ -554,9 +555,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['lung']}>
-              {({ lung }) => {
-                if(lung == '有异常'){
+            <ProFormDependency name={['lung','landmark']}>
+              {({ lung, landmark }) => {
+                if(lung == '有异常'&&landmark == '已检测'){
                   return (
                       <ProFormCheckbox.Group
                         label="异常项目为"
