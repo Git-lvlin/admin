@@ -641,9 +641,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['spiral']}>
-              {({ spiral }) => {
-                if(spiral== '有异常'){
+            <ProFormDependency name={['spiral','ldct']}>
+              {({ spiral,ldct }) => {
+                if(spiral== '有异常'&&ldct == '已检测'){
                   return (
                       <ProFormText label="异常为" name="drugCause" readonly/>
                   )
@@ -690,9 +690,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['ultrasound']}>
-              {({ ultrasound }) => {
-                if(ultrasound== '有异常'){
+            <ProFormDependency name={['ultrasound','breast']}>
+              {({ ultrasound,breast }) => {
+                if(ultrasound== '有异常'&&breast == '已检测'){
                   return (
                       <ProFormText label="异常为" name="tungsten" readonly/>
                   )
@@ -739,9 +739,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['dirty']}>
-              {({ dirty }) => {
-                if(dirty== '有异常'){
+            <ProFormDependency name={['dirty','liver']}>
+              {({ dirty,liver }) => {
+                if(dirty== '有异常'&&liver == '已检测'){
                   return (
                       <ProFormText label="异常为" name="exceed" readonly/>
                   )
@@ -788,9 +788,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['nuclear']}>
-              {({ nuclear }) => {
-                if(nuclear== '有异常'){
+            <ProFormDependency name={['nuclear','prostate']}>
+              {({ nuclear,prostate }) => {
+                if(nuclear== '有异常'&&prostate == '已检测'){
                   return (
                       <ProFormText label="异常为" name="resonance" readonly/>
                   )
@@ -837,9 +837,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['insulin']}>
-              {({ insulin }) => {
-                if(insulin== '有异常'){
+            <ProFormDependency name={['insulin','pancreas']}>
+              {({ insulin,pancreas }) => {
+                if(insulin== '有异常'&&pancreas == '已检测'){
                   return (
                       <ProFormText label="异常为" name="gland" readonly/>
                   )
@@ -886,9 +886,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['routine']}>
-              {({ routine }) => {
-                if(routine== '有异常'){
+            <ProFormDependency name={['routine','blood']}>
+              {({ routine,blood }) => {
+                if(routine== '有异常'&&blood == '已检测'){
                   return (
                       <ProFormText label="异常为" name="examination" readonly/>
                   )
@@ -935,9 +935,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['oophoron']}>
-              {({ oophoron }) => {
-                if(oophoron== '有异常'){
+            <ProFormDependency name={['oophoron','ovary']}>
+              {({ oophoron,ovary }) => {
+                if(oophoron== '有异常'&&ovary == '已检测'){
                   return (
                       <ProFormText label="异常为" name="ootheca" readonly/>
                   )
@@ -984,9 +984,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['thyroidea']}>
-              {({ thyroidea }) => {
-                if(thyroidea== '有异常'){
+            <ProFormDependency name={['thyroidea','thyroid']}>
+              {({ thyroidea,thyroid }) => {
+                if(thyroidea== '有异常'&&thyroid == '已检测'){
                   return (
                       <ProFormText label="异常为" name="glandula" readonly/>
                   )
@@ -1033,9 +1033,9 @@ export default (props) => {
                 }
               }}
             </ProFormDependency>
-            <ProFormDependency name={['vertex']}>
-              {({ vertex }) => {
-                if(vertex== '有异常'){
+            <ProFormDependency name={['vertex','skull']}>
+              {({ vertex,skull }) => {
+                if(vertex== '有异常'&&skull == '已检测'){
                   return (
                       <ProFormText label="异常为" name="scalp" readonly/>
                   )
