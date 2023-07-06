@@ -461,7 +461,7 @@ export default {
   'menu.aed-team-leader.team-leader-management': '子公司管理',
   'menu.aed-team-leader.order-performance': '订单业绩',
   'menu.aed-team-leader.three-thousand-eight-performance': '3800单业绩',
-  'menu.aed-team-leader.aed-head-performance': 'AED团长业绩',
+  'menu.aed-team-leader.aed-head-performance': 'AED团长课程订单业绩',
   'menu.aed-team-leader.aed-head-early-screening-order-performance': 'AED团长早筛订单业绩',
   'menu.aed-team-leader.aed-settlement-configuration': 'AED课程服务套餐业绩结算规则配置',
   'menu.aed-team-leader.aed-early-screening-order-performance': 'AED早筛订单业绩管理',
