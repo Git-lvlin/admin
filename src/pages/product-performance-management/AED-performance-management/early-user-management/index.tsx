@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import moment from 'moment'
 import { Space, Button } from 'antd'
 import { useLocation } from 'umi'
+import ProForm, { ProFormSelect } from '@ant-design/pro-form'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -18,6 +19,7 @@ import ImportFile from '@/components/ImportFile'
 import Notice from './notice'
 import Sampling from './sampling'
 import ExpressList from './express-list'
+import styles from './styles.less'
 
 const AEDEarlyUserManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -27,6 +29,8 @@ const AEDEarlyUserManagement: React.FC = () => {
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [expressVisible, setExpressVisible] = useState<boolean>(false)
   const [data, setData] = useState()
+  const [state, setState] = useState()
+  const [dateTime, setDateTime] = useState()
   const [type, setType] = useState<boolean>(false)
   const [id, setId] = useState<string>()
   const [shortId, setShortId] = useState<string>()
@@ -326,17 +330,7 @@ const AEDEarlyUserManagement: React.FC = () => {
         options={false}
         actionRef={actRef}
         toolBarRender={() => [
-          <Export
-            key='2'
-            type='scrAdmWaitDetectUser'
-            text='导出待采样用户'
-            conditions={getFieldsValue}
-          />,
-          <ImportFile
-            key='3'
-            code='scrAdmDetectUser'
-            title='导入样本编号和物流单号'
-          />
+          
         ]}
         search={{
           labelWidth: 120,
@@ -416,6 +410,41 @@ const AEDEarlyUserManagement: React.FC = () => {
           callback={()=> actRef.current?.reload()}
         />
       }
+      <div className={styles.export}>
+        <div>导出待采样用户，录入活检编号和物流信息后再导入</div>
+        <Space size='small'>
+          <ProFormSelect
+            label='通知状态'
+            options={[
+              {label: '待通知', value: '0'},
+              {label: '已通知', value: '1'}
+            ]}
+            fieldProps={{
+              onChange: (e) => setState(e)
+            }}
+          />
+          <ProForm.Item
+            label='预约采样日期'
+          >
+            <TimeSelect onChange={(e)=> setDateTime(e)} />
+          </ProForm.Item>
+          <Export
+            key='2'
+            type='scrAdmWaitDetectUser'
+            text='导出待采样用户'
+            conditions={{
+              isNotice: state && state,
+              noticeStartTime: dateTime && moment(dateTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+              noticeEndTime: dateTime && moment(dateTime[1]).format('YYYY-MM-DD HH:mm:ss')
+            }}
+          />
+          <ImportFile
+            key='3'
+            code='scrAdmDetectUser'
+            title='导入样本编号和物流单号'
+          />
+        </Space>
+      </div>
     </PageContainer>
   )
 }
