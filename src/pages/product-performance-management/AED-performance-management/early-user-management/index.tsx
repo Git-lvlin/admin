@@ -246,7 +246,7 @@ const AEDEarlyUserManagement: React.FC = () => {
       align: 'center',
       fixed: 'right',
       render: (_, r) => {
-        if(r.processDesc !== '待报名') {
+        if(r.signUser) {
           return (
             <Space size='small'>
               <a
@@ -259,7 +259,7 @@ const AEDEarlyUserManagement: React.FC = () => {
                 查看同意书
               </a>
               {
-                r.processDesc === '已完成'&&
+                r.reportUrl&&
                 <a href={`${r.reportUrl && r.reportUrl}`} target='_blank'>
                   体检报告
                 </a>
@@ -286,13 +286,13 @@ const AEDEarlyUserManagement: React.FC = () => {
                 r.processDesc === '待采样' &&
                 <a onClick={()=> {setNoticeVisible(true); setData(r)}}>通知采样</a>
               }
-              {
+              {/* {
                 r.processDesc === '待采样' &&
                 <a onClick={()=> {setSamplingVisivle(true); setData(r)}}>采样发货</a>
-              }
+              } */}
             </Space>
           )
-        } else if(r.processDesc === '已退款'){
+        } else if(r.refund){
           return (
             <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(r.subOrderSn); setType(true); setData(r.refund)}}>查看退款备注</a>
           )
