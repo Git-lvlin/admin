@@ -15,6 +15,8 @@ export const orderGoodsPm = async (params, options = {}) => {
   })
   return {
     data: res.data.records,
-    success: res.success
+    success: res.success,
+    total: res.data.total,
+    code: res.code
   }
 }
