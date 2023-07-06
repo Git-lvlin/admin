@@ -17,6 +17,7 @@ import RefundRequestRemarks from './refund-request-remarks'
 import ImportFile from '@/components/ImportFile'
 import Notice from './notice'
 import Sampling from './sampling'
+import ExpressList from './express-list'
 
 const AEDEarlyUserManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
@@ -24,6 +25,7 @@ const AEDEarlyUserManagement: React.FC = () => {
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
   const [noticeVisible, setNoticeVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
+  const [expressVisible, setExpressVisible] = useState<boolean>(false)
   const [data, setData] = useState()
   const [type, setType] = useState<boolean>(false)
   const [id, setId] = useState<string>()
@@ -124,7 +126,14 @@ const AEDEarlyUserManagement: React.FC = () => {
       title: '物流单号',
       dataIndex: 'shippingCode',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.shippingCode) {
+          return <a onClick={()=> {setExpressVisible(true); setId(r)}}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '早筛人身份证号码',
@@ -236,18 +245,6 @@ const AEDEarlyUserManagement: React.FC = () => {
       render: (_, r) => {
         if(r.processDesc !== '待报名') {
           return (
-            <a
-              onClick={()=> {
-                setVisible(true)
-                setId(r.subOrderSn)
-                setShortId(r.signCode)
-              }}
-            >
-              查看同意书
-            </a>
-          )
-        } else if(r.processDesc === '已完成') {
-          return (
             <Space size='small'>
               <a
                 onClick={()=> {
@@ -258,9 +255,12 @@ const AEDEarlyUserManagement: React.FC = () => {
               >
                 查看同意书
               </a>
-              <a href={`${r.reportUrl && r.reportUrl}`} target='_blank'>
-                体检报告
-              </a>
+              {
+                r.processDesc === '已完成'&&
+                <a href={`${r.reportUrl && r.reportUrl}`} target='_blank'>
+                  体检报告
+                </a>
+              }
             </Space>
           )
         } else {
@@ -404,6 +404,15 @@ const AEDEarlyUserManagement: React.FC = () => {
           visible={samplingVisivle}
           setVisible={setSamplingVisivle}
           data={data}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        expressVisible &&
+        <ExpressList
+          visible={expressVisible}
+          setVisible={setExpressVisible}
+          data={id}
           callback={()=> actRef.current?.reload()}
         />
       }
