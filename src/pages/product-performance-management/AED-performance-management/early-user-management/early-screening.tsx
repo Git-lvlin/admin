@@ -19,7 +19,7 @@ const formItemLayout = {
 };
 
 export default (props) => {
-  const { visible, setVisible, id } = props;
+  const { visible, setVisible, id, shortId } = props;
   const [form] = Form.useForm();
   const [msgDetail,setMsgDetail] = useState()
   useEffect(()=>{
@@ -109,7 +109,7 @@ export default (props) => {
               const link=document.createElement('a')
               link.style.display='none'
               //设置下载的图片名称
-              link.download=`${msgDetail.name}+${id}.jpg`
+              link.download=`${msgDetail.name}+${shortId}.jpg`
               link.href=canvas.toDataURL()
               document.body.appendChild(link)
               link.click()

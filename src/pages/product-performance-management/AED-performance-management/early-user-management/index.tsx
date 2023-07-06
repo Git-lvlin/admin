@@ -27,6 +27,7 @@ const AEDEarlyUserManagement: React.FC = () => {
   const [data, setData] = useState()
   const [type, setType] = useState<boolean>(false)
   const [id, setId] = useState<string>()
+  const [shortId, setShortId] = useState<string>()
   const [select, setSelect] = useState<string>()
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
@@ -239,6 +240,7 @@ const AEDEarlyUserManagement: React.FC = () => {
               onClick={()=> {
                 setVisible(true)
                 setId(r.subOrderSn)
+                setShortId(r.signCode)
               }}
             >
               查看同意书
@@ -251,6 +253,7 @@ const AEDEarlyUserManagement: React.FC = () => {
                 onClick={()=> {
                   setVisible(true)
                   setId(r.subOrderSn)
+                  setShortId(r.signCode)
                 }}
               >
                 查看同意书
@@ -363,6 +366,7 @@ const AEDEarlyUserManagement: React.FC = () => {
           visible={visible}
           setVisible={setVisible}
           id={id}
+          shortId={shortId}
         />
       }
       {

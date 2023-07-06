@@ -15,6 +15,7 @@ import Detail from './detail'
 const EarlyOrderServiceStatistics: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [id, setId] = useState<string>('')
+  const [phone, setPhone] = useState<string>()
 
   const form = useRef<FormInstance>()
 
@@ -106,7 +107,7 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       valueType: 'option',
       align: 'center',
       render: (_, r) => (
-        <a onClick={()=> {setVisible(true); setId(r.buyerId)}}>查看</a>
+        <a onClick={()=> {setVisible(true); setId(r.buyerId); setPhone(r.buyerPhone)}}>查看</a>
       )
     },
   ]
@@ -197,6 +198,7 @@ const EarlyOrderServiceStatistics: React.FC = () => {
           id={id}
           visible={visible}
           setVisible={setVisible}
+          phone={phone}
         />
       }
     </PageContainer>

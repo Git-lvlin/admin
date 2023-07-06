@@ -11,7 +11,7 @@ import { statisticsUserOrder } from '@/services/product-performance-management/e
 import styles from './styles.less'
 import Export from '@/components/export'
 
-const Detail:React.FC<detailProps> = ({ id, visible, setVisible }) => {
+const Detail:React.FC<detailProps> = ({ id, visible, setVisible, phone }) => {
   const form = useRef<FormInstance>()
 
   const columns: ProColumns[] = [
@@ -23,7 +23,13 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible }) => {
     {
       title: '订单号',
       dataIndex: 'sumOrderId',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '订单号',
+      dataIndex: 'orderId',
+      hideInTable: true
     },
     {
       title: '支付时间',
@@ -84,7 +90,7 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible }) => {
 
   return (
     <Drawer
-      title='详情'
+      title={`下单人手机号：${phone} 下单人用户ID：${id}`}
       width={1200}
       visible={visible}
       onClose={()=> {setVisible(false)}}
@@ -103,7 +109,7 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible }) => {
             <Export
               key='1'
               type='aed-scr-order-user'
-              conditions={form.current?.getFieldsValue()}
+              conditions={{...form.current?.getFieldsValue(), memberId: id}}
             />
           ]
         }}
