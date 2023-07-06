@@ -202,9 +202,7 @@ const AEDEarlyUserManagement: React.FC = () => {
         3: '已下单',
         5: '检测中',
         10: '已完成',
-        14: '退款中',
         15: '已退款',
-        20: '已失效',
       },
       hideInTable: true
     },
