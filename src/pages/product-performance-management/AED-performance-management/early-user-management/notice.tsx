@@ -34,8 +34,8 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
   
   const columns:ProColumns[] = [
     {
-      title: '早筛编号',
-      dataIndex: 'subOrderSn',
+      title: '早筛码',
+      dataIndex: 'signCode',
       align: 'center'
     },
     {
