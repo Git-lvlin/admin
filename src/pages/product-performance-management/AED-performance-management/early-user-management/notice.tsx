@@ -169,16 +169,19 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
       <ProFormDateTimePicker
         label='预约采样时间'
         name='noticeDate'
+        rules={[{required: true}]}
       />
       <ProForm.Item
         label='预约采样地址'
         name='noticeArea'
+        rules={[{required: true}]}
       >
         <AddressCascader/>
       </ProForm.Item>
       <ProFormText
         label='预约采样详细地址'
         name='noticeAddress'
+        rules={[{required: true}]}
         fieldProps={{
           placeholder: '请输入详细地址'
         }}
