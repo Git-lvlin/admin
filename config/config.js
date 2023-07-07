@@ -81,6 +81,7 @@ const config = {
         {
           path: '/early-screening',
           component: './early-screening/early-screening',
+          name: '知情同意书'
           // routes: [
           //   {
           //     path: '/ttt/404',

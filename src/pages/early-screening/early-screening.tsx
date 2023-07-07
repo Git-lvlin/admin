@@ -81,6 +81,7 @@ export default (props) => {
     })
   }
   useEffect(() => {
+    document.title = '知情同意书'
     if (location.query.token) {
       window.localStorage.setItem('m_token', location.query.token)
       request()
