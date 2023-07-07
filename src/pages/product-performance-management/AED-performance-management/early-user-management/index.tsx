@@ -339,17 +339,17 @@ const AEDEarlyUserManagement: React.FC = () => {
               key='1'
               type='scrAdmCompanyUser'
               conditions={getFieldsValue}
-            />,
-            <Button 
-              type='primary' 
-              key='2'
-              onClick={()=> {
-                setNoticeVisible(true)
-                setData(undefined)
-              }}
-            >
-              通知采样
-            </Button>
+            />
+            // <Button 
+            //   type='primary' 
+            //   key='2'
+            //   onClick={()=> {
+            //     setNoticeVisible(true)
+            //     setData(undefined)
+            //   }}
+            // >
+            //   通知采样
+            // </Button>
           ]
         }}
       />
