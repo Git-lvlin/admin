@@ -115,9 +115,9 @@ export default props => {
               <Button type="primary" key="submit" onClick={() => props.form?.submit?.()}>
                 保存
               </Button>,
-              <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
-                返回
-              </Button>,
+              // <Button type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
+              //   返回
+              // </Button>,
               
             ];
           }

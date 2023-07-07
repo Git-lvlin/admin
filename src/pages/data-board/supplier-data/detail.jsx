@@ -153,7 +153,7 @@ const Detail = () => {
     <PageContainer title={false}>
       <div className={styles.tableDetail}> 
         <span>商家名称：{query.storeName}</span>
-        <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
+        {/* <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button> */}
       </div>
       <ProTable
         rowKey='skuID'

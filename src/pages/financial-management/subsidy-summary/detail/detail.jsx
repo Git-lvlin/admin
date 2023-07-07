@@ -209,7 +209,7 @@ const Detail = ()=> {
         request={detail}
         search={false}
       />
-      <div
+      {/* <div
         style={{
           background: '#fff',
           paddingBottom: 20
@@ -224,7 +224,7 @@ const Detail = ()=> {
         >
           返回
         </Button>
-      </div>
+      </div> */}
     </PageContainer>
   )
 }

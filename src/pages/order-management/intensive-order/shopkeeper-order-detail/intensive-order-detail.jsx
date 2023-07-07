@@ -209,9 +209,9 @@ const OrderDetail = () => {
                   <div>{detailData?.note}</div>
                 </div>
               </div>
-              <Space style={{ marginTop: 30 }}>
+              {/* <Space style={{ marginTop: 30 }}>
                 <Button type="primary" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
-              </Space>
+              </Space> */}
             </div>
           </div>
         </div>

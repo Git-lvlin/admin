@@ -305,9 +305,9 @@ export default () => {
             options={detailData?.supplierHelpList?.map(item => ({ label: item.companyName, value: item.id }))}
           />
            */}
-          <div style={{ textAlign: 'center', marginTop: 30 }}>
+          {/* <div style={{ textAlign: 'center', marginTop: 30 }}>
             <Button onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>返回</Button>
-          </div>
+          </div> */}
         </Form>
       </Spin>
 
