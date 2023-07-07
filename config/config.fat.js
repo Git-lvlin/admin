@@ -4,5 +4,6 @@ export default defineConfig({
   define: {
     API_URL: 'https://adminapi-fat.yeahgo.com',
     MARKET_URL: 'https://publicmobile-fat.yeahgo.com',
+    MOBILE_URL: 'https://api-uat.yeahgo.com'
   },
 });

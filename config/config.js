@@ -79,6 +79,17 @@ const config = {
       routes: [
         user,
         {
+          path: '/early-screening',
+          component: './early-screening/early-screening',
+          name: '知情同意书'
+          // routes: [
+          //   {
+          //     path: '/ttt/404',
+          //     component: './404',
+          //   },
+          // ],
+        },
+        {
           path: '/',
           component: '../layouts/BasicLayout',
           routes: [
@@ -138,6 +149,7 @@ const config = {
         },
       ],
     },
+    
   ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
