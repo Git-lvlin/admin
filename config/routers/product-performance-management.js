@@ -93,7 +93,19 @@ export default {
           component: './product-performance-management/AED-performance-management/early-order-service-statistics',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'early-screening-service-configuration',
+          path: '/product-performance-management/AED-performance-management/early-screening-service-configuration',
+          component: './product-performance-management/AED-performance-management/early-screening-service-configuration',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'early-screening-order-performance',
+          path: '/product-performance-management/AED-performance-management/early-screening-order-performance',
+          component: './product-performance-management/AED-performance-management/early-screening-order-performance',
+          wrappers: [RouteWatcher],
+        },
       ]
-    },
+    }
   ]
 }

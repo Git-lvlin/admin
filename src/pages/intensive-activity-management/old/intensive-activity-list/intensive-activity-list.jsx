@@ -256,7 +256,7 @@ const TableList = () => {
 
   const handleMenuClick = ({ key }, data) => {
     if (key === '1') {
-      history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}`)
+      history.push(`/intensive-activity-management/old/intensive-activity-create/${data.wholesaleId}`)
     }
     if (key === '2') {
       confirm({
@@ -294,7 +294,7 @@ const TableList = () => {
     }
 
     if (key === '7') {
-      history.push(`/intensive-activity-management/intensive-activity-create/${data.wholesaleId}?type=1`)
+      history.push(`/intensive-activity-management/old/intensive-activity-create/${data.wholesaleId}?type=1`)
     }
 
     if (key === '8') {
@@ -304,7 +304,7 @@ const TableList = () => {
   }
 
   const handleButtonClick = (_, data) => {
-    history.push(`/intensive-activity-management/intensive-activity-detail/${data.wholesaleId}`)
+    history.push(`/intensive-activity-management/old/intensive-activity-detail/${data.wholesaleId}`)
   }
 
   const menu = (data) => (
@@ -579,7 +579,7 @@ const TableList = () => {
       <div className={style.test}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/intensive-activity-create/0') }}>新建</Button>
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => { history.push('/intensive-activity-management/old/intensive-activity-create/0') }}>新建</Button>
           </div>
         </Card>
         {visible && <Area visible={visible} wsId={selectItem?.wholesaleId} setVisible={setVisible} />}

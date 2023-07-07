@@ -58,8 +58,12 @@ const Export = ({ type, change, conditions, text='导出' }) => {
         zIndex: 99999
       }}
       onFinish={async () => {
+      try {
         await downExcel()
         return true
+      } catch (error) {
+        console.log('error',error)
+      }
       }}
     >
       <ol>

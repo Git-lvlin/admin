@@ -121,7 +121,7 @@ const AEDEarlyUserManagement: React.FC = () => {
       hideInTable: true
     },
     {
-      title: '活检编号',
+      title: '液体活检编号',
       dataIndex: 'detectionNo',
       align: 'center',
       hideInSearch: true
@@ -440,7 +440,7 @@ const AEDEarlyUserManagement: React.FC = () => {
           <ImportFile
             key='3'
             code='scrAdmDetectUser'
-            title='导入样本编号和物流单号'
+            title='导入液体活检编号和物流单号'
           />
         </Space>
       </div>
