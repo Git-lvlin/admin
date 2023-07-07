@@ -40,7 +40,7 @@ export default (props:CumulativeProps)=>{
 
   const Columns: ProColumns[] = [
     {
-      title: '订单编号',
+      title: '订单编号/子单号',
       dataIndex: 'orderSn',
       align: 'center',
     },
