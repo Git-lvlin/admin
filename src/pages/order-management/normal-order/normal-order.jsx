@@ -493,6 +493,12 @@ const TableList = () => {
                   <div style={{ textAlign: 'center' }}>
                     {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}
                     <a onClick={() => { setSelectItem(item); setDetailVisible(true); }}>详情</a>
+                    {
+                      item.orderTypeDesc === 'AED早筛订单' &&
+                      <div>
+                        <a href={`/product-performance-management/AED-performance-management/early-user-management?id=${item.orderSn}`} target='_blank'>早筛检测</a>
+                      </div>
+                    }
                   </div>
                 </div>
 

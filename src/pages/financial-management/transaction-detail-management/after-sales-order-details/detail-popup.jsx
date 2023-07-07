@@ -4,7 +4,6 @@ import { Button, Drawer } from 'antd'
 
 import { amountTransform } from '@/utils/utils'
 import { refundDetail } from "@/services/financial-management/transaction-detail-management"
-import styles from './styles.less'
 import { tradeType } from '../../common-enum'
 import { orderTypes } from '@/services/financial-management/common'
 import { fashionableType, backCalculation } from '../../common-function'
