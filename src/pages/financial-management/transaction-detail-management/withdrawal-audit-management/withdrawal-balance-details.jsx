@@ -75,7 +75,7 @@ const WithdrawalBalanceDetails = () =>{
         params={{...query}}
         request={logPage}
       />
-      <div
+      {/* <div
         style={{
           background: 'rgb(255, 255, 255)'
         }}
@@ -91,7 +91,7 @@ const WithdrawalBalanceDetails = () =>{
         >
           返回
         </Button>
-      </div>
+      </div> */}
     </PageContainer>
   )
 }

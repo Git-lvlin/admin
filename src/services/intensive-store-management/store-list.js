@@ -34,7 +34,7 @@ export const getStoreList = async (params = {}, options = {}) => {
 }
 
 export const applyConditionPage = async (params = {}, options = {}) => {
-  const { current, pageSize, area = [], ...rest } = params;
+  const { current, pageSize,deposit,serviceFee, area = [], ...rest } = params;
   const res = await request('/auth/store/memberShop/applyConditionPage', {
     method: 'GET',
     params: {
@@ -43,6 +43,10 @@ export const applyConditionPage = async (params = {}, options = {}) => {
       provinceId: area[0]?.value,
       cityId: area[1]?.value,
       regionId: area[2]?.value,
+      depositStart: deposit?.min ? amountTransform(deposit.min) : '',
+      depositEnd: deposit?.max ? amountTransform(deposit.max) : '',
+      serviceFeeStart: serviceFee?.min ? amountTransform(serviceFee.min) : '',
+      serviceFeeEnd: serviceFee?.max ? amountTransform(serviceFee.max) : '',
       ...rest
     },
     ...options

@@ -538,6 +538,11 @@ export default (props) => {
         {goods.goodsRemark}
       </Form.Item>
       <Form.Item
+        label="标红温馨提示"
+      >
+        {goods.declaration}
+      </Form.Item>
+      <Form.Item
         label="特殊说明展示状态"
       >
         {{ 1: '仅秒约商品详情显示', 2: '仅集约商品详情显示', 3: '所有商品详情页都展示', 4: '所有商品详情页不展示' }[goods.showOn]}

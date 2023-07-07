@@ -152,7 +152,10 @@ const Address = ({ value, onChange }) => {
       })
     }
 
+    setInfo(value?.info)
+
     return () => {
+      setInfo([])
       setProvinceData([])
     }
   }, [value])
