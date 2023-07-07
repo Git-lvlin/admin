@@ -46,7 +46,7 @@ export default (props:CumulativeProps)=>{
       hideInSearch:true
     },
     {
-      title: '订单编号',
+      title: '订单编号/子单号',
       dataIndex: 'orderSn',
       align: 'center',
     },

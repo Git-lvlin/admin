@@ -32,8 +32,8 @@ const BonusDetailManagement = () =>{
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
     return {
-      begin: createTime?.[0]?.format('YYYY-MM-DD'),
-      end: createTime?.[1]?.format('YYYY-MM-DD'),
+      begin: createTime && createTime?.[0]?.format('YYYY-MM-DD'),
+      end: createTime && createTime?.[1]?.format('YYYY-MM-DD'),
       ...rest
     }
   }

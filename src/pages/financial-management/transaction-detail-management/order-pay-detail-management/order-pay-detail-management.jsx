@@ -21,6 +21,7 @@ const OrderPayDetailManagement = () =>{
   const [msgDatail,setMsgDatail] = useState({})
   const actRef = useRef()
   const formRef = useRef()
+  
   useEffect(() => {
     orderTypes({}).then(res => {
       setOrderType(res.data)

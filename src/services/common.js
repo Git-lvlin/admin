@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
-export const getExpressList = (params, options = {}) => {
-  return request('/auth/order/collectiveOrder/express', {
+export const getExpressList = async (params, options = {}) => {
+  return await request('/auth/healthy/express/expressList', {
     method: 'POST',
     data: params,
     ...options

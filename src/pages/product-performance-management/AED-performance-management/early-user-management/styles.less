@@ -1,0 +1,250 @@
+.desc {
+  :global{
+    .ant-form-item-control-input-content {
+      .ant-space {
+        .ant-space-item {
+          a {
+            width: 80px;
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
+}
+
+.export {
+  display: flex;
+  background: #fff;
+  padding: 0 20px 20px;
+  align-items: center;
+  justify-content: space-between;
+  :global {
+    .ant-form-item {
+      margin: 0;
+    }
+  }
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkBox {
+  width: 430px;
+  margin-left: 160px;
+  span {
+    color: #ff0000;
+  }
+}
+
+.cancel {
+  font-size: 18px;
+  margin-left: 20px;
+}
+
+.earlyScreening {
+  background-color: #fff;
+  pointer-events: none;
+  :global {
+    .ant-radio-checked .ant-radio-inner:after{
+      width: 8px;
+      height: 8px;
+      margin-top: -4px;
+      margin-left: -4px;
+      transform:none
+  }
+  }
+}
+
+.earlyScreening .required{
+  display: inline-block;
+  color: red;
+}
+
+.headFixation{
+  background-color: #666;
+  color: #fff;
+  width: 100%;
+}
+
+.earlyTitle{
+  text-align: center;
+  margin: 50px auto;
+  margin-bottom: 10px;
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #333333;
+}
+
+.earlyHint{
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: bold;
+  color: #CD0303;
+  line-height: 38rpx;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.earlyScreening .form{
+ padding-bottom: 40px;
+}
+
+.earlyScreening .form_item{
+  background-color: #EEF4FB; 
+  margin-bottom: 20px;
+  padding: 20px;
+  color: #3A3B3B;
+}
+
+.earlyScreening .form_item_hint{
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #AA2F2F;
+}
+
+.earlyScreening .marck{
+  background-color: #F6EEF1; 
+} 
+
+.earlyScreening .van-radio{
+  margin-bottom: 20px;
+}
+
+.earlyScreening .van-radio__icon {
+  background-color: #fff;
+}
+.earlyScreening .van-radio__icon--checked {
+  background-color: var(--radio-checked-icon-color,#1989fa);
+  border-color: var(--radio-checked-icon-color,#1989fa);
+  color: #fff;
+}
+
+.earlyScreening .van-checkbox  {
+  margin-bottom: 15px;
+}
+
+.earlyScreening .van-checkbox__icon {
+  background-color: #fff;
+}
+.earlyScreening .van-checkbox__icon--checked {
+  background-color: var(--checkbox-checked-icon-color,#1989fa);
+  border-color: var(--checkbox-checked-icon-color,#1989fa);
+  color: #fff;
+}
+
+.input_highlight{
+  background-color: #EEF4FB; 
+  margin-bottom: 20px;
+}
+
+.informed_consent{
+  font-family: Source Han Sans CN-Bold, Source Han Sans CN;
+  font-weight: 700;
+  color: #333333;
+  line-height: 38px;
+  text-align: center;
+}
+
+.informed_consent_deatil{
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #333333;
+  line-height: 42px;
+  margin-top: 20px;
+}
+
+.statement{
+  padding: 20px;
+  background-color: #F6EEF1; 
+  line-height: 42px;
+  font-weight: 500;
+  color: #333333;
+}
+.statement_declaration{
+  font-family: Source Han Sans CN-Bold, Source Han Sans CN;
+  font-weight: 700;
+  color: #333333;
+  line-height: 38px;
+  text-align: center;
+}
+
+.statement_declaration_detail{
+  font-family: Source Han Sans CN-Medium, Source Han Sans CN;
+  font-weight: 500;
+  color: #333333;
+  line-height: 42px;
+  margin-top: 20px;
+}
+
+.signature_name{
+  color: #AA2F2F;
+  font-weight: bold;
+  margin: 50px 0 20px 350px;
+  position: relative;
+}
+
+.avatarImage{
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  right: 70px;
+  bottom: 5px;
+  z-index: 999;
+}
+
+.earlyScreening .next_step{
+ margin: 40px auto;
+ text-align: center;
+}
+
+.earlyScreening .next_step button{
+  width: 250px;
+  height: 50px;
+  background: linear-gradient(95deg, #FF6E53 0%, #FF0000 100%);
+  box-shadow: 0px 6px 12px 0px rgba(229,53,47,0.4);
+  border-radius: 16px 16px 16px 16px;
+  opacity: 1;
+  color: #fff;
+}
+
+.timelineWarp{
+  height: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 10px 20px 0;
+  :global {
+    .ant-timeline {
+      padding: 10px 20px 0;
+    }
+  }
+  .time {
+    margin-right: 20px;
+    color: rgb(12, 90, 255);
+  }
+  &::-webkit-scrollbar {
+    width : 10px;
+    height: 1px;
+    }
+  &::-webkit-scrollbar-thumb {
+    border-radius   : 10px;
+    background-color: rgba(12, 90, 255, .6);
+    background-image: -webkit-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+  }
+  &::-webkit-scrollbar-track {
+    box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background   : #ededed;
+    border-radius: 10px;
+  }
+}

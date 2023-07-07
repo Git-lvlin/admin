@@ -63,7 +63,7 @@ export default function TransactionData () {
       },
     },
     {
-      title: '交易时间',
+      title: '交易分账时间',
       dataIndex: 'dateRange',
       renderFormItem: () => <TimeSelect />,
       hideInTable: true

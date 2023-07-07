@@ -19,8 +19,8 @@ const WithdrawalAuditManagement = () => {
   const getFieldValue = (form) => {
     const { createTime, ...rest } = form.getFieldsValue()
     return {
-      begin: moment(createTime?.[0]).format('YYYY-MM-DD'),
-      end: moment(createTime?.[1]).format('YYYY-MM-DD'),
+      begin: createTime && moment(createTime?.[0]).format('YYYY-MM-DD'),
+      end: createTime && moment(createTime?.[1]).format('YYYY-MM-DD'),
       ...rest
     }
   }

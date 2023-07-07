@@ -77,6 +77,12 @@ export default {
           ]
         }
       ]
-    }
+    },
+    {
+      name: 'advert-config',
+      path: '/setting/advert-config',
+      component: './setting/advert-config',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

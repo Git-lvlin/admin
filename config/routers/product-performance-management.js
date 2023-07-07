@@ -81,7 +81,31 @@ export default {
           component: './product-performance-management/AED-performance-management/AED-volunteer-ID-info',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'early-user-management',
+          path: '/product-performance-management/AED-performance-management/early-user-management',
+          component: './product-performance-management/AED-performance-management/early-user-management',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'early-order-service-statistics',
+          path: '/product-performance-management/AED-performance-management/early-order-service-statistics',
+          component: './product-performance-management/AED-performance-management/early-order-service-statistics',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'early-screening-service-configuration',
+          path: '/product-performance-management/AED-performance-management/early-screening-service-configuration',
+          component: './product-performance-management/AED-performance-management/early-screening-service-configuration',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'early-screening-order-performance',
+          path: '/product-performance-management/AED-performance-management/early-screening-order-performance',
+          component: './product-performance-management/AED-performance-management/early-screening-order-performance',
+          wrappers: [RouteWatcher],
+        },
       ]
-    },
+    }
   ]
 }

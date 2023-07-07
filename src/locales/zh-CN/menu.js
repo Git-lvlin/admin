@@ -98,6 +98,7 @@ export default {
   'menu.setting.dc-management.import-export': '导入导出配置',
   'menu.setting.dc-management.import-export.export-configuration': '导出配置',
   'menu.setting.dc-management.import-export.import-configuration': '导入配置',
+  'menu.setting.advert-config': '广告配置',
 
   'menu.finger-doctor': '手指医生',
   'menu.finger-doctor.user-health-data-management': '用户健康资料管理',
@@ -461,8 +462,11 @@ export default {
   'menu.aed-team-leader.team-leader-management': '子公司管理',
   'menu.aed-team-leader.order-performance': '订单业绩',
   'menu.aed-team-leader.three-thousand-eight-performance': '3800单业绩',
-  'menu.aed-team-leader.aed-head-performance': 'AED团长业绩',
+  'menu.aed-team-leader.aed-head-performance': 'AED团长课程订单业绩',
+  'menu.aed-team-leader.aed-head-early-screening-order-performance': 'AED团长早筛订单业绩',
   'menu.aed-team-leader.aed-settlement-configuration': 'AED课程服务套餐业绩结算规则配置',
+  'menu.aed-team-leader.aed-early-screening-order-performance': 'AED早筛订单业绩管理',
+
 
   'menu.great-project-team': '大团队长',
   'menu.great-project-team.great-project-team-management': '大团队长管理',
@@ -494,6 +498,10 @@ export default {
   'menu.product-performance-management.AED-performance-management.noSub-AED-program-performance': '分账时无子公司AED课程业绩',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-exam-info': 'AED志愿者考试信息',
   'menu.product-performance-management.AED-performance-management.AED-volunteer-ID-info': 'AED志愿者证件信息',
+  'menu.product-performance-management.AED-performance-management.early-screening-service-configuration': '早筛服务配置',
+  'menu.product-performance-management.AED-performance-management.early-screening-order-performance': '早筛订单业绩管理',
+  'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
+  'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
 
 
 
