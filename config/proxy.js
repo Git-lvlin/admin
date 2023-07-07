@@ -15,6 +15,14 @@ export default {
         '^': '',
       },
     },
+    '/healthy/': {
+      target: 'https://api-dev.yeahgo.com',
+      // target: 'https://adminapi.yeahgo.com',
+      changeOrigin: true,
+      pathRewrite: {
+        '^': '',
+      },
+    },
     '/java-admin/': {
       // target: 'http://192.168.3.2:6664',
       target: 'http://admin.waiad.icu',
