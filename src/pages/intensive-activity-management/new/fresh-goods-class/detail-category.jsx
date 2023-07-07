@@ -98,7 +98,7 @@ export default (props) => {
               return <div className={styles.box}>
                       <div style={{width:'90px',textAlign:'center'}}>{ele?.categoryName}</div>
                       <div>
-                        <a onClick={() => { history.push('/cms/fresh-goods-sort?wscId='+detailData?.id+'&wscId2='+ele?.id);setVisible(false) }}>查看此分类商品</a>
+                        <a onClick={() => { history.push('/intensive-activity-management/new/fresh-goods-sort?wscId='+detailData?.id+'&wscId2='+ele?.id);setVisible(false) }}>查看此分类商品</a>
                       </div>
                      </div>
             })

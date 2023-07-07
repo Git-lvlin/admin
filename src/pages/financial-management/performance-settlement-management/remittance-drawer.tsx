@@ -134,10 +134,14 @@ export default (props:CumulativeProps)=>{
         }
       }}
       onFinish={async (values) => {
-        await waitTime(values);
-        message.success('提交成功');
-        // 不返回不会关闭弹框
-        return true;
+        try {
+          await waitTime(values);
+          message.success('提交成功');
+          // 不返回不会关闭弹框
+          return true;
+        } catch (error) {
+          console.log("🚀 ~ file: remittance-drawer.tsx:143 ~ onFinish={ ~ error:", error)
+        }
       }}
       {...formItemLayout}
       className={styles.remittance_drawer}
