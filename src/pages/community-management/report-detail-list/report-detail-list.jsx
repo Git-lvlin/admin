@@ -42,9 +42,9 @@ const columns= [
 ];
   return (
     <>
-      <Button style={{ margin: "20px 0 20px 0" }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
+      {/* <Button style={{ margin: "20px 0 20px 0" }} type="default" onClick={() => { window.history.back(); setTimeout(() => { window.location.reload(); }, 200) }}>
             返回
-          </Button>
+          </Button> */}
           <ProTable
             rowKey="userId"
             options={false}
