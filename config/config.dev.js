@@ -6,6 +6,7 @@ export default defineConfig({
     API_URL: 'https://adminapi-dev.yeahgo.com',
     MARKET_URL: 'https://publicmobile-dev.yeahgo.com',
     APP_URL: 'https://www.yeahgo-dev.com',
+    MOBILE_URL: 'https://api-dev.yeahgo.com',
   },
   plugins: [
     // https://github.com/zthxxx/react-dev-inspector

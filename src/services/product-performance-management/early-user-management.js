@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import request2 from '@/utils/request_mobile';
 import moment from 'moment';
 
 // 用户管理
@@ -31,6 +32,14 @@ export const subCompanyUser = async (params, options = {}) => {
 // 报名信息
 export const getSignInfo = async (params, options = {}) => {
   return await request('/auth/healthy/screening/getSignInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+export const getAppSignInfo = async (params, options = {}) => {
+  return await request2('/healthy/auth/aed/getSignInfo', {
     method: 'POST',
     data: params,
     ...options
