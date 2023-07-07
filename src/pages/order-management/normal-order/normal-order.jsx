@@ -511,10 +511,10 @@ const TableList = () => {
                       (orderType === 1 || orderType === 2) &&
                       <Button onClick={() => { setSubOrderId(item.id); setAddressVisible(true); setPrimaryAddress(item) }}>修改地址</Button>
                     }
-                    {
+                    {/* {
                       orderType === 2 &&
                       <Button onClick={() => { setSubOrderId(item.id); setOrderVisible(true) }}>关闭订单</Button>
-                    }
+                    } */}
                   </Space>
                 </div>
               </div>
