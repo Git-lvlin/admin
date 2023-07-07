@@ -103,7 +103,7 @@ export default (props) => {
     >
       <div className={`${styles.earlyScreening} early`}>
         <div className={styles.headFixation}>早筛码：{shortId}</div>
-        <div className={styles.earlyTitle}>健康问卷+知情书/抽<div>血委托协议</div></div>
+        <div className={styles.earlyTitle}>健康问卷+知情同意书</div>
         <div className={styles.earlyHint}>所填信息必须和签署知情同意书一致。如信息有误，造成一切结果和责任，由本人承担</div>
         <div className={styles.form}>
           <div className={styles.form_item}>
