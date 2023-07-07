@@ -26,7 +26,7 @@ const getPid = (item, originTreeData) => {
 export default (props) => {
   const { visible, setVisible, treeData, originTreeData, data, onClose, callback = () => { } } = props;
   const [selectKeys, setSelectKeys] = useState([]);
-  // const [halfKeys, setHalfKeys] = useState([]);
+  const [checkStrictly, setCheckStrictly] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [form] = Form.useForm();
   const treeRef = useRef();
@@ -55,10 +55,11 @@ export default (props) => {
   }
 
   const onCheck = (checkedKeys) => {
-    setSelectKeys(checkedKeys)
+    const keys = checkStrictly ? checkedKeys.checked : checkedKeys
+    setSelectKeys(keys)
     // setHalfKeys(halfCheckedKeys)
     setSelectAll(!treeData.some(item => {
-      return !checkedKeys.includes(item.key);
+      return !keys.includes(item.key);
     }))
   }
 
@@ -90,6 +91,15 @@ export default (props) => {
           reject();
         }
       })
+    });
+  }
+
+  const changeMode = () => {
+    setCheckStrictly(!checkStrictly)
+    const keys = selectKeys
+    setSelectKeys([])
+    setTimeout(() => {
+      setSelectKeys(keys)
     });
   }
 
@@ -148,13 +158,16 @@ export default (props) => {
         <div>角色权限</div>
         <div style={{ flex: 1 }}>
           {treeData.length &&
-            <Checkbox
-              onChange={onSelectAll}
-              checked={selectAll}
-              style={{ marginLeft: 23, marginBottom: 5 }}
-            >
-              全部功能
-            </Checkbox>}
+            <div>
+              <Checkbox
+                onChange={onSelectAll}
+                checked={selectAll}
+                style={{ marginLeft: 23, marginBottom: 5 }}
+              >
+                全部功能
+              </Checkbox>
+              <a onClick={changeMode}>{checkStrictly?'当前不自动关联父子级':'当前自动关联父子级'}</a>
+            </div>}
           <Tree
             checkable
             treeData={treeData}
@@ -163,6 +176,7 @@ export default (props) => {
             selectable={false}
             height={500}
             ref={treeRef}
+            checkStrictly={checkStrictly}
           />
         </div>
       </div>

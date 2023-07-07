@@ -46,8 +46,13 @@ export default (props) => {
         }
       }}
       onFinish={async (values) => {
-        await waitTime(values);
-        return true;
+        try {
+          await waitTime(values);
+          return true;
+        } catch (error) {
+          console.log("🚀 ~ file: remittance-information.tsx:53 ~ onFinish={ ~ error:", error)
+        }
+        
       }}
       {...formItemLayout}
       className={styles.forbidden_model}

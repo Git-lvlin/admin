@@ -29,9 +29,21 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
+      name: 'aed-head-early-screening-order-performance',
+      path: '/aed-team-leader/aed-head-early-screening-order-performance',
+      component: './aed-team-leader/aed-head-early-screening-order-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
       name: 'aed-settlement-configuration',
       path: '/aed-team-leader/aed-settlement-configuration',
       component: './aed-team-leader/aed-settlement-configuration',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'aed-early-screening-order-performance',
+      path: '/aed-team-leader/aed-early-screening-order-performance',
+      component: './aed-team-leader/aed-early-screening-order-performance',
       wrappers: [RouteWatcher],
     }
   ]
