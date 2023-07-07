@@ -277,7 +277,7 @@ const AEDEarlyUserManagement: React.FC = () => {
       align: 'center',
       fixed: 'right',
       render: (_, r) => {
-        if(r.processDesc === '待采样' || r.processDesc === '已下单' || r.processDesc === '已采样') {
+        if(r.processDesc === '待采样' || r.processDesc === '已下单' || r.processDesc === '已采样' || r.processDesc === '待报名' || r.processDesc === '检测中') {
           return (
             <Space size='small'>
               <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(r.subOrderSn); setType(false); setData(undefined)}}>申请退款备注</a>
