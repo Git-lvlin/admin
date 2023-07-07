@@ -73,7 +73,7 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '已下单数',
+      title: '已下单数/待检测数',
       dataIndex: 'ordered',
       align: 'center',
       hideInSearch: true
@@ -150,7 +150,7 @@ const EarlyOrderServiceStatistics: React.FC = () => {
       dataIndex: 'gathered'
     },
     {
-      title: '已下单数',
+      title: '已下单数/待检测数',
       dataIndex: 'ordered'
     },
     {
