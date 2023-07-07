@@ -21,13 +21,13 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible, phone }) => {
       align: 'center'
     },
     {
-      title: '订单号',
+      title: '总订单号',
       dataIndex: 'sumOrderId',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '订单号',
+      title: '总订单号',
       dataIndex: 'orderId',
       hideInTable: true
     },
