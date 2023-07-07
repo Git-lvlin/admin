@@ -63,6 +63,18 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible, phone }) => {
       hideInSearch: true
     },
     {
+      title: '已采样数',
+      dataIndex: 'gathered',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '已下单数/待检测数',
+      dataIndex: 'ordered',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '检测中数',
       dataIndex: 'check',
       align: 'center',
@@ -75,14 +87,14 @@ const Detail:React.FC<detailProps> = ({ id, visible, setVisible, phone }) => {
       hideInSearch: true
     },
     {
-      title: '退款中数',
-      dataIndex: 'refund',
+      title: '已退款数',
+      dataIndex: 'refunded',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '已退款数',
-      dataIndex: 'refunded',
+      title: '已失效',
+      dataIndex: 'disable',
       align: 'center',
       hideInSearch: true
     }
