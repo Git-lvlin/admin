@@ -47,7 +47,7 @@ const formItemLayout = {
         hideInSearch: true,
       },
       {
-        title: '订单日期',
+        title: '交易分账时间',
         dataIndex: 'dateRange',
         renderFormItem: () => <TimeSelect />,
         align: 'center',
