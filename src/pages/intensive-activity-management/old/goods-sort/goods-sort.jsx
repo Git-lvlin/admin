@@ -207,6 +207,23 @@ const BannerAdmin = () => {
           // 注释该行则默认不显示下拉选项
           // selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
         }}
+        title={()=>{
+          return selected&&<Space size={24}>
+          <span>
+            <span style={{marginRight: 20}}>添加到 </span>
+            <Select
+              placeholder="请选择运营类目"
+              options={goodsClass}
+              value={itemClass}
+              onChange={changeHandle}
+              allowClear
+            />
+            <a style={{ marginLeft: 8 }} onClick={() => {push()}}>
+              确定
+            </a>
+          </span>
+        </Space>
+        }}
         alwaysShowAlert={true}
         tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
           if (selectedRowKeys.length) {
@@ -261,7 +278,7 @@ const BannerAdmin = () => {
           }
         }}
       />
-      {selected&&<Space size={24} style={{position: 'absolute',top: 290, left: 60}}>
+      {/* {selected&&<Space size={24} style={{position: 'absolute',top: 290, left: 60}}>
         <span>
           <span style={{marginRight: 20}}>添加到 </span>
           <Select
@@ -275,7 +292,7 @@ const BannerAdmin = () => {
             确定
           </a>
         </span>
-        {/* <span>{`待发布: ${selectedRows?.reduce(
+        <span>{`待发布: ${selectedRows?.reduce(
           (pre, item) => {
             item.state === 0
             if (item.state === 0) {
@@ -286,8 +303,8 @@ const BannerAdmin = () => {
         <span>{`已发布: ${selectedRows?.reduce(
           (pre, item) => item.state && pre + 1,
           0,
-        )} 个`}</span> */}
-      </Space>}
+        )} 个`}</span>
+      </Space>} */}
       {formVisible && <Edit
         visible={formVisible}
         setVisible={setFormVisible}
