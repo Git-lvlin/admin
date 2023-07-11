@@ -113,6 +113,12 @@ export default function TransactionData () {
       hideInSearch: true,
     },
     {
+      title: '子公司地址',
+      dataIndex: 'subAddress',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '直推人手机号',
       dataIndex: 'recomMemberPhone',
       align: 'center',
