@@ -66,3 +66,12 @@ export const checkGoodQlf = (params = {}, options = {}) => {
     ...options
   });
 }
+
+// 报名信息
+export const getSignInfo = async (params, options = {}) => {
+  return await request('/auth/healthy/screening/getSignInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
