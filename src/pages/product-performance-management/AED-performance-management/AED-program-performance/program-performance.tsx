@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import moment from 'moment'
+import { Tooltip } from 'antd'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
@@ -268,6 +269,26 @@ const ProgramPerformance: FC = () => {
         8: '已失效',
         9: '已线下结算'
       }
+    },
+    {
+      title: '达标时间',
+      dataIndex: 'finishTime',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => (
+        <Tooltip 
+          title={
+            <div style={{fontSize: '12px'}}>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>签合同时间：{r.contractTime}</div>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>视频学习时间：{r.learnTime}</div>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>考试时间：{r.examTime}</div>
+              <div style={{borderBottom: '1px solid #fff'}}>录入线下培训时间：{r.trainTime}</div>
+            </div>
+          }
+        >
+          <span>{_}</span>
+        </Tooltip>
+      )
     },
   ]
 
