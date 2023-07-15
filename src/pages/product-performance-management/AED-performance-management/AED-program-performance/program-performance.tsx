@@ -275,20 +275,26 @@ const ProgramPerformance: FC = () => {
       dataIndex: 'finishTime',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => (
-        <Tooltip 
-          title={
-            <div style={{fontSize: '12px'}}>
-              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>签合同时间：{r.contractTime}</div>
-              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>视频学习时间：{r.learnTime}</div>
-              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>考试时间：{r.examTime}</div>
-              <div style={{borderBottom: '1px solid #fff'}}>录入线下培训时间：{r.trainTime}</div>
-            </div>
-          }
-        >
-          <span>{_}</span>
-        </Tooltip>
-      )
+      render: (_, r) => {
+        if(_) {
+          return (
+            <Tooltip 
+              title={
+                <div style={{fontSize: '12px'}}>
+                  <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>签合同时间：{r.contractTime}</div>
+                  <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>视频学习时间：{r.learnTime}</div>
+                  <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>考试时间：{r.examTime}</div>
+                  <div style={{borderBottom: '1px solid #fff'}}>录入线下培训时间：{r.trainTime}</div>
+                </div>
+              }
+            >
+              <span>{_}</span>
+            </Tooltip>
+          )
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
   ]
 
