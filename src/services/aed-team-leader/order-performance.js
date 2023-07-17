@@ -38,6 +38,42 @@ export const AEDOrderPm = async (params = {}, options = {}) => {
   }
 
 
+export const scrSubOrderPmStats = async (params = {}, options = {}) => {
+    const res = await request('/auth/stats/report/java/scrSubOrderPmStats', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+}
+
+export const scrSubOrderPm = async (params = {}, options = {}) => {
+    const { current, pageSize, dateRange, ...rest } = params;
+    const res = await request('/auth/stats/report/java/scrSubOrderPm', {
+      method: 'POST',
+      data: {
+        page: current,
+        size: pageSize,
+        startTime:dateRange&&dateRange[0],
+        endTime:dateRange&&dateRange[1],
+        ...rest
+      },
+      ...options
+    });
+  
+    return {
+      data: res.data.records,
+      success: true,
+      total: res.data.total,
+      code: res.code
+    }
+  }
+
 
 export const AEDOrderStats = async (params = {}, options = {}) => {
     const res = await request('/auth/stats/subsidiary/AEDOrderStats', {

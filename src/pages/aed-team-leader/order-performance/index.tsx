@@ -6,14 +6,16 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps, Refer } from "./data"
 import { Descriptions } from 'antd';
 
-import { AEDOrderPm,AEDOrderPmStats } from "@/services/aed-team-leader/order-performance"
+import { AEDOrderPm, AEDOrderPmStats, scrSubOrderPm, scrSubOrderPmStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
+import ProCard from "@ant-design/pro-card"
 
-export default function TransactionData () {
+const OrderPerformance= (props) => {
+  const { activeKey } = props
   const [type, setType] = useState<number>(0)
   const [storeVisible, setStoreVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
@@ -28,7 +30,8 @@ export default function TransactionData () {
       endTime:time?.dateRange&&time?.dateRange[1],
       ...time
     }
-    AEDOrderPmStats(params).then(res=>{
+    const api=activeKey=='1'?AEDOrderPmStats:scrSubOrderPmStats
+    api(params).then(res=>{
       if(res.code==0){
         setDetailList(res.data[0])
       }
@@ -69,8 +72,10 @@ export default function TransactionData () {
       dataIndex: 'totalPayAmount',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_&&_>0&&activeKey=='1'){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else if(activeKey=='2'){
+          return _
         }else{
           return '0'
         }
@@ -82,8 +87,10 @@ export default function TransactionData () {
       dataIndex: 'totalCommission',
       align: 'center',
       render: (_,data)=>{
-        if(_&&_>0){
+        if(_&&_>0&&activeKey=='1'){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else if(activeKey=='2'){
+          return _
         }else{
           return '0'
         }
@@ -113,7 +120,7 @@ export default function TransactionData () {
     }
   }
   return (
-    <PageContainer title={false}>
+    <>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
         <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
         <Descriptions.Item  label="总提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
@@ -122,7 +129,7 @@ export default function TransactionData () {
         rowKey="businessDeptId"
         headerTitle='列表'
         columns={tableColumns}
-        request={AEDOrderPm}
+        request={activeKey=='1'?AEDOrderPm:scrSubOrderPm}
         columnEmptyText={false}
         actionRef={form}
         onSubmit={(val)=>{
@@ -147,10 +154,10 @@ export default function TransactionData () {
             <Export
             key='export'
             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-            type={'AEDOrder'}
+            type={activeKey=='1'?'AEDOrder':'scrSubOrderPm'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrder'}/>
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'AEDOrder':'scrSubOrderPm'}/>
           ],
         }}
       />
@@ -164,6 +171,33 @@ export default function TransactionData () {
           type={type}
         />
       }
-    </PageContainer>
+    </>
+  )
+}
+
+
+export default ()=>{
+  const [activeKey, setActiveKey] = useState<string>('1')
+  return (
+    <PageContainer title={false}>
+      <ProCard
+          tabs={{
+            type: 'card',
+            activeKey,
+            onChange: setActiveKey
+          }}
+        >
+          <ProCard.TabPane key="1" tab="课程业绩">
+            {
+              activeKey=='1'&&<OrderPerformance  activeKey={activeKey}/>
+            }
+          </ProCard.TabPane>
+          <ProCard.TabPane key="2" tab="早筛业绩统计">
+            {
+              activeKey=='2'&&<OrderPerformance  activeKey={activeKey}/>
+            }
+          </ProCard.TabPane>
+    </ProCard>
+  </PageContainer>
   )
 }
