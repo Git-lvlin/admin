@@ -11,7 +11,7 @@ import ProTable from '@/components/pro-table'
 import Export from '@/components/export'
 import TimeSelect from '@/components/time-select'
 import { subCompanyUser } from '@/services/product-performance-management/early-user-management'
-import RegistForm from './early-screening'
+import RegistForm from '@/common/components/early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
 
