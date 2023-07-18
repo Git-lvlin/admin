@@ -7,6 +7,7 @@ import {
 } from '@ant-design/pro-form';
 import { addSubsidiary, subCompanyAdd } from "@/services/aed-team-leader/team-leader-management"
 import type { EnteringProps } from "./data"
+import AddressCascader from '@/components/address-cascader'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -135,6 +136,14 @@ export default (props:EnteringProps) => {
         placeholder='请输入团长名称'
       />
       }
+
+      <Form.Item
+        label="地址"
+        rules={[{ required: true, message: '请选择省市区' }]}
+        name="area"
+      >
+        <AddressCascader style={{ width: 250 }} />
+      </Form.Item>
       
       <ProFormText
         name="subId"

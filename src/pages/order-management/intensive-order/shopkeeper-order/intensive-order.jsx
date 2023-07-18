@@ -422,7 +422,12 @@ const TableList = () => {
       >
         <Pagination
           total={pageTotal}
-          showTotal={(total, range) => `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`}
+          showTotal={(total, range) =>{ 
+            if(total==null){
+              return `总共 0 条`
+            }
+             return  `第 ${range[0]}-${range[1]} 条/总共 ${total} 条`
+          }}
           pageSize={pageSize}
           current={page}
           onChange={pageChange}

@@ -13,6 +13,7 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
 import ProCard from "@ant-design/pro-card"
+import EarlyScreeningCommission from './early-screening-commission'
 
 const OrderPerformance= (props) => {
   const { activeKey } = props
@@ -176,6 +177,125 @@ const OrderPerformance= (props) => {
 }
 
 
+const EarlyScreenSpecifiedEarnings= () => {
+  const [visible, setVisible] = useState<boolean>(false)
+  const [msgDetail, setMsgDetail] = useState<TableProps>()
+  const form = useRef<ActionType>()
+  const [visit, setVisit] = useState<boolean>(false)
+
+
+  const tableColumns: ProColumns[] = [
+    {
+      title: '序号',
+      dataIndex:'agencyId',
+      hideInSearch: true,
+      valueType: 'indexBorder'
+    },
+    {
+      title: 'ID',
+      dataIndex: 'agencyId',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '子公司名称',
+      dataIndex: 'name',
+      align: 'center',
+      fieldProps:{
+        placeholder:'请输入子公司名称'
+      },
+      hideInSearch: true
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'name',
+      align: 'center',
+      order: 1,
+      hideInTable: true
+    },
+    {
+      title: '订单分账时间',
+      dataIndex: 'dateRange',
+      renderFormItem: () => <TimeSelect />,
+      hideInTable: true,
+      order: 2,
+    },
+    {
+      title: '提成（元）',
+      dataIndex: 'totalCommission',
+      align: 'center',
+      render: (_,data)=>{
+        if(_&&_>0){
+          return <a onClick={()=>{setVisible(true);setMsgDetail(data);}}>{amountTransform(_,'/').toFixed(2)}</a>
+        }else{
+          return '0'
+        }
+      },
+      hideInSearch: true
+    },
+    {
+      title: '已解冻提成(元)【含通道费】',
+      dataIndex: 'unFreezeAmountDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '未解冻提成(元)【含通道费】',
+      dataIndex: 'freezeAmountDesc',
+      align: 'center',
+      hideInSearch: true
+    }
+  ]
+
+  const getFieldValue = (searchConfig: any) => {
+    const {dateRange,...rest}=searchConfig.form.getFieldsValue()
+    return {
+      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
+  return (
+    <>
+      <ProTable
+        rowKey="businessDeptId"
+        columns={tableColumns}
+        request={scrSubOrderPm}
+        columnEmptyText={false}
+        actionRef={form}
+        pagination={{
+          pageSize: 10,
+          showQuickJumper: true,
+        }}
+        options={false}
+        search={{
+          defaultCollapsed: true,
+          labelWidth: 110,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+            key='export'
+            change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+            type={'AEDOrder'}
+            conditions={()=>{return getFieldValue(searchConfig)}}
+          />,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'scrSubOrderPm'}/>
+          ],
+        }}
+      />
+      {
+        visible&&
+        <EarlyScreeningCommission
+          visible={visible}
+          setVisible={setVisible}
+          msgDetail={msgDetail}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+        />
+      }
+    </>
+  )
+}
+
 export default ()=>{
   const [activeKey, setActiveKey] = useState<string>('1')
   return (
@@ -195,6 +315,11 @@ export default ()=>{
           <ProCard.TabPane key="2" tab="早筛业绩统计">
             {
               activeKey=='2'&&<OrderPerformance  activeKey={activeKey}/>
+            }
+          </ProCard.TabPane>
+          <ProCard.TabPane key="3" tab="早筛指定收益">
+            {
+              activeKey=='3'&&<EarlyScreenSpecifiedEarnings/>
             }
           </ProCard.TabPane>
     </ProCard>
