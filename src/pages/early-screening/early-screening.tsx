@@ -111,8 +111,14 @@ export default (props) => {
             <ProFormText name="name" readonly />
           </div>
 
+          
           <div className={`${styles.form_item} ${styles.marck}`}>
-            <div>2、性别 <div className={styles.required}> *</div></div>
+            <div>2、身份证号（中国大陆）<div className={styles.required}> *</div></div>
+            <ProFormText name="cardNo" readonly />
+          </div>
+
+          <div className={styles.form_item}>
+            <div>3、性别 <div className={styles.required}> *</div></div>
             <ProFormRadio.Group
               name="sender"
               options={[
@@ -129,24 +135,19 @@ export default (props) => {
             />
           </div>
 
-          <div className={styles.form_item}>
-            <div>3、年龄（请选择 18-75 适用年龄区间内的周岁数）<div className={styles.required}>*</div></div>
+          <div className={`${styles.form_item} ${styles.marck}`}>
+            <div>4、年龄（请选择 18-75 适用年龄区间内的周岁数）<div className={styles.required}>*</div></div>
             {msgDetail?.age}（岁）
           </div>
 
-          <div className={`${styles.form_item} ${styles.marck}`}>
-            <div>4、身高 <div className={styles.required}>*</div></div>
+          <div className={styles.form_item}>
+            <div>5、身高 <div className={styles.required}>*</div></div>
             {msgDetail?.height} cm
           </div>
 
-          <div className={styles.form_item}>
-            <div>5、体重 <div className={styles.required}>*</div></div>
-            {msgDetail?.weight} kg
-          </div>
-
           <div className={`${styles.form_item} ${styles.marck}`}>
-            <div>6、身份证号（中国大陆）<div className={styles.required}> *</div></div>
-            <ProFormText name="cardNo" readonly />
+            <div>6、体重 <div className={styles.required}>*</div></div>
+            {msgDetail?.weight} kg
           </div>
 
           <div className={styles.form_item}>
