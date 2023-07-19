@@ -56,8 +56,18 @@ export default (props:EnteringProps) => {
         },
       }}
       onFinish={async (values) => {
+        const { area, ...rest } = values
+        const params={
+          ...rest,
+          provinceId: area[0].value,
+          cityId: area[1].value,
+          areaId: area[2].value,
+          provinceName: area[0].label,
+          cityName: area[1].label,
+          areaName: area[2].label,
+        }
         const api=type==1? subCompanyAdd:addSubsidiary
-        api(values).then(res=>{
+        api(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
