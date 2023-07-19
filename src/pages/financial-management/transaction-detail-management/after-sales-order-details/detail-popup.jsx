@@ -7,6 +7,7 @@ import { refundDetail } from "@/services/financial-management/transaction-detail
 import { tradeType } from '../../common-enum'
 import { orderTypes } from '@/services/financial-management/common'
 import { fashionableType, backCalculation } from '../../common-function'
+import styles from './styles.less'
 
 const Detail = ({id, visible, setVisible}) => {
   const [loading, setLoading] = useState(false)
