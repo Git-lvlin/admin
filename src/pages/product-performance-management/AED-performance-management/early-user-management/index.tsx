@@ -14,13 +14,13 @@ const Index = () => {
       >
         <ProCard.TabPane
           key='1'
-          tab='AED早筛订单'
+          tab='早筛订单'
         >
           <AEDEarlyOrderManagement />
         </ProCard.TabPane>
         <ProCard.TabPane
            key='2'
-           tab='AED待采样订单批量导入'
+           tab='待采样订单批量导入'
         >
           <WaitDetectionUser />
         </ProCard.TabPane>
