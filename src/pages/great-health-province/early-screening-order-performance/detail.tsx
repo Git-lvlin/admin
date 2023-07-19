@@ -116,7 +116,7 @@ export default (props: any) => {
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.name} 健康礼包订单提成 （ID:${msgDetail?.agencyId}）`}
+      title={`${msgDetail?.name} 泛癌早筛订单提成 （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       layout='horizontal'
