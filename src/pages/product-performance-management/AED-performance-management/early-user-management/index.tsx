@@ -20,7 +20,7 @@ const Index = () => {
         </ProCard.TabPane>
         <ProCard.TabPane
            key='2'
-           tab='待采样订单批量导入'
+           tab='待采样早筛订单'
         >
           <WaitDetectionUser />
         </ProCard.TabPane>
