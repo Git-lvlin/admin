@@ -483,7 +483,7 @@ export default {
   'menu.great-health-province.aed-training-service-achievement': 'AED培训及服务套餐业绩',
   'menu.great-health-province.health-package-order-performance': '健康礼包订单业绩',
   'menu.great-health-province.settings-page': '设置',
-  'menu.great-health-province.early-screening-order-performance': 'AED早筛订单业绩',
+  'menu.great-health-province.early-screening-order-performance': '早筛订单业绩',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

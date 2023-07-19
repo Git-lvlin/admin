@@ -36,7 +36,7 @@ const EarlyScreeningOrderPerformance: React.FC = () => {
       align: 'center'
     },
     {
-      title: 'AED早筛订单业绩',
+      title: '早筛订单业绩',
       dataIndex: 'totalPayAmountDesc',
       align: 'center',
       hideInSearch: true
@@ -48,7 +48,7 @@ const EarlyScreeningOrderPerformance: React.FC = () => {
       hideInTable: true
     },
     {
-      title: 'AED早筛订单提成',
+      title: '早筛订单提成',
       dataIndex: 'totalCommissionDesc',
       render: (_, r) => <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>,
       align: 'center',
@@ -66,8 +66,8 @@ const EarlyScreeningOrderPerformance: React.FC = () => {
     <PageContainer>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff', padding: '20px'}} column={3} layout="vertical" bordered>
         <Descriptions.Item  label="大健康省代数量">{data?.totalNum ?? 0}</Descriptions.Item>
-        <Descriptions.Item  label="AED早筛订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
-        <Descriptions.Item  label="AED早筛订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>
+        <Descriptions.Item  label="早筛订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
+        <Descriptions.Item  label="早筛订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>
       </Descriptions>
       <ProTable
         rowKey='agencyId'
