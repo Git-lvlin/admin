@@ -5,7 +5,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from '@/components/pro-table'
-import { AEDTrainingsService, AEDTrainingsServiceStats } from "@/services/aed-team-leader/order-performance"
+import { scrSpecOrderPmDetail, scrSpecOrderPmDetailStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { CumulativeProps, DrtailItem } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
@@ -37,18 +37,33 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '早筛码',
-      dataIndex: 'sinCode',
+      dataIndex: 'signCode',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '子订单号',
-      dataIndex: 'orderSn',
+      dataIndex: 'subOrderSn',
       align: 'center',
+      fieldProps: {
+        placeholder: '请输入子订单号'
+      }
+    },
+    {
+      title: '总单号',
+      dataIndex: 'sumOrderId',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '订单分账时间',
-      dataIndex: 'dateRange',
+      dataIndex: 'createTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '下单人用户ID',
+      dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
     },
@@ -60,7 +75,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '提成金额',
-      dataIndex: 'payAmount',
+      dataIndex: 'comission',
       align: 'center',
       render: (_,data)=>{
         if(_){
@@ -73,29 +88,21 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '原子公司ID',
-      dataIndex: 'teamMemberId',
+      dataIndex: 'agencyId',
       valueType: 'text',
       hideInSearch: true
     },
     {
-      title: '结算状态',
-      dataIndex: 'auditStatus',
+      title: '早筛状态',
+      dataIndex: 'processDesc',
       align: 'center',
-      valueType: 'select',
-      valueEnum:{
-        1: '未解冻',
-        2: '未到期',
-        3: '待申请',
-        4: '待审核',
-        5: '审核通过待汇款',
-        6: '已结算',
-        7: '审核不通过',
-        8: '已失效'
-      },
-      fieldProps: {
-        placeholder: '请选择结算状态'
-      },
-     hideInSearch: true
+      hideInSearch: true
+    },
+    {
+      title: '结算状态',
+      dataIndex: 'auditStatusDesc',
+      align: 'center',
+      hideInSearch: true
     },
   ]
   useEffect(()=>{
@@ -105,9 +112,9 @@ export default (props:CumulativeProps)=>{
       endTime:time?.dateRange?.[1],
       ...time
     }
-    AEDTrainingsServiceStats(params).then(res=>{
+    scrSpecOrderPmDetailStats(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.totalPayAmount)
+        setOrderSum(res?.data?.[0]?.comission)
       }
     })
   },[time])
@@ -145,9 +152,9 @@ export default (props:CumulativeProps)=>{
       className={styles.store_information}
     >
       <ProTable
-        rowKey="date"
+        rowKey="agencyId"
         columns={Columns}
-        request={AEDTrainingsService}
+        request={scrSpecOrderPmDetail}
         columnEmptyText={false}
         actionRef={ref}
         params={{
@@ -173,10 +180,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'AEDOrderAdm'}
+              type={'scrSpecOrderPmDetail'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'AEDOrderAdm'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'scrSpecOrderPmDetail'}/>
           ],
         }}
         tableRender={(_, dom) => {
@@ -184,7 +191,7 @@ export default (props:CumulativeProps)=>{
             { dom }
             <div className={styles.summary}>
               <div>
-                累计提成：
+                累计提成金额：
                 <span>{amountTransform(orderSum,'/').toFixed(2)}</span>元
               </div>
             </div>

@@ -6,7 +6,7 @@ import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { DescriptionsProps, TableProps, Refer } from "./data"
 import { Descriptions } from 'antd';
 
-import { AEDOrderPm, AEDOrderPmStats, scrSubOrderPm, scrSubOrderPmStats } from "@/services/aed-team-leader/order-performance"
+import { AEDOrderPm, AEDOrderPmStats, scrSubOrderPm, scrSubOrderPmStats, scrSpecOrderPm, scrSpecOrderPmStats } from "@/services/aed-team-leader/order-performance"
 import { amountTransform } from '@/utils/utils'
 import StoreInformation from './store-information'
 import Export from '@/pages/export-excel/export'
@@ -76,7 +76,7 @@ const OrderPerformance= (props) => {
         if(_&&_>0&&activeKey=='1'){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else if(activeKey=='2'){
-          return _
+          return amountTransform(_,'/').toFixed(2)
         }else{
           return '0'
         }
@@ -91,7 +91,7 @@ const OrderPerformance= (props) => {
         if(_&&_>0&&activeKey=='1'){
           return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
         }else if(activeKey=='2'){
-          return _
+          return amountTransform(_,'/').toFixed(2)
         }else{
           return '0'
         }
@@ -184,7 +184,7 @@ const EarlyScreenSpecifiedEarnings= () => {
   const [visit, setVisit] = useState<boolean>(false)
 
 
-  const tableColumns: ProColumns[] = [
+  const columns: ProColumns[] = [
     {
       title: '序号',
       dataIndex:'agencyId',
@@ -204,14 +204,8 @@ const EarlyScreenSpecifiedEarnings= () => {
       fieldProps:{
         placeholder:'请输入子公司名称'
       },
-      hideInSearch: true
-    },
-    {
-      title: '子订单号',
-      dataIndex: 'name',
-      align: 'center',
-      order: 1,
-      hideInTable: true
+      hideInSearch: true,
+      order: 1
     },
     {
       title: '订单分账时间',
@@ -250,17 +244,17 @@ const EarlyScreenSpecifiedEarnings= () => {
   const getFieldValue = (searchConfig: any) => {
     const {dateRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      startTime:dateRange[0]&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime:dateRange[1]&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
   return (
     <>
       <ProTable
-        rowKey="businessDeptId"
-        columns={tableColumns}
-        request={scrSubOrderPm}
+        rowKey="agencyId"
+        columns={columns}
+        request={scrSpecOrderPm}
         columnEmptyText={false}
         actionRef={form}
         pagination={{
@@ -279,7 +273,7 @@ const EarlyScreenSpecifiedEarnings= () => {
             type={'AEDOrder'}
             conditions={()=>{return getFieldValue(searchConfig)}}
           />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'scrSubOrderPm'}/>
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'scrSpecOrderPm'}/>
           ],
         }}
       />
