@@ -18,7 +18,7 @@ const EarlyScreeningOrderPerformance: React.FC = () => {
   useEffect(()=> {
     hpaScreenStats().then(res=> {
       if(res.code === 0) {
-        setData(res.data)
+        setData(res.data[0])
       }
     })
   }, [])
@@ -65,7 +65,7 @@ const EarlyScreeningOrderPerformance: React.FC = () => {
   return (
     <PageContainer>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff', padding: '20px'}} column={3} layout="vertical" bordered>
-        <Descriptions.Item  label="大健康省代数量">{data?.totalNum ?? 0}</Descriptions.Item>
+        <Descriptions.Item  label="大健康省代数量">{data?.totalNums ?? 0}</Descriptions.Item>
         <Descriptions.Item  label="早筛订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
         <Descriptions.Item  label="早筛订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>
       </Descriptions>

@@ -276,7 +276,7 @@ const ProgramPerformance: FC = () => {
       align: 'center',
       hideInSearch: true,
       render: (_, r) => {
-        if(_) {
+        if(r.finishTime) {
           return (
             <Tooltip 
               title={
