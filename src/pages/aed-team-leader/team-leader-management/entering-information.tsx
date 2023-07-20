@@ -149,6 +149,7 @@ export default (props:EnteringProps) => {
 
       <Form.Item
         label="地址"
+        rules={[{ required: true, message: '请选择省市区' }]}
         name="area"
       >
         <AddressCascader style={{ width: 250 }} />

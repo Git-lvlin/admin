@@ -88,7 +88,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '原子公司ID',
-      dataIndex: 'agencyId',
+      dataIndex: 'sourceAgencyId',
       valueType: 'text',
       hideInSearch: true
     },
