@@ -43,11 +43,18 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '子订单号',
-      dataIndex: 'subOrderSn',
+      dataIndex: 'orderSn',
       align: 'center',
       fieldProps: {
         placeholder: '请输入子订单号'
-      }
+      },
+      hideInTable: true
+    },
+    {
+      title: '子订单号',
+      dataIndex: 'subOrderSn',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '总单号',
@@ -108,8 +115,6 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
-      startTime:time?.dateRange?.[0],
-      endTime:time?.dateRange?.[1],
       ...time
     }
     scrSpecOrderPmDetailStats(params).then(res=>{
