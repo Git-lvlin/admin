@@ -45,7 +45,7 @@ const DatePickers: React.FC<any> = ({value, onChange}) => {
           },
           { 
             value: 4,
-            label: '上午16：00 — 18：00'
+            label: '下午16：00 — 18：00'
           }
         ]}
       />
