@@ -20,7 +20,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,} = props;
+  const { visible, setVisible,msgDetail,onClose,searchTime} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState<number>(0)
   const [time,setTime]=useState<DrtailItem>({})
@@ -34,6 +34,7 @@ export default (props:CumulativeProps)=>{
       renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
+      initialValue: [moment(searchTime.dateRange[0]),moment(searchTime.dateRange[1])]
     },
     {
       title: '早筛码',
@@ -115,6 +116,7 @@ export default (props:CumulativeProps)=>{
   useEffect(()=>{
     const params={
       agencyId:msgDetail?.agencyId,
+      ...searchTime,
       ...time
     }
     scrSpecOrderPmDetailStats(params).then(res=>{

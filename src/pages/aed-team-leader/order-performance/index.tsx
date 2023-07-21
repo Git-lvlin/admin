@@ -182,6 +182,7 @@ const EarlyScreenSpecifiedEarnings= () => {
   const [msgDetail, setMsgDetail] = useState<TableProps>()
   const form = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
+  const [time,setTime]=useState<Refer>()
 
 
   const columns: ProColumns[] = [
@@ -261,6 +262,9 @@ const EarlyScreenSpecifiedEarnings= () => {
           pageSize: 10,
           showQuickJumper: true,
         }}
+        onSubmit={(val)=>{
+          setTime(val)
+        }}
         options={false}
         search={{
           defaultCollapsed: true,
@@ -284,6 +288,7 @@ const EarlyScreenSpecifiedEarnings= () => {
           setVisible={setVisible}
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          searchTime={time}
         />
       }
     </>
