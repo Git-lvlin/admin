@@ -120,11 +120,14 @@ const RefundRequestRemarks:React.FC<refundRequestRemarksProps> = ({visible, setV
           label='附件'
           name='refundImg'
         >
-          <Image
-            width={80}
-            height={80}
-            src={obj?.refundImg}
-          />
+          {
+            obj?.refundImg &&
+            <Image
+              width={80}
+              height={80}
+              src={obj?.refundImg}
+            />
+          }
         </ProForm.Item>
       }
       <ProFormText
