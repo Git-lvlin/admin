@@ -60,6 +60,9 @@ const AEDEarlyOrderManagement: React.FC = () => {
       <Menu.Item key='5' disabled={!data.refund}>
         <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(data.subOrderSn); setType(true); setData(data.refund)}}>查看申请退款备注</a>
       </Menu.Item>
+      <Menu.Item key='6' disabled={!(data.process === 10)}>
+        <a href={`${data.reportUrl && data.reportUrl}`} target='_blank' referrerPolicy='no-referrer'>查看检测报告</a>
+      </Menu.Item>
     </Menu>
   )
 

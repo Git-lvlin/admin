@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react'
 import ProForm, { ModalForm, ProFormRadio, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
+import { Image } from 'antd'
 
 import type { FormInstance } from 'antd'
 import type { refundRequestRemarksProps } from './data'
@@ -62,11 +63,13 @@ const RefundRequestRemarks:React.FC<refundRequestRemarksProps> = ({visible, setV
       }}
       labelCol={{span: 5}}
       formRef={form}
-      submitter={{
+      submitter={!type ? {
         searchConfig: {
           resetText: '取消',
           submitText: '确定'
         }
+      } : {
+        render: ()=> []
       }}
       layout='horizontal'
     >
@@ -81,7 +84,7 @@ const RefundRequestRemarks:React.FC<refundRequestRemarksProps> = ({visible, setV
         readonly={type}
         rules={[
           {
-            required: true
+            required: !type
           },{validator: (_, value)=> {
           if(value?.length < 5) {
             return Promise.reject('请输入5-50个字符')
@@ -102,12 +105,28 @@ const RefundRequestRemarks:React.FC<refundRequestRemarksProps> = ({visible, setV
         ]}
         readonly={type}
       />
-      <ProForm.Item
-        label='附件'
-        name='refundImg'
-      >
-        <Upload/>
-      </ProForm.Item>
+      {
+        !type &&
+        <ProForm.Item
+          label='附件'
+          name='refundImg'
+        >
+          <Upload />
+        </ProForm.Item>
+      }
+      {
+        type &&
+        <ProForm.Item
+          label='附件'
+          name='refundImg'
+        >
+          <Image
+            width={80}
+            height={80}
+            src={obj?.refundImg}
+          />
+        </ProForm.Item>
+      }
       <ProFormText
         label='操作人'
         name='operator'
