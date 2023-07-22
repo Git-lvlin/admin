@@ -123,8 +123,8 @@ export default (props) => {
     >
       <div className={`${styles.earlyScreening} early` }>
         <div className={styles.headFixation}>早筛码：{shortId}</div>
-        <div className={styles.earlyTitle}>健康问卷+知情书/抽<div>血委托协议</div></div>
-        <div className={styles.earlyHint}>所填信息必须和签署知情同意书一致。如信息有误，造成一切结果和责任，由本人承担</div>
+        <div className={styles.earlyTitle}>健康问卷+知情同意书</div>
+        <div className={styles.earlyHint}>电子版和纸质版的健康问卷书、知情同意书必须真实且一致；如信息有误，造成一切结果和责任，由本人承担。</div>
         <div className={styles.form}>
           <div className={styles.form_item}>
             <div>1.姓名（请与本人身份证姓名一致，否则造成的法律纠纷由本人承担）<div className={styles.required}>*</div></div>
@@ -388,7 +388,7 @@ export default (props) => {
           </div>
 
           <div className={styles.form_item}>
-            <div>17、是否携带病毒（HIV）？ <div className={styles.required}>*</div></div>
+            <div>17、是否携带艾滋病毒（HIV）？ <div className={styles.required}>*</div></div>
             <ProFormRadio.Group
                 name="virus"
                 options={[
@@ -653,7 +653,7 @@ export default (props) => {
           </div>
 
           <div className={styles.form_item}>
-            <div>23、近1年是否做过乳腺超声或钼靶检查检查（男性选否）？<div className={styles.required}>*</div></div>
+            <div>23、近1年是否做过乳腺超声或钼靶检查（男性选未检测）？<div className={styles.required}>*</div></div>
              <ProFormRadio.Group
                 name="breast"
                 options={[
@@ -751,7 +751,7 @@ export default (props) => {
           </div>
 
           <div className={styles.form_item}>
-            <div>25、近1年是否做过前列腺核磁共振检查（女性选否）？<div className={styles.required}>*</div></div>
+            <div>25、近1年是否做过前列腺核磁共振检查（女性选未检测）？<div className={styles.required}>*</div></div>
              <ProFormRadio.Group
                 name="prostate"
                 options={[
@@ -898,7 +898,7 @@ export default (props) => {
           </div>
 
           <div className={`${styles.form_item} ${styles.marck}`}>
-            <div>28、近1年是否做过卵巢核磁共振检查（男性选否）？<div className={styles.required}>*</div></div>
+            <div>28、近1年是否做过卵巢核磁共振检查（男性选未检测）？<div className={styles.required}>*</div></div>
             <ProFormRadio.Group
                 name="ovary"
                 options={[
@@ -1072,6 +1072,7 @@ export default (props) => {
             <div className={styles.statement_declaration_detail}>1）如您在本平台“中科泰康高科技产业（广州）有限公司“购买 了“泛肿瘤风险筛查项目 ” （ 14项肿瘤的代谢组学泛癌风险筛查），请在下单前与您的分享服务人员进行采血预约（采血前，请务必确保您是在合法合规的医疗机构、并由具备专业资质的医护人员进行操作。如果您发现有任何不符合规定的情况，有权向平台反映或投诉）</div>
             <div className={styles.statement_declaration_detail}> 2）“本健康调查问卷”及“知情同意书”仅做日常健康行为参考，将递交一份给成都泰莱高仁医学检验实验室有限公司检测并出具检测报告，在未得到您本人许可，不会透露给无关方，亦不会用到任何商业用途。本公司保留对问卷及报告的说明、解释和更新的权利。</div>
             <div className={styles.statement_declaration_detail}>3）本人（受检人或其监护人）已阅读知情同意书且对条款理解清楚，同意进行上述的肿瘤的代谢组学泛癌风险筛查，且承诺提供的所有问卷信息准确属实。 如因本人代签或签署信息不准确，造成的一切法律纠纷问题由签署人全责承担。</div>
+            <div className={styles.statement_declaration_detail}>4）特别说明：早筛下单人员分享电子早筛码给受检人签署健康问卷书与知情同意书，一个早筛码只能一个人签署，只能签署一次，不能修改。线上填写资料与线下纸质版健康问卷书与知情同意书填写资料必须真实且一致，如果信息不匹配，将可能收不到检测报告，由此产生的一切法律问题和纠纷，由其本人承担。</div>
             <div className={styles.signature_name}>
               <img className={styles.avatarImage} src={msgDetail?.signUrl} />
               请点击本处签字：__________________

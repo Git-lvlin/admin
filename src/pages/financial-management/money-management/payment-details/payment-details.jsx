@@ -108,7 +108,7 @@ const PaymentDetails = ({query, visible, setVisible, title}) => {
       }
     },
     {
-      title: '平台单号',
+      title: '支付单号',
       dataIndex:'payNo',
     },
     {

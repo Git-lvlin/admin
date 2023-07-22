@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable from '@/components/pro-table'
 import ProForm, { ProFormDependency, ProFormDigit, ProFormText } from '@ant-design/pro-form'
-import { Button, Space } from 'antd'
+import { Button, Space, Tooltip } from 'antd'
 import moment from 'moment'
 
 import type { RangePickerProps } from 'antd/es/date-picker'
@@ -637,6 +637,26 @@ const AEDProgramTransaction: React.FC = () => {
       dataIndex: 'trainingStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '达标时间',
+      dataIndex: 'finishTime',
+      align: 'center',
+      hideInSearch: true,
+      render: (_, r) => (
+        <Tooltip 
+          title={
+            <div style={{fontSize: '12px'}}>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>签合同时间：{r.contractTime}</div>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>视频学习时间：{r.learnTime}</div>
+              <div style={{borderBottom: '1px solid #fff', marginBottom: '10px'}}>考试时间：{r.examTime}</div>
+              <div style={{borderBottom: '1px solid #fff'}}>录入线下培训时间：{r.trainTime}</div>
+            </div>
+          }
+        >
+          <span>{_}</span>
+        </Tooltip>
+      )
     },
     {
       title: '培训课程订单业绩解冻状态',
