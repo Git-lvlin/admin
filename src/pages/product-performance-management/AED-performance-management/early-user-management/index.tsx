@@ -1,15 +1,7 @@
-import { useRef, useState } from 'react'
-import moment from 'moment'
-import { Space, Button } from 'antd'
-import { useLocation } from 'umi'
-import ProForm, { ProFormSelect } from '@ant-design/pro-form'
+import ProCard from '@ant-design/pro-card'
 
-import type { ActionType, ProColumns } from '@ant-design/pro-table'
-import type { FormInstance } from 'antd'
-
-import ProTable from '@/components/pro-table'
-import Export from '@/components/export'
 import PageContainer from '@/components/PageContainer'
+<<<<<<< HEAD
 import TimeSelect from '@/components/time-select'
 import { subCompanyUser } from '@/services/product-performance-management/early-user-management'
 import RegistForm from '@/common/components/early-screening'
@@ -320,135 +312,34 @@ const AEDEarlyUserManagement: React.FC = () => {
       ...rest
     }
   }
+=======
+import AEDEarlyOrderManagement from './early-order-management'
+import WaitDetectionUser from './wait-detection-user'
+>>>>>>> a56044846676e5850f62682eced694fddc80c68d
 
+const Index = () => {
   return (
     <PageContainer>
-      <ProTable
-        rowKey='subOrderSn'
-        columns={columns}
-        params={{}}
-        formRef={form}
-        request={subCompanyUser}
-        options={false}
-        actionRef={actRef}
-        toolBarRender={() => [
-          
-        ]}
-        search={{
-          labelWidth: 120,
-          optionRender: (search, props, dom) => [
-            ...dom.reverse(),
-            <Export
-              key='1'
-              type='scrAdmCompanyUser'
-              conditions={getFieldsValue}
-            />
-            // <Button 
-            //   type='primary' 
-            //   key='2'
-            //   onClick={()=> {
-            //     setNoticeVisible(true)
-            //     setData(undefined)
-            //   }}
-            // >
-            //   通知采样
-            // </Button>
-          ]
+      <ProCard
+        tabs={{
+          type: 'card'
         }}
-      />
-      {
-        visible &&
-        <RegistForm
-          visible={visible}
-          setVisible={setVisible}
-          id={id}
-          shortId={shortId}
-        />
-      }
-      {
-        cancelRegisterVisible &&
-        <CancelRegister
-          visible={cancelRegisterVisible}
-          setVisible={setCancelRegisterVisible}
-          data={data}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        refundRequestRemarksVisible &&
-        <RefundRequestRemarks
-          visible={refundRequestRemarksVisible}
-          setVisible={setRefundRequestRemarksVisible}
-          id={id}
-          type={type}
-          data={data}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        noticeVisible &&
-        <Notice
-          visible={noticeVisible}
-          setVisible={setNoticeVisible}
-          data={data}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        samplingVisivle &&
-        <Sampling
-          visible={samplingVisivle}
-          setVisible={setSamplingVisivle}
-          data={data}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        expressVisible &&
-        <ExpressList
-          visible={expressVisible}
-          setVisible={setExpressVisible}
-          data={id}
-          callback={()=> actRef.current?.reload()}
-        />
-      }
-      <div className={styles.export}>
-        <div>导出待采样用户，录入活检编号和物流信息后再导入</div>
-        <Space size='small'>
-          <ProFormSelect
-            label='通知状态'
-            options={[
-              {label: '待通知', value: '0'},
-              {label: '已通知', value: '1'}
-            ]}
-            fieldProps={{
-              onChange: (e) => setState(e)
-            }}
-          />
-          <ProForm.Item
-            label='预约采样日期'
-          >
-            <TimeSelect onChange={(e)=> setDateTime(e)} />
-          </ProForm.Item>
-          <Export
-            key='2'
-            type='scrAdmWaitDetectUser'
-            text='导出待采样用户'
-            conditions={{
-              isNotice: state && state,
-              noticeStartTime: dateTime && moment(dateTime[0]).format('YYYY-MM-DD HH:mm:ss'),
-              noticeEndTime: dateTime && moment(dateTime[1]).format('YYYY-MM-DD HH:mm:ss')
-            }}
-          />
-          <ImportFile
-            key='3'
-            code='scrAdmDetectUser'
-            title='导入液体活检编号和物流单号'
-          />
-        </Space>
-      </div>
+      >
+        <ProCard.TabPane
+          key='1'
+          tab='早筛订单'
+        >
+          <AEDEarlyOrderManagement />
+        </ProCard.TabPane>
+        <ProCard.TabPane
+           key='2'
+           tab='待采样早筛订单'
+        >
+          <WaitDetectionUser />
+        </ProCard.TabPane>
+      </ProCard>
     </PageContainer>
   )
 }
 
-export default AEDEarlyUserManagement
+export default Index

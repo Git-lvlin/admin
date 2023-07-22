@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
-import ProForm, { ModalForm, ProFormDateTimePicker, ProFormText } from '@ant-design/pro-form'
+import ProForm, { ModalForm, ProFormText } from '@ant-design/pro-form'
 import { Button, Space, Checkbox, message } from 'antd'
 import ProTable from '@ant-design/pro-table'
+import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -10,18 +11,19 @@ import type { noticeProps } from './data'
 import styles from './styles.less'
 import { waitNoticeUser, smsNoticeUser } from '@/services/product-performance-management/early-user-management'
 import AddressCascader from '@/components/address-cascader'
+import DatePicker from './date-picker'
 
-const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) => {
-  const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
+const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback, num, getFields, selectedKeys }) => {
+  // const [selectedKeys, setSelectedKeys] = useState<React.Key[]>([])
   const [checked, setChecked] = useState<boolean>(false)
   
   const form = useRef<FormInstance>()
   
   useEffect(()=> {
     form.current?.setFieldsValue({
-      user: `${selectedKeys.length}名`
+      user: `${num}名`
     })
-  }, [selectedKeys])
+  }, [num])
 
   useEffect(()=> {
     if(data) {
@@ -31,6 +33,15 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
       })
     }
   }, [data])
+
+  useEffect(()=> {
+    form.current?.setFieldsValue({
+      noticeDate: {
+        date: '',
+        select: 1
+      }
+    })
+  }, [])
   
   const columns:ProColumns[] = [
     {
@@ -56,18 +67,51 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
   ]
 
   const submit = (value: any) => {
-    const { noticeArea = []} = value
+    const { noticeArea = [], noticeDate} = value
+    const { date, select } = noticeDate
+    let start: string, end: string
+    switch (select) {
+      case 1:
+        start = moment(date).format('YYYY-MM-DD') + ' ' + '8:00',
+        end = moment(date).format('YYYY-MM-DD') + ' ' + '10:00'
+        break
+      case 2:
+        start = moment(date).format('YYYY-MM-DD') + ' ' + '10:00',
+        end = moment(date).format('YYYY-MM-DD') + ' ' +  '12:00'
+        break
+      case 3:
+        start = moment(date).format('YYYY-MM-DD') + ' ' + '14:00',
+        end = moment(date).format('YYYY-MM-DD') + ' ' + '16:00'
+        break
+      case 4:
+        start = moment(date).format('YYYY-MM-DD') + ' ' + '16:00',
+        end = moment(date).format('YYYY-MM-DD') + ' ' + '18:00'
+        break
+    }
     return new Promise<void>((resolve, reject) => {
+      let noticeTimes
+      let obj = {}
+      if(getFields.current?.getFieldsValue()) {
+        const { noticeTime, ...rest } = getFields.current?.getFieldsValue()
+        noticeTimes = noticeTime
+        obj = rest
+      }
       if(checked) {
         smsNoticeUser({
           ...value,
-          subOrderSn: !data ? selectedKeys : [data?.subOrderSn],
+          noticeStartTime: start,
+          noticeEndTime: end,
+          searchCond: {
+            subOrderSnArr: !data ? selectedKeys : [data?.subOrderSn],
+            ...obj,
+            noticeStartTime: noticeTimes && moment(noticeTimes[0]).format('YYYY-MM-DD HH:mm:ss'),
+            noticeEndTime: noticeTimes && moment(noticeTimes[1]).format('YYYY-MM-DD HH:mm:ss'),
+          },
           noticeArea: noticeArea[0]?.label + noticeArea[1]?.label + noticeArea[2]?.label
-        }, {
-          showSuccess: true
         }).then(res => {
           if(res.code === 0) {
             callback()
+            message.success(res.data.msg)
             resolve()
           } else {
             reject()
@@ -86,7 +130,7 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
       layout='horizontal'
       labelCol={{span: 8}}
       wrapperCol={{span: 12}}
-      width={data ? 600 : 800}
+      width={600}
       visible={visible}
       onVisibleChange={setVisible}
       onFinish={async(values)=> {
@@ -138,7 +182,7 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
           readonly
         />
       }
-      {
+      {/* {
         !data &&
         <ProTable
           rowKey='subOrderSn'
@@ -157,7 +201,7 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
             onChange: (e) => setSelectedKeys(e),
           }}
         />
-      }
+      } */}
       {
         !data &&
         <ProFormText
@@ -166,11 +210,27 @@ const Notice:React.FC<noticeProps> = ({ visible, setVisible, data, callback }) =
           readonly
         />
       }
-      <ProFormDateTimePicker
+      {/* <ProFormDateTimePicker
         label='预约采样时间'
         name='noticeDate'
         rules={[{required: true}]}
-      />
+      /> */}
+      <ProForm.Item
+        label='预约采样时间'
+        name='noticeDate'
+        rules={[
+          {validator: (_, value) => {
+            if(value?.date) {
+              return Promise.resolve()
+            } else {
+              return Promise.reject('请选择预约采样时间')
+            }
+          }},
+          {required: true}
+        ]}
+      >
+        <DatePicker />
+      </ProForm.Item>
       <ProForm.Item
         label='预约采样地址'
         name='noticeArea'

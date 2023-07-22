@@ -27,4 +27,7 @@ export type noticeProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   data?: any
   callback: ()=> void
+  num?: number
+  getFields?: any
+  selectedKeys?: React.Key[]
 }
