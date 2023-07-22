@@ -73,7 +73,7 @@ const ArticleCategoryList = () => {
       dataIndex: 'articleNum',
       valueType: 'number',
       render:(text, record, _, action)=>[
-        <a key='num' onClick={()=>history.push(`/business-school/article-list?articleTypeId=${record?.id}`)}>{record?.articleNum}</a>
+        <a key='num' onClick={()=>history.push(`/cms/business-school/article-list?articleTypeId=${record?.id}`)}>{record?.articleNum}</a>
       ],
     },
     {
