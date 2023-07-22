@@ -1,8 +1,9 @@
-import { useState, useRef,useEffect } from "react"
+import { useState, useRef } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
+import AddressCascader from '@/components/address-cascader';
 
 import { orderGoodsPm } from "@/services/product-performance-management/early-screening-order-performance"
 import moment from 'moment';
@@ -14,10 +15,13 @@ export default function TransactionData () {
   const [visit, setVisit] = useState<boolean>(false)
 
   const getFieldValue = (searchConfig: any) => {
-    const { dateRange, ...rest}=searchConfig.form.getFieldsValue()
+    const { dateRange, area = [], ...rest}=searchConfig.form.getFieldsValue()
     return {
       startTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: dateRange && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area[0]?.value,
+      cityId: area[1]?.value,
+      areaId: area[2]?.value,
       ...rest,
     }
   }
@@ -157,7 +161,13 @@ export default function TransactionData () {
       dataIndex: 'processDesc',
       align: 'center',
       hideInSearch: true,
-    }
+    },
+    {
+      title: '体检省市区',
+      dataIndex: 'area',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader changeOnSelect />)
+    },
   ]
 
   return (
@@ -168,10 +178,6 @@ export default function TransactionData () {
         request={orderGoodsPm}
         columnEmptyText={false}
         actionRef={form}
-        pagination={{
-          pageSize: 10,
-          showQuickJumper: true,
-        }}
         options={false}
         search={{
           defaultCollapsed: true,

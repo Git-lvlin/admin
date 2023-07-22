@@ -458,14 +458,13 @@ export default {
   'menu.city-office-management.health-gift-package-performance': '健康礼包业绩',
   'menu.city-office-management.finger-doctors-achievement': '手指医生业绩',
 
-  'menu.aed-team-leader': 'AED子公司',
-  'menu.aed-team-leader.team-leader-management': '子公司管理',
+  'menu.aed-team-leader': '子公司管理',
+  'menu.aed-team-leader.team-leader-management': '子公司列表',
   'menu.aed-team-leader.order-performance': '订单业绩',
   'menu.aed-team-leader.three-thousand-eight-performance': '3800单业绩',
-  'menu.aed-team-leader.aed-head-performance': 'AED团长课程订单业绩',
-  'menu.aed-team-leader.aed-head-early-screening-order-performance': 'AED团长早筛订单业绩',
+  'menu.aed-team-leader.aed-head-early-screening-order-performance': '团长订单业绩',
   'menu.aed-team-leader.aed-settlement-configuration': 'AED课程服务套餐业绩结算规则配置',
-  'menu.aed-team-leader.aed-early-screening-order-performance': 'AED早筛订单业绩管理',
+  'menu.aed-team-leader.aed-early-screening-order-performance': '早筛订单业绩管理',
 
 
   'menu.great-project-team': '大团队长',

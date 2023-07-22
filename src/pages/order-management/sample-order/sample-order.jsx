@@ -348,7 +348,7 @@ const TableList = () => {
         <div className={styles.list_header_wrap}>
           <div className={styles.list_header}>
             <div>商品信息</div>
-            {isDocumentary && <div>金额</div>}
+            {!isDocumentary && <div>金额</div>}
             {/* <div>实收</div> */}
             <div>订单状态</div>
             <div>订单类型</div>
