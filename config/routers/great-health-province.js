@@ -28,5 +28,11 @@ export default {
       component: './great-health-province/settings-page',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'early-screening-order-performance',
+      path: '/great-health-province/early-screening-order-performance',
+      component: './great-health-province/early-screening-order-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

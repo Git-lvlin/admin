@@ -4,7 +4,7 @@ import moment from 'moment';
 
 // 用户管理
 export const subCompanyUser = async (params, options = {}) => {
-  const { pageSize, current,  reportTime, signTime, payTime, noticeTime, ...rest } = params
+  const { pageSize, current,  reportTime, signTime, payTime, noticeTime, sendDetectionTime, ...rest } = params
   const res = await request('/auth/healthy/screening/subCompanyUser', {
     method: 'POST',
     data: {
@@ -16,6 +16,8 @@ export const subCompanyUser = async (params, options = {}) => {
       reportEndTime: reportTime && moment(reportTime[1]).format('YYYY-MM-DD HH:mm:ss'),
       noticeStartTime: noticeTime && moment(noticeTime[0]).format('YYYY-MM-DD HH:mm:ss'),
       noticeEndTime: noticeTime && moment(noticeTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      sendDetectionStartTime: sendDetectionTime && moment(sendDetectionTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      sendDetectionEndTime: sendDetectionTime && moment(sendDetectionTime[1]).format('YYYY-MM-DD HH:mm:ss'),
       page: current,
       size: pageSize,
       ...rest
@@ -94,4 +96,25 @@ export const refund = async (params, options = {}) => {
     data: params,
     ...options
   })
+}
+
+// 待采样用户
+export const waitDetectionUser = async (params, options = {}) => {
+  const { pageSize, current, noticeTime, ...rest } = params
+  const res = await request('/auth/healthy/screening/waitDetectionUser', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      noticeStartTime: noticeTime && moment(noticeTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      noticeEndTime: noticeTime && moment(noticeTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    success: res.success,
+    total: res.data.total
+  }
 }
