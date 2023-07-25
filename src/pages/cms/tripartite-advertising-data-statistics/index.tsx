@@ -123,7 +123,7 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
-        return <a onClick={()=>{ history.push(`/cms/coupon-management/coupon-list?redPacketId=${202}`) }}>红包详情</a>
+        return <a onClick={()=>{ history.push(`/cms/coupon-management/coupon-list?redPacketId=${data.redPacketId}`) }}>红包详情</a>
       }
     }
   ]
@@ -131,7 +131,7 @@ export default function TransactionData () {
   return (
     <PageContainer title={false}>
       <ProTable
-        rowKey="orderSn"
+        rowKey="id"
         columns={tableColumns}
         request={positionStats}
         columnEmptyText={false}

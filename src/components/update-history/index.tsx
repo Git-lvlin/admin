@@ -1,9 +1,9 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
 
-import { logPage } from "@/services/cms/tripartite-advertising-data-statistics"
+import { logPage, advPositionPage } from "@/services/cms/tripartite-advertising-data-statistics"
 import {
   DrawerForm
 } from '@ant-design/pro-form';
@@ -15,11 +15,24 @@ export default (props:CumulativeProps) => {
   const form = useRef<ActionType>()
   const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [parameter,setParameter] = useState()
+  const [positionSelect,setPositionSelect] = useState()
+
+  useEffect(()=>{
+    advPositionPage().then(res=>{
+      console.log('res',res)
+      let obj={}
+      res.data?.map((item: { code: string | number; title: string })=>{
+        obj[item.code]=item.title
+      })
+      console.log('obj',obj)
+      setPositionSelect(obj)
+    })
+  },[])
 
   const tableColumns: ProColumns[] = [
     {
       title: '序号',
-      dataIndex:'signCode',
+      dataIndex:'id',
       hideInSearch: true
     },
     {
@@ -27,11 +40,12 @@ export default (props:CumulativeProps) => {
       dataIndex: 'adType',
       align: 'center',
       valueEnum: {
-        1: '开屏广告',
-        2: '横幅广告',
-        3: '插屏广告',
-        4: '激励视频广告',
-        5: '快手短视频广告'
+        'SplashAd': '开屏广告',
+        'BannerAd': '横幅广告',
+        'InterstitialAd': '插屏广告',
+        'RewardVideoAd': '激励视频广告',
+        'KUAISHOU': '快手短视频广告',
+        'NativeExpressAd': '原生广告'
       },
       hideInTable: true,
       fieldProps: {
@@ -49,21 +63,7 @@ export default (props:CumulativeProps) => {
       dataIndex: 'positionCode',
       align: 'center',
       hideInTable: true,
-      valueEnum: {
-        1: '启动页',
-        2: '首页Banner图',
-        3: '插屏广告',
-        4: '集约页Banner图',
-        5: '个人中心页Banner图',
-        6: '个人中心-进入我的早筛页',
-        7: '搜索页猜你喜欢上方',
-        8: '聊天-消息列表看视频领红包',
-        9: '邀请好友页-返回',
-        10: '首页-每日红包下方',
-        11: '个人中心-我的邀请返回',
-        12: '个人中心-我的订单-返回',
-        13: '个人中心-活动中心',
-      },
+      valueEnum: positionSelect,
       fieldProps:{
         placeholder: '请选择展示在前端的位置'
       }
@@ -76,24 +76,24 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '操作项',
-      dataIndex: 'memberId',
+      dataIndex: 'action',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '原值',
-      dataIndex: 'dateRange',
+      dataIndex: 'old',
       hideInSearch: true
     },
     {
       title: '操作后新值',
-      dataIndex: 'createTime',
+      dataIndex: 'new',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '说明',
-      dataIndex: 'createTime',
+      dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
@@ -102,7 +102,7 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '操作人',
-      dataIndex: 'payAmountDesc',
+      dataIndex: 'optAdminName',
       align: 'center',
     },
     {
@@ -113,7 +113,7 @@ export default (props:CumulativeProps) => {
     },
     {
       title: '操作时间',
-      dataIndex: 'dateRange',
+      dataIndex: 'createTime',
       hideInSearch: true
     },
   ]
@@ -121,7 +121,7 @@ export default (props:CumulativeProps) => {
   return (
     <DrawerForm
       layout="horizontal"
-      title='三方广告数据统计'
+      title='更新历史'
       onVisibleChange={setVisible}
       visible={visible}
       width={1400}
@@ -136,7 +136,7 @@ export default (props:CumulativeProps) => {
       }}
     >
       <ProTable
-        rowKey="orderSn"
+        rowKey="id"
         columns={tableColumns}
         request={logPage}
         columnEmptyText={false}

@@ -5,7 +5,7 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 import { CumulativeProps } from './data';
-import { cancelConfirm } from '@/services/user-management/cancellation-application-record'
+import { advPositionPage } from "@/services/cms/tripartite-advertising-data-statistics"
 
 const formItemLayout = {
     labelCol: { span: 5 },
@@ -15,17 +15,15 @@ const formItemLayout = {
 export default (props:CumulativeProps) => {
   const { visible, setVisible, msgDetail, callback } = props;
   const [form] = Form.useForm();
-  const waitTime = (values: { id:string,remark:string,voucher:string}) => {
-    cancelConfirm({id:msgDetail?.id,remark:values.remark,voucher:values.voucher}).then(res=>{
-      if(res.code==0){
-        message.success('操作成功')
-        callback()
-        setVisible(false)
-      }
-    })
-  };
   useEffect(()=>{
-    form.setFieldsValue(msgDetail)
+    advPositionPage({code:msgDetail?.positionCode}).then(res=>{
+      console.log('res',res)
+      form.setFieldsValue({
+        ...res.data?.[0],
+        switch:res.data?.[0]?.switch==1?'开启':"关闭",
+        maxPerPersonPerDay: `${res.data?.[0]?.maxPerPersonPerDay}次`
+      })
+    })
   },[msgDetail])
   return (
     <ModalForm
@@ -37,10 +35,6 @@ export default (props:CumulativeProps) => {
       modalProps={{
         forceRender: true,
         destroyOnClose: true,
-      }}
-      onFinish={async (values) => {
-        await waitTime(values);
-        return true;
       }}
       submitter={{
         render: (props, defaultDoms) => {
@@ -56,42 +50,42 @@ export default (props:CumulativeProps) => {
     >
       <ProFormText
         label='前端位置'
-        name="reason"
+        name="title"
         readonly
       />
       <ProFormText
-        label='广告名称'
-        name="createTime"
+        label='广告类型'
+        name="adTypeDesc"
         readonly
       />
-      <ProFormText
+      {/* <ProFormText
         label='样式'
-        name="createTime"
+        name="adTypeDesc"
         readonly
       />
       <ProFormText
         label='展示次序'
-        name="createTime"
+        name="displayOder"
         readonly
-      />
+      /> */}
       <ProFormText
         label='每人每日最多展示'
-        name="createTime"
+        name="maxPerPersonPerDay"
         readonly
       />
       <ProFormText
         label='备注'
-        name="createTime"
+        name="remark"
         readonly
       />
       <ProFormText
         label='展示状态'
-        name="createTime"
+        name="switch"
         readonly
       />
       <ProFormText
         label='操作人'
-        name="createTime"
+        name="optAdminName"
         readonly
       />
     </ModalForm >

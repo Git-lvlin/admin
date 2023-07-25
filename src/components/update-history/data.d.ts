@@ -1,18 +1,17 @@
 export type TableProps = {
-  createTime: string;
-  finishTime?: string | null;
-  icon: string;
-  id: string;
-  loginTime: string;
-  memberId: string;
-  nickName: string;
-  phoneNumber: string;
-  reason: string;
-  regTime: string;
-  sourceType?: number | null;
-  sourceTypeDesc: string;
-  type: number;
-  userType: number;
+    id: number;
+    adType: string;
+    positionCode: string;
+    positionTitle: string;
+    action: string;
+    old: string;
+    new: string;
+    remark: string;
+    optAdminId: string;
+    optAdminName: string;
+    createTime: string;
+    extra: Extra;
+    adTypeDesc: string;
 }
 
 export type CumulativeProps = {
