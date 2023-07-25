@@ -363,6 +363,11 @@ export default {
       component: './cms/hydrogen-atom-start-window',
       wrappers: [RouteWatcher],
     },
-    
+    {
+      name: 'ads-management',
+      path: '/cms/ads-management',
+      component: './cms/ads-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
