@@ -9,16 +9,12 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
 import { amountTransform } from '@/utils/utils'
-import { Button, Tooltip, Image } from 'antd'
+import { Tooltip, Image } from 'antd'
 import { history } from 'umi'
-import TripartiteAdvertisingDataStatistics from '@/components/tripartite-advertising-data-statistics'
-import UpdateHistory from '@/components/update-history'
 
 export default function TransactionData () {
   const form = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
-  const [visible, setVisible] = useState<boolean>(false)
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false)
 
   const getFieldValue = (searchConfig: any) => {
     const { dateRange = [], ...rest }=searchConfig.form.getFieldsValue()
@@ -142,8 +138,6 @@ export default function TransactionData () {
           labelWidth: 110,
           optionRender: (searchConfig: any, formProps: any, dom: any[]) => [
             ...dom.reverse(),
-            <Button key="sum" onClick={()=>{ setVisible(true) }}>数据统计</Button>,
-            <Button key="update" onClick={()=>{ setUpdateVisible(true) }}>更新记录</Button>,
             <Export
             key='export'
             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
@@ -154,16 +148,6 @@ export default function TransactionData () {
           ],
         }}
       />
-      {visible&&<TripartiteAdvertisingDataStatistics
-        visible={visible}
-        setVisible={setVisible}
-      />
-      }
-      {updateVisible&&<UpdateHistory
-        visible={updateVisible}
-        setVisible={setUpdateVisible}
-      />
-      }
     </PageContainer>
   )
 }

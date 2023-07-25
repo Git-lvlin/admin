@@ -28,9 +28,10 @@ export default (props:CumulativeProps) => {
 
   const tableColumns: ProColumns[] = [
     {
-      title: '广告ID',
-      dataIndex:'signCode',
-      hideInSearch: true
+      title: '序号',
+      dataIndex:'id',
+      hideInSearch: true,
+      valueType: 'indexBorder'
     },
     {
       title: '展示时段',
@@ -93,12 +94,12 @@ export default (props:CumulativeProps) => {
       }}
     >
       <ProTable
-        rowKey="orderSn"
         columns={tableColumns}
         request={typeStats}
         columnEmptyText={false}
         actionRef={form}
         options={false}
+        paginationProps={false}
         search={{
           defaultCollapsed: true,
           labelWidth: 110,
