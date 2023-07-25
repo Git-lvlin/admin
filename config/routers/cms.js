@@ -363,6 +363,11 @@ export default {
       component: './cms/hydrogen-atom-start-window',
       wrappers: [RouteWatcher],
     },
-    
+    {
+      name: 'tripartite-advertising-data-statistics',
+      path: '/cms/tripartite-advertising-data-statistics',
+      component: './cms/tripartite-advertising-data-statistics',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

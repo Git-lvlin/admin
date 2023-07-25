@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button,Tabs} from 'antd';
 import ProTable from '@/components/pro-table';
 import { ModalForm,ProFormRadio} from '@ant-design/pro-form';
@@ -10,7 +10,7 @@ import DeleteModal from '@/components/DeleteModal'
 import EndModel from './end-model'
 import TurnDownModel from './turn-down-model'
 import styles from './style.less'
-import { history,connect } from 'umi';
+import { history,connect,useLocation } from 'umi';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import CouponConstruction from '../coupon-construction'
@@ -20,7 +20,7 @@ const { TabPane } = Tabs
 
 
 const Message = (props) => {
-  const {type,dispatch}=props
+  const {type,dispatch,redPacketId}=props
   const [turnId,setTurnId]=useState()
   const [turnVisible, setTurnVisible] = useState(false);
   const [visit, setVisit] = useState(false)
@@ -65,7 +65,8 @@ const Message = (props) => {
         1: '会员领取红包',
         2: '系统发放红包',
         3: '每日红包',
-        4: '邀请好友红包'
+        4: '邀请好友红包',
+        5: '看视频领红包'
       },
     },
     // {
@@ -276,10 +277,10 @@ return(
             label: '邀请好友红包',
             value: 4,
           },
-          // {
-          //   label: '生鲜板块新人红包',
-          //   value: 5,
-          // }
+          {
+            label: '看视频领红包',
+            value: 5,
+          }
         ]}
       />
     </ModalForm>
@@ -287,7 +288,10 @@ return(
       actionRef={ref}
       rowKey="id"
       options={false}
-      params={{
+      params={redPacketId?{
+        couponVerifyStatus: type,
+        ids: redPacketId,
+      }:{
         couponVerifyStatus: type,
       }}
       scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
@@ -350,11 +354,19 @@ return(
 
 const TableList= (props) =>{
   const { dispatch }=props
-  const [seleType,setSeleType]=useState(1)
+  const [seleType,setSeleType]=useState()
+  const { query } = useLocation()
+  useEffect(()=>{
+    if(query.redPacketId){
+      setSeleType(4)
+    }else{
+      setSeleType(1)
+    }
+  },[])
   return (
       <PageContainer>
         <Tabs
-          defaultActiveKey="1"
+          defaultActiveKey={query.redPacketId?'4':'1'}
           className={styles.cuoponTabs}
           onChange={(val)=>{
             setSeleType(val)
@@ -372,7 +384,7 @@ const TableList= (props) =>{
           </TabPane>
           <TabPane tab="已通过" key="4">
             { 
-              seleType==4&&<Message type={4} dispatch={dispatch}/>
+              seleType==4&&<Message type={4} redPacketId={query.redPacketId} dispatch={dispatch}/>
             }
           </TabPane>
         </Tabs>
