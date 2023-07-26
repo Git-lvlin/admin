@@ -58,11 +58,13 @@ export default function TransactionData () {
       dataIndex: 'adType',
       align: 'center',
       valueEnum: {
-        1: '开屏广告',
-        2: '横幅广告',
-        3: '插屏广告',
-        4: '激励视频广告',
-        5: '快手短视频广告'
+        'SplashAd': '开屏广告',
+        'BannerAd': '横幅广告',
+        'InterstitialAd': '插屏广告',
+        'RewardVideoAd': '激励视频广告',
+        'KUAISHOU': '快手短视频广告',
+        'DrawVideoAd': 'Draw视频广告',
+        'NativeExpressAd': '原生广告'
       },
       fieldProps: {
         placeholder: '请选择广告类型'
@@ -72,12 +74,6 @@ export default function TransactionData () {
     {
       title: '广告类型',
       dataIndex: 'adTypeDesc',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '样式',
-      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
@@ -119,7 +115,9 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
-        return <a onClick={()=>{ history.push(`/cms/coupon-management/coupon-list?redPacketId=${data.redPacketId}`) }}>红包详情</a>
+        if(data.redPacketNum){
+          return <a onClick={()=>{ history.push(`/cms/coupon-management/coupon-list?redPacketId=${data.redPacketId}`) }}>红包详情</a>
+        }
       }
     }
   ]

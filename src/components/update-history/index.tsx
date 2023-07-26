@@ -45,6 +45,7 @@ export default (props:CumulativeProps) => {
         'InterstitialAd': '插屏广告',
         'RewardVideoAd': '激励视频广告',
         'KUAISHOU': '快手短视频广告',
+        'DrawVideoAd': 'Draw视频广告',
         'NativeExpressAd': '原生广告'
       },
       hideInTable: true,
