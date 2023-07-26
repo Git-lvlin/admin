@@ -272,8 +272,21 @@ const couponConstruction = (props) => {
            :null
          }
 
+         {types==5||DetaiIssueType == 5 && id?
+            <ProFormRadio.Group
+               name="limitType"
+               label='每人限领'
+               rules={[{ required: true, message: '请选择限领方式' }]}
+               options={[
+                 {
+                   label: '不限领', value: 1
+                 }]}
+             />
+             :null
+         }
+
          {
-           (types==1||DetaiIssueType == 1 && id)||(types==2||DetaiIssueType == 2 && id)||(types==5||DetaiIssueType == 5 && id)?
+           (types==1||DetaiIssueType == 1 && id)||(types==2||DetaiIssueType == 2 && id)?
             <>
             <ProFormRadio.Group
               name="limitType"
