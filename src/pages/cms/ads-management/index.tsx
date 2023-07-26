@@ -3,6 +3,7 @@ import { Space, Tooltip, Image } from 'antd'
 import ProCard from '@ant-design/pro-card'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import PageContainer from '@/components/PageContainer'
 import styles from './styles.less'
@@ -10,6 +11,9 @@ import ProTable from '@/components/pro-table'
 import { advPositionPage, advTypePage } from '@/services/cms/ads-management'
 import AdsConfig from './ads-config'
 import Edit from './edit'
+import UpdateHistory from './update-history'
+import TripartiteAdvertisingDataStatistics from './tripartite-advertising-data-statistics'
+import Export from '@/components/export'
 
 const AdsManagement: React.FC = () => {
   const [type, setType] = useState<string | undefined>()
@@ -18,8 +22,11 @@ const AdsManagement: React.FC = () => {
   const [adName, setAdName] = useState<string | undefined>()
   const [code, setCode] = useState<string | undefined>()
   const [adsConfigVisible, setAdsConfigVisible] = useState(false)
+  const [updateHistoryVisible, setUpdateHistoryVisible] = useState(false)
+  const [statisticsVisible, setStatisticsVisible] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
   const actRef = useRef<ActionType>()
+  const form = useRef<FormInstance>()
 
   useEffect(()=> {
     advTypePage().then(res => {
@@ -127,8 +134,8 @@ const AdsManagement: React.FC = () => {
        <div className={styles.header}>
         <div className={styles.title}>配置</div>
         <Space>
-          <a>数据统计</a>
-          <a>更新记录</a>
+          <a onClick={()=>{setStatisticsVisible(true)}}>数据统计</a>
+          <a onClick={()=>{setUpdateHistoryVisible(true)}}>更新记录</a>
         </Space>
       </div>
       <ProCard className={styles.cardList} gutter={24}>
@@ -162,10 +169,16 @@ const AdsManagement: React.FC = () => {
         request={advPositionPage}
         actionRef={actRef}
         options={false}
+        formRef={form}
         onReset={()=> {setType(undefined)}}
         search={{
           optionRender: (search, props, dom) => [
-            ...dom.reverse()
+            ...dom.reverse(),
+            <Export 
+              type='export_advposition_page'
+              key='1'
+              conditions={{...form.current?.getFieldsValue()}}
+            />
           ]
         }}
         columns={columns}
@@ -188,6 +201,20 @@ const AdsManagement: React.FC = () => {
           type={adType}
           adName={adName}
           code={code}
+        />
+      }
+      {
+        updateHistoryVisible &&
+        <UpdateHistory
+          visible={updateHistoryVisible}
+          setVisible={setUpdateHistoryVisible}
+        />
+      }
+      {
+        statisticsVisible &&
+        <TripartiteAdvertisingDataStatistics 
+          visible={statisticsVisible}
+          setVisible={setStatisticsVisible}
         />
       }
     </PageContainer>
