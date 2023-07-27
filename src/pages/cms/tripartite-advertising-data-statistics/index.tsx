@@ -1,10 +1,10 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
 import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
 
-import { positionStats } from "@/services/cms/tripartite-advertising-data-statistics"
+import { positionStats, advGetAdType } from "@/services/cms/tripartite-advertising-data-statistics"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
@@ -15,6 +15,7 @@ import { history } from 'umi'
 export default function TransactionData () {
   const form = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
+  const [advSelect, setAdvSelect] = useState()
 
   const getFieldValue = (searchConfig: any) => {
     const { dateRange = [], ...rest }=searchConfig.form.getFieldsValue()
@@ -24,6 +25,18 @@ export default function TransactionData () {
       ...rest,
     }
   }
+
+  useEffect(()=>{
+    advGetAdType().then(res=>{
+      if(res.code==0){
+        let obj={}
+        res.data?.map((item: { code: string | number; title: string })=>{
+          obj[item.code]=item.title
+        })
+        setAdvSelect(obj)
+      }
+    })
+  },[])
 
   const tableColumns: ProColumns[] = [
     {
@@ -57,15 +70,8 @@ export default function TransactionData () {
       title: '广告类型',
       dataIndex: 'adType',
       align: 'center',
-      valueEnum: {
-        'SplashAd': '开屏广告',
-        'BannerAd': '横幅广告',
-        'InterstitialAd': '插屏广告',
-        'RewardVideoAd': '激励视频广告',
-        'KUAISHOU': '快手短视频广告',
-        'DrawVideoAd': 'Draw视频广告',
-        'NativeExpressAd': '原生广告'
-      },
+      valueType: 'select',
+      valueEnum: advSelect,
       fieldProps: {
         placeholder: '请选择广告类型'
       },

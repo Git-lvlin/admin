@@ -19,7 +19,7 @@ export const positionStats = async (params = {}, options = {}) => {
     });
   
     return {
-      data: res.data || [],
+      data: res.data.records || [],
       success: true,
       total: res.data.total,
     }
@@ -43,7 +43,7 @@ export const typeStats = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data || [],
+    data: res.data.records || [],
     success: true,
     total: res.data.total,
   }
@@ -92,5 +92,28 @@ export const advPositionPage = async (params = {}, options = {}) => {
     data: res.data.records || [],
     success: true,
     total: res.data.total,
+  }
+}   
+
+
+export const advGetAdType = async (params = {}, options = {}) => {
+  const { current, pageSize, ...rest } = params;
+
+  const data = {
+    page: current,
+    size: pageSize,
+    ...rest
+  }
+
+  const res = await request('/auth/stats/adv/getAdType', {
+    method: 'POST',
+    data,
+    ...options
+  });
+
+  return {
+    data: res.data.records || [],
+    success: true,
+    code: res.code
   }
 }   
