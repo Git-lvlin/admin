@@ -274,6 +274,7 @@ export default {
   'menu.cms.message-management.popup-template': 'APP内弹窗模板',
   'menu.cms.business-ads': '商务广告',
   'menu.cms.business-ads.ads-management': '三方广告管理',
+  'menu.cms.business-ads.tripartite-advertising-data-statistics': '三方广告位数据统计',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
