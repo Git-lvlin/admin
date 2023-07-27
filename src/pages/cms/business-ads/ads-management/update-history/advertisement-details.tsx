@@ -21,7 +21,8 @@ export default (props:CumulativeProps) => {
       form.setFieldsValue({
         ...res.data?.[0],
         switch:res.data?.[0]?.switch==1?'开启':"关闭",
-        maxPerPersonPerDay: `${res.data?.[0]?.maxPerPersonPerDay}次`
+        maxPerPersonPerDay: `${res.data?.[0]?.maxPerPersonPerDay}次`,
+        intervalDisplay:`${res.data?.[0]?.intervalDisplay}秒`
       })
     })
   },[msgDetail])
@@ -71,6 +72,11 @@ export default (props:CumulativeProps) => {
       <ProFormText
         label='每人每日最多展示'
         name="maxPerPersonPerDay"
+        readonly
+      />
+      <ProFormText
+        label='间隔展示最短时间'
+        name="intervalDisplay"
         readonly
       />
       <ProFormText
