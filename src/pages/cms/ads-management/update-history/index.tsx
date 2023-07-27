@@ -3,7 +3,7 @@ import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import TimeSelect from '@/components/time-select'
 
-import { logPage, advPositionPage } from "@/services/cms/tripartite-advertising-data-statistics"
+import { logPage, advPositionPage, advGetAdType } from "@/services/cms/tripartite-advertising-data-statistics"
 import {
   DrawerForm
 } from '@ant-design/pro-form';
@@ -16,6 +16,7 @@ export default (props:CumulativeProps) => {
   const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [parameter,setParameter] = useState()
   const [positionSelect,setPositionSelect] = useState()
+  const [advSelect, setAdvSelect] = useState()
 
   useEffect(()=>{
     advPositionPage().then(res=>{
@@ -29,6 +30,18 @@ export default (props:CumulativeProps) => {
     })
   },[])
 
+  useEffect(()=>{
+    advGetAdType().then(res=>{
+      if(res.code==0){
+        let obj={}
+        res.data?.map((item: { code: string | number; title: string })=>{
+          obj[item.code]=item.title
+        })
+        setAdvSelect(obj)
+      }
+    })
+  },[])
+
   const tableColumns: ProColumns[] = [
     {
       title: '序号',
@@ -39,14 +52,8 @@ export default (props:CumulativeProps) => {
       title: '广告类型',
       dataIndex: 'adType',
       align: 'center',
-      valueEnum: {
-        'SplashAd': '开屏广告',
-        'BannerAd': '横幅广告',
-        'InterstitialAd': '插屏广告',
-        'RewardVideoAd': '激励视频广告',
-        'KUAISHOU': '快手短视频广告',
-        'NativeExpressAd': '原生广告'
-      },
+      valueEnum: advSelect,
+      valueType: 'select',
       hideInTable: true,
       fieldProps: {
         placeholder: '请选择广告类型'
