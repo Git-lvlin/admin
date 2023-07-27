@@ -224,6 +224,13 @@ const Message = (props) => {
 
   const getFieldValue = (searchConfig) => {
     const {...rest}=searchConfig.form.getFieldsValue()
+    if(redPacketId){
+      return {
+        ...rest,
+        couponVerifyStatus: type,
+        ids: redPacketId,
+      }
+    }
     return {
       ...rest,
     }
