@@ -78,13 +78,27 @@ const AdsManagement: React.FC = () => {
       title: '间隔展示最短时间',
       dataIndex: 'intervalDisplay',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.intervalDisplay) {
+          return <span>{_}秒</span>
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '每人每日最多展示',
       dataIndex: 'maxPerPersonPerDay',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.maxPerPersonPerDay) {
+          return <span>{_}次</span>
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '备注',
@@ -183,7 +197,7 @@ const AdsManagement: React.FC = () => {
             <Export 
               type='export_advposition_page'
               key='1'
-              conditions={{...form.current?.getFieldsValue()}}
+              conditions={{...form.current?.getFieldsValue(), adType: type}}
             />
           ]
         }}
