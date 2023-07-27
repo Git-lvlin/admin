@@ -95,6 +95,12 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
+      title: '点击量',
+      dataIndex: 'clickNums',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '人均点击量',
       dataIndex: 'avgClick',
       align: 'center',
