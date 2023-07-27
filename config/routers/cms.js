@@ -364,10 +364,16 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'ads-management',
-      path: '/cms/ads-management',
-      component: './cms/ads-management',
-      wrappers: [RouteWatcher],
-    },
+      name: 'business-ads',
+      path: '/cms/business-ads',
+      routes: [
+        {
+          name: 'ads-management',
+          path: '/cms/business-ads/ads-management',
+          component: './cms/business-ads/ads-management',
+          wrappers: [RouteWatcher],
+        }
+      ]
+    }
   ]
 }
