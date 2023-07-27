@@ -18,6 +18,7 @@ import Export from '@/components/export'
 const AdsManagement: React.FC = () => {
   const [type, setType] = useState<string | undefined>()
   const [data, setData] = useState([])
+  const [dataSource, setDataSource] = useState([])
   const [adType, setAdType] = useState<string | undefined>()
   const [adName, setAdName] = useState<string | undefined>()
   const [code, setCode] = useState<string | undefined>()
@@ -45,8 +46,8 @@ const AdsManagement: React.FC = () => {
       }
     },
     {
-      title: '广告ID',
-      dataIndex: 'unitId',
+      title: 'ID',
+      dataIndex: 'id',
       align: 'center',
       hideInSearch: true
     },
@@ -74,6 +75,12 @@ const AdsManagement: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '间隔展示最短时间',
+      dataIndex: 'intervalDisplay',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '每人每日最多展示',
       dataIndex: 'maxPerPersonPerDay',
       align: 'center',
@@ -87,15 +94,8 @@ const AdsManagement: React.FC = () => {
     },
     {
       title: '展示状态',
-      dataIndex: 'switch',
+      dataIndex: 'switchDesc',
       align: 'center',
-      render: (_, r) => {
-        if(r.switch === 1) {
-          return <span>开启</span>
-        } else {
-          return <span>关闭</span>
-        }
-      },
       hideInSearch: true
     },
     {
@@ -121,6 +121,7 @@ const AdsManagement: React.FC = () => {
             setAdType(r.adType)
             setAdName(r.title)
             setCode(r.code)
+            setDataSource(r)
           }}
         >
           编辑
@@ -138,7 +139,11 @@ const AdsManagement: React.FC = () => {
           <a onClick={()=>{setUpdateHistoryVisible(true)}}>更新记录</a>
         </Space>
       </div>
-      <ProCard className={styles.cardList} gutter={24}>
+      <ProCard 
+        className={styles.cardList} 
+        gutter={[{xs: 8, sm: 16, md: 24}]}
+        wrap
+      >
         {
           data.map((res: any) => {
             return (
@@ -148,6 +153,7 @@ const AdsManagement: React.FC = () => {
                 headerBordered
                 split='vertical'
                 key={res.id}
+                colSpan={`${(100 / data.length)}%`}
               >
                 <ProCard colSpan='50%'>
                   <div style={{ height: 20, width: '120px' }}>广告位：{res.count}</div>
@@ -201,6 +207,7 @@ const AdsManagement: React.FC = () => {
           type={adType}
           adName={adName}
           code={code}
+          data={dataSource}
         />
       }
       {

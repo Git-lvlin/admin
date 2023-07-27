@@ -119,37 +119,34 @@ const AdsConfig: React.FC<adsConfigProps> = ({visible, setVisible, type, callbac
           }
         ]}
       />
-      {
-        type === 'SplashAd' &&
-        <ProFormDigit
-          label='间隔展示最短时间'
-          width='md'
-          name='intervalDisplay'
-          validateFirst
-          fieldProps={{
-            placeholder: '请输入1-1200之间的整数',
-            addonAfter: '秒',
-            max: 1200,
-            min: 1,
-            controls: false
-          }}
-          rules={[
-            {
-              validator: (_, value) => {
-                const reg = /^[1-9]\d*$/
-                if(reg.test(value) && value <= 1200) {
-                  return Promise.resolve()
-                } else {
-                  return Promise.reject('请输入1-1200之间的整数')
-                }
+     <ProFormDigit
+        label='间隔展示最短时间'
+        width='md'
+        name='intervalDisplay'
+        validateFirst
+        fieldProps={{
+          placeholder: '请输入1-1200之间的整数',
+          addonAfter: '秒',
+          max: 1200,
+          min: 1,
+          controls: false
+        }}
+        rules={[
+          {
+            validator: (_, value) => {
+              const reg = /^[1-9]\d*$/
+              if(reg.test(value) && value <= 1200) {
+                return Promise.resolve()
+              } else {
+                return Promise.reject('请输入1-1200之间的整数')
               }
-            },
-            {
-              required: true
             }
-          ]}
-        />
-      }
+          },
+          {
+            required: true
+          }
+        ]}
+      />
       {
         type === 'RewardVideoAd' &&
         <ProFormSelect
