@@ -67,13 +67,7 @@ export default (props:CumulativeProps) => {
       dataIndex: 'avgClick',
       align: 'center',
       hideInSearch: true
-    },
-    {
-      title: '视频完播数',
-      dataIndex: 'videoNums',
-      align: 'center',
-      hideInSearch: true
-    },
+    }
   ]
 
   return (
