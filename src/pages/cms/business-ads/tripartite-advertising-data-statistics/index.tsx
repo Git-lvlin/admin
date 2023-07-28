@@ -110,7 +110,14 @@ export default function TransactionData () {
       title: '领取红包数量',
       dataIndex: 'redPacketNum',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_,data) => {
+        if(data?.adTypeDesc=='激励视频广告'){
+          return _
+        }else{
+          return '-'
+        }
+      }
     },
     {
       title: '领取红包面额',
@@ -118,7 +125,11 @@ export default function TransactionData () {
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
-        return amountTransform(_,'/').toFixed(2)
+        if(data?.adTypeDesc=='激励视频广告'){
+          return amountTransform(_,'/').toFixed(2)
+        }else{
+          return '-'
+        }
       }
     },
     {
