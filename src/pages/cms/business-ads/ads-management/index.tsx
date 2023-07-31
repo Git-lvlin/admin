@@ -150,7 +150,7 @@ const AdsManagement: React.FC = () => {
         <div className={styles.title}>配置</div>
         <Space>
           <a onClick={()=>{setStatisticsVisible(true)}}>数据统计</a>
-          <a onClick={()=>{setUpdateHistoryVisible(true)}}>更新记录</a>
+          <a onClick={()=>{setUpdateHistoryVisible(true)}}>更新历史</a>
         </Space>
       </div>
       <ProCard 
