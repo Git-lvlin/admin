@@ -16,6 +16,7 @@ import { amountTransform } from '@/utils/utils'
 import { ruleSub, ruleEdit, ruleGoodsEdit } from '@/services/single-contract-activity-management/activity-list'
 import SelectProductModal from './select-product-modal'
 import Upload from '@/components/upload'
+import TimeSelect from '@/components/time-select'
 
 const reg = /^[1-9]\d*$/
 
