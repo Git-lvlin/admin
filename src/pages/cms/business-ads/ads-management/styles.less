@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px 40px;
+  border-bottom: 1px solid #f0f0f0;
+  .title {
+    font-weight: 600;
+  }
+}
+
+.cardList {
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  :global {
+    .ant-pro-card {
+      align-items: center;
+    }
+    .ant-pro-card-header {
+      display: block;
+      text-align: center;
+      width: 100%;
+    }
+    .ant-pro-card-body {
+      padding: 6px 24px;
+    }
+  }
+}
