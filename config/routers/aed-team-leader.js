@@ -23,12 +23,6 @@ export default {
       wrappers: [RouteWatcher],
     },
     {
-      name: 'aed-head-performance',
-      path: '/aed-team-leader/aed-head-performance',
-      component: './aed-team-leader/aed-head-performance',
-      wrappers: [RouteWatcher],
-    },
-    {
       name: 'aed-head-early-screening-order-performance',
       path: '/aed-team-leader/aed-head-early-screening-order-performance',
       component: './aed-team-leader/aed-head-early-screening-order-performance',

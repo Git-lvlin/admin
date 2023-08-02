@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import moment from 'moment'
 import { formatMessage } from 'umi';
-import { Button, Space, Typography, Form, InputNumber,message } from 'antd'
+import { Button, Space, Typography, Form, InputNumber,message, Image } from 'antd'
 import {
   DrawerForm,
   ProFormText,
@@ -254,6 +254,10 @@ export default (props:PropsItem) => {
           {
             savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
           }
+          {/* {
+            record?.id&&<Image width={375} src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"/>
+          } */}
+
         </div>
         <div className={styles?.border_box}>
           <div className={styles?.interval}>

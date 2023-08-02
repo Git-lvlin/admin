@@ -7,6 +7,7 @@ import {
 } from '@ant-design/pro-form';
 import { addSubsidiary, subCompanyAdd } from "@/services/aed-team-leader/team-leader-management"
 import type { EnteringProps } from "./data"
+import AddressCascader from '@/components/address-cascader'
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -55,8 +56,18 @@ export default (props:EnteringProps) => {
         },
       }}
       onFinish={async (values) => {
+        const { area, ...rest } = values
+        const params={
+          ...rest,
+          provinceId: area[0].value,
+          cityId: area[1].value,
+          areaId: area[2].value,
+          provinceName: area[0].label,
+          cityName: area[1].label,
+          areaName: area[2].label,
+        }
         const api=type==1? subCompanyAdd:addSubsidiary
-        api(values).then(res=>{
+        api(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -134,6 +145,17 @@ export default (props:EnteringProps) => {
         name="name"
         placeholder='请输入团长名称'
       />
+      }
+
+      {type?
+        <Form.Item
+          label="地址"
+          rules={[{ required: true, message: '请选择省市区' }]}
+          name="area"
+        >
+        <AddressCascader style={{ width: 250 }} />
+        </Form.Item>
+        :null
       }
       
       <ProFormText
