@@ -42,7 +42,9 @@ const couponType = (props) => {
         return new Promise(async (resolve, reject) => {
             if(value&&!/^[0-9]+(.[0-9]{0,2})?$/.test(value)){
                 await reject('只能输入数字，最多输入两位小数点')
-            } else {
+            }else if (value && parseFloat(value) > 9999.99) {
+                await reject('最大值只能输入9999.99')
+            }else {
             await resolve()
         }
         })
@@ -107,7 +109,7 @@ const couponType = (props) => {
                                             {validator: checkConfirm}
                                         ]}
                                     />
-                                    <span>元 （如果设置为0，则无使用门槛)</span>
+                                    <span>元 （如果设置为0，则无使用门槛）</span>
                                     </ProForm.Group>
                                 }
 
