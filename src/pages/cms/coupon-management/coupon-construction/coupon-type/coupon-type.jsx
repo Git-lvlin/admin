@@ -239,7 +239,7 @@ const couponType = (props) => {
             </ProFormDependency>
             {/* 发行量 */}
             {
-            type == 2 || DetaiIssueType == 2 && id?
+            (type == 2 || DetaiIssueType == 2 && id)||(type == 5 || DetaiIssueType == 5 && id)?
                 <ProFormRadio.Group
                     name="issueQuantity"
                     label='发行量' 

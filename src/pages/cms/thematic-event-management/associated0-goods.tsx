@@ -4,7 +4,7 @@ import type { ProColumns } from '@ant-design/pro-table';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
-import { Button,Input} from 'antd';
+import { Button,Input, Image} from 'antd';
 import debounce from 'lodash/debounce';
 
 
@@ -31,6 +31,7 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
   const [editableKeys, setEditableKeys] = useState([])
+  const [imgVisible, setImageVisible] = useState(false)
   const ref=useRef()
   useEffect(()=>{
     setDataSource(detailList)
@@ -179,7 +180,26 @@ export default (props) => {
       valueType: 'text',
       editable:false,
       render:(text, record, _, action)=>[
-        <a key='detele' onClick={()=>{delGoods(record.id)}}>删除</a>
+        <a key='detele' onClick={()=>{delGoods(record.id)}}>删除</a>,
+        // <span key='miniProgram'>
+        // {
+        //   id&&<>
+        //     <a  onClick={()=>{ setImageVisible(true) }}>&nbsp;小程序码</a>
+        //     <Image
+        //       width={200}
+        //       style={{ display: 'none' }}
+        //       src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/blur,r_50,s_50/quality,q_1/resize,m_mfit,h_200,w_200"
+        //       preview={{
+        //         visible:imgVisible,
+        //         src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+        //         onVisibleChange: (value) => {
+        //           setImageVisible(value);
+        //         },
+        //       }}
+        //     />
+        //   </>
+        // }
+        // </span>
       ],
       hideInSearch: true
     },  

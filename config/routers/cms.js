@@ -363,6 +363,5 @@ export default {
       component: './cms/hydrogen-atom-start-window',
       wrappers: [RouteWatcher],
     },
-    
   ]
 }
