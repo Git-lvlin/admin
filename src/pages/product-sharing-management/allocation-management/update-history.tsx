@@ -9,6 +9,7 @@ import {
 } from '@ant-design/pro-form';
 // import AdvertisementDetails from './advertisement-details'
 import { CumulativeProps } from './data';
+import Preview from './preview'
 
 export default (props:CumulativeProps) => {
   const { visible, setVisible } = props;
@@ -17,6 +18,7 @@ export default (props:CumulativeProps) => {
   const [parameter,setParameter] = useState()
   const [positionSelect,setPositionSelect] = useState()
   const [advSelect, setAdvSelect] = useState()
+  const [previewVisible, setPreviewVisible] = useState(false)
 
   useEffect(()=>{
     // advPositionPage().then(res=>{
@@ -65,7 +67,7 @@ export default (props:CumulativeProps) => {
       dataIndex: '',
       align: 'center',
       render: (_) => {
-        return <a onClick={()=>{  }}>查看</a>
+        return <a onClick={()=>{ setPreviewVisible(true) }}>查看</a>
       },
       hideInSearch: true,
     },
@@ -121,12 +123,17 @@ export default (props:CumulativeProps) => {
           ],
         }}
       />
-      {/* {detailVisible&&
-      <AdvertisementDetails
-         visible={detailVisible}
-         setVisible={setDetailVisible}
-         msgDetail={parameter}
-      />} */}
+      {/* {
+        previewVisible &&
+        <Preview
+          visible={previewVisible}
+          setVisible={setPreviewVisible}
+          callback={()=> setVisible(false)}
+          // tableCallback={()=>callback()}
+          data={data}
+          selectData={selectData}
+        />
+      } */}
     </DrawerForm>
   )
 }

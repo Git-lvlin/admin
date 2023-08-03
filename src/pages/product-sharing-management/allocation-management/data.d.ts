@@ -35,4 +35,5 @@ export type CumulativeProps = {
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   activeKey?: string;
   callback?: function;
+  id?: string
 }

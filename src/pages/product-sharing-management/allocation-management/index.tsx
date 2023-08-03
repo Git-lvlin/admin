@@ -11,6 +11,7 @@ import moment from 'moment';
 import TerminationModel from './termination-model'
 import { TableProps } from './data'
 import type { ActionType } from '@ant-design/pro-table'
+import Detail from './detail/index'
 
 export default () => {
   const actionRef = useRef<ActionType>();
@@ -81,7 +82,6 @@ export default () => {
       dataIndex: 'name',
       align: 'center',
       hideInSearch: true,
-      render:(_)=> <a onClick={()=> {setV(true)}}>{_}</a>
     },
     {
       title: '分账角色数',
@@ -141,8 +141,8 @@ export default () => {
       dataIndex: 'goodsNum',
       align: 'center',
       hideInSearch: true,
-      render: (_:number) => {
-        return <a onClick={()=>{ setFormVisible(true)  }}>{_}</a>
+      render: (_:number, data:TableProps) => {
+        return <a onClick={()=>{ setFormVisible(true);setSelectItem(data);  }}>{_}</a>
       }
     },
     {
@@ -198,6 +198,15 @@ export default () => {
           ],
         }}
       />
+      {
+        formVisible &&
+        <Detail
+          visible={formVisible}
+          setVisible={setFormVisible}
+          callback={()=>{ setSelectItem(undefined); actionRef?.current?.reload() }}
+          id={selectItem?.id}
+        />
+      }
       {
         historyVisible &&
         <UpdateHistory
