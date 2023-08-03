@@ -51,3 +51,16 @@ export const getLogListByParams = async (params = {}, options = {}) => {
       code: res.code
     }
   }
+
+  export const getLogById = async (params = {}, options = {}) => {
+    const res = await request('/auth/finance/billConfig/getLogById', {
+      method: 'POST',
+      data:params,
+      ...options
+    });
+  
+    return {
+      data: res.data,
+      code: res.code
+    }
+  }

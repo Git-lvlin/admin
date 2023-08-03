@@ -66,8 +66,8 @@ export default (props:CumulativeProps) => {
       title: '查看分成配置快照',
       dataIndex: '',
       align: 'center',
-      render: (_) => {
-        return <a onClick={()=>{ setPreviewVisible(true) }}>查看</a>
+      render: (_,data) => {
+        return <a onClick={()=>{ setPreviewVisible(true); setParameter(data) }}>查看</a>
       },
       hideInSearch: true,
     },
@@ -130,7 +130,7 @@ export default (props:CumulativeProps) => {
           setVisible={setPreviewVisible}
           callback={()=> setVisible(false)}
           // tableCallback={()=>callback()}
-          data={data}
+          data={parameter}
           selectData={selectData}
         />
       } */}

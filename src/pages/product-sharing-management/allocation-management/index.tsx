@@ -194,7 +194,7 @@ export default () => {
              conditions={()=>{return getFieldValue(searchConfig)}}
            />,
            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bill-config-list'}/>,
-           <Button type='primary' onClick={()=>{ setFormVisible(true) }}>新增</Button>
+           <Button type='primary' onClick={()=>{ setFormVisible(true); setSelectItem(undefined) }}>新增</Button>
           ],
         }}
       />
