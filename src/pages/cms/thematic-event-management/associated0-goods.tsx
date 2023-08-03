@@ -4,8 +4,9 @@ import type { ProColumns } from '@ant-design/pro-table';
 import SelectProductModal from './select-product-modal'
 import { amountTransform } from '@/utils/utils'
 import { subAccountCheck } from '@/services/product-management/product-list'
-import { Button,Input, Image} from 'antd';
+import { Button, Input, Image, Popover} from 'antd';
 import debounce from 'lodash/debounce';
+import { getMiniQr } from '@/services/common'
 
 
 type ThematicEventItem={
@@ -31,7 +32,7 @@ export default (props) => {
   const [dataSource, setDataSource] = useState([]);
   const [visible, setVisible] = useState(false)
   const [editableKeys, setEditableKeys] = useState([])
-  const [imgVisible, setImageVisible] = useState(false)
+  const [qrCodeUrl,setQrCodeUrl]=useState<string>('')
   const ref=useRef()
   useEffect(()=>{
     setDataSource(detailList)
@@ -68,6 +69,19 @@ export default (props) => {
 
     return debounce(loadData, 10);
   }, [dataSource]);
+
+  const content = ()=>{
+    if(qrCodeUrl){
+      return (
+        <img
+          width={200}
+          src={qrCodeUrl}
+        />
+      );
+    }
+  }
+
+
   const columns:ProColumns<ThematicEventItem>[]= [
     {
       title: 'spuid',
@@ -181,25 +195,18 @@ export default (props) => {
       editable:false,
       render:(text, record, _, action)=>[
         <a key='detele' onClick={()=>{delGoods(record.id)}}>删除</a>,
-        // <span key='miniProgram'>
-        // {
-        //   id&&<>
-        //     <a  onClick={()=>{ setImageVisible(true) }}>&nbsp;小程序码</a>
-        //     <Image
-        //       width={200}
-        //       style={{ display: 'none' }}
-        //       src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/blur,r_50,s_50/quality,q_1/resize,m_mfit,h_200,w_200"
-        //       preview={{
-        //         visible:imgVisible,
-        //         src: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        //         onVisibleChange: (value) => {
-        //           setImageVisible(value);
-        //         },
-        //       }}
-        //     />
-        //   </>
-        // }
-        // </span>
+        <span key='miniProgram'>
+        {
+          id&&<><Popover  content={content} placement="bottom" title="商品小程序码" trigger="click" >
+                  <a onClick={()=>{ 
+                    getMiniQr({ url:`/subpages/cart/detail/index?orderType=2&spuId=${record?.spuId}&objectId=&activityId=${record?.id}&skuId=${record?.skuId}&wsId=0` }).then(res=>{
+                      setQrCodeUrl(res.data.url)
+                    })
+                   }}>&nbsp;小程序码</a>
+              </Popover>
+          </>
+        }
+        </span>
       ],
       hideInSearch: true
     },  

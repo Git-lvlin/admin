@@ -75,3 +75,12 @@ export const getSignInfo = async (params, options = {}) => {
     ...options
   })
 }
+
+//生成小程序二维码
+export const getMiniQr = async (params, options = {}) => {
+  return await request('/auth/activity/activity/getMiniQr', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
