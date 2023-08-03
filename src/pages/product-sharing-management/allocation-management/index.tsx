@@ -21,6 +21,7 @@ export default () => {
   const [visit, setVisit] = useState(false)
   const [detailVisible, setDetailVisible] = useState(false);
   const [historyVisible, setHistoryVisible] = useState(false)
+  const [roleInfo,setRoleInfo] = useState()
 
   type SearchConfig = {
     form: {
@@ -182,6 +183,10 @@ export default () => {
           pageSize: 10,
           showQuickJumper: true,
         }}
+        postData={(data)=>{
+          setRoleInfo(data?.roleInfo)
+          return data?.records
+        }}
         search={{
           defaultCollapsed: true,
           labelWidth: 100,
@@ -212,6 +217,8 @@ export default () => {
         <UpdateHistory
           visible={historyVisible}
           setVisible={setHistoryVisible}
+          msgDetail={selectItem}
+          roleInfo={roleInfo}
         />
       }
       {

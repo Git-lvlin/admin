@@ -14,7 +14,7 @@ export const getListByParams = async (params = {}, options = {}) => {
   });
 
   return {
-    data: res.data.records,
+    data: res.data,
     total: res.data.total
   }
 }

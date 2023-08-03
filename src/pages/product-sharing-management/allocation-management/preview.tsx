@@ -6,6 +6,9 @@ import type { ProColumns } from '@ant-design/pro-table'
 import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { saveConfig } from '@/services/transaction-sharing-management/allocation-management'
+import { getLogById } from '@/services/product-management/transaction-sharing-management';
+import { useEffect, useState } from 'react'
+import moment from 'moment'
 
 type previewProps = {
   visible: boolean,
@@ -16,7 +19,7 @@ type previewProps = {
   selectData: any
 }
 
-const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, tableCallback, selectData}) => {
+const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callback, tableCallback, selectData}) => {
 
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
@@ -36,6 +39,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     const arr = selectData.find(res => res.roleCode === code)
     return arr.roleName
   }
+
+  const [data, setData] = useState<any>()
   
   const valueDesc = (code, type, value, text = 'name') => {
     
@@ -43,6 +48,14 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     const arr1 = arr[type].find(res=> res.code == value)
     return arr1?.[text]
   }
+
+  useEffect(()=>{
+    getLogById({ id:msgDetail?.id }).then(res=>{
+      if(res.code==0){
+        setData(res.data?.[0]?.configText?.configData)
+      }
+    })
+  },[])
 
   const columns:ProColumns[] = [
     {
@@ -194,13 +207,24 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       visible={visible}
       onVisibleChange={setVisible}
       width={900}
-      title='预览'
+      title={<><span style={{ fontWeight:'bold' }}>分成拍照快照</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
       onFinish={async()=> {
         await submit()
         return true
       }}
       modalProps={{
         destroyOnClose: true
+      }}
+      submitter={{
+        render: (props, defaultDoms) => {
+            return [
+              <div key='sub' style={{ color:'#929292' }}>
+                1、氢原子市代-全国业绩：共4个城市：龙岩市、万州区、遵义市、潍坊市；大健康省代-全国业绩和本地业绩：仅广东省；
+                2、非推荐关系链、商学院、培训中心和约购集团之外的角色分成不含大团队产生的业绩；
+              </div>,
+            ...defaultDoms
+            ];
+        },
       }}
       layout='horizontal'
     >
@@ -245,11 +269,14 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           计算类型：{data?.billType === 1 ? '比例' : '金额'}
         </Col>
         <Col span={8}>
+          分账时机：
+        </Col>
+        <Col span={8}>
           <Space>
-            <div>分账时间：</div>
+            <div>分账时段：</div>
             <div>
-              <div>{data?.startTime}</div>
-              <div>{data?.endTime}</div>
+              <div>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')}</div>
+              <div>{moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</div>
             </div>
           </Space>
         </Col>
@@ -273,6 +300,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
         columns={columnsGoods}
         dataSource={data?.goods}
       />
+      <p style={{ float:'right', marginLeft:'200px', fontWeight:'bold'}}>业务商品 1 款 参与分成角色：4 位，交易金额：<span style={{ color:'red' }}>76.88</span> 元    平台结余金额：<span style={{ color:'red' }}>8.88 </span> 元（剔除通道费后）</p>
     </ModalForm>
   )
 }
