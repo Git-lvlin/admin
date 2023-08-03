@@ -1,15 +1,75 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import ProTable from '@/components/pro-table';
 import { PageContainer } from '@/components/PageContainer';
-import { getCommissionLog } from '@/services/product-management/designated-commodity-settlement';
+import { getListByParams } from '@/services/product-management/transaction-sharing-management';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
-import Detail from './detail'
+import { amountTransform } from '@/utils/utils';
+import { Button, Space, Menu, Dropdown } from 'antd';
+import UpdateHistory from './update-history'
+import moment from 'moment';
+import TerminationModel from './termination-model'
+import { TableProps } from './data'
+import type { ActionType } from '@ant-design/pro-table'
 
 export default () => {
-  const [v, setV] = useState(false)
-  const actionRef = useRef();
-  const columns = [
+  const actionRef = useRef<ActionType>();
+  const [selectItem, setSelectItem] = useState<TableProps>();
+  const [visible, setVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
+  const [visit, setVisit] = useState(false)
+  const [detailVisible, setDetailVisible] = useState(false);
+  const [historyVisible, setHistoryVisible] = useState(false)
+
+  type SearchConfig = {
+    form: {
+      getFieldsValue: () => any;
+    };
+  };
+  
+
+  const getFieldValue = (searchConfig: SearchConfig) => {
+    const { ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
+
+  const handleMenuClick = ({ key }:{key:string}, data:TableProps) => {
+    if (key === '1') {
+      setSelectItem({ ...data })
+      setFormVisible(true)
+    }
+    if (key === '2') {
+      setSelectItem({ ...data })
+      setVisible(true)
+    }
+
+    if (key === '3') {
+      setSelectItem({ ...data })
+      setHistoryVisible(true)
+    }
+  }
+
+  const menu = (data:TableProps) => {
+    return (
+      <Menu onClick={(e) => { handleMenuClick(e, data) }}>
+        <Menu.Item key="1">编辑</Menu.Item>
+        {data?.status?<Menu.Item key="2">终止</Menu.Item>:''}
+        <Menu.Item key="3">更新历史</Menu.Item>
+      </Menu>
+    )
+  }
+
+  const columns =[
+    {
+      dataIndex: 'name',
+      align: 'center',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请输入业务名称'
+      }
+    },
     {
       title: '创建日期',
       dataIndex: 'updateTime',
@@ -18,61 +78,82 @@ export default () => {
     },
     {
       title: '业务名称',
-      dataIndex: 'remark',
+      dataIndex: 'name',
       align: 'center',
       hideInSearch: true,
       render:(_)=> <a onClick={()=> {setV(true)}}>{_}</a>
     },
     {
-      dataIndex: '分账角色数',
+      title: '分账角色数',
+      dataIndex: 'roleNum',
       align: 'center',
-      hideInTable: true,
+      hideInSearch: true,
     },
     {
       title: '分账计算类型',
-      dataIndex: 'spuId',
+      dataIndex: 'billType',
       align: 'center',
       hideInSearch: true,
+      valueEnum: {
+        1: '比例',
+        2: '金额'
+      },
     },
     {
       title: '平台最少分账',
-      dataIndex: 'skuId',
+      dataIndex: 'platformLeastFee',
       align: 'center',
       hideInSearch: true,
+      render: (_:number) => {
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '备注',
-      dataIndex: 'distributePrice',
+      dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '计账时段',
-      dataIndex: 'goodsName',
+      dataIndex: 'startTime',
       align: 'center',
       hideInSearch: true,
+      render: (_:number,data:TableProps) => {
+        return <div style={{ color:'#06B39B' }}>
+                <p>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+                <p>{moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</p>
+               </div>
+      }
     },
     {
       title: '状态',
-      dataIndex: 'commissionType',
+      dataIndex: 'status',
       align: 'center',
       hideInSearch: true,
+      valueEnum: {
+        1: '开启',
+        0: '禁用'
+      },
     },
     {
       title: '商品',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'goodsNum',
       align: 'center',
       hideInSearch: true,
+      render: (_:number) => {
+        return <a onClick={()=>{ setFormVisible(true)  }}>{_}</a>
+      }
     },
     {
       title: '最近操作人',
-      dataIndex: 'cityManageFee',
+      dataIndex: 'lastEditor',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '最近操作时间',
-      dataIndex: 'shoppervipChargeFee',
+      dataIndex: 'updateTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -80,6 +161,11 @@ export default () => {
       title: '操作',
       valueType: 'option',
       hideInSearch: true,
+      render: (_:string, data:TableProps) => (
+        <Space>
+          <Dropdown.Button onClick={() => { setSelectItem(data); setDetailVisible(true) }} overlay={() => { return menu(data) }}>管理</Dropdown.Button>
+        </Space>
+      ),
     },
   ];
 
@@ -89,31 +175,46 @@ export default () => {
         rowKey="id"
         bordered
         options={false}
-        request={getCommissionLog}  
+        request={getListByParams}  
         columns={columns}
         actionRef={actionRef}
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
         }}
-        params={{
-          orderType: 30
-        }}
         search={{
           defaultCollapsed: true,
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
              ...dom.reverse(),
+             <Export
+             key='export'
+             change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
+             type={'bill-config-list'}
+             conditions={()=>{return getFieldValue(searchConfig)}}
+           />,
+           <ExportHistory key='task' show={visit} setShow={setVisit} type={'bill-config-list'}/>,
+           <Button type='primary' onClick={()=>{ setFormVisible(true) }}>新增</Button>
           ],
         }}
       />
       {
-        v &&
-        <Detail
-          visible={v}
-          setVisible={setV}
+        historyVisible &&
+        <UpdateHistory
+          visible={historyVisible}
+          setVisible={setHistoryVisible}
         />
       }
+      {
+        visible &&
+        <TerminationModel
+          visible={visible}
+          setVisible={setVisible}
+          msgDetail={selectItem}
+          callback={()=>{ setSelectItem(undefined); actionRef?.current?.reload() }}
+        />
+      }
+
     </PageContainer>
   );
 };
