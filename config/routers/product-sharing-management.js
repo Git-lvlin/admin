@@ -36,16 +36,10 @@ export default {
       ]
     },
     {
-      name: 'transaction-sharing-management',
-      path: '/product-sharing-management/transaction-sharing-management',
-      routes: [
-        {
-          name: 'allocation-management',
-          path: '/product-sharing-management/transaction-sharing-management/allocation-management',
-          component: './product-sharing-management/transaction-sharing-management/allocation-management',
-          wrappers: [RouteWatcher],
-        }
-      ]
-    },
+      name: 'allocation-management',
+      path: '/product-sharing-management/allocation-management',
+      component: './product-sharing-management/allocation-management',
+      wrappers: [RouteWatcher],
+    }
   ]
 }
