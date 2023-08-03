@@ -36,4 +36,15 @@ export type CumulativeProps = {
   activeKey?: string;
   callback?: function;
   id?: string
+  roleInfo?:{
+    roleCode: string;
+    roleName: string;
+    isShow: number;
+    cond?: (null)[] | null;
+    scope?: (ScopeEntityOrSettleTypeEntityOrTrueUnfrezeeTypeEntityOrBusinessUnfrezeeTypeEntityOrOrderTypeInfoEntity)[] | null;
+    settleType?: (ScopeEntityOrSettleTypeEntityOrTrueUnfrezeeTypeEntityOrBusinessUnfrezeeTypeEntityOrOrderTypeInfoEntity)[] | null;
+    trueUnfrezeeType?: (ScopeEntityOrSettleTypeEntityOrTrueUnfrezeeTypeEntityOrBusinessUnfrezeeTypeEntityOrOrderTypeInfoEntity)[] | null;
+    businessUnfrezeeType?: (ScopeEntityOrSettleTypeEntityOrTrueUnfrezeeTypeEntityOrBusinessUnfrezeeTypeEntityOrOrderTypeInfoEntity)[] | null;
+  } | undefined
+  
 }

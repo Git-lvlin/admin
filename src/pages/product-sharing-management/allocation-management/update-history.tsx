@@ -7,42 +7,15 @@ import { getLogListByParams } from "@/services/product-management/transaction-sh
 import {
   DrawerForm
 } from '@ant-design/pro-form';
-// import AdvertisementDetails from './advertisement-details'
 import { CumulativeProps } from './data';
 import Preview from './preview'
 
 export default (props:CumulativeProps) => {
-  const { visible, setVisible } = props;
+  const { visible, setVisible, msgDetail, roleInfo } = props;
   const form = useRef<ActionType>()
-  const [detailVisible,setDetailVisible] = useState<boolean>(false)
   const [parameter,setParameter] = useState()
-  const [positionSelect,setPositionSelect] = useState()
-  const [advSelect, setAdvSelect] = useState()
   const [previewVisible, setPreviewVisible] = useState(false)
 
-  useEffect(()=>{
-    // advPositionPage().then(res=>{
-    //   console.log('res',res)
-    //   let obj={}
-    //   res.data?.map((item: { code: string | number; title: string })=>{
-    //     obj[item.code]=item.title
-    //   })
-    //   console.log('obj',obj)
-    //   setPositionSelect(obj)
-    // })
-  },[])
-
-  useEffect(()=>{
-    // advGetAdType().then(res=>{
-    //   if(res.code==0){
-    //     let obj={}
-    //     res.data?.map((item: { code: string | number; title: string })=>{
-    //       obj[item.code]=item.title
-    //     })
-    //     setAdvSelect(obj)
-    //   }
-    // })
-  },[])
 
   const tableColumns: ProColumns[] = [
     {
@@ -115,6 +88,9 @@ export default (props:CumulativeProps) => {
         columnEmptyText={false}
         actionRef={form}
         options={false}
+        params={{
+          id: msgDetail?.id
+        }}
         search={{
           defaultCollapsed: true,
           labelWidth: 110,
@@ -123,17 +99,17 @@ export default (props:CumulativeProps) => {
           ],
         }}
       />
-      {/* {
+      {
         previewVisible &&
         <Preview
           visible={previewVisible}
           setVisible={setPreviewVisible}
           callback={()=> setVisible(false)}
           // tableCallback={()=>callback()}
-          data={parameter}
-          selectData={selectData}
+          msgDetail={parameter}
+          selectData={roleInfo}
         />
-      } */}
+      }
     </DrawerForm>
   )
 }
