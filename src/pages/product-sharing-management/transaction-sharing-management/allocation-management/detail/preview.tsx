@@ -273,6 +273,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
         columns={columnsGoods}
         dataSource={data?.goods}
       />
+      <div>业务商品 {data?.goods.length} 款 参与分成角色：{data?.divideInfoList.length} 位，交易金额：{} 元    平台结余金额：{  } 元（剔除通道费后）</div>
     </ModalForm>
   )
 }
