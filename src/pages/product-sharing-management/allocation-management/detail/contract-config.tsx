@@ -17,7 +17,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
   useEffect(()=> {
     if(data) {
       form.current?.setFieldsValue({
-        text: data
+        contractCode: data
       })
     }
   }, [data])
@@ -38,7 +38,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
       width={600}
       formRef={form}
       onFinish={async (v) => {
-        await submit(v.text)
+        await submit(v.contractCode)
         return true
       }}
       modalProps={{
@@ -51,7 +51,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
     >
       <ProFormTextArea
         label='合同配置'
-        name='text'
+        name='contractCode'
         placeholder='请输入5-200个字符'
       />
     </ModalForm>

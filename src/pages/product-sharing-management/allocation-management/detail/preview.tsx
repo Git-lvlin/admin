@@ -18,6 +18,9 @@ type previewProps = {
 
 const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, tableCallback, selectData}) => {
 
+  console.log(data);
+  
+
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
       saveConfig(data, {showSuccess: true}).then(res => {
@@ -57,7 +60,14 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       title: '分成金额（元）',
       dataIndex: 'billVal',
       align: 'center',
-      hideInTable: data?.billType == 1
+      hideInTable: data?.billType == 1,
+      render: (_, r) => {
+        if(r.roleCode === 'goodsAmount') {
+          return r.billVal == 1 ? '批发供货价' : '零售供货价'
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '分成比例(%)',
@@ -217,8 +227,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
                 {data?.contractIsSign ? '需要签署' : '不需签署'}
                 {
                   data?.contractIsSign ?
-                  <Tooltip title={data?.contractConfig}>
-                    <a>查看合同配置</a>
+                  <Tooltip title={data?.contractCode}>
+                    (<a>查看合同配置</a>)
                   </Tooltip>:
                   ''
                 }
@@ -273,7 +283,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
         columns={columnsGoods}
         dataSource={data?.goods}
       />
-      <div>业务商品 {data?.goods.length} 款 参与分成角色：{data?.divideInfoList.length} 位，交易金额：{} 元    平台结余金额：{  } 元（剔除通道费后）</div>
+      <div>业务商品 {data?.goods.length} 款 参与分成角色：{data?.divideInfoList.length} 位，交易金额：{amountTransform(data?.platformLeastAmount, '/')} 元    平台结余金额：{amountTransform(data?.platformLeastFee, '/')} 元（剔除通道费后）</div>
     </ModalForm>
   )
 }

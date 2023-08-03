@@ -7,6 +7,7 @@ import Goods from './goods'
 import Config from './config'
 import { getConfigById } from '@/services/transaction-sharing-management/allocation-management'
 import Preview from './preview'
+import { amountTransform } from '@/utils/utils'
 
 type detailProps = {
   visible: boolean
@@ -25,7 +26,7 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
   const [selectData, setSelectData] = useState()
 
   const submit = () => {
-    const { time, ...rest } = formData.current?.getFieldsValue()
+    const { time, platformLeastFee, ...rest } = formData.current?.getFieldsValue()
     const arr = tableData.map((res: any) => ({
         ...res,
         id: 0
@@ -39,6 +40,7 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
         status: 1,
         contractFeeBear: 0,
         ...rest,
+        platformLeastFee: amountTransform(platformLeastFee),
         startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
         endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
         divideInfoList: editTableData.map((res: any)=> ({

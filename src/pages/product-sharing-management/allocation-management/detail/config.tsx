@@ -86,12 +86,21 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         contractIsSign: detailData?.contractIsSign,
         remark: detailData?.remark,
         billType: detailData?.billType,
-        time: [detailData?.startTime, detailData?.endTime]
+        time: [detailData?.startTime, detailData?.endTime],
+        contractFeeBear: detailData?.contractFeeBear,
+        contractCode: detailData?.contractCode
       })
       setDataSource(detailData?.divideInfoList)
       tableCallback(detailData?.divideInfoList)
       setEditableRowKeys(detailData?.divideInfoList.map((res: any)=> res.id))
       setCount(detailData?.billType)
+      setSign(detailData?.contractIsSign)
+      if(detailData?.contractIsSign === 1) {
+        setFlag(true)
+      } else {
+        setFlag(false)
+      }
+      setText(detailData?.contractCode)
     }
   }, [detailData])
 
@@ -100,7 +109,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       form.current?.setFieldsValue({
         platformLeastSpuId: minPrice?.goodsData?.spuId, 
         platformLeastSkuId: minPrice?.goodsData?.skuId, 
-        platformLeastFee: minPrice.balanceAmount
+        platformLeastFee: minPrice.balanceAmount,
+        platformLeastAmount: minPrice?.goodsData?.salePrice
       })
     }
   }, [minPrice])
@@ -153,7 +163,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       hideInTable: count == 1,
       renderFormItem: (_, {recordKey}) => {
         if(recordKey === '1') {
-          return <Select options={[{label: '零售供货价', value: '2'}, {label: '批发供货价', value: '1'}]} placeholder='请选择' style={{width: '120px'}}/>
+          return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount
         } else {
@@ -168,7 +178,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       hideInTable: count != 1,
       renderFormItem: (_, {recordKey}) => {
         if(recordKey === '1') {
-          return <Select options={[{label: '零售供货价', value: '2'}, {label: '批发供货价', value: '1'}]} placeholder='请选择' />
+          return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' />
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount
         } else {
@@ -377,6 +387,10 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           name='id'
           hidden
         />
+        <ProFormText
+          name='platformLeastAmount'
+          hidden
+        />
         <Divider/>
         <Row gutter={[8, 16]}>
           <Col span={6}>
@@ -504,7 +518,19 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                     flag ?
                     <div>
                       <span>已配置，</span>
-                      <a onClick={()=> {setConfigVisible(true); setText(form.current?.getFieldsValue()?.contractConfig)}}>点击查看</a>
+                      <a onClick={()=> {
+                          setConfigVisible(true); 
+                          if(detailData) {
+                            form.current?.getFieldsValue()?.contractCode? 
+                              setText(form.current?.getFieldsValue()?.contractCode):
+                              setText(detailData?.contractCode)
+                          } else {
+                            setText(form.current?.getFieldsValue()?.contractCode)
+                          }
+                        }}
+                      >
+                        点击查看
+                      </a>
                     </div>:
                     <a onClick={()=> {setConfigVisible(true)}}>配置合同</a>
                   }
@@ -571,7 +597,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           </Col>
           <Col span={8}>
             <ProFormText
-              name='contractConfig'
+              name='contractCode'
               hidden
             />
           </Col>
@@ -643,7 +669,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         <ContractConfig
           visible={configVisible}
           setVisible={setConfigVisible}
-          callback={(e)=> {form.current?.setFieldsValue({contractConfig: e})}}
+          callback={(e)=> {form.current?.setFieldsValue({contractCode: e})}}
           flag={setFlag}
           data={text}
         />
