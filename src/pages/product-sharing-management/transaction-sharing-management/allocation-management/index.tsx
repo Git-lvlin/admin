@@ -4,8 +4,10 @@ import { PageContainer } from '@/components/PageContainer';
 import { getCommissionLog } from '@/services/product-management/designated-commodity-settlement';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
+import Detail from './detail'
 
 export default () => {
+  const [v, setV] = useState(false)
   const actionRef = useRef();
   const columns = [
     {
@@ -19,6 +21,7 @@ export default () => {
       dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
+      render:(_)=> <a onClick={()=> {setV(true)}}>{_}</a>
     },
     {
       dataIndex: '分账角色数',
@@ -104,6 +107,13 @@ export default () => {
           ],
         }}
       />
+      {
+        v &&
+        <Detail
+          visible={v}
+          setVisible={setV}
+        />
+      }
     </PageContainer>
   );
 };
