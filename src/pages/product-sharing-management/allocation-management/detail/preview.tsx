@@ -35,15 +35,15 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     })
   }
   
-  const roleCode = (code) => {
-    const arr = selectData.find(res => res.roleCode === code)
+  const roleCode = (code: string) => {
+    const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
     return arr.roleName
   }
   
-  const valueDesc = (code, type, value, text = 'name') => {
+  const valueDesc = (code: string, type: string, value: string, text = 'name') => {
     
-    const arr = selectData.find(res => res.roleCode === code)
-    const arr1 = arr[type].find(res=> res.code == value)
+    const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
+    const arr1 = arr[type].find((res: {code: string})=> res.code == value)
     return arr1?.[text]
   }
 

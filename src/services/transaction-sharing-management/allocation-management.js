@@ -9,7 +9,7 @@ export const getListByParams = async (params = {}, options = {}) => {
   })
 }
 
-// 分账配置日志详情
+// 分账配置详情
 export const getConfigById = async (params = {}, options = {}) => {
   return await request('/auth/finance/billConfig/getConfigById', {
     method: 'POST',

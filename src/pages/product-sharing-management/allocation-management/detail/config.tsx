@@ -680,8 +680,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
 
 const computedValue = (goodsData = [], roleData = [], type = 2) => {
   Big.RM = 0;
-  const supplierObject = roleData.find(item => item.roleCode === 'goodsAmount') || {}
-  const minValueObject = goodsData.map(item => {
+  const supplierObject: any = roleData.find((item: any) => item.roleCode === 'goodsAmount') || {}
+  const minValueObject = goodsData.map((item: any) => {
     let difference = 0
     if (supplierObject.billVal == 1) {
       difference = item.salePrice - item.wholesaleSupplyPrice
@@ -696,7 +696,7 @@ const computedValue = (goodsData = [], roleData = [], type = 2) => {
 
   let balanceAmount = minValueObject.salePrice
 
-  roleData.forEach(item => {
+  roleData.forEach((item: any) => {
     if (item.roleCode === 'platform' || item.status === 0) {
       return
     }
