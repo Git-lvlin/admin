@@ -716,7 +716,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                   obj = amountFreeze(record, obj)
                 }
                 obj = setBusinessUnfrezeeTypeRow(record, obj,recordList)
-                console.log("🚀 ~ file: config.tsx:712 ~ obj:", obj)
                 return obj
               })
             }
