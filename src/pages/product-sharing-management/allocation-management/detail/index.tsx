@@ -26,10 +26,11 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
   const [selectData, setSelectData] = useState()
 
   const submit = () => {
-    const { time, platformLeastFee, ...rest } = formData.current?.getFieldsValue()
+    const { time, platformLeastFee, billType, ...rest } = formData.current?.getFieldsValue()
     const arr = tableData.map((res: any) => ({
         ...res,
-        id: 0
+        id: 0,
+        status: 1
       }))
       
       editTableData.forEach((ele: any, i: number) => {
@@ -43,11 +44,25 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
         platformLeastFee: amountTransform(platformLeastFee),
         startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
         endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-        divideInfoList: editTableData.map((res: any)=> ({
-          ...res,
-          supplyPriceType: res.billVal,
-          status: res.status ?? 0
-        })),
+        divideInfoList: editTableData.map((res: any)=> {
+          if(billType === 1) {
+            return {
+              ...res,
+              supplyPriceType: res.billVal,
+              status: res.status ?? 0,
+              billCond: [res.billCond],
+              billVal: amountTransform(res.billVal, '/')
+            }
+          } else {
+            return {
+              ...res,
+              supplyPriceType: res.billVal,
+              status: res.status ?? 0,
+              billCond: [res.billCond],
+              billVal: amountTransform(res.billVal, '*')
+            }
+          }
+        }),
         goods: id ? tableData : arr
       }
       setData(obj)
