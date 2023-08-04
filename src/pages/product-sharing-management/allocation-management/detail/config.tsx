@@ -137,6 +137,39 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   useEffect(()=> {
     selectData(data)
   }, [data])
+
+  const getSettled = (record: any, obj: any) => {
+    if(record?.roleCode === "directMember" || record.roleCode === 'indirectMember') {
+      return obj
+    } else if(record?.roleCode === "yuegou"){
+      return ({
+        ...obj,
+        settleType: 1
+      })
+    } else {
+      return ({
+        ...obj,
+        settleType: 3
+      })
+    }                 
+  }
+
+  const amountFreeze = (record: any, obj: any) => {
+    if(record?.roleCode === 'platform' && record?.trueUnfrezeeType){
+      if(obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou') {
+        return {
+          ...obj,
+          trueUnfrezeeType: record?.trueUnfrezeeType
+        }
+      } else {
+        return obj
+      }
+    } else {
+      return obj
+    }
+    
+  }
+  
   
   const columns: ProColumns[] = [
     {
@@ -161,11 +194,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       dataIndex: 'billVal',
       align: 'center',
       hideInTable: count == 1,
-      renderFormItem: (_, {recordKey}) => {
+      renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
           return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
         } else if(recordKey === '2'){
-          return minPrice?.balanceAmount
+          return minPrice?.balanceAmount          
+        } else if(record.roleCode === 'hyCityAgent') {
+          return <Input placeholder='请输入' addonAfter={'X 5'}/>
         } else {
           return <Input placeholder='请输入'/>
         }
@@ -247,7 +282,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
-        if(record.roleCode === 'businessCollege' || record.roleCode === 'trainingCenter' || record.roleCode === 'yuegou') {
+        if(record.roleCode === 'businessCollege' || record.roleCode === 'trainingCenter') {
           return '/'
         } else {
           return (
@@ -268,19 +303,15 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
-        if(record.roleCode === 'businessCollege' || record.roleCode === 'trainingCenter' || record.roleCode === 'yuegou') {
-          return '/'
-        } else {
-          return (
-            <Select
-              style={{width: '170px'}}
-              placeholder='请选择'
-              options={
-                arr?.businessUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
-              } 
-            />
-          )
-        }
+        return (
+          <Select
+            style={{width: '170px'}}
+            placeholder='请选择'
+            options={
+              arr?.businessUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
+            } 
+          />
+        )
       }
     },
     {
@@ -649,8 +680,21 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             return [defaultDoms.delete]
           },
           onValuesChange: (record, recordList) => {
-            tableCallback(recordList)
-            setDataSource(recordList)
+            let arr = recordList
+            if(record) {
+              arr = recordList?.map(res=> {
+                let obj = res
+                if (res.id === record.id) {
+                  obj = getSettled(record, obj)
+                } else {
+                  obj = amountFreeze(record, obj)
+                }
+                return obj
+              })
+            }
+            tableCallback(arr)
+            setDataSource(arr)
+            
           },
           onChange: setEditableRowKeys
         }}
