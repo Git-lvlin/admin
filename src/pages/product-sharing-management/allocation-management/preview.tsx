@@ -26,7 +26,6 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       saveConfig(data, {showSuccess: true}).then(res => {
         if(res.code === 0) {
           callback()
-          tableCallback()
           resolve()
         } else {
           reject('提交失败')
@@ -36,17 +35,20 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
   }
   
   const roleCode = (code) => {
-    const arr = selectData.find(res => res.roleCode === code)
-    return arr.roleName
+    const arr = selectData.find(res => res?.roleCode === code)
+    return arr?.roleName
   }
 
   const [data, setData] = useState<any>()
   
   const valueDesc = (code, type, value, text = 'name') => {
-    
-    const arr = selectData.find(res => res.roleCode === code)
-    const arr1 = arr[type].find(res=> res.code == value)
-    return arr1?.[text]
+    const arr = selectData.find(res => res?.roleCode === code)
+    if(arr){
+      const arr1 = arr[type].find(res=> res?.code == value)
+      return arr1?.[text]
+    }
+    return '-'
+   
   }
 
   useEffect(()=>{
@@ -63,7 +65,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'roleCode',
       align: 'center',
       render: (_, r) => {
-        return roleCode(r.roleCode)
+        return roleCode(r?.roleCode)
       }
     },
     {
@@ -88,7 +90,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'isChannelFee',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'isChannelFee', r.isChannelFee)
+        return valueDesc(r?.roleCode, 'isChannelFee', r?.isChannelFee)
       }
     },
     {
@@ -96,7 +98,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'settleType',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'settleType', r.settleType)
+        return valueDesc(r?.roleCode, 'settleType', r?.settleType)
       }
     },
     {
@@ -104,7 +106,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'trueUnfrezeeType',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'trueUnfrezeeType', r.trueUnfrezeeType)
+        return valueDesc(r?.roleCode, 'trueUnfrezeeType', r?.trueUnfrezeeType)
       }
     },
     {
@@ -112,7 +114,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'businessUnfrezeeType',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'businessUnfrezeeType', r.businessUnfrezeeType)
+        return valueDesc(r?.roleCode, 'businessUnfrezeeType', r?.businessUnfrezeeType)
       }
     },
     {
@@ -120,7 +122,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'scope',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'scope', r.scope)
+        return valueDesc(r?.roleCode, 'scope', r?.scope)
       }
     },
     {
@@ -128,7 +130,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       dataIndex: 'billCond',
       align: 'center',
       render: (_, r) => {
-        return valueDesc(r.roleCode, 'cond', r.billCond, 'title')
+        return valueDesc(r?.roleCode, 'cond', r?.billCond, 'title')
       }
     },
     {
@@ -206,8 +208,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
     <ModalForm
       visible={visible}
       onVisibleChange={setVisible}
-      width={900}
-      title={<><span style={{ fontWeight:'bold' }}>分成拍照快照</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
+      width={1000}
+      title={<><span style={{ fontWeight:'bold' }}>预览</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
       onFinish={async()=> {
         await submit()
         return true
@@ -218,9 +220,9 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       submitter={{
         render: (props, defaultDoms) => {
             return [
-              <div key='sub' style={{ color:'#929292' }}>
-                1、氢原子市代-全国业绩：共4个城市：龙岩市、万州区、遵义市、潍坊市；大健康省代-全国业绩和本地业绩：仅广东省；
-                2、非推荐关系链、商学院、培训中心和约购集团之外的角色分成不含大团队产生的业绩；
+              <div key='sub' style={{ color:'#929292', display:'flex',flexDirection:'column',alignItems:'flex-start',marginRight:'60px' }}>
+                <p>1、氢原子市代-全国业绩：共4个城市：龙岩市、万州区、遵义市、潍坊市；大健康省代-全国业绩和本地业绩：仅广东省；</p>
+                <p>2、非推荐关系链、商学院、培训中心和约购集团之外的角色分成不含大团队产生的业绩；</p>
               </div>,
             ...defaultDoms
             ];
@@ -242,7 +244,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
                 {
                   data?.contractIsSign ?
                   <Tooltip title={data?.contractConfig}>
-                    <a>查看合同配置</a>
+                    <a>（查看合同配置）</a>
                   </Tooltip>:
                   ''
                 }
@@ -256,7 +258,10 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
           </Space>
         </Col>
         <Col span={8}>
-          备注：{data?.remark}
+          业务协议：必须勾选协议下单<a href={data?.agreementUrl} target='_blank'>服务协议</a>
+        </Col>
+        <Col span={8}>
+          可购买身份：{{'communityStore':'社区店主','vipStore':'vip店主','lifeStore':'生活馆店主'}[data?.buyer]}
         </Col>
       </Row>
       <Divider />
@@ -266,19 +271,33 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       </div>
       <Row gutter={[8, 16]}>
         <Col span={8}>
+          订单类型：{data?.subTypeStr}
+        </Col>
+        <Col span={8}>
+          是否支持售后：{data?.afterSale?'支持':'不支持'}
+        </Col>
+        <Col span={8}>
+          是否支持小程序下单：{data?.miniProgram?'支持':'不支持'}
+        </Col>
+        <Col span={8}>
+          订单详情底部提示：{data?.orderDetailTips}
+        </Col>
+      </Row>
+      <Row gutter={[8, 16]}>
+        <Col span={8}>
           计算类型：{data?.billType === 1 ? '比例' : '金额'}
         </Col>
         <Col span={8}>
-          分账时机：
-        </Col>
-        <Col span={8}>
           <Space>
-            <div>分账时段：</div>
+            <div>记账时段：</div>
             <div>
               <div>{moment(data?.startTime*1000).format('YYYY-MM-DD HH:mm:ss')}</div>
               <div>{moment(data?.endTime*1000).format('YYYY-MM-DD HH:mm:ss')}</div>
             </div>
           </Space>
+        </Col>
+        <Col span={8}>
+          备注：{data?.remark}
         </Col>
       </Row>
       <Divider />
@@ -300,7 +319,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
         columns={columnsGoods}
         dataSource={data?.goods}
       />
-      <p style={{ float:'right', marginLeft:'200px', fontWeight:'bold'}}>业务商品 1 款 参与分成角色：4 位，交易金额：<span style={{ color:'red' }}>76.88</span> 元    平台结余金额：<span style={{ color:'red' }}>8.88 </span> 元（剔除通道费后）</p>
+      <p style={{ marginLeft:'300px', fontWeight:'bold'}}>业务商品{data?.goodsNum}款 参与分成角色：{data?.roleNum}位，交易金额：<span style={{ color:'red' }}>{amountTransform(data?.platformLeastAmount,'/').toFixed(2)}</span> 元    平台结余金额：<span style={{ color:'red' }}>{amountTransform(data?.platformLeastFee,'/').toFixed(2)} </span> 元（剔除通道费后）</p>
     </ModalForm>
   )
 }
