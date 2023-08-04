@@ -169,6 +169,32 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     }
     
   }
+
+  const setBusinessUnfrezeeTypeRow = (record,o,list) => {
+    let obj = o
+    // if (obj.id === record.id) {
+    //   return obj
+    // }
+    const findObj = list.find(item => item.roleCode === 'platform')
+
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: record.businessUnfrezeeType
+      }
+    }
+
+    if (record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: findObj.businessUnfrezeeType
+      }
+    }
+
+
+    return obj
+
+  }
   
   
   const columns: ProColumns[] = [
@@ -664,7 +690,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         editableFormRef={editRef}
         headerTitle='分成明细'
         className={styles.editDesc}
-        onChange={setDataSource}
+        // onChange={setDataSource}
         toolBarRender={
           ()=> [
             <div>
@@ -689,6 +715,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 } else {
                   obj = amountFreeze(record, obj)
                 }
+                obj = setBusinessUnfrezeeTypeRow(record, obj,recordList)
+                console.log("🚀 ~ file: config.tsx:712 ~ obj:", obj)
                 return obj
               })
             }
