@@ -156,7 +156,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
 
   const amountFreeze = (record: any, obj: any) => {
     if(record?.roleCode === 'platform' && record?.trueUnfrezeeType){
-      if(obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou') {
+      if(obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
         return {
           ...obj,
           trueUnfrezeeType: record?.trueUnfrezeeType
@@ -199,7 +199,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount          
-        } else if(record.roleCode === 'hyCityAgent') {
+        } else if(record?.roleCode === 'hyCityAgent') {
           return <Input placeholder='请输入' addonAfter={'X 5'}/>
         } else {
           return <Input placeholder='请输入'/>
@@ -282,19 +282,15 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
-        if(record.roleCode === 'businessCollege' || record.roleCode === 'trainingCenter') {
-          return '/'
-        } else {
-          return (
-            <Select 
-              style={{width: '170px'}}
-              placeholder='请选择'
-              options={
-                arr?.trueUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
-              } 
-            />
-          )
-        }
+        return (
+          <Select 
+            style={{width: '170px'}}
+            placeholder='请选择'
+            options={
+              arr?.trueUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
+            } 
+          />
+        )
       }
     },
     {
@@ -664,7 +660,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         editableFormRef={editRef}
         headerTitle='分成明细'
         className={styles.editDesc}
-        onChange={setDataSource}
         toolBarRender={
           ()=> [
             <div>
