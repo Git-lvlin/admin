@@ -208,8 +208,17 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2') {
           return '平台'
         } else {
+          const list = roleList.map(item => {
+            if (dataSource.find(it=> item.value === it.roleCode)) {
+              return {
+                ...item,
+                disabled: true,
+              }
+            }
+            return item
+          })
           return (
-            <Select options={roleList} placeholder='请选择' />
+            <Select options={list} placeholder='请选择' />
           )
         }
       },
