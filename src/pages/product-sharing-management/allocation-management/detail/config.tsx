@@ -154,20 +154,48 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     }                 
   }
 
-  const amountFreeze = (record: any, obj: any) => {
-    if(record?.roleCode === 'platform' && record?.trueUnfrezeeType){
-      if(obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
-        return {
-          ...obj,
-          trueUnfrezeeType: record?.trueUnfrezeeType
-        }
-      } else {
-        return obj
+  const amountFreeze = (record: any, o: any, list: any) => {
+    let obj = o
+    const findObj = list.find((item: any) => item.roleCode === 'platform')
+
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
+      obj = {
+        ...obj,
+        trueUnfrezeeType: record?.trueUnfrezeeType
       }
-    } else {
-      return obj
     }
+
+    if (record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
+      obj = {
+        ...obj,
+        trueUnfrezeeType: findObj?.trueUnfrezeeType
+      }
+    }
+
+    return obj
     
+  }
+
+  const setBusinessUnfrezeeTypeRow = (record, o ,list) => {
+    let obj = o
+    const findObj = list.find(item => item.roleCode === 'platform')
+
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && record?.roleCode !== "directMember" && record.roleCode !== 'indirectMember') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: record.businessUnfrezeeType
+      }
+    }
+
+    if (obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && record?.roleCode !== "directMember" && record.roleCode !== 'indirectMember') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: findObj.businessUnfrezeeType
+      }
+    }
+
+    return obj
+
   }
   
   
@@ -681,9 +709,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 let obj = res
                 if (res.id === record.id) {
                   obj = getSettled(record, obj)
-                } else {
-                  obj = amountFreeze(record, obj)
-                }
+                } 
+                obj = amountFreeze(record, obj, recordList)
+                obj = setBusinessUnfrezeeTypeRow(record, obj, recordList)
                 return obj
               })
             }
