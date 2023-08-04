@@ -27,8 +27,8 @@ export const getLogListByParams = async (params = {}, options = {}) => {
         page: current,
         size: pageSize,
         ...rest,
-        startTime: dataRange[0]&& moment(dataRange[0]).valueOf(),
-        endTime: dataRange[1]&& moment(dataRange[1]).valueOf(),
+        startTime: dataRange[0]&& moment(dataRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        endTime: dataRange[1]&& moment(dataRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       },
       ...options
     });

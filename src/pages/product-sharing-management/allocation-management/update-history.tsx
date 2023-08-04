@@ -104,8 +104,7 @@ export default (props:CumulativeProps) => {
         <Preview
           visible={previewVisible}
           setVisible={setPreviewVisible}
-          callback={()=> setVisible(false)}
-          // tableCallback={()=>callback()}
+          callback={()=>{ setParameter(undefined); form.current?.reload()  }}
           msgDetail={parameter}
           selectData={roleInfo}
         />
