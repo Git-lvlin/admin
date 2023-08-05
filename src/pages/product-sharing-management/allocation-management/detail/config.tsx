@@ -7,7 +7,7 @@ import ProForm, {
   ProFormDateTimeRangePicker,
 } from '@ant-design/pro-form'
 import { EditableProTable } from '@ant-design/pro-table'
-import { Divider, Row, Col, Select, Space, Input, Switch } from 'antd'
+import { Divider, Row, Col, Select, Space, Input, Switch, InputNumber } from 'antd'
 import Big from 'big.js'
 
 import type { FormInstance } from 'antd'
@@ -57,15 +57,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const [text, setText] = useState()
   const [minPrice, setMinPrice] = useState<any>()
   const form = useRef<FormInstance>()
-  const editRef = useRef<FormInstance>()
 
   useEffect(()=> {
-    if(meta.length > 0) {
-      setTimeout(()=> {
-        setMinPrice(computedValue(meta, dataSource, count))
-      }, 500)
-    }
-  }, [meta, dataSource, count])
+    form.current?.setFieldsValue({
+      billType: 2
+    })
+  }, [])
 
   useEffect(()=> {
     formCallback(form)
@@ -74,11 +71,16 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
 
   useEffect(()=> {
     if(detailData) {
+      const arr = detailData?.divideInfoList.map((res: any)=> ({
+        ...res,
+        billVal: amountTransform(res.billVal, '/'),
+        billCond: res.billCond[0]
+      }))
       form.current?.setFieldsValue({
         id: detailData?.id,
         subType: detailData?.subType,
         agreementShowType: detailData?.agreementShowType,
-        buyer: detailData?.buyer,
+        buyer: detailData?.buyer[0],
         afterSale: detailData?.afterSale,
         miniProgram: detailData?.miniProgram,
         orderDetailTips: detailData?.orderDetailTips,
@@ -88,10 +90,14 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         billType: detailData?.billType,
         time: [detailData?.startTime, detailData?.endTime],
         contractFeeBear: detailData?.contractFeeBear,
-        contractCode: detailData?.contractCode
+        contractCode: detailData?.contractCode,
+        platformLeastSpuId: detailData?.platformLeastSpuId, 
+        platformLeastSkuId: detailData?.platformLeastSkuId, 
+        platformLeastFee: amountTransform(detailData?.platformLeastFee, '/'),
+        platformLeastAmount: amountTransform(detailData?.platformLeastAmount, '/')
       })
-      setDataSource(detailData?.divideInfoList)
-      tableCallback(detailData?.divideInfoList)
+      setDataSource(arr)
+      tableCallback(arr)
       setEditableRowKeys(detailData?.divideInfoList.map((res: any)=> res.id))
       setCount(detailData?.billType)
       setSign(detailData?.contractIsSign)
@@ -101,6 +107,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         setFlag(false)
       }
       setText(detailData?.contractCode)
+      setMinPrice(computedValue(meta, dataSource, count))
     }
   }, [detailData])
 
@@ -165,7 +172,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       }
     }
 
-    if (record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
+    if ( obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
       obj = {
         ...obj,
         trueUnfrezeeType: findObj?.trueUnfrezeeType
@@ -176,18 +183,18 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     
   }
 
-  const setBusinessUnfrezeeTypeRow = (record, o ,list) => {
+  const setBusinessUnfrezeeTypeRow = (record: any, o: any ,list: any) => {
     let obj = o
-    const findObj = list.find(item => item.roleCode === 'platform')
+    const findObj = list.find((item: any) => item.roleCode === 'platform')
 
-    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && record?.roleCode !== "directMember" && record.roleCode !== 'indirectMember') {
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: record.businessUnfrezeeType
       }
     }
 
-    if (obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && record?.roleCode !== "directMember" && record.roleCode !== 'indirectMember') {
+    if (obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: findObj.businessUnfrezeeType
@@ -196,6 +203,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
 
     return obj
 
+  }
+
+  const blur = () => {
+    if(meta.length > 0) {
+      setMinPrice(computedValue(meta, dataSource, count))
+    }
   }
   
   
@@ -210,8 +223,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2') {
           return '平台'
         } else {
-          const list = roleList.map(item => {
-            if (dataSource.find(it=> item.value === it.roleCode)) {
+          const list = roleList.map((item: any) => {
+            if (dataSource.find((it: any)=> item.value === it.roleCode)) {
               return {
                 ...item,
                 disabled: true,
@@ -233,13 +246,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       hideInTable: count == 1,
       renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
-          return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
         } else if(recordKey === '2'){
-          return minPrice?.balanceAmount          
-        } else if(record?.roleCode === 'hyCityAgent') {
-          return <Input placeholder='请输入' addonAfter={'X 5'}/>
+          return minPrice?.balanceAmount ?? 0     
+        } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false}/>
         } else {
-          return <Input placeholder='请输入'/>
+          return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/> 
         }
       }
     },
@@ -248,13 +261,15 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       dataIndex: 'billVal',
       align: 'center',
       hideInTable: count != 1,
-      renderFormItem: (_, {recordKey}) => {
+      renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
-          return <Select options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' />
+          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
         } else if(recordKey === '2'){
-          return minPrice?.balanceAmount
+          return minPrice?.balanceAmount ?? 0
+        } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false}/>
         } else {
-          return <Input placeholder='请输入'/>
+          return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/>
         }
       }
     },
@@ -319,13 +334,19 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
+        const disabled = () =>{
+          if(record.roleCode === 'goodsAmount' || record.roleCode === 'platform' || record.roleCode === 'yuegou') {
+            return false
+          } else {
+            return true
+          }
+        }
         return (
           <Select 
             style={{width: '170px'}}
             placeholder='请选择'
-            options={
-              arr?.trueUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
-            } 
+            options={arr?.trueUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))} 
+            disabled={disabled()}
           />
         )
       }
@@ -336,13 +357,34 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
+        const list = arr?.businessUnfrezeeType.map((item: any) => {
+          if(record?.trueUnfrezeeType && record?.trueUnfrezeeType > item.code) {
+            return ({
+              label: item.name, value: item.code, disabled: true
+            })
+          } else {
+            return ({
+              label: item.name, value: item.code
+            })
+          }
+        })
+        const disabled = () =>{
+          if(record?.trueUnfrezeeType) {
+            if(record.roleCode === 'goodsAmount' || record.roleCode === 'platform' || record.roleCode === 'yuegou' || record.roleCode === 'indirectMember' || record.roleCode === 'directMember') {
+              return false
+            } else {
+              return true
+            }
+          } else {
+            return true
+          }
+        }
         return (
           <Select
             style={{width: '170px'}}
             placeholder='请选择'
-            options={
-              arr?.businessUnfrezeeType.map((item: any) => ({label: item.name, value: item.code}))
-            } 
+            disabled={disabled()}
+            options={list} 
           />
         )
       }
@@ -363,7 +405,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               options={
                 arr?.scope.map((item: any) => ({label: item.name, value: item.code}))
               }
-
             />
           )
         }
@@ -646,9 +687,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 {label: '比例', value: 1},
                 {label: '金额', value: 2}
               ]}
-              initialValue={2}
               fieldProps={{
-                onChange: (e) => setCount(e.target.value)
+                onChange: (e) => {
+                  setCount(e.target.value)
+                  if(meta.length > 0) {
+                    setMinPrice(computedValue(meta, dataSource, e.target.value))
+                  }
+                }
               }}
             />
           </Col>
@@ -694,7 +739,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         value={dataSource}
         search={false}
         options={false}
-        editableFormRef={editRef}
         headerTitle='分成明细'
         className={styles.editDesc}
         toolBarRender={
@@ -732,7 +776,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         }}
         recordCreatorProps={{
           record: () => ({
-            id: +Date.now()
+            id: +Date.now(),
+            status: 1
           }),
           newRecordType: 'dataSource',
           creatorButtonText: '新增分成角色'
@@ -773,7 +818,11 @@ const computedValue = (goodsData = [], roleData = [], type = 2) => {
   let balanceAmount = minValueObject.salePrice
 
   roleData.forEach((item: any) => {
-    if (item.roleCode === 'platform' || item.status === 0) {
+    let num = 0
+    if(item.billVal) {
+      num = new Big(item.billVal).times(5).toFixed(2)
+    }
+    if (item.roleCode === 'platform' || !item.status) {
       return
     }
     let price = 0;
@@ -786,13 +835,21 @@ const computedValue = (goodsData = [], roleData = [], type = 2) => {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
       } else {
-        balanceAmount -= amountTransform(item.billVal)
+        if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
+          balanceAmount -= amountTransform(num)
+        } else {
+          balanceAmount -= amountTransform(item.billVal)
+        }
       }
     } else {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
       } else {
-        balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+        if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
+        } else {
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+        }
       }
     }
   })

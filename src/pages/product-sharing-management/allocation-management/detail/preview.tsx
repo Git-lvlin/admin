@@ -18,9 +18,6 @@ type previewProps = {
 
 const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, tableCallback, selectData}) => {
 
-  console.log(data);
-  
-
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
       saveConfig(data, {showSuccess: true}).then(res => {
@@ -34,10 +31,13 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       })
     })
   }
+
+  console.log(data);
+  
   
   const roleCode = (code: string) => {
     const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
-    return arr.roleName
+    return arr?.roleName
   }
   
   const valueDesc = (code: string, type: string, value: string, text = 'name') => {
@@ -64,8 +64,10 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       render: (_, r) => {
         if(r.roleCode === 'goodsAmount') {
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
+        } if(r.roleCode === 'platform') {
+          return amountTransform(data?.platformLeastFee, '/')
         } else {
-          return _
+          return amountTransform(_, '/')
         }
       }
     },
@@ -73,7 +75,16 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       title: '分成比例(%)',
       dataIndex: 'billVal',
       align: 'center',
-      hideInTable: data?.billType != 1
+      hideInTable: data?.billType != 1,
+      render: (_, r) => {
+        if(r.roleCode === 'goodsAmount') {
+          return r.billVal == 1 ? '批发供货价' : '零售供货价'
+        } if(r.roleCode === 'platform') {
+          return amountTransform(data?.platformLeastFee, '/')
+        } else {
+          return amountTransform(_)
+        }
+      }
     },
     {
       title: '费用名称',
