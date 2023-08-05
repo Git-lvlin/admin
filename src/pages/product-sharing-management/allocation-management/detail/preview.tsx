@@ -31,9 +31,6 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       })
     })
   }
-
-  console.log(data);
-  
   
   const roleCode = (code: string) => {
     const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
