@@ -57,7 +57,7 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
           } else {
             return {
               ...res,
-              supplyPriceType: res.billVal,
+              supplyPriceType: res.billVal, 
               billCond: Array.isArray(res.billCond) ? res.billCond : res.billCond ? [res.billCond] : [],
               billVal: res.roleCode === 'goodsAmount' ? res.billVal : amountTransform(res.billVal, '*')
             }

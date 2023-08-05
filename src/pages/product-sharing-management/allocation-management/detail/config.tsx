@@ -73,7 +73,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     if(detailData) {
       const arr = detailData?.divideInfoList.map((res: any)=> ({
         ...res,
-        billVal: amountTransform(res.billVal, '/'),
+        billVal: res.roleCode === 'goodsAmount' ? res.billVal : detailData?.billType === 1 ? amountTransform(res.billVal, '*') : amountTransform(res.billVal, '/'),
         billCond: res.billCond[0]
       }))
       form.current?.setFieldsValue({
