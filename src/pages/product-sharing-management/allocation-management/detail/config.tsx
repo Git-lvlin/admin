@@ -250,7 +250,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount ?? 0     
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false}/>
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} onBlur={()=> blur()}/>
         } else {
           return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/> 
         }
@@ -267,7 +267,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount ?? 0
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false}/>
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} onBlur={()=> blur()}/>
         } else {
           return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/>
         }
