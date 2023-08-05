@@ -107,7 +107,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         setFlag(false)
       }
       setText(detailData?.contractCode)
-      setMinPrice(computedValue(meta, dataSource, count))
+      setMinPrice(computedValue(meta, arr, count))
     }
   }, [detailData])
 
@@ -770,7 +770,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             }
             tableCallback(arr)
             setDataSource(arr)
-            
+            setMinPrice(computedValue(meta, arr, count))
           },
           onChange: setEditableRowKeys
         }}
@@ -799,7 +799,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   )
 }
 
-const computedValue = (goodsData = [], roleData = [], type = 2) => {
+const computedValue = (goodsData = [], roleData: any, type = 2) => {
+
   Big.RM = 0;
   const supplierObject: any = roleData.find((item: any) => item.roleCode === 'goodsAmount') || {}
   const minValueObject = goodsData.map((item: any) => {
