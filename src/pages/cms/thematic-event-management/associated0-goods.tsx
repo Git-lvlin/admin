@@ -199,7 +199,7 @@ export default (props) => {
         {
           id&&<><Popover  content={content} placement="bottom" title="商品小程序码" trigger="click" >
                   <a onClick={()=>{ 
-                    getMiniQr({ url:`/subpages/cart/detail/index?orderType=2&spuId=${record?.spuId}&objectId=&activityId=${record?.id}&skuId=${record?.skuId}&wsId=0` }).then(res=>{
+                    getMiniQr({ url:`/subpages/cart/detail/index?orderType=2&spuId=${record?.spuId}&objectId=&activityId=${id}&skuId=${record?.skuId}&wsId=0` }).then(res=>{
                       setQrCodeUrl(res.data.url)
                     })
                    }}>&nbsp;小程序码</a>
