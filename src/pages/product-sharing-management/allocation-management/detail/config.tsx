@@ -65,6 +65,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   }, [])
 
   useEffect(()=> {
+    if(meta.length) {
+      setMinPrice(computedValue(meta, dataSource, count))
+    }
+  }, [meta, count])
+
+  useEffect(()=> {
     formCallback(form)
     tableCallback(dataSource)
   }, [])
