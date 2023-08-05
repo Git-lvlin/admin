@@ -42,7 +42,7 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
         contractFeeBear: 0,
         ...rest,
         billType,
-        buyer: [buyer],
+        buyer: Array.isArray(buyer) ? buyer : buyer == '1' ? [] : [buyer],
         platformLeastFee: amountTransform(platformLeastFee),
         startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
         endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),

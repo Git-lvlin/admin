@@ -80,7 +80,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         id: detailData?.id,
         subType: detailData?.subType,
         agreementShowType: detailData?.agreementShowType,
-        buyer: detailData?.buyer[0],
+        buyer: detailData?.buyer.length == 0 ? '1' : detailData?.buyer[0],
         afterSale: detailData?.afterSale,
         miniProgram: detailData?.miniProgram,
         orderDetailTips: detailData?.orderDetailTips,
@@ -538,7 +538,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               label='可购买身份'
               rules={[{required: true}]}
               options={[
-                {label: '所有用户', value: ' '},
+                {label: '所有用户', value: '1'},
                 {label: '所有社区店店主', value: 'communityStore'},
                 {label: '所有VIP店主', value: 'vipStore'},
                 {label: '所有生活馆店主', value: 'lifeStore'},
