@@ -60,18 +60,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    form.current?.setFieldsValue({
-      billType: 2
-    })
-  }, [])
-
-  useEffect(()=> {
-    if(meta.length) {
-      setMinPrice(computedValue(meta, dataSource, count))
-    }
-  }, [meta, count])
-
-  useEffect(()=> {
     formCallback(form)
     tableCallback(dataSource)
   }, [])
@@ -87,6 +75,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         id: detailData?.id,
         subType: detailData?.subType,
         agreementShowType: detailData?.agreementShowType,
+        agreementName: detailData?.agreementName,
+        agreementUrl: detailData?.agreementUrl,
         buyer: detailData?.buyer.length == 0 ? '1' : detailData?.buyer[0],
         afterSale: detailData?.afterSale,
         miniProgram: detailData?.miniProgram,
@@ -115,6 +105,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       }
       setText(detailData?.contractCode)
       setMinPrice(computedValue(meta, arr, count))
+      setShowType(detailData?.agreementShowType)
     }
   }, [detailData])
 
@@ -122,7 +113,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     if(minPrice) {
       form.current?.setFieldsValue({
         platformLeastSpuId: minPrice?.goodsData?.spuId, 
-        platformLeastSkuId: minPrice?.goodsData?.defaultSkuId, 
+        platformLeastSkuId: minPrice?.goodsData?.skuId, 
         platformLeastFee: minPrice.balanceAmount,
         platformLeastAmount: minPrice?.goodsData?.goodsSaleMinPrice
       })
@@ -151,6 +142,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   useEffect(()=> {
     selectData(data)
   }, [data])
+
+  useEffect(()=> {
+    if(meta.length) {
+      setMinPrice(computedValue(meta, dataSource, count))
+    }
+  }, [meta, count])
 
   const getSettled = (record: any, obj: any) => {
     if(record?.roleCode === "directMember" || record.roleCode === 'indirectMember') {
@@ -751,7 +748,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         toolBarRender={
           ()=> [
             <div>
-              参与分成角色：{dataSource.length} 位，业务商品 {meta.length} 款，价差最少商品skuID：{minPrice?.goodsData?.defaultSkuId ?? '/'}，交易金额：<span>{amountTransform(minPrice?.goodsData?.goodsSaleMinPrice, '/').toFixed(2) ?? 0}</span>元，平台最少结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+              参与分成角色：{dataSource.length} 位，业务商品 {meta.length} 款，价差最少商品skuID：{minPrice?.goodsData?.skuId ?? '/'}，交易金额：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台最少结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
             </div>
           ]
         }

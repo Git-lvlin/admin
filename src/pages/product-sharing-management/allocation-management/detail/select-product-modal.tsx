@@ -20,7 +20,7 @@ export default (props: any) => {
 
   useEffect(()=> {
     setSelectItems(skuData)
-    setSelectedRowKeys(skuData?.map((item: any) => item.defaultSkuId))
+    setSelectedRowKeys(skuData?.map((item: any) => item.skuId))
   }, [])
 
 
@@ -131,9 +131,17 @@ export default (props: any) => {
             const arr: React.Key[] = []
             _.forEach(item => {
               const obj = [...skuData, ...goodsData].find(ele => {
-                return ele.defaultSkuId === item
+                return (ele.skuId === item || ele.defaultSkuId === item)
                })
-               obj && arr.push(obj)
+              const newObj ={
+                skuId: obj.defaultSkuId,
+                marketPrice: obj?.goodsMarketPrice,
+                salePrice: obj?.goodsSaleMinPrice,
+                retailSupplyPrice: obj?.minRetailSupplyPrice,
+                wholesaleSupplyPrice: obj?.minWholesaleSupplyPrice,
+                ...obj
+              }
+               obj && arr.push(newObj)
              })
             setSelectItems(arr || [])
             setSelectedRowKeys(_)

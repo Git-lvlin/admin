@@ -10,7 +10,7 @@ import { amountTransform } from '@/utils/utils'
 type DataSourceType = {
   id: React.Key
   spuId?: string
-  defaultSkuId?: string
+  skuId?: string
 }
 
 const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data}) => {
@@ -81,7 +81,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
       render: (_, r) => (
         <a 
           onClick={()=> {
-            const arr = dataSource.filter((item) => item.defaultSkuId !== r.defaultSkuId)
+            const arr = dataSource.filter((item) => item.skuId !== r.skuId)
             setDataSource(arr)
             callback(arr)
           }}
@@ -95,7 +95,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
   return (
     <>
       <ProTable
-        rowKey='defaultSkuId'
+        rowKey='skuId'
         headerTitle='分成商品'
         search={false}
         options={false}
@@ -118,16 +118,11 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
           visible={formVisible}
           setVisible={setFormVisible}
           callback={(v: any) => {
+            console.log(v);
+            
             callback(v)
             setDataSource(v.map((item: any) => {
-              return {
-                ...item,
-                skuId: item.defaultSkuId,
-                marketPrice: item?.goodsMarketPrice,
-                salePrice: item?.goodsSaleMinPrice,
-                retailSupplyPrice: item?.minRetailSupplyPrice,
-                wholesaleSupplyPrice: item?.minWholesaleSupplyPrice
-              }
+              return item
             }))
           }}
           skuData={dataSource}
