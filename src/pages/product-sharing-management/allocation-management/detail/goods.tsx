@@ -31,7 +31,12 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
       align: 'center'
     },
     {
-      title: 'skuID',
+      title: ()=> (
+        <div>
+          <div>skuID</div>
+          <div>最低售价的sku</div>
+        </div>
+      ),
       dataIndex: 'skuId',
       align: 'center'
     },

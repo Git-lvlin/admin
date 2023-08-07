@@ -7,7 +7,17 @@ import ProForm, {
   ProFormDateTimeRangePicker,
 } from '@ant-design/pro-form'
 import { EditableProTable } from '@ant-design/pro-table'
-import { Divider, Row, Col, Select, Space, Input, Switch, InputNumber } from 'antd'
+import { 
+  Divider, 
+  Row, 
+  Col, 
+  Select, 
+  Space, 
+  Input, 
+  Switch, 
+  InputNumber,
+  Tooltip
+} from 'antd'
 import Big from 'big.js'
 
 import type { FormInstance } from 'antd'
@@ -522,7 +532,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               options={[
                 {label: '没有协议', value: 0},
-                {label: '仅展示协议', value: 1},
                 {label: '必须勾选协议才能下单', value: 2}
               ]}
               extra={
@@ -704,7 +713,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           <Col span={8}>
             <ProFormDateTimeRangePicker
               name='time'
-              label='计账时段'
+              label='记账时段'
               rules={[{required: true}]}
             />
           </Col>
@@ -748,7 +757,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         toolBarRender={
           ()=> [
             <div>
-              参与分成角色：{dataSource.length} 位，业务商品 {meta.length} 款，价差最少商品skuID：{minPrice?.goodsData?.skuId ?? '/'}，交易金额：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台最少结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+              参与分成角色：{dataSource.length} 位，参与分成商品 {meta.length} 款，<Tooltip title='价差 = 销售价 - 已选供货价'>价差最少商品skuID</Tooltip>：{minPrice?.goodsData?.skuId ?? '/'}，交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
             </div>
           ]
         }
