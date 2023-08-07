@@ -20,7 +20,7 @@ export default (props: any) => {
 
   useEffect(()=> {
     setSelectItems(skuData)
-    setSelectedRowKeys(skuData?.map((item: any) => item.skuId))
+    setSelectedRowKeys(skuData?.map((item: any) => item.defaultSkuId))
   }, [])
 
 
@@ -49,26 +49,28 @@ export default (props: any) => {
     },
     {
       title: '市场价',  
-      dataIndex: 'marketPriceDisplay',
+      dataIndex: 'goodsMarketPrice',
       hideInSearch: true,
-      align: 'center'
+      align: 'center',
+      render: (_, r) => amountTransform(r.minRetailSupplyPrice, '/').toFixed(2)
     },
     {
       title: '销售价',
-      dataIndex: 'salePriceDisplay',
+      dataIndex: 'goodsSaleMinPriceDisplay',
       hideInSearch: true,
       align: 'center'
     },
     {
       title: '零售供货价(元)',
-      dataIndex: 'retailSupplyPriceDisplay',
+      dataIndex: 'minRetailSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
-      align: 'center'
+      align: 'center',
+      render: (_, r) => amountTransform(r.minRetailSupplyPrice, '/').toFixed(2)
     },
     {
       title: '批发供货价',
-      dataIndex: 'wholesaleSupplyPrice',
+      dataIndex: 'minWholesaleSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
       align: 'center',
@@ -107,7 +109,7 @@ export default (props: any) => {
       {...formItemLayout}
     >
       <ProTable
-        rowKey="skuId"
+        rowKey="defaultSkuId"
         columns={columns}
         options={false}
         scroll={{y: 400}}
@@ -129,7 +131,7 @@ export default (props: any) => {
             const arr: React.Key[] = []
             _.forEach(item => {
               const obj = [...skuData, ...goodsData].find(ele => {
-                return ele.skuId === item
+                return ele.defaultSkuId === item
                })
                obj && arr.push(obj)
              })

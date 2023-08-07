@@ -26,7 +26,8 @@ const defaultData = [
     name: '产品成本',
     isChannelFee: 1,
     settleType: 1,
-    status: 1
+    status: 1,
+    billVal: 2
   },
   {
     id: 2,
@@ -121,9 +122,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     if(minPrice) {
       form.current?.setFieldsValue({
         platformLeastSpuId: minPrice?.goodsData?.spuId, 
-        platformLeastSkuId: minPrice?.goodsData?.skuId, 
+        platformLeastSkuId: minPrice?.goodsData?.defaultSkuId, 
         platformLeastFee: minPrice.balanceAmount,
-        platformLeastAmount: minPrice?.goodsData?.salePrice
+        platformLeastAmount: minPrice?.goodsData?.goodsSaleMinPrice
       })
     }
   }, [minPrice])
@@ -750,7 +751,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         toolBarRender={
           ()=> [
             <div>
-              参与分成角色：{dataSource.length} 位，业务商品 {meta.length} 款，价差最少商品skuID：{minPrice?.goodsData?.skuId ?? '/'}，交易金额：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台最少结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+              参与分成角色：{dataSource.length} 位，业务商品 {meta.length} 款，价差最少商品skuID：{minPrice?.goodsData?.defaultSkuId ?? '/'}，交易金额：<span>{amountTransform(minPrice?.goodsData?.goodsSaleMinPrice, '/').toFixed(2) ?? 0}</span>元，平台最少结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
             </div>
           ]
         }
@@ -776,7 +777,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             }
             tableCallback(arr)
             setDataSource(arr)
-            setMinPrice(computedValue(meta, arr, count))
+            if(meta.length) {
+              setMinPrice(computedValue(meta, arr, count))
+            }
           },
           onChange: setEditableRowKeys
         }}
@@ -812,9 +815,9 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
   const minValueObject = goodsData.map((item: any) => {
     let difference = 0
     if (supplierObject.billVal == 1) {
-      difference = item.salePrice - item.wholesaleSupplyPrice
+      difference = item.goodsSaleMinPrice - item.minWholesaleSupplyPrice
     } else {
-      difference = item.salePrice - item.retailSupplyPrice
+      difference = item.goodsSaleMinPrice - item.minRetailSupplyPrice
     }
     return {
       ...item,
@@ -822,7 +825,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     }
   }).sort((a, b) => a.difference - b.difference)[0]
 
-  let balanceAmount = minValueObject.salePrice
+  let balanceAmount = minValueObject.goodsSaleMinPrice
 
   roleData.forEach((item: any) => {
     let num = 0
@@ -834,9 +837,9 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     }
     let price = 0;
     if (supplierObject.billVal == 1) {
-      price = minValueObject.wholesaleSupplyPrice
+      price = minValueObject.minWholesaleSupplyPrice
     } else {
-      price = minValueObject.retailSupplyPrice
+      price = minValueObject.minRetailSupplyPrice
     }
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
@@ -853,16 +856,16 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
         balanceAmount -= price
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.goodsSaleMinPrice).times(amountTransform(num, '/'))).toFixed(2)
         } else {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.goodsSaleMinPrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
         }
       }
     }
   })
 
   return {
-    balanceAmount: amountTransform(balanceAmount, '/'),
+    balanceAmount: new Big(amountTransform(balanceAmount, '/')).toFixed(2),
     goodsData: minValueObject
   }
 }

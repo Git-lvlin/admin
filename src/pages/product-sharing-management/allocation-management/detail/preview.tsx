@@ -20,15 +20,19 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
 
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
-      saveConfig(data, {showSuccess: true}).then(res => {
-        if(res.code === 0) {
-          callback()
-          tableCallback()
-          resolve()
-        } else {
-          reject('提交失败')
-        }
-      })
+      if(data?.goods.length > 0) {
+        saveConfig(data, {showSuccess: true}).then(res => {
+          if(res.code === 0) {
+            callback()
+            tableCallback()
+            resolve()
+          } else {
+            reject('提交失败')
+          }
+        })
+      } else {
+        reject('请选择分成商品')
+      }
     })
   }
   
@@ -163,7 +167,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     },
     {
       title: 'skuID',
-      dataIndex: 'skuId',
+      dataIndex: 'defaultSkuId',
       align: 'center'
     },
     {
@@ -178,25 +182,25 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     },
     {
       title: '市场价',
-      dataIndex: 'marketPrice',
+      dataIndex: 'goodsMarketPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '售价',
-      dataIndex: 'salePrice',
+      dataIndex: 'goodsSaleMinPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '零售供货价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'minRetailSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '批发供货价',
-      dataIndex: 'wholesaleSupplyPrice',
+      dataIndex: 'minWholesaleSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },

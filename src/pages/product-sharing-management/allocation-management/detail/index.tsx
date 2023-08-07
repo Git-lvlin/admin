@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { DrawerForm } from '@ant-design/pro-form'
 import ProCard from '@ant-design/pro-card'
 import moment from 'moment'
+import { message } from 'antd'
 
 import Goods from './goods'
 import Config from './config'
@@ -26,13 +27,27 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
   const [selectData, setSelectData] = useState()
 
   const submit = () => {
-    const { time, platformLeastFee, billType, buyer, ...rest } = formData.current?.getFieldsValue()
-    const arr = tableData.map((res: any) => ({
-        ...res,
-        id: 0,
-        status: 1
-      }))
-      
+    try {
+      const { time, platformLeastFee, billType, buyer, ...rest } = formData.current?.getFieldsValue()
+      let id: any[] = []
+      if(detailData?.goods) {
+        id = detailData?.goods.map((res: any) => (res.id))
+      }
+      const arr = tableData.map((res: any)=> {
+         const isAdd = id.find(item => res.id === item)
+         if(isAdd) {
+          return ({
+            ...res,
+            status: 1
+          })
+         } 
+         return ({
+          ...res,
+          id: 0,
+          status: 1
+         })
+      })
+
       editTableData.forEach((ele: any, i: number) => {
         delete(ele[i])
       })
@@ -63,10 +78,13 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
             }
           }
         }),
-        goods: id ? tableData : arr
+        goods: arr
       }
       setData(obj)
       setPreviewVisible(true)
+    } catch (error) {
+      message.error('请补全分成配置')
+    }
   }
 
   useEffect(()=> {

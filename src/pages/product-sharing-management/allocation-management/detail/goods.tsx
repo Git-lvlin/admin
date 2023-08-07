@@ -10,7 +10,7 @@ import { amountTransform } from '@/utils/utils'
 type DataSourceType = {
   id: React.Key
   spuId?: string
-  skuId?: string
+  defaultSkuId?: string
 }
 
 const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data}) => {
@@ -32,7 +32,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
     },
     {
       title: 'skuID',
-      dataIndex: 'skuId',
+      dataIndex: 'defaultSkuId',
       align: 'center'
     },
     {
@@ -47,25 +47,25 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
     },
     {
       title: '市场价',
-      dataIndex: 'marketPrice',
+      dataIndex: 'goodsMarketPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '售价',
-      dataIndex: 'salePrice',
+      dataIndex: 'goodsSaleMinPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '零售供货价',
-      dataIndex: 'retailSupplyPrice',
+      dataIndex: 'minRetailSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '批发供货价',
-      dataIndex: 'wholesaleSupplyPrice',
+      dataIndex: 'minWholesaleSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
@@ -81,7 +81,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
       render: (_, r) => (
         <a 
           onClick={()=> {
-            const arr = dataSource.filter((item) => item.skuId !== r.skuId)
+            const arr = dataSource.filter((item) => item.defaultSkuId !== r.defaultSkuId)
             setDataSource(arr)
             callback(arr)
           }}
@@ -95,7 +95,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
   return (
     <>
       <ProTable
-        rowKey='skuId'
+        rowKey='defaultSkuId'
         headerTitle='分成商品'
         search={false}
         options={false}
