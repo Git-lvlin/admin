@@ -65,6 +65,12 @@ export default () => {
 
   const columns =[
     {
+      title: 'id',
+      dataIndex: 'id',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       dataIndex: 'name',
       align: 'center',
       hideInTable: true,

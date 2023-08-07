@@ -258,7 +258,9 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
           </Space>
         </Col>
         <Col span={8}>
-          业务协议：必须勾选协议下单<a href={data?.agreementUrl} target='_blank'>服务协议</a>
+          业务协议：{{0:'没有协议',1:'仅展示协议',2:`必须勾选协议下单`}[data?.agreementShowType]}  {
+            data?.agreementShowType==2?<a href={data?.agreementUrl} target='_blank'>服务协议</a>:null
+          }
         </Col>
         <Col span={8}>
           可购买身份：{{'communityStore':'社区店主','vipStore':'vip店主','lifeStore':'生活馆店主'}[data?.buyer]}
