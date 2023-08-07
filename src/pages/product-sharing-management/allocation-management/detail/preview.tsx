@@ -21,15 +21,19 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
       if(data?.goods.length > 0) {
-        saveConfig(data, {showSuccess: true}).then(res => {
-          if(res.code === 0) {
-            callback()
-            tableCallback()
-            resolve()
-          } else {
-            reject('提交失败')
-          }
-        })
+        if(data?.platformLeastFee >= 0) {
+          saveConfig(data, {showSuccess: true}).then(res => {
+            if(res.code === 0) {
+              callback()
+              tableCallback()
+              resolve()
+            } else {
+              reject('提交失败')
+            }
+          })
+        } else {
+          reject('平台最少结余金额不能为负数')
+        }
       } else {
         reject('请选择分成商品')
       }
