@@ -120,6 +120,7 @@ export default () => {
       dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
+      width: 300
     },
     {
       title: '计账时段',
