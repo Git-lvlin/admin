@@ -1,5 +1,5 @@
 import { ModalForm } from '@ant-design/pro-form'
-import { Row, Col, Space, Divider, Tooltip } from 'antd'
+import { Row, Col, Space, Divider, Tooltip, message } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
 
@@ -21,7 +21,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
   const submit = () => {
     return new Promise<void>((resolve, reject) => {
       if(data?.goods.length > 0) {
-        if(data?.platformLeastFee >= 0) {
+        if(data?.platformLeastFee >= 0) {   
           saveConfig(data, {showSuccess: true}).then(res => {
             if(res.code === 0) {
               callback()
@@ -32,9 +32,11 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
             }
           })
         } else {
+          message.error('平台最少结余金额不能为负数')
           reject('平台最少结余金额不能为负数')
         }
       } else {
+        message.error('请选择分成商品')
         reject('请选择分成商品')
       }
     })

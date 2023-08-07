@@ -32,7 +32,7 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
     },
     {
       title: 'skuID',
-      dataIndex: 'defaultSkuId',
+      dataIndex: 'skuId',
       align: 'center'
     },
     {
@@ -47,25 +47,25 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
     },
     {
       title: '市场价',
-      dataIndex: 'goodsMarketPrice',
+      dataIndex: 'marketPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '售价',
-      dataIndex: 'goodsSaleMinPrice',
+      dataIndex: 'salePrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '零售供货价',
-      dataIndex: 'minRetailSupplyPrice',
+      dataIndex: 'retailSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '批发供货价',
-      dataIndex: 'minWholesaleSupplyPrice',
+      dataIndex: 'wholesaleSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
@@ -120,7 +120,14 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
           callback={(v: any) => {
             callback(v)
             setDataSource(v.map((item: any) => {
-              return { ...item }
+              return {
+                ...item,
+                skuId: item.defaultSkuId,
+                marketPrice: item?.goodsMarketPrice,
+                salePrice: item?.goodsSaleMinPrice,
+                retailSupplyPrice: item?.minRetailSupplyPrice,
+                wholesaleSupplyPrice: item?.minWholesaleSupplyPrice
+              }
             }))
           }}
           skuData={dataSource}

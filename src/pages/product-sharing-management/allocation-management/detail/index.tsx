@@ -37,14 +37,13 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
          const isAdd = id.find(item => res.id === item)
          if(isAdd) {
           return ({
-            id: res.id,
-            spuId: res.spuId,
+            ...res,
             skuId: res.defaultSkuId,
             status: 1
           })
          } 
          return ({
-          spuId: res.spuId,
+          ...res,
           skuId: res.defaultSkuId,
           id: 0,
           status: 1

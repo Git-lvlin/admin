@@ -81,7 +81,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       const arr = detailData?.divideInfoList.map((res: any)=> ({
         ...res,
         billVal: res.roleCode === 'goodsAmount' ? res.billVal : detailData?.billType === 1 ? amountTransform(res.billVal, '*') : amountTransform(res.billVal, '/'),
-        billCond: res.billCond[0]
+        billCond: res?.billCond?.[0]
       }))
       form.current?.setFieldsValue({
         id: detailData?.id,
@@ -815,9 +815,9 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
   const minValueObject = goodsData.map((item: any) => {
     let difference = 0
     if (supplierObject.billVal == 1) {
-      difference = item.goodsSaleMinPrice - item.minWholesaleSupplyPrice
+      difference = item.salePrice - item.wholesaleSupplyPrice
     } else {
-      difference = item.goodsSaleMinPrice - item.minRetailSupplyPrice
+      difference = item.salePrice - item.retailSupplyPrice
     }
     return {
       ...item,
@@ -825,7 +825,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     }
   }).sort((a, b) => a.difference - b.difference)[0]
 
-  let balanceAmount = minValueObject.goodsSaleMinPrice
+  let balanceAmount = minValueObject.salePrice
 
   roleData.forEach((item: any) => {
     let num = 0
@@ -837,9 +837,9 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     }
     let price = 0;
     if (supplierObject.billVal == 1) {
-      price = minValueObject.minWholesaleSupplyPrice
+      price = minValueObject.wholesaleSupplyPrice
     } else {
-      price = minValueObject.minRetailSupplyPrice
+      price = minValueObject.retailSupplyPrice
     }
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
@@ -856,9 +856,9 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
         balanceAmount -= price
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.goodsSaleMinPrice).times(amountTransform(num, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
         } else {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.goodsSaleMinPrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
         }
       }
     }
