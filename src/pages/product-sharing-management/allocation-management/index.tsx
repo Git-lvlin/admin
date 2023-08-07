@@ -56,8 +56,8 @@ export default () => {
   const menu = (data:TableProps) => {
     return (
       <Menu onClick={(e) => { handleMenuClick(e, data) }}>
-        <Menu.Item key="1">编辑</Menu.Item>
-        {data?.status?<Menu.Item key="2">终止</Menu.Item>:''}
+        {data?.status?<Menu.Item key="1">编辑</Menu.Item>:''}
+        {data?.status?<Menu.Item key="2">终止</Menu.Item>:<Menu.Item key="2">启用</Menu.Item>}
         <Menu.Item key="3">更新历史</Menu.Item>
       </Menu>
     )
@@ -140,7 +140,7 @@ export default () => {
       hideInSearch: true,
       valueEnum: {
         1: '开启',
-        0: '禁用'
+        0: '已终止'
       },
     },
     {

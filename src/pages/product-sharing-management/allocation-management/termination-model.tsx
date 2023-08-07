@@ -24,7 +24,7 @@ export default (props:CumulativeProps) => {
   return (
     <ModalForm
       layout="horizontal"
-      title={<p><ExclamationCircleFilled style={{color:"#FAAD14"}}/> 确定要终止业务分账么？</p>}
+      title={<p><ExclamationCircleFilled style={{color:"#FAAD14"}}/> 确定要{msgDetail?.status?'终止':'启用'}业务分账么？</p>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -36,12 +36,12 @@ export default (props:CumulativeProps) => {
       }}
       submitter={{
         searchConfig: {
-          submitText: '确定终止',
-          resetText: '不终止',
+          submitText: msgDetail?.status?'确定终止':'确定启用',
+          resetText: msgDetail?.status?'不终止':'不启用',
         },
       }}
       onFinish={async (values) => {
-        updateConfigStatusById({...values,status:0}).then(res=>{
+        updateConfigStatusById({...values,status:msgDetail?.status?0:1}).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -54,7 +54,7 @@ export default (props:CumulativeProps) => {
         name="id"
         hidden
       />
-      <p><span style={{ color:'red' }}>终止后将无法自动分账</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
+      <p><span style={{ color:'red' }}>{msgDetail?.status?'终止后将无法自动分账':'启用后可以自动分账'}</span>，<span style={{ color:'#B5B2B2' }}>你还要继续吗？</span></p>
     </ModalForm >
   );
 };
