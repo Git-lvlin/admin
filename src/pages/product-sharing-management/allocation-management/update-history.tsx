@@ -89,7 +89,7 @@ export default (props:CumulativeProps) => {
         actionRef={form}
         options={false}
         params={{
-          id: msgDetail?.id
+          configId: msgDetail?.id
         }}
         search={{
           defaultCollapsed: true,
