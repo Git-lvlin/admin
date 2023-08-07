@@ -162,7 +162,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const getSettled = (record: any, obj: any) => {
     if(record?.roleCode === "directMember" || record.roleCode === 'indirectMember') {
       return obj
-    } else if(record?.roleCode === "yuegou"){
+    } else if(record?.roleCode === "yuegou" || record?.roleCode === "platform" || record?.roleCode === "goodsAmount"){
       return ({
         ...obj,
         settleType: 1
@@ -327,7 +327,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record, recordKey})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
-        if(recordKey === '1' || recordKey === '2') {
+        if(recordKey == '1' || recordKey == '2') {
           return '汇付'
         }else{
           return (

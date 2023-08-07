@@ -173,7 +173,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     },
     {
       title: 'skuID',
-      dataIndex: 'defaultSkuId',
+      dataIndex: 'skuId',
       align: 'center'
     },
     {
@@ -188,25 +188,25 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
     },
     {
       title: '市场价',
-      dataIndex: 'goodsMarketPrice',
+      dataIndex: 'marketPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '售价',
-      dataIndex: 'goodsSaleMinPrice',
+      dataIndex: 'salePrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '零售供货价',
-      dataIndex: 'minRetailSupplyPrice',
+      dataIndex: 'retailSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '批发供货价',
-      dataIndex: 'minWholesaleSupplyPrice',
+      dataIndex: 'wholesaleSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
