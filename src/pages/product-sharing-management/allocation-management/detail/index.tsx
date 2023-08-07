@@ -26,7 +26,7 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
   const [selectData, setSelectData] = useState()
 
   const submit = () => {
-    const { time, platformLeastFee, billType, ...rest } = formData.current?.getFieldsValue()
+    const { time, platformLeastFee, billType, buyer, ...rest } = formData.current?.getFieldsValue()
     const arr = tableData.map((res: any) => ({
         ...res,
         id: 0,
@@ -41,6 +41,8 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
         status: 1,
         contractFeeBear: 0,
         ...rest,
+        billType,
+        buyer: Array.isArray(buyer) ? buyer : buyer == '1' ? [] : [buyer],
         platformLeastFee: amountTransform(platformLeastFee),
         startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),
         endTime: time && moment(time?.[1]).format('YYYY-MM-DD HH:mm:ss'),
@@ -49,17 +51,15 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
             return {
               ...res,
               supplyPriceType: res.billVal,
-              status: res.status ?? 0,
-              billCond: [res.billCond],
-              billVal: amountTransform(res.billVal, '/')
+              billCond: Array.isArray(res.billCond) ? res.billCond : res.billCond ? [res.billCond] : [],
+              billVal: res.roleCode === 'goodsAmount' ? res.billVal : amountTransform(res.billVal, '/')
             }
           } else {
             return {
               ...res,
-              supplyPriceType: res.billVal,
-              status: res.status ?? 0,
-              billCond: [res.billCond],
-              billVal: amountTransform(res.billVal, '*')
+              supplyPriceType: res.billVal, 
+              billCond: Array.isArray(res.billCond) ? res.billCond : res.billCond ? [res.billCond] : [],
+              billVal: res.roleCode === 'goodsAmount' ? res.billVal : amountTransform(res.billVal, '*')
             }
           }
         }),
