@@ -263,7 +263,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
           }
         </Col>
         <Col span={8}>
-          可购买身份：{{'communityStore':'社区店主','vipStore':'vip店主','lifeStore':'生活馆店主'}[data?.buyer]}
+          可购买身份：{data?.buyer}
         </Col>
       </Row>
       <Divider />
