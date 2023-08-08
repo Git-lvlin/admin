@@ -57,7 +57,7 @@ const MSwitch: React.FC<{value?: boolean, onChange?: (e: number) => void}> = ({v
 
 const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detailData: any, selectData: any}> = ({meta, formCallback, tableCallback, detailData, selectData})=> {
   const [sign, setSign] = useState()
-  const [count, setCount] = useState()
+  const [count, setCount] = useState(2)
   const [dataSource, setDataSource] = useState<any>(defaultData)
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1, 2])
   const [orderTypes, setOrderTypes] = useState([])
@@ -69,6 +69,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const [spin, setSpin] = useState(false)
   const [text, setText] = useState()
   const [minPrice, setMinPrice] = useState<any>()
+  const [type, setType] = useState()
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -81,6 +82,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       billType: 2
     })
   }, [])
+  
+  useEffect(()=> {
+    if(meta.length > 0) {
+      setMinPrice(computedValue(meta, dataSource, count))
+    }
+  }, [meta, count])
 
   useEffect(()=> {
     if(detailData) {
@@ -163,12 +170,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   useEffect(()=> {
     selectData(data)
   }, [data])
-
-  useEffect(()=> {
-    if(meta.length > 0) {
-      setMinPrice(computedValue(meta, dataSource, count))
-    }
-  }, [meta, count])
 
   const getSettled = (record: any, obj: any) => {
     if(record?.roleCode === "directMember" || record.roleCode === 'indirectMember') {
@@ -258,32 +259,32 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       fixed: 'left'
     },
     {
-      title: '分成金额(元)',
+      title: `${count === 2 ? '分成金额(元)' : '分成比例(%)'}`,
       dataIndex: 'billVal',
       align: 'center',
-      hideInTable: count == 1,
       renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
-          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+          if(type === 'supplier') {
+            return (
+              <div>
+                <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+                <div>减5 元 合同费</div>
+              </div>
+            )
+          } else {
+            return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+          }
         } else if(recordKey === '2'){
-          return minPrice?.balanceAmount ?? 0     
-        } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
-        } else {
-          return <InputNumber placeholder='请输入' controls={false}/> 
-        }
-      }
-    },
-    {
-      title: '分成比例(%)',
-      dataIndex: 'billVal',
-      align: 'center',
-      hideInTable: count != 1,
-      renderFormItem: (_, {recordKey, record}) => {
-        if(recordKey === '1') {
-          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
-        } else if(recordKey === '2'){
-          return minPrice?.balanceAmount ?? 0
+          if(type === 'platform') {
+            return (
+              <div>
+                <div>{minPrice?.balanceAmount ?? 0}</div>
+                <div>已减5 元 合同费</div>
+              </div>
+            )
+          } else {
+            return minPrice?.balanceAmount ?? 0     
+          }
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
           return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
         } else {
@@ -664,7 +665,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                       {label: '供应商承担5元合同费', value: 'supplier'}
                     ]}
                     fieldProps={{
-                      placeholder: '请选择签法大大5元合同费用承担方'
+                      placeholder: '请选择签法大大5元合同费用承担方',
+                      onChange: (e) => {
+                        setType(e)
+                        if(meta.length > 0) {
+                          setMinPrice(computedValue(meta, dataSource, count, e))
+                        }
+                      }
                     }}
                   />
                 </Space> :
@@ -761,7 +768,22 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         toolBarRender={
           ()=> [
             <div>
-              参与分成角色：{dataSource.length} 位，参与分成商品 {meta.length} 款，<Tooltip title='价差 = 销售价 - 已选供货价'>价差最少商品skuID</Tooltip>：{minPrice?.goodsData?.skuId ?? '/'}，交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+              参与分成角色：{dataSource.length} 位，
+              参与分成商品 {meta.length} 款，
+              <Tooltip 
+                title='价差 = 销售价 - 已选供货价'
+              >
+                价差最少商品skuID
+              </Tooltip>：
+              {minPrice?.goodsData?.skuId ?? '/'}，
+              交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，
+              {
+                type === 'platform' ?
+                <Tooltip title='已减 5 元 合同费'>
+                  平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后
+                </Tooltip>:
+                `平台结余金额：${minPrice?.balanceAmount ?? 0}元（剔除通道费后'）`
+              }
             </div>
           ]
         }
@@ -816,11 +838,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   )
 }
 
-const computedValue = (goodsData = [], roleData: any, type = 2) => {
+const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear = '') => {
   if(goodsData.length == 0) {
     return
   }
   Big.RM = 0;
+  let amount = 0
+  const dif = new Big(1).minus(0.0065)
   const supplierObject: any = roleData.find((item: any) => item.roleCode === 'goodsAmount') || {}
   const minValueObject = goodsData.map((item: any) => {
     let difference = 0
@@ -853,29 +877,44 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     }
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
-        balanceAmount -= price
+        if(contractFeeBear === 'supplier'){
+          balanceAmount -= (price - 500)
+        } else {
+          balanceAmount -= price
+        }
+        amount = new Big(balanceAmount).times(dif).toFixed(2)
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount -= amountTransform(num)
         } else {
           balanceAmount -= amountTransform(item.billVal)
         }
+        amount = new Big(balanceAmount).times(dif).toFixed(2)
       }
     } else {
       if (item.roleCode === 'goodsAmount') {
-        balanceAmount -= price
+        if(contractFeeBear === 'supplier'){
+          balanceAmount -= (price - 500)
+        } else {
+          balanceAmount -= price
+        }
+        amount = new Big(balanceAmount).times(dif).toFixed(2)
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
         } else {
           balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
         }
+        amount = new Big(balanceAmount).times(dif).toFixed(2)
       }
     }
   })
+  if(contractFeeBear === 'platform') {
+    amount = new Big(balanceAmount).minus(500).toFixed(2)
+  }
 
   return {
-    balanceAmount: new Big(amountTransform(balanceAmount, '/')).toFixed(2),
+    balanceAmount: new Big(amountTransform(amount, '/')).toFixed(2),
     goodsData: minValueObject
   }
 }
