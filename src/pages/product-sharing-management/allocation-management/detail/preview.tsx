@@ -19,21 +19,23 @@ type previewProps = {
 const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, tableCallback, selectData}) => {
 
   const submit = () => {
+    console.log(data.divideInfoList);
+    
     return new Promise<void>((resolve, reject) => {
       if(data?.goods.length > 0) {
-        if(data?.platformLeastFee >= 0) {   
-          saveConfig(data, {showSuccess: true}).then(res => {
-            if(res.code === 0) {
-              callback()
-              tableCallback()
-              resolve()
-            } else {
-              reject('提交失败')
-            }
-          })
+        if(data?.platformLeastFee > 0) {   
+          // saveConfig(data, {showSuccess: true}).then(res => {
+          //   if(res.code === 0) {
+          //     callback()
+          //     tableCallback()
+          //     resolve()
+          //   } else {
+          //     reject('提交失败')
+          //   }
+          // })
         } else {
-          message.error('平台最少结余金额不能为负数')
-          reject('平台最少结余金额不能为负数')
+          message.error('平台最少结余金额需要大于0')
+          reject('平台最少结余金额需要大于0')
         }
       } else {
         message.error('请选择分成商品')
@@ -73,6 +75,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_, '/')} * 5`
         } else {
           return amountTransform(_, '/')
         }
@@ -88,6 +92,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_)} * 5`
         } else {
           return amountTransform(_)
         }
