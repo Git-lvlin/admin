@@ -120,6 +120,7 @@ export default () => {
       dataIndex: 'remark',
       align: 'center',
       hideInSearch: true,
+      width: 300
     },
     {
       title: '计账时段',
@@ -135,13 +136,9 @@ export default () => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusStr',
       align: 'center',
       hideInSearch: true,
-      valueEnum: {
-        1: '开启',
-        0: '已终止'
-      },
     },
     {
       title: '商品',
