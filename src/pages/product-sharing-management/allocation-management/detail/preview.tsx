@@ -73,6 +73,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_, '/')} * 5`
         } else {
           return amountTransform(_, '/')
         }
@@ -88,6 +90,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_, '/')} * 5`
         } else {
           return amountTransform(_)
         }
