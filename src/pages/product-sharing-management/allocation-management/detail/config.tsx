@@ -182,7 +182,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     } else {
       return ({
         ...obj,
-        settleType: 3
+        settleType: record?.roleCode ? 3 : undefined
       })
     }                 
   }
@@ -198,7 +198,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       }
     }
 
-    if ( obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
+    if ( obj?.id === record?.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
       obj = {
         ...obj,
         trueUnfrezeeType: findObj?.trueUnfrezeeType
@@ -213,14 +213,14 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     let obj = o
     const findObj = list.find((item: any) => item.roleCode === 'platform')
 
-    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj?.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: record.businessUnfrezeeType
       }
     }
 
-    if (obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
+    if (obj?.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: findObj.businessUnfrezeeType
@@ -243,7 +243,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return '平台'
         } else {
           const list = roleList.map((item: any) => {
-            if (dataSource.find((it: any)=> item.value === it.roleCode)) {
+            if (dataSource.find((it: any)=> item.value === it?.roleCode)) {
               return {
                 ...item,
                 disabled: true,
@@ -485,7 +485,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         if(record.roleCode === 'goodsAmount' || record.roleCode === 'platform') {
           return
         } else {
-          const arr = dataSource.filter((item: any) => item.id != recordKey)
+          const arr = dataSource.filter((item: any) => item?.id != recordKey)
           return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count))}}>删除</a>
         }
       }
@@ -866,10 +866,10 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
 
   roleData.forEach((item: any) => {
     let num = 0
-    if(item.billVal) {
+    if(item?.billVal) {
       num = new Big(item.billVal).times(5)
     }
-    if (item.roleCode === 'platform' || !item.status) {
+    if (item?.roleCode === 'platform' || !item?.status) {
       return
     }
     let price = 0;
