@@ -16,7 +16,8 @@ import {
   Input, 
   Switch, 
   InputNumber,
-  Tooltip
+  Tooltip,
+  Spin
 } from 'antd'
 import Big from 'big.js'
 
@@ -65,6 +66,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const [showType, setShowType] = useState()
   const [configVisible, setConfigVisible] = useState(false)
   const [flag, setFlag] = useState(false)
+  const [spin, setSpin] = useState(false)
   const [text, setText] = useState()
   const [minPrice, setMinPrice] = useState<any>()
   const form = useRef<FormInstance>()
@@ -72,6 +74,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   useEffect(()=> {
     formCallback(form)
     tableCallback(dataSource)
+  }, [])
+
+  useEffect(()=> {
+    form.current?.setFieldsValue({
+      billType: 2
+    })
   }, [])
 
   useEffect(()=> {
@@ -131,6 +139,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   }, [minPrice])
 
   useEffect(()=> {
+    setSpin(true)
     getListByParams({
       page: 1,
       size: 10
@@ -146,6 +155,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           value: item.code
         })))
       }
+    }).finally(()=> {
+      setSpin(false)
     })
   }, [])
 
@@ -154,7 +165,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   }, [data])
 
   useEffect(()=> {
-    if(meta.length) {
+    if(meta.length > 0) {
       setMinPrice(computedValue(meta, dataSource, count))
     }
   }, [meta, count])
@@ -218,13 +229,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     return obj
 
   }
-
-  const blur = () => {
-    if(meta.length > 0) {
-      setMinPrice(computedValue(meta, dataSource, count))
-    }
-  }
-  
   
   const columns: ProColumns[] = [
     {
@@ -264,9 +268,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount ?? 0     
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} onBlur={()=> blur()}/>
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
         } else {
-          return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/> 
+          return <InputNumber placeholder='请输入' controls={false}/> 
         }
       }
     },
@@ -281,9 +285,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         } else if(recordKey === '2'){
           return minPrice?.balanceAmount ?? 0
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} onBlur={()=> blur()}/>
+          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
         } else {
-          return <InputNumber placeholder='请输入' onBlur={()=> blur()} controls={false}/>
+          return <InputNumber placeholder='请输入' controls={false}/>
         }
       }
     },
@@ -481,14 +485,14 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return
         } else {
           const arr = dataSource.filter((item: any) => item.id != recordKey)
-          return <a onClick={()=> {setDataSource(arr); tableCallback(arr)}}>删除</a>
+          return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count))}}>删除</a>
         }
       }
     }
   ]
 
   return (
-    <>
+    <Spin spinning={spin}>
       <ProForm
         formRef={form}
         layout='vertical'
@@ -594,7 +598,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.legth < 6) {
+                  if(value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()
@@ -679,7 +683,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.legth < 6) {
+                  if(value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()
@@ -781,11 +785,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 return obj
               })
             }
+            setMinPrice(computedValue(meta, arr, count))
             tableCallback(arr)
             setDataSource(arr)
-            if(meta.length) {
-              setMinPrice(computedValue(meta, arr, count))
-            }
           },
           onChange: setEditableRowKeys
         }}
@@ -810,12 +812,14 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           data={text}
         />
       }
-    </>
+    </Spin>
   )
 }
 
 const computedValue = (goodsData = [], roleData: any, type = 2) => {
-
+  if(goodsData.length == 0) {
+    return
+  }
   Big.RM = 0;
   const supplierObject: any = roleData.find((item: any) => item.roleCode === 'goodsAmount') || {}
   const minValueObject = goodsData.map((item: any) => {
