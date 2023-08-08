@@ -23,7 +23,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
   }, [data])
 
   const submit = (v: any) => {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(resolve => {
       callback(v)
       flag(true)
       resolve()
@@ -53,6 +53,24 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
         label='合同配置'
         name='contractCode'
         placeholder='请输入5-200个字符'
+        fieldProps={{
+          showCount: true,
+          maxLength: 200
+        }}
+        rules={[
+          {
+            validator: (_, value) => {
+              if(value.length < 5) {
+                return Promise.reject('请输入5-200个字符')
+              } else {
+                return Promise.resolve()
+              }
+            }
+          },
+          {
+            required: true
+          }
+        ]}
       />
     </ModalForm>
   )

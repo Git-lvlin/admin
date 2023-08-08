@@ -85,7 +85,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   
   useEffect(()=> {
     if(meta.length > 0) {
-      setMinPrice(computedValue(meta, dataSource, count, type))
+      setMinPrice(computedValue(meta, dataSource, count))
     }
   }, [meta, count])
 
@@ -129,7 +129,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         setFlag(false)
       }
       setText(detailData?.contractCode)
-      setMinPrice(computedValue(meta, arr, count, detailData?.contractFeeBear))
+      setMinPrice(computedValue(meta, arr, count, detailData?.contractIsSign, detailData?.contractFeeBear))
       setShowType(detailData?.agreementShowType)
     }
   }, [detailData])
@@ -486,7 +486,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return
         } else {
           const arr = dataSource.filter((item: any) => item.id != recordKey)
-          return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count, type))}}>删除</a>
+          return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count))}}>删除</a>
         }
       }
     }
@@ -632,7 +632,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 {label: '需要签署', value: 1}
               ]}
               fieldProps={{
-                onChange: (e) => setSign(e.target.value)
+                onChange: (e) => {
+                  setSign(e.target.value)
+                  if(meta.length > 0) {
+                    setMinPrice(computedValue(meta, dataSource, count, e.target.value, type))
+                  }
+                }
               }}
               extra={
                 sign === 1 ? 
@@ -669,7 +674,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                       onChange: (e) => {
                         setType(e)
                         if(meta.length > 0) {
-                          setMinPrice(computedValue(meta, dataSource, count, e))
+                          setMinPrice(computedValue(meta, dataSource, count, sign, e))
                         }
                       }
                     }}
@@ -715,7 +720,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 onChange: (e) => {
                   setCount(e.target.value)
                   if(meta.length > 0) {
-                    setMinPrice(computedValue(meta, dataSource, e.target.value, type))
+                    setMinPrice(computedValue(meta, dataSource, e.target.value))
                   }
                 }
               }}
@@ -807,7 +812,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 return obj
               })
             }
-            setMinPrice(computedValue(meta, arr, count, type))
+            setMinPrice(computedValue(meta, arr, count, sign, type))
             tableCallback(arr)
             setDataSource(arr)
           },
@@ -838,7 +843,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   )
 }
 
-const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear = '') => {
+const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, store = '') => {
   if(goodsData.length == 0) {
     return
   }
@@ -876,18 +881,18 @@ const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear 
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
-        balanceAmount -= new Big(balanceAmount).times(0.0065)
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount -= amountTransform(num)
+          balanceAmount = new Big(balanceAmount).minus(amountTransform(num))
         } else {
-          balanceAmount -= amountTransform(item.billVal)
+          balanceAmount = new Big(balanceAmount).minus(amountTransform(item.billVal))
         }
       }
     } else {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
-        balanceAmount -= new Big(balanceAmount).times(0.0065)
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/')))
@@ -897,12 +902,13 @@ const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear 
       }
     }
   })
-  if(contractFeeBear === 'platform') {
+  
+  if(store === 'platform' && isSign === 1) {
     balanceAmount = new Big(balanceAmount).minus(500)
   }
 
   return {
-    balanceAmount: amountTransform(balanceAmount, '/'),
+    balanceAmount: amountTransform(balanceAmount, '/').toFixed(2),
     goodsData: minValueObject
   }
 }
