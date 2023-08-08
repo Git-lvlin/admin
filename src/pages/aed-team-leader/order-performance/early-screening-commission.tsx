@@ -34,7 +34,7 @@ export default (props:CumulativeProps)=>{
       renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
-      initialValue: [moment(searchTime.dateRange[0]),moment(searchTime.dateRange[1])]
+      initialValue: [moment(searchTime?.dateRange[0]),moment(searchTime?.dateRange[1])]
     },
     {
       title: '早筛码',
