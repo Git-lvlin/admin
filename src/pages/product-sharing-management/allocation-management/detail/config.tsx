@@ -111,7 +111,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         remark: detailData?.remark,
         billType: detailData?.billType,
         time: [detailData?.startTime, detailData?.endTime],
-        contractFeeBear: detailData?.contractFeeBear,
+        contractFeeBear: detailData?.contractFeeBear != 0 ? detailData?.contractFeeBear : undefined,
         contractCode: detailData?.contractCode,
         platformLeastSpuId: detailData?.platformLeastSpuId, 
         platformLeastSkuId: detailData?.platformLeastSkuId, 
@@ -599,7 +599,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.length < 6) {
+                  if(value && value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()
@@ -695,7 +695,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.length < 6) {
+                  if(value && value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()

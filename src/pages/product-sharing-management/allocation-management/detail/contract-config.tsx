@@ -57,6 +57,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
           showCount: true,
           maxLength: 200
         }}
+        validateFirst
         rules={[
           {
             validator: (_, value) => {
