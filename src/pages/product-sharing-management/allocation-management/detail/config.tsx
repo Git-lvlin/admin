@@ -85,7 +85,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   
   useEffect(()=> {
     if(meta.length > 0) {
-      setMinPrice(computedValue(meta, dataSource, count))
+      setMinPrice(computedValue(meta, dataSource, count, type))
     }
   }, [meta, count])
 
@@ -129,7 +129,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         setFlag(false)
       }
       setText(detailData?.contractCode)
-      setMinPrice(computedValue(meta, arr, count))
+      setMinPrice(computedValue(meta, arr, count, detailData?.contractFeeBear))
       setShowType(detailData?.agreementShowType)
     }
   }, [detailData])
@@ -264,7 +264,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
-          if(type === 'supplier') {
+          if(type === 'supplier' && sign === 1) {
             return (
               <div>
                 <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
@@ -275,7 +275,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
           }
         } else if(recordKey === '2'){
-          if(type === 'platform') {
+          if(type === 'platform' && sign === 1) {
             return (
               <div>
                 <div>{minPrice?.balanceAmount ?? 0}</div>
@@ -486,7 +486,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return
         } else {
           const arr = dataSource.filter((item: any) => item.id != recordKey)
-          return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count))}}>删除</a>
+          return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count, type))}}>删除</a>
         }
       }
     }
@@ -715,7 +715,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 onChange: (e) => {
                   setCount(e.target.value)
                   if(meta.length > 0) {
-                    setMinPrice(computedValue(meta, dataSource, e.target.value))
+                    setMinPrice(computedValue(meta, dataSource, e.target.value, type))
                   }
                 }
               }}
@@ -778,9 +778,9 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               {minPrice?.goodsData?.skuId ?? '/'}，
               交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，
               {
-                type === 'platform' ?
+                (type === 'platform' && sign === 1) ?
                 <Tooltip title='已减 5 元 合同费'>
-                  平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后
+                  平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
                 </Tooltip>:
                 `平台结余金额：${minPrice?.balanceAmount ?? 0}元（剔除通道费后'）`
               }
@@ -807,7 +807,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 return obj
               })
             }
-            setMinPrice(computedValue(meta, arr, count))
+            setMinPrice(computedValue(meta, arr, count, type))
             tableCallback(arr)
             setDataSource(arr)
           },
@@ -843,8 +843,6 @@ const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear 
     return
   }
   Big.RM = 0;
-  let amount = 0
-  const dif = new Big(1).minus(0.0065)
   const supplierObject: any = roleData.find((item: any) => item.roleCode === 'goodsAmount') || {}
   const minValueObject = goodsData.map((item: any) => {
     let difference = 0
@@ -864,7 +862,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear 
   roleData.forEach((item: any) => {
     let num = 0
     if(item.billVal) {
-      num = new Big(item.billVal).times(5).toFixed(2)
+      num = new Big(item.billVal).times(5)
     }
     if (item.roleCode === 'platform' || !item.status) {
       return
@@ -877,44 +875,34 @@ const computedValue = (goodsData = [], roleData: any, type = 2, contractFeeBear 
     }
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
-        if(contractFeeBear === 'supplier'){
-          balanceAmount -= (price - 500)
-        } else {
-          balanceAmount -= price
-        }
-        amount = new Big(balanceAmount).times(dif).toFixed(2)
+        balanceAmount -= price
+        balanceAmount -= new Big(balanceAmount).times(0.0065)
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount -= amountTransform(num)
         } else {
           balanceAmount -= amountTransform(item.billVal)
         }
-        amount = new Big(balanceAmount).times(dif).toFixed(2)
       }
     } else {
       if (item.roleCode === 'goodsAmount') {
-        if(contractFeeBear === 'supplier'){
-          balanceAmount -= (price - 500)
-        } else {
-          balanceAmount -= price
-        }
-        amount = new Big(balanceAmount).times(dif).toFixed(2)
+        balanceAmount -= price
+        balanceAmount -= new Big(balanceAmount).times(0.0065)
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/')))
         } else {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/')))
         }
-        amount = new Big(balanceAmount).times(dif).toFixed(2)
       }
     }
   })
   if(contractFeeBear === 'platform') {
-    amount = new Big(balanceAmount).minus(500).toFixed(2)
+    balanceAmount = new Big(balanceAmount).minus(500)
   }
 
   return {
-    balanceAmount: new Big(amountTransform(amount, '/')).toFixed(2),
+    balanceAmount: amountTransform(balanceAmount, '/'),
     goodsData: minValueObject
   }
 }
