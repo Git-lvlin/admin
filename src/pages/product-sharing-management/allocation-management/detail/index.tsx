@@ -31,11 +31,15 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
     try {
       formData.current?.validateFields()
       .then(()=> {
-        const { time, platformLeastFee, billType, buyer, ...rest } = formData.current?.getFieldsValue()
+        const { time, platformLeastFee, billType, buyer, contractCode, contractIsSign, ...rest } = formData.current?.getFieldsValue()
         let value = 0
         let id: any[] = []
         if(detailData?.goods) {
           id = detailData?.goods.map((res: any) => (res.id))
+        }
+
+        if(contractIsSign == 1 && !(contractCode.length < 5)) {
+          Promise.reject()
         }
         const arr = tableData.map((res: any)=> {
            const isAdd = id.find(item => res.id === item)
@@ -61,6 +65,8 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
           contractFeeBear: 0,
           ...rest,
           billType,
+          contractCode,
+          contractIsSign,
           buyer: Array.isArray(buyer) ? buyer : buyer == '1' ? [] : [buyer],
           platformLeastFee: amountTransform(platformLeastFee),
           startTime: time && moment(time?.[0]).format('YYYY-MM-DD HH:mm:ss'),

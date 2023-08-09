@@ -61,7 +61,7 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
         rules={[
           {
             validator: (_, value) => {
-              if(value.length < 5) {
+              if(value?.length < 5) {
                 return Promise.reject('请输入5-200个字符')
               } else {
                 return Promise.resolve()
