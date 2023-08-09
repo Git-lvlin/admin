@@ -265,6 +265,9 @@ const EarlyScreenSpecifiedEarnings= () => {
         onSubmit={(val)=>{
           setTime(val)
         }}
+        onReset={()=>{
+          setTime(undefined)
+        }}
         options={false}
         search={{
           defaultCollapsed: true,
@@ -287,7 +290,7 @@ const EarlyScreenSpecifiedEarnings= () => {
           visible={visible}
           setVisible={setVisible}
           msgDetail={msgDetail}
-          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          onClose={()=>{ form?.current?.reload();setMsgDetail(undefined);setTime(undefined)}}
           searchTime={time}
         />
       }

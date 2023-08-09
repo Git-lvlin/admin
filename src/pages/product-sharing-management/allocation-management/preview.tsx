@@ -5,7 +5,6 @@ import type { ProColumns } from '@ant-design/pro-table'
 
 import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
-import { saveConfig } from '@/services/transaction-sharing-management/allocation-management'
 import { getLogById } from '@/services/product-management/transaction-sharing-management';
 import { useEffect, useState } from 'react'
 import moment from 'moment'
@@ -224,8 +223,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
               <div>
                 {data?.contractIsSign ? '需要签署' : '不需签署'}
                 {
-                  data?.contractIsSign ?
-                  <Tooltip title={data?.contractConfig}>
+                  data?.contractIsSign&&data?.contractCode?
+                  <Tooltip title={data?.contractCode}>
                     <a>（查看合同配置）</a>
                   </Tooltip>:
                   ''
