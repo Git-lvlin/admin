@@ -52,7 +52,7 @@ export default (props: any) => {
       dataIndex: 'goodsMarketPrice',
       hideInSearch: true,
       align: 'center',
-      render: (_, r) => amountTransform(r.minRetailSupplyPrice, '/').toFixed(2)
+      render: (_, r) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '销售价',
@@ -66,7 +66,7 @@ export default (props: any) => {
       valueType: 'text',
       hideInSearch: true,
       align: 'center',
-      render: (_, r) => amountTransform(r.minRetailSupplyPrice, '/').toFixed(2)
+      render: (_, r) => amountTransform(_, '/').toFixed(2)
     },
     {
       title: '批发供货价',
