@@ -57,7 +57,7 @@ const MSwitch: React.FC<{value?: boolean, onChange?: (e: number) => void}> = ({v
 
 const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detailData: any, selectData: any}> = ({meta, formCallback, tableCallback, detailData, selectData})=> {
   const [sign, setSign] = useState()
-  const [count, setCount] = useState()
+  const [count, setCount] = useState(2)
   const [dataSource, setDataSource] = useState<any>(defaultData)
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1, 2])
   const [orderTypes, setOrderTypes] = useState([])
@@ -69,6 +69,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   const [spin, setSpin] = useState(false)
   const [text, setText] = useState()
   const [minPrice, setMinPrice] = useState<any>()
+  const [type, setType] = useState()
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -81,6 +82,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       billType: 2
     })
   }, [])
+  
+  useEffect(()=> {
+    if(meta.length > 0) {
+      setMinPrice(computedValue(meta, dataSource, count))
+    }
+  }, [meta, count])
 
   useEffect(()=> {
     if(detailData) {
@@ -104,7 +111,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         remark: detailData?.remark,
         billType: detailData?.billType,
         time: [detailData?.startTime, detailData?.endTime],
-        contractFeeBear: detailData?.contractFeeBear,
+        contractFeeBear: detailData?.contractFeeBear != 0 ? detailData?.contractFeeBear : undefined,
         contractCode: detailData?.contractCode,
         platformLeastSpuId: detailData?.platformLeastSpuId, 
         platformLeastSkuId: detailData?.platformLeastSkuId, 
@@ -122,7 +129,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         setFlag(false)
       }
       setText(detailData?.contractCode)
-      setMinPrice(computedValue(meta, arr, count))
+      setMinPrice(computedValue(meta, arr, count, detailData?.contractIsSign, detailData?.contractFeeBear))
       setShowType(detailData?.agreementShowType)
     }
   }, [detailData])
@@ -164,12 +171,6 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     selectData(data)
   }, [data])
 
-  useEffect(()=> {
-    if(meta.length > 0) {
-      setMinPrice(computedValue(meta, dataSource, count))
-    }
-  }, [meta, count])
-
   const getSettled = (record: any, obj: any) => {
     if(record?.roleCode === "directMember" || record.roleCode === 'indirectMember') {
       return obj
@@ -181,7 +182,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     } else {
       return ({
         ...obj,
-        settleType: 3
+        settleType: record?.roleCode ? 3 : undefined
       })
     }                 
   }
@@ -197,7 +198,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       }
     }
 
-    if ( obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
+    if ( obj?.id === record?.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode) {
       obj = {
         ...obj,
         trueUnfrezeeType: findObj?.trueUnfrezeeType
@@ -212,14 +213,14 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     let obj = o
     const findObj = list.find((item: any) => item.roleCode === 'platform')
 
-    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
+    if (record.roleCode === 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj?.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: record.businessUnfrezeeType
       }
     }
 
-    if (obj.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
+    if (obj?.id === record.id && record.roleCode !== 'platform' && obj.roleCode !== 'goodsAmount' && obj.roleCode !== 'yuegou' && obj.roleCode && obj?.roleCode !== "directMember" && obj.roleCode !== 'indirectMember') {
       obj = {
         ...obj,
         businessUnfrezeeType: findObj.businessUnfrezeeType
@@ -242,7 +243,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           return '平台'
         } else {
           const list = roleList.map((item: any) => {
-            if (dataSource.find((it: any)=> item.value === it.roleCode)) {
+            if (dataSource.find((it: any)=> item.value === it?.roleCode)) {
               return {
                 ...item,
                 disabled: true,
@@ -258,32 +259,32 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       fixed: 'left'
     },
     {
-      title: '分成金额(元)',
+      title: `${count === 2 ? '分成金额(元)' : '分成比例(%)'}`,
       dataIndex: 'billVal',
       align: 'center',
-      hideInTable: count == 1,
       renderFormItem: (_, {recordKey, record}) => {
         if(recordKey === '1') {
-          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+          if(type === 'supplier' && sign === 1) {
+            return (
+              <div>
+                <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+                <div>减5 元 合同费</div>
+              </div>
+            )
+          } else {
+            return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+          }
         } else if(recordKey === '2'){
-          return minPrice?.balanceAmount ?? 0     
-        } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
-          return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
-        } else {
-          return <InputNumber placeholder='请输入' controls={false}/> 
-        }
-      }
-    },
-    {
-      title: '分成比例(%)',
-      dataIndex: 'billVal',
-      align: 'center',
-      hideInTable: count != 1,
-      renderFormItem: (_, {recordKey, record}) => {
-        if(recordKey === '1') {
-          return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
-        } else if(recordKey === '2'){
-          return minPrice?.balanceAmount ?? 0
+          if(type === 'platform' && sign === 1) {
+            return (
+              <div>
+                <div>{minPrice?.balanceAmount ?? 0}</div>
+                <div>已减5 元 合同费</div>
+              </div>
+            )
+          } else {
+            return minPrice?.balanceAmount ?? 0     
+          }
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
           return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
         } else {
@@ -484,7 +485,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         if(record.roleCode === 'goodsAmount' || record.roleCode === 'platform') {
           return
         } else {
-          const arr = dataSource.filter((item: any) => item.id != recordKey)
+          const arr = dataSource.filter((item: any) => item?.id != recordKey)
           return <a onClick={()=> {setDataSource(arr); tableCallback(arr); setMinPrice(computedValue(meta, arr, count))}}>删除</a>
         }
       }
@@ -598,7 +599,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.length < 6) {
+                  if(value && value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()
@@ -631,7 +632,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 {label: '需要签署', value: 1}
               ]}
               fieldProps={{
-                onChange: (e) => setSign(e.target.value)
+                onChange: (e) => {
+                  setSign(e.target.value)
+                  if(meta.length > 0) {
+                    setMinPrice(computedValue(meta, dataSource, count, e.target.value, type))
+                  }
+                }
               }}
               extra={
                 sign === 1 ? 
@@ -664,7 +670,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                       {label: '供应商承担5元合同费', value: 'supplier'}
                     ]}
                     fieldProps={{
-                      placeholder: '请选择签法大大5元合同费用承担方'
+                      placeholder: '请选择签法大大5元合同费用承担方',
+                      onChange: (e) => {
+                        setType(e)
+                        if(meta.length > 0) {
+                          setMinPrice(computedValue(meta, dataSource, count, sign, e))
+                        }
+                      }
                     }}
                   />
                 </Space> :
@@ -683,7 +695,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               }}
               rules={[{
                 validator: (_, value) => {
-                  if(value?.length < 6) {
+                  if(value && value?.length < 6) {
                     return Promise.reject('请输入6-60个字符')
                   } else {
                     return Promise.resolve()
@@ -761,7 +773,22 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         toolBarRender={
           ()=> [
             <div>
-              参与分成角色：{dataSource.length} 位，参与分成商品 {meta.length} 款，<Tooltip title='价差 = 销售价 - 已选供货价'>价差最少商品skuID</Tooltip>：{minPrice?.goodsData?.skuId ?? '/'}，交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+              参与分成角色：{dataSource.length} 位，
+              参与分成商品 {meta.length} 款，
+              <Tooltip 
+                title='价差 = 销售价 - 已选供货价'
+              >
+                价差最少商品skuID
+              </Tooltip>：
+              {minPrice?.goodsData?.skuId ?? '/'}，
+              交易金额（销售价）：<span>{amountTransform(minPrice?.goodsData?.salePrice, '/').toFixed(2) ?? 0}</span>元，
+              {
+                (type === 'platform' && sign === 1) ?
+                <Tooltip title='已减 5 元 合同费'>
+                  平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
+                </Tooltip>:
+                `平台结余金额：${minPrice?.balanceAmount ?? 0}元（剔除通道费后'）`
+              }
             </div>
           ]
         }
@@ -785,7 +812,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 return obj
               })
             }
-            setMinPrice(computedValue(meta, arr, count))
+            setMinPrice(computedValue(meta, arr, count, sign, type))
             tableCallback(arr)
             setDataSource(arr)
           },
@@ -816,7 +843,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
   )
 }
 
-const computedValue = (goodsData = [], roleData: any, type = 2) => {
+const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, store = '') => {
   if(goodsData.length == 0) {
     return
   }
@@ -839,10 +866,10 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
 
   roleData.forEach((item: any) => {
     let num = 0
-    if(item.billVal) {
-      num = new Big(item.billVal).times(5).toFixed(2)
+    if(item?.billVal) {
+      num = new Big(item.billVal).times(5)
     }
-    if (item.roleCode === 'platform' || !item.status) {
+    if (item?.roleCode === 'platform' || !item?.status) {
       return
     }
     let price = 0;
@@ -854,28 +881,34 @@ const computedValue = (goodsData = [], roleData: any, type = 2) => {
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount -= amountTransform(num)
+          balanceAmount = new Big(balanceAmount).minus(amountTransform(num))
         } else {
-          balanceAmount -= amountTransform(item.billVal)
+          balanceAmount = new Big(balanceAmount).minus(amountTransform(item.billVal))
         }
       }
     } else {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/')))
         } else {
-          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/'))).toFixed(2)
+          balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(item?.billVal, '/')))
         }
       }
     }
   })
+  
+  if(store === 'platform' && isSign === 1) {
+    balanceAmount = new Big(balanceAmount).minus(500)
+  }
 
   return {
-    balanceAmount: new Big(amountTransform(balanceAmount, '/')).toFixed(2),
+    balanceAmount: amountTransform(balanceAmount, '/').toFixed(2),
     goodsData: minValueObject
   }
 }

@@ -43,14 +43,14 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
   }
   
   const roleCode = (code: string) => {
-    const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
+    const arr = selectData?.find((res: {roleCode: string}) => res?.roleCode === code)
     return arr?.roleName
   }
   
   const valueDesc = (code: string, type: string, value: string, text = 'name') => {
     
-    const arr = selectData.find((res: {roleCode: string}) => res.roleCode === code)
-    const arr1 = arr[type].find((res: {code: string})=> res.code == value)
+    const arr = selectData?.find((res: {roleCode: string}) => res?.roleCode === code)
+    const arr1 = arr?.[type]?.find((res: {code: string})=> res?.code == value)
     return arr1?.[text]
   }
 
@@ -73,6 +73,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_, '/')} * 5`
         } else {
           return amountTransform(_, '/')
         }
@@ -88,6 +90,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
           return r.billVal == 1 ? '批发供货价' : '零售供货价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
+        } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
+          return `${amountTransform(_, '/')} * 5`
         } else {
           return amountTransform(_)
         }

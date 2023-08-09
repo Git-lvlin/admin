@@ -123,8 +123,6 @@ const Goods: React.FC<{callback: (e: any)=> void, data: any}> = ({callback, data
           visible={formVisible}
           setVisible={setFormVisible}
           callback={(v: any) => {
-            console.log(v);
-            
             callback(v)
             setDataSource(v.map((item: any) => {
               return item
