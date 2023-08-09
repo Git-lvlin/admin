@@ -52,17 +52,17 @@ const ContractConfig: React.FC<contractConfigProps> = ({visible, setVisible, cal
       <ProFormTextArea
         label='合同配置'
         name='contractCode'
-        placeholder='请输入5-200个字符'
+        placeholder='请输入5-1000个字符'
         fieldProps={{
           showCount: true,
-          maxLength: 200
+          maxLength: 1000
         }}
         validateFirst
         rules={[
           {
             validator: (_, value) => {
               if(value?.length < 5) {
-                return Promise.reject('请输入5-200个字符')
+                return Promise.reject('请输入5-1000个字符')
               } else {
                 return Promise.resolve()
               }
