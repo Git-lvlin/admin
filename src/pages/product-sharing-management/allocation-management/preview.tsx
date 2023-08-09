@@ -223,8 +223,8 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
               <div>
                 {data?.contractIsSign ? '需要签署' : '不需签署'}
                 {
-                  data?.contractIsSign&&data?.contractConfig?
-                  <Tooltip title={data?.contractConfig}>
+                  data?.contractIsSign&&data?.contractCode?
+                  <Tooltip title={data?.contractCode}>
                     <a>（查看合同配置）</a>
                   </Tooltip>:
                   ''
