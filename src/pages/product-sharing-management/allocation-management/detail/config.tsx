@@ -230,6 +230,23 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     return obj
 
   }
+
+  const clearBusinessUnfrezeeType = (record: any, o: any) => {
+    let obj = o
+    if(record.roleCode === 'platform' && record?.trueUnfrezeeType > record?.businessUnfrezeeType && o.roleCode !== 'goodsAmount') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: undefined
+      }
+    }
+    if(record.roleCode === 'goodsAmount' && record?.trueUnfrezeeType > record?.businessUnfrezeeType && o.roleCode === 'goodsAmount') {
+      obj = {
+        ...obj,
+        businessUnfrezeeType: undefined
+      }
+    }
+    return obj
+  }
   
   const columns: ProColumns[] = [
     {
@@ -809,6 +826,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 } 
                 obj = amountFreeze(record, obj, recordList)
                 obj = setBusinessUnfrezeeTypeRow(record, obj, recordList)
+                obj = clearBusinessUnfrezeeType(record, obj)
+
                 return obj
               })
             }
