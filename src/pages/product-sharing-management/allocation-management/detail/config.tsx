@@ -787,7 +787,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 <Tooltip title='已减 5 元 合同费'>
                   平台结余金额：<span>{minPrice?.balanceAmount ?? 0}</span>元（剔除通道费后）
                 </Tooltip>:
-                `平台结余金额：${minPrice?.balanceAmount ?? 0}元（剔除通道费后'）`
+                `平台结余金额：${minPrice?.balanceAmount ?? 0}元（剔除通道费后）`
               }
             </div>
           ]
