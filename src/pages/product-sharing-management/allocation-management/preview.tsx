@@ -20,19 +20,6 @@ type previewProps = {
 }
 
 const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callback, tableCallback, selectData}) => {
-
-  const submit = () => {
-    return new Promise<void>((resolve, reject) => {
-      saveConfig(data, {showSuccess: true}).then(res => {
-        if(res.code === 0) {
-          callback()
-          resolve()
-        } else {
-          reject('提交失败')
-        }
-      })
-    })
-  }
   
   const roleCode = (code) => {
     const arr = selectData.find(res => res?.roleCode === code)
@@ -210,10 +197,6 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
       onVisibleChange={setVisible}
       width={1000}
       title={<><span style={{ fontWeight:'bold' }}>预览</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
-      onFinish={async()=> {
-        await submit()
-        return true
-      }}
       modalProps={{
         destroyOnClose: true
       }}
@@ -223,8 +206,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, msgDetail, callbac
               <div key='sub' style={{ color:'#929292', display:'flex',flexDirection:'column',alignItems:'flex-start',marginRight:'60px' }}>
                 <p>1、氢原子市代-全国业绩：共4个城市：龙岩市、万州区、遵义市、潍坊市；大健康省代-全国业绩和本地业绩：仅广东省；</p>
                 <p>2、非推荐关系链、商学院、培训中心和约购集团之外的角色分成不含大团队产生的业绩；</p>
-              </div>,
-            ...defaultDoms
+              </div>
             ];
         },
       }}
