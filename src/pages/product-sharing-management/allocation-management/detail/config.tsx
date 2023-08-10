@@ -398,6 +398,10 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             return ({
               label: item.name, value: item.code, disabled: true
             })
+          } else if(record?.trueUnfrezeeType == '3' && (item.code == '4' || item.code == '5')){
+            return ({
+              label: item.name, value: item.code, disabled: true
+            })
           } else {
             return ({
               label: item.name, value: item.code
