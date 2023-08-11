@@ -456,6 +456,13 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
       align: 'center',
       renderFormItem: (_, {record, recordKey})=> {
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
+        const disabled = () => {
+          if(record?.scope === 'nation' || record?.scope === 'n') {
+            return true
+          } else {
+            return false
+          }
+        }
         if(recordKey === '1' || recordKey === '2' || record.roleCode === 'businessCollege' || record.roleCode === 'trainingCenter' || record.roleCode === 'yuegou') {
           return '/'
         } else {
@@ -463,6 +470,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
             <Select
               style={{width: '240px'}}
               placeholder='请选择'
+              disabled={disabled()}
               options={
                 arr?.cond.map((item: any) => ({label: item.title, value: item.code}))
               } 
