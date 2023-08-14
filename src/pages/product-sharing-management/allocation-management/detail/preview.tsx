@@ -74,7 +74,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
         } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
-          return `${amountTransform(_, '/')} * 5`
+          return `${amountTransform(_)} * 5`
         } else {
           return amountTransform(_, '/')
         }
@@ -91,7 +91,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
         } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
-          return `${amountTransform(_, '/')} * 5`
+          return `${amountTransform(_)} * 5`
         } else {
           return amountTransform(_)
         }
