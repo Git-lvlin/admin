@@ -505,6 +505,8 @@ export default {
   'menu.product-performance-management.AED-performance-management.early-screening-order-performance': '早筛订单业绩管理',
   'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
+  'menu.product-performance-management.AED-performance-management.early-screening-sales-bonus': '早筛销售额外奖',
+  'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
 
 
 
