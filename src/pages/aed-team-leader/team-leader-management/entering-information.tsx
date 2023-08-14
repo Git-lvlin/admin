@@ -56,23 +56,27 @@ export default (props:EnteringProps) => {
         },
       }}
       onFinish={async (values) => {
-        const { area, ...rest } = values
-        const params={
-          ...rest,
-          provinceId: area[0].value,
-          cityId: area[1].value,
-          areaId: area[2].value,
-          provinceName: area[0].label,
-          cityName: area[1].label,
-          areaName: area[2].label,
-        }
-        const api=type==1? subCompanyAdd:addSubsidiary
-        api(params).then(res=>{
-          if(res.code==0){
-            setVisible(false)
-            callback(true)
+        const { area= [], ...rest } = values
+        try {
+          const params={
+            ...rest,
+            provinceId: area[0]?.value,
+            cityId: area[1]?.value,
+            areaId: area[2]?.value,
+            provinceName: area[0]?.label,
+            cityName: area[1]?.label,
+            areaName: area[2]?.label,
           }
-        })
+          const api=type==1? subCompanyAdd:addSubsidiary
+          api(params).then(res=>{
+            if(res.code==0){
+              setVisible(false)
+              callback(true)
+            }
+          })
+        } catch (error) {
+          console.log('error',error)
+        }
       }}
       {...formItemLayout}
     >
