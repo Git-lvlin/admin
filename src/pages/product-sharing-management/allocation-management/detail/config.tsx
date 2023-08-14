@@ -315,12 +315,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           if(type === 'platform' && sign === 1) {
             return (
               <div>
-                <div>{minPrice?.balanceAmount ?? 0}</div>
+                <div>{minPrice?.balanceAmount ?? 0}元</div>
                 <div>已减5 元 合同费</div>
               </div>
             )
           } else {
-            return minPrice?.balanceAmount ?? 0     
+            return <div>{minPrice?.balanceAmount ?? 0}元</div>     
           }
         } else if(record?.roleCode === 'hyCityAgent' && record?.scope === 'nation') {
           return <InputNumber placeholder='请输入' addonAfter={'X 5'} controls={false} />
