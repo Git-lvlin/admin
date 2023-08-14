@@ -247,6 +247,20 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
     }
     return obj
   }
+
+  const clearCond = (record: any, o: any) => {
+    let obj = o
+    const current = dataSource.find((res: any) => res?.id === record.id)
+
+    if(current?.roleCode !== record?.roleCode && record?.roleCode === o?.roleCode) {
+      obj ={
+        ...obj,
+        scope: undefined,
+        billCond: undefined
+      }
+    }
+    return obj
+  }
   
   const columns: ProColumns[] = [
     {
@@ -458,6 +472,8 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         const arr: any = data.find((it: any) => it.roleCode === record.roleCode)
         const disabled = () => {
           if(record?.scope === 'nation' || record?.scope === 'n') {
+            return true
+          } else if(arr?.cond.length === 0){
             return true
           } else {
             return false
@@ -839,6 +855,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 obj = amountFreeze(record, obj, recordList)
                 obj = setBusinessUnfrezeeTypeRow(record, obj, recordList)
                 obj = clearBusinessUnfrezeeType(record, obj)
+                obj = clearCond(record, obj)
 
                 return obj
               })
