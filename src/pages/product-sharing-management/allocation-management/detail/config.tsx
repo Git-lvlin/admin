@@ -259,6 +259,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
         billCond: undefined
       }
     }
+    if(current?.scope !== record?.scope && record?.roleCode === o?.roleCode) {
+      obj ={
+        ...obj,
+        billCond: undefined
+      }
+    }
     return obj
   }
   
