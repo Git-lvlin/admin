@@ -5,7 +5,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 
 import ProTable from '@/components/pro-table'
 import { amountTransform } from '@/utils/utils'
-import { productList } from '@/services/product-management/product-list'
+import { productList } from '@/services/transaction-sharing-management/allocation-management'
 
 export default (props: any) => {
   const { visible, setVisible, callback, skuData} = props
