@@ -234,7 +234,8 @@ export default props => {
                   :detailData.issueType == 2 ? 
                   '系统发放红包'
                   :detailData.issueType == 3 ? 
-                  '每日红包':'邀请好友红包'
+                  '每日红包'
+                  :detailData.issueType == 5 ?'看视频领红包': '邀请好友红包'
               }
             </Form.Item>
             <Form.Item

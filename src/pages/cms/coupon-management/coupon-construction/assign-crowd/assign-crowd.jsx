@@ -38,7 +38,6 @@ const validity=(props)=>{
          }
     ];
     useEffect(()=>{
-       
         setTimeout(()=>{
             if(id){
                 dispatch({
@@ -54,7 +53,7 @@ const validity=(props)=>{
                     }
                 })
             }
-        },1000) 
+        },1000)
     },[])
      // 删除商品
      const  delGoods=val=>{
@@ -102,7 +101,7 @@ const validity=(props)=>{
         message.error('只能选择一个商品');
        }
     }
-    const options=type==2||DetaiIssueType == 2 && id?[
+    const options=(type==2||DetaiIssueType == 2 && id)||(type==5||DetaiIssueType == 5 && id)?[
         {
           label: '全部用户',
           value: 1,
@@ -143,9 +142,11 @@ const validity=(props)=>{
         <>
          <ProFormRadio.Group
           name="memberType"
-          label={type == 2||DetaiIssueType == 2 && id ? '发红包群体':'可领红包群体'}
+          label={(type == 2||DetaiIssueType == 2 && id )||(type==5||DetaiIssueType == 5 && id)? '发红包群体':'可领红包群体'}
           rules={[{ required: true, message: '请选择群体' }]}
-          options={type==3||DetaiIssueType == 3 && id||type==4||DetaiIssueType == 4 && id ?options2:options}
+          options={(type==3||DetaiIssueType == 3 && id)||(type==4||DetaiIssueType == 4 && id )?options2:options}
+          initialValue={1}
+          disabled={type==5||(DetaiIssueType == 5 && id)}
           fieldProps={{
             onChange:(current)=>callback(current.target.value)
           }}

@@ -63,6 +63,13 @@ const OrderPerformance= (props) => {
       },
     },
     {
+      title: '子订单数量',
+      dataIndex: 'orderNums',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: activeKey=='1' 
+    },
+    {
       title: '交易分账时间',
       dataIndex: 'dateRange',
       renderFormItem: () => <TimeSelect />,

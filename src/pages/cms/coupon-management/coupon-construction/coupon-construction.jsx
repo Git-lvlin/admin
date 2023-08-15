@@ -48,7 +48,7 @@ const couponConstruction = (props) => {
     }else{
       setTyepes(type)
     }
-
+    console.log('type',type)
   },[type,addType])
   useEffect(() => {
     if (id) {
@@ -77,7 +77,7 @@ const couponConstruction = (props) => {
     }else if(types==4){
       setPublishType('邀请好友红包')
     }else if(types==5){
-      setPublishType('生鲜板块新人红包')
+      setPublishType('看视频领红包')
     }
   }, [types])
   //红包名称验证规则
@@ -110,7 +110,7 @@ const couponConstruction = (props) => {
         limitEndTime :  values?.dateRange?.[1],//可领取结束时间
         limitQuantity : parseInt(values.limitQuantity),//限领数量
         limitType : values.issueType==3?2:values.issueType==4?1:values.limitType,//限领类型
-        issueQuantityType : values.issueType==2?1: values.issueQuantityType,//发行量类型
+        issueQuantityType : values.issueType==2||values.issueType==5?1: values.issueQuantityType,//发行量类型
         activityStartTime :  values?.dateTimeRange?.[0],//有效期开始时间
         activityEndTime :  values?.dateTimeRange?.[1],//有效期结束时间
         activityStartDay : parseInt(values.activityStartDay),//有效期开始天数
@@ -272,8 +272,21 @@ const couponConstruction = (props) => {
            :null
          }
 
+         {types==5||DetaiIssueType == 5 && id?
+            <ProFormRadio.Group
+               name="limitType"
+               label='每人限领'
+               rules={[{ required: true, message: '请选择限领方式' }]}
+               options={[
+                 {
+                   label: '不限领', value: 1
+                 }]}
+             />
+             :null
+         }
+
          {
-           types==1||DetaiIssueType == 1 && id||types==2||DetaiIssueType == 2 && id?
+           (types==1||DetaiIssueType == 1 && id)||(types==2||DetaiIssueType == 2 && id)?
             <>
             <ProFormRadio.Group
               name="limitType"
@@ -307,7 +320,7 @@ const couponConstruction = (props) => {
 
         {/* 可领取时间 */}
         {
-          types==1||DetaiIssueType == 1 && id||types==3||DetaiIssueType == 3 && id||types==4||DetaiIssueType == 4 && id?
+          (types==1||DetaiIssueType == 1 && id)||(types==3||DetaiIssueType == 3 && id)||(types==4||DetaiIssueType == 4 && id)?
             <ProFormDateTimeRangePicker
               label='可领取时间'
               rules={[{ required: true, message: '请选择限领时间' }]}

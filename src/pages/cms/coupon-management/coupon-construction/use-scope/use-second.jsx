@@ -87,6 +87,10 @@ const GoosModel=(props)=>{
     ];
     const columns3= [
         {
+            title: 'spuID',
+            dataIndex: 'spuId',
+        },
+        {
             title: 'skuID',
             dataIndex: 'skuId',
         },
@@ -208,7 +212,7 @@ const GoosModel=(props)=>{
                 rowKey="spuId"
                 columns={columns3}
                 dataSource={UseScopeList.UseScopeObje.spuIdsArr}
-                style={{display:isModalVisible?'none':'block'}}
+                style={{display:isModalVisible?'none':'block',width:'1300px' }}
             />
         </>
     )
