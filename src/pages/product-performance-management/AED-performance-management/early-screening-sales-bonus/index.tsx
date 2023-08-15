@@ -2,6 +2,7 @@ import ProCard from '@ant-design/pro-card'
 
 import PageContainer from '@/components/PageContainer'
 import SalesPerformance from './sales-performance'
+import IPOManage from './IPO-manage'
 
 const EarlyScreeningSalesBonus:React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const EarlyScreeningSalesBonus:React.FC = () => {
           <SalesPerformance />
         </ProCard.TabPane>
         <ProCard.TabPane key='2' tab='早筛销售人IPO奖管理'>
-
+          <IPOManage />
         </ProCard.TabPane>
       </ProCard>
     </PageContainer>
