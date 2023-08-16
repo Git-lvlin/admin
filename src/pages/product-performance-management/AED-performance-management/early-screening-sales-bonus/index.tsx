@@ -25,15 +25,12 @@ const EarlyScreeningSalesBonus:React.FC = () => {
         <ProCard.TabPane key='2' tab='早筛销售人IPO奖管理'>
           { activeKey === '2' && <IPOManage /> }
         </ProCard.TabPane>
-        {/* {
+        {
           getAuth('reviewRewards') &&
           <ProCard.TabPane key='3' tab='早筛销售人IPO奖审核'>
             { activeKey === '3' && <IPOManageProcess /> }
           </ProCard.TabPane>
-        } */}
-        <ProCard.TabPane key='3' tab='早筛销售人IPO奖审核'>
-          { activeKey === '3' && <IPOManageProcess /> }
-        </ProCard.TabPane>
+        }
       </ProCard>
     </PageContainer>
   )

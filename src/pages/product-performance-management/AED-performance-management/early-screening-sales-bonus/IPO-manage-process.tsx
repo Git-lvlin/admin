@@ -135,7 +135,7 @@ const IPOManageProcess: React.FC = () => {
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export 
-              type=''
+              type='ipoManagerAuditAdm'
               key='1'
               conditions={form.current?.getFieldsValue()}
             />
