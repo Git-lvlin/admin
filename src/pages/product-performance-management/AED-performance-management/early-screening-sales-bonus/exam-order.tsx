@@ -73,7 +73,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const getFieldsValue = () => {
     return {
       memberId: dataSource?.memberId, 
-      months: dataSource?.months,
+      months: form.current?.getFieldsValue().months ?? dataSource?.months,
       orderMemberId: form.current?.getFieldsValue().orderMemberId,
       orderMemberPhone: form.current?.getFieldsValue().orderMemberPhone,
     }
