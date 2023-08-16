@@ -1,6 +1,6 @@
-import request from '@/utils/request';
-import moment from 'moment';
+import request from '@/utils/request'
 
+// 早筛销售业绩
 export const ipoList = async (params, options = {}) => {
   const { pageSize, current, ...rest } = params
   const res = await request('/auth/healthy/screening/ipoList', {
