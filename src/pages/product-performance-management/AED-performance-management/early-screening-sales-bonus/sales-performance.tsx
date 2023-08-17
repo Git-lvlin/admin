@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import moment from 'moment'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -12,6 +13,14 @@ const SalesPerformance: React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { months, ...rest } = form.current?.getFieldsValue()
+    return {
+      ...rest,
+      months: months && moment(months).format("YYYY-MM")
+    }
+  }
 
   const columns:ProColumns[] = [
     {
@@ -97,7 +106,7 @@ const SalesPerformance: React.FC = () => {
             <Export 
               type='ipoListAdm'
               key='1'
-              conditions={form.current?.getFieldsValue()}
+              conditions={getFieldsValue}
             />
           ]
         }}

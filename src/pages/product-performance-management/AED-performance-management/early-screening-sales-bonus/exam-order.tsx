@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { Drawer } from 'antd'
+import moment from 'moment'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
@@ -71,11 +72,11 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
+    const { months, ...rest } = form.current?.getFieldsValue()
     return {
+      ...rest,
       memberId: dataSource?.memberId, 
-      months: form.current?.getFieldsValue().months ?? dataSource?.months,
-      orderMemberId: form.current?.getFieldsValue().orderMemberId,
-      orderMemberPhone: form.current?.getFieldsValue().orderMemberPhone,
+      months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
     }
   }
 

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Button } from 'antd'
+import moment from 'moment'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -21,6 +22,14 @@ const IPOManageProcess: React.FC = () => {
   const [data, setData] = useState()
   const acf = useRef<ActionType>()
   const form = useRef<FormInstance>()
+
+  const getFieldsValue = () => {
+    const { months, ...rest } = form.current?.getFieldsValue()
+    return {
+      ...rest,
+      months: months && moment(months).format("YYYY-MM")
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -144,7 +153,7 @@ const IPOManageProcess: React.FC = () => {
             <Export 
               type='ipoManagerAuditAdm'
               key='1'
-              conditions={form.current?.getFieldsValue()}
+              conditions={getFieldsValue}
             />
           ]
         }}

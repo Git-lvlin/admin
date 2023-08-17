@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { Button, Dropdown, Menu, Space, Tooltip } from 'antd'
 import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import moment from 'moment'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -46,6 +47,14 @@ const IPOManage: React.FC = () => {
         }
       })
     })
+  }
+
+  const getFieldsValue = () => {
+    const { months, ...rest } = form.current?.getFieldsValue()
+    return {
+      ...rest,
+      months: months && moment(months).format("YYYY-MM")
+    }
   }
 
   const menu = (r: any) => {
@@ -292,7 +301,7 @@ const IPOManage: React.FC = () => {
             <Export 
               type='ipoManagerListAdm'
               key='1'
-              conditions={form.current?.getFieldsValue()}
+              conditions={getFieldsValue}
             />
           ]
         }}
