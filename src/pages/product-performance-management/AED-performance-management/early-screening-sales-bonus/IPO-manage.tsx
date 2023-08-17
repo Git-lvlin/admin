@@ -150,6 +150,7 @@ const IPOManage: React.FC = () => {
         32: '待通知',
         64: '待领取',
         128: '已领取',
+        129: '已过期'
       },
       hideInTable: true
     },
