@@ -14,22 +14,28 @@ const IPOContract: FC = () => {
   const columns: ProColumns[] = [
     {
       title: '序号',
-      valueType: 'indexBorder'
+      valueType: 'indexBorder' 
     },
     {
-      title: '下单时间',
-      dataIndex: 'createTime',
+      title: '业绩所属月份',
+      dataIndex: '',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '下单人手机',
+      title: '业绩所属月份',
+      dataIndex: '',
+      valueType: 'dateMonth',
+      hideInTable: true
+    },
+    {
+      title: '销售人手机号',
       dataIndex: 'phoneNumber',
       align: 'center'
     },
     {
-      title: '订单号',
-      dataIndex: 'orderSn',
+      title: 'IPO奖金金额(元)',
+      dataIndex: '',
       align: 'center',
       hideInSearch: true
     },
@@ -59,7 +65,7 @@ const IPOContract: FC = () => {
       title: '签订人姓名',
       dataIndex: 'personName',
       align: 'center',
-    },
+    }, 
     {
       title: '签订人身份证号',
       dataIndex: 'idCard',

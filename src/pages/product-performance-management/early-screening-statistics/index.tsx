@@ -189,7 +189,7 @@ const EarlyScreeningStatistics: FC = () => {
           const arr = v.records.map((res: any, index: number) => {
             return ({
               ...res,
-              rank: v.page === 1 ? ((index + 1) * v.page) : ((index + 1) + v.page * v.size)
+              rank: ((index + 1) + (v.page - 1) * v.size)
             })
           })
           return arr
