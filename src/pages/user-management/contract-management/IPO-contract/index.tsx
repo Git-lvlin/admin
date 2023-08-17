@@ -1,15 +1,25 @@
 import { useRef } from "react"
-import ProTable from '@/components/pro-table'
+import moment from 'moment'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from "antd"
 
+import ProTable from '@/components/pro-table'
 import { contractList } from "@/services/setting/contract-management"
 import Export from '@/components/export'
 
 const IPOContract: FC = () => {
   const form = useRef<FormInstance>()
+
+  const getFiledsValue = () => {
+    const { months, ...rest } = form.current?.getFieldsValue()
+    return {
+      orderType: 36,
+      months: months && moment(months).format('YYYYMM'),
+      ...rest
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -18,13 +28,13 @@ const IPOContract: FC = () => {
     },
     {
       title: '业绩所属月份',
-      dataIndex: '',
+      dataIndex: 'months',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '业绩所属月份',
-      dataIndex: '',
+      dataIndex: 'months',
       valueType: 'dateMonth',
       hideInTable: true
     },
@@ -35,7 +45,7 @@ const IPOContract: FC = () => {
     },
     {
       title: 'IPO奖金金额(元)',
-      dataIndex: '',
+      dataIndex: 'rewardNum',
       align: 'center',
       hideInSearch: true
     },
@@ -88,10 +98,7 @@ const IPOContract: FC = () => {
   return (
     <ProTable
       columns={columns}
-      params={{
-        orderType: 2,
-        subType: 25
-      }}
+      params={{ orderType: 36 }}
       request={contractList}
       pagination={{
         pageSize: 10,
@@ -105,12 +112,8 @@ const IPOContract: FC = () => {
           ...dom.reverse(),
           <Export
             key='export'
-            type='orderContractPage'
-            conditions={{ 
-              orderType: 2,
-              subType: 25,
-              ...form.current?.getFieldsValue()
-            }}
+            type='orderContractPageIpo'
+            conditions={getFiledsValue()}
           />
         ]
       }}

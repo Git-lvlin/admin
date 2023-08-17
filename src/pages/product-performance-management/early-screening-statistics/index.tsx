@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
 import ProDescriptions from '@ant-design/pro-descriptions'
+import moment from "moment"
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
@@ -68,24 +69,26 @@ const EarlyScreeningStatistics: FC = () => {
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    const { IPOAmount, ...rest } = form.current?.getFieldsValue()
+    const { IPOAmount, months, ...rest } = form.current?.getFieldsValue()
     awardCount({
+      ...rest,
       ipoStartAmount: IPOAmount?.min,
       ipoEndAmount: IPOAmount?.max,
-      ...rest
+      months: months && moment(months).format('YYYY-MM')
     }).then(res => {
       if(res.code === 0) {
-        setData(res.data)
+        setData(res.data[0])
       }
     })
   }, [change])
 
   const getFieldsValue = () => {
-    const { IPOAmount, ...rest } = form.current?.getFieldsValue()
+    const { IPOAmount, months, ...rest } = form.current?.getFieldsValue()
     return {
+      ...rest,
       ipoStartAmount: IPOAmount?.min,
       ipoEndAmount: IPOAmount?.max,
-      ...rest
+      months: months && moment(months).format('YYYY-MM')
     }
   }
 
