@@ -118,6 +118,12 @@ export default {
       path: '/product-performance-management/early-screening-reward-allocation',
       component: './product-performance-management/early-screening-reward-allocation',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'early-screening-statistics',
+      path: '/product-performance-management/early-screening-statistics',
+      component: './product-performance-management/early-screening-statistics',
+      wrappers: [RouteWatcher],
     }
   ]
 }
