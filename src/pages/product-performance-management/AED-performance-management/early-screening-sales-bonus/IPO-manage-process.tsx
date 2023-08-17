@@ -60,7 +60,14 @@ const IPOManageProcess: React.FC = () => {
       title: '支付单数',
       dataIndex: 'orderNum',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.orderNum && r.orderNum > 0) {
+          return <a onClick={()=> {setExamOrderVisible(true); setData(r)}}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '完成单数',

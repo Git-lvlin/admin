@@ -41,6 +41,13 @@ const SalesPerformance: React.FC = () => {
       dataIndex: 'orderNum',
       align: 'center',
       hideInSearch: true,
+      render: (_, r) => {
+        if(r.orderNum && r.orderNum > 0) {
+          return <a onClick={()=> {setVisible(true); setData(r)}}>{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '完成单数',
