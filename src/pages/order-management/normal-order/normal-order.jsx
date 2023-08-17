@@ -81,7 +81,7 @@ const TableList = () => {
       payStartCreateTime: payTime?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
       payEndCreateTime: payTime?.[1]?.format('YYYY-MM-DD HH:mm:ss'),
       orderStatusSet: orderType !== 0 ? [] : orderStatusSet,
-      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32, 33, 34] : [orderTypes],
+      orderTypes: orderTypes == 0 ? [2, 3, 4, 11, 17, 18, 32, 33, 34, 36] : [orderTypes],
       exclusiveSubType: 1004,
       ...rest,
     }

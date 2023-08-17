@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
-import { Button, Dropdown, Menu, Space } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
+import { Button, Dropdown, Menu, Space, Tooltip } from 'antd'
+import { DownOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -121,7 +121,21 @@ const IPOManage: React.FC = () => {
       title: '状态',
       dataIndex: 'processDesc',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.reason) {
+          return (
+            <Space size='small'>
+              <div>{_}</div>
+              <Tooltip title={r.reason}>
+                <QuestionCircleOutlined />
+              </Tooltip>
+            </Space>
+          )
+        } else {
+          return _
+        }
+      }
     },
     {
       title: '状态',
