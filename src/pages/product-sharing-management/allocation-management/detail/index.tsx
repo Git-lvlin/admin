@@ -90,8 +90,14 @@ const Detail: React.FC<detailProps> = ({visible, setVisible, id, callback=()=> {
           }),
           goods: arr
         }
-        setData(obj)
-        setPreviewVisible(true)
+        const flag = obj.divideInfoList.find((res: any) => res.scope === 'local' && !res?.billCond.length)
+        if(!flag) {
+          setData(obj)
+          setPreviewVisible(true)
+        } else {
+          message.error('请选择分账条件')
+        }
+        
       })
       .catch(()=> {
         message.error('请补全分成配置')
