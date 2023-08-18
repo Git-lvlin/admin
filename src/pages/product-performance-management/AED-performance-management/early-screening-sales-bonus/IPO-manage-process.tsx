@@ -27,6 +27,7 @@ const IPOManageProcess: React.FC = () => {
     const { months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
+      process: 16,
       months: months && moment(months).format("YYYY-MM")
     }
   }
