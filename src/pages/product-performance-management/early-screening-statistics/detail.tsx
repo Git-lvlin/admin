@@ -16,6 +16,7 @@ const Detail: React.FC<any> = ({visible, setVisible, id}) => {
   const getFieldsValue = () => {
     const { ipoAmount, ...rest } = form.current?.getFieldsValue()
     return {
+      memberId: id.memberId,
       ipoStartAmount: ipoAmount?.min,
       ipoEndAmount: ipoAmount?.max,
       ...rest
