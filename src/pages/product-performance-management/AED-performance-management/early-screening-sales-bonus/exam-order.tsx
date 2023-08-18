@@ -83,11 +83,11 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   }
 
   useEffect(()=> {
-    const { memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
+    const { memberId, memberPhone, months, ...rest } = form.current?.getFieldsValue()
     ipoDetail({
-      memberId: dataSource?.memberId, 
-      months: dataSource?.months,
       ...rest,
+      memberId: dataSource?.memberId, 
+      months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
       orderMemberId: memberId,
       orderMemberPhone: memberPhone
     }).then(res => {
@@ -188,7 +188,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
         columns={columns}
         params={{
           memberId: dataSource?.memberId, 
-          months: dataSource?.months
+          months: form.current?.getFieldsValue().months ? moment(form.current?.getFieldsValue().months).format('YYYY-MM') : dataSource?.months,
         }}
         request={ipoDetailPage}
         scroll={{x: 'max-content'}}
