@@ -122,22 +122,6 @@ const EarlyScreeningStatistics: FC = () => {
       hideInTable: true
     },
     {
-      title: '状态',
-      dataIndex: 'process',
-      valueType: 'select',
-      valueEnum: {
-        1: '未合格',
-        2: '待完成',
-        4: '待到期',
-        8: '待申请',
-        16: '待审核',
-        32: '待通知',
-        64: '待领取',
-        128: '已领取',
-      },
-      hideInTable: true
-    },
-    {
       title: 'IPO奖金金额',
       dataIndex: 'IPOAmount',
       hideInTable: true,
