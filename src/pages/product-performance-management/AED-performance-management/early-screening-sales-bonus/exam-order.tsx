@@ -72,20 +72,24 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const { months, ...rest } = form.current?.getFieldsValue()
+    const { months, memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
       memberId: dataSource?.memberId, 
       months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
+      orderMemberId: memberId,
+      orderMemberPhone: memberPhone,
     }
   }
 
   useEffect(()=> {
+    const { memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
     ipoDetail({
       memberId: dataSource?.memberId, 
       months: dataSource?.months,
-      orderMemberId: form.current?.getFieldsValue().orderMemberId,
-      orderMemberPhone: form.current?.getFieldsValue().orderMemberPhone,
+      ...rest,
+      orderMemberId: memberId,
+      orderMemberPhone: memberPhone,
     }).then(res => {
       setData(res.data)
     })
@@ -94,12 +98,12 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const columns: ProColumns[] = [
     {
       title: '下单人用户ID',
-      dataIndex: 'orderMemberId',
+      dataIndex: 'memberId',
       align: 'center',
     },
     {
       title: '下单人手机号码',
-      dataIndex: 'orderMemberPhone',
+      dataIndex: 'memberPhone',
       align: 'center'
     },
     {
