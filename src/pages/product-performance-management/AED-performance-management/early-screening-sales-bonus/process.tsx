@@ -139,6 +139,7 @@ const Process: React.FC<props> = ({type, id, visible, setVisible, callback, titl
                     maxLength: 15
                   }}
                   rules={[{
+                    required: true,
                     validator: (_, value) => {
                       if(value?.length < 5) {
                         return Promise.reject('请输入5-15个字符')
