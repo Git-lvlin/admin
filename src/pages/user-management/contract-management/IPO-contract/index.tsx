@@ -113,7 +113,7 @@ const IPOContract: FC = () => {
           <Export
             key='export'
             type='orderContractPageIpo'
-            conditions={getFiledsValue()}
+            conditions={getFiledsValue}
           />
         ]
       }}
