@@ -47,7 +47,7 @@ const Log: React.FC<logProps> = ({visible, setVisible, data}) => {
       width={1200}
       visible={visible}
       onClose={()=> {setVisible(false)}}
-      title={`子公司ID：${data?.subId} 子公司名称：${data?.subName} 状态：${data?.processDesc} 申请时间：${data?.applyTime}`}
+      title={`销售人用户ID：${data?.memberId} 销售人手机号码：${data?.memberPhone} 状态：${data?.processDesc} 申请时间：${data?.applyTime}`}
     >
       <ProTable
         rowKey='id'
