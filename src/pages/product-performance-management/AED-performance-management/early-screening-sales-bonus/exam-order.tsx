@@ -72,13 +72,13 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const { memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
+    const { orderMemberId, orderMemberPhone, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
       memberId: dataSource?.memberId, 
       months: month,
-      orderMemberId: memberId,
-      orderMemberPhone: memberPhone
+      orderMemberId,
+      orderMemberPhone
     }
   }
 
