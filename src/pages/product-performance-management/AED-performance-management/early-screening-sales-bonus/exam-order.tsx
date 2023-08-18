@@ -78,7 +78,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
       memberId: dataSource?.memberId, 
       months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
       orderMemberId: memberId,
-      orderMemberPhone: memberPhone,
+      orderMemberPhone: memberPhone
     }
   }
 
@@ -89,7 +89,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
       months: dataSource?.months,
       ...rest,
       orderMemberId: memberId,
-      orderMemberPhone: memberPhone,
+      orderMemberPhone: memberPhone
     }).then(res => {
       setData(res.data)
     })
@@ -100,11 +100,23 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
       title: '下单人用户ID',
       dataIndex: 'memberId',
       align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '下单人用户ID',
+      dataIndex: 'orderMemberId',
+      hideInTable: true
     },
     {
       title: '下单人手机号码',
       dataIndex: 'memberPhone',
-      align: 'center'
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '下单人手机号码',
+      dataIndex: 'orderMemberPhone',
+      hideInTable: true
     },
     {
       title: '子单号',
