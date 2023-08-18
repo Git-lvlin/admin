@@ -317,6 +317,9 @@ export default {
   'menu.product-sharing-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-sharing-management.designated-commodity-settlement.designated-commodity-settlement': '分成配置',
   'menu.product-sharing-management.designated-commodity-settlement.merchandise-settlement-record': '配置记录',
+  'menu.product-sharing-management.allocation-management': '分成配置管理',
+
+
 
   'menu.financial-management': '财务管理',
   'menu.financial-management.money-management': '资金管理',
