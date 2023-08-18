@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react"
 import ProTable from '@/components/pro-table'
+import ProForm, { ProFormDatePicker } from '@ant-design/pro-form'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { Drawer } from 'antd'
-import moment from 'moment'
 
 import type { FC } from "react"
 import type { ProColumns } from '@ant-design/pro-table'
@@ -68,32 +68,28 @@ type props = {
 
 const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
   const [data, setData] = useState()
-  const [change, setChange] = useState(0)
+  const [month, setMonth] = useState(dataSource.months)
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const { months, memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
+    const { memberId, memberPhone, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
       memberId: dataSource?.memberId, 
-      months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
+      months: month,
       orderMemberId: memberId,
       orderMemberPhone: memberPhone
     }
   }
 
   useEffect(()=> {
-    const { memberId, memberPhone, months, ...rest } = form.current?.getFieldsValue()
     ipoDetail({
-      ...rest,
       memberId: dataSource?.memberId, 
-      months: months ? moment(months).format('YYYY-MM') : dataSource?.months,
-      orderMemberId: memberId,
-      orderMemberPhone: memberPhone
+      months: month
     }).then(res => {
       setData(res.data)
     })
-  }, [change])
+  }, [month])
 
   const columns: ProColumns[] = [
     {
@@ -165,13 +161,6 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
       dataIndex: 'sumOrderId',
       align: 'center',
       hideInSearch: true
-    },
-    {
-      title: '所属月份',
-      dataIndex: 'months',
-      valueType: 'dateMonth',
-      hideInTable: true,
-      initialValue: dataSource?.months
     }
   ]
 
@@ -183,12 +172,29 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
       width={1200}
       className={styles.desc}
     >
+      <ProForm
+        layout='inline'
+        submitter={false}
+      >
+        <ProFormDatePicker
+          label='所属月份'
+          name='months'
+          fieldProps={{
+            picker: 'month',
+            format: 'YYYY-MM',
+            value: month,
+            onChange: (e) => setMonth(e?.format('YYYY-MM')),
+            allowClear: false
+          }}
+        />
+      </ProForm>
+      <Aggregate data={data} info={dataSource}/>
       <ProTable
         rowKey='subOrderSn'
         columns={columns}
         params={{
           memberId: dataSource?.memberId, 
-          months: form.current?.getFieldsValue().months ? moment(form.current?.getFieldsValue().months).format('YYYY-MM') : dataSource?.months,
+          months: month,
         }}
         request={ipoDetailPage}
         scroll={{x: 'max-content'}}
@@ -197,9 +203,6 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
           showQuickJumper: true,
           pageSize: 10
         }}
-        onSubmit={()=> setChange(change + 1)}
-        onReset={()=> setChange(0)}
-        headerTitle={<Aggregate data={data} info={dataSource}/>}
         options={false}
         search={{
           labelWidth: 120,
