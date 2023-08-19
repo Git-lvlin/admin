@@ -198,11 +198,11 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
         <Aggregate data={data} info={dataSource}/>
       }
       <ProTable
-        rowKey='subOrderSn'
         columns={columns}
         params={{
           memberId: dataSource?.memberId, 
           months: month,
+          ids: type === 'sales' ? dataSource?.idArr : undefined
         }}
         headerTitle={
           type === 'sales' ?
