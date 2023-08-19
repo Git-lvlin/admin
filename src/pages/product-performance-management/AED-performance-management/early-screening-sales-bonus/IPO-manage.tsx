@@ -132,7 +132,7 @@ const IPOManage: React.FC = () => {
       align: 'center',
       hideInSearch: true,
       render: (_, r) => {
-        if(r.reason) {
+        if(r.reason && r.process === 16) {
           return (
             <Space size='small'>
               <div>{_}</div>
