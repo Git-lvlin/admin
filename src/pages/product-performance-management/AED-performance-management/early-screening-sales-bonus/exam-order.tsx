@@ -82,7 +82,8 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
       memberId: dataSource?.memberId, 
       months: month,
       orderMemberId,
-      orderMemberPhone
+      orderMemberPhone,
+      ids: type === 'sales' ? dataSource?.idArr : undefined
     }
   }
 

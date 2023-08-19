@@ -40,7 +40,7 @@ const IPOContract: FC = () => {
     },
     {
       title: '销售人手机号',
-      dataIndex: 'phoneNumber',
+      dataIndex: 'memberPhone',
       align: 'center'
     },
     {

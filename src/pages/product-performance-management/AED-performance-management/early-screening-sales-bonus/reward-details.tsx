@@ -14,7 +14,7 @@ const RewardDetails: React.FC<logProps> = ({visible, setVisible, data}) => {
 
   const columns: ProColumns[] = [
     {
-      title: '子单号',
+      title: '订单号',
       dataIndex: 'subOrderSn',
       align: 'center',
       render: (_, r) => {

@@ -136,7 +136,7 @@ const Process: React.FC<props> = ({type, id, visible, setVisible, callback, titl
                   fieldProps={{
                     placeholder: '请输入5-15个字符',
                     showCount: true,
-                    maxLength: 15
+                    maxLength: 30
                   }}
                   rules={[
                     {
@@ -144,7 +144,7 @@ const Process: React.FC<props> = ({type, id, visible, setVisible, callback, titl
                     },{
                     validator: (_, value) => {
                       if(value?.length < 5) {
-                        return Promise.reject('请输入5-15个字符')
+                        return Promise.reject('请输入5-30个字符')
                       } else {
                         return Promise.resolve()
                       }
