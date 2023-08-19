@@ -64,9 +64,10 @@ type props = {
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   dataSource?: any
+  type?: string
 }
 
-const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
+const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
   const [data, setData] = useState()
   const [month, setMonth] = useState(dataSource.months)
   const form = useRef<FormInstance>()
@@ -186,9 +187,13 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
             onChange: (e) => setMonth(e?.format('YYYY-MM')),
             allowClear: false
           }}
+          disabled={type === 'sales'}
         />
       </ProForm>
-      <Aggregate data={data} info={dataSource}/>
+      {
+        type !== 'sales' &&
+        <Aggregate data={data} info={dataSource}/>
+      }
       <ProTable
         rowKey='subOrderSn'
         columns={columns}
@@ -196,6 +201,11 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource}) => {
           memberId: dataSource?.memberId, 
           months: month,
         }}
+        headerTitle={
+          type === 'sales' ?
+          `销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`:
+          ''
+        }
         request={ipoDetailPage}
         scroll={{x: 'max-content'}}
         formRef={form}

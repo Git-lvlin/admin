@@ -117,6 +117,7 @@ const SalesPerformance: React.FC = () => {
           visible={visible}
           setVisible={setVisible}
           dataSource={data}
+          type='sales'
         />
       }
     </>
