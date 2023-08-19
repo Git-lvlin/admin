@@ -14,6 +14,7 @@ import Export from '@/components/export'
 import RangeNumberInput from '@/components/range-number-input'
 import PageContaine from "@/components/PageContainer/PageContainer"
 import Detail from './detail'
+import { amountTransform } from '@/utils/utils'
 
 const Aggregate: FC<any> = ({data}) => {
   
@@ -72,8 +73,8 @@ const EarlyScreeningStatistics: FC = () => {
     const { IPOAmount, months, ...rest } = form.current?.getFieldsValue()
     awardCount({
       ...rest,
-      ipoStartAmount: IPOAmount?.min,
-      ipoEndAmount: IPOAmount?.max,
+      ipoStartAmount: IPOAmount?.min && amountTransform(IPOAmount?.min),
+      ipoEndAmount: IPOAmount?.max && amountTransform(IPOAmount?.max),
       months: months && moment(months).format('YYYY-MM')
     }).then(res => {
       if(res.code === 0) {
@@ -86,8 +87,8 @@ const EarlyScreeningStatistics: FC = () => {
     const { IPOAmount, months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      ipoStartAmount: IPOAmount?.min,
-      ipoEndAmount: IPOAmount?.max,
+      ipoStartAmount: IPOAmount?.min && amountTransform(IPOAmount?.min),
+      ipoEndAmount: IPOAmount?.max && amountTransform(IPOAmount?.max),
       months: months && moment(months).format('YYYY-MM')
     }
   }

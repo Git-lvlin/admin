@@ -9,6 +9,7 @@ import { awardCountPageDetail } from '@/services/product-performance-management/
 import styles from './styles.less'
 import RangeNumberInput from '@/components/range-number-input'
 import Export from '@/components/export'
+import { amountTransform } from '@/utils/utils'
 
 const Detail: React.FC<any> = ({visible, setVisible, id}) => {
   const form = useRef<FormInstance>()
@@ -17,8 +18,8 @@ const Detail: React.FC<any> = ({visible, setVisible, id}) => {
     const { ipoAmount, ...rest } = form.current?.getFieldsValue()
     return {
       memberId: id.memberId,
-      ipoStartAmount: ipoAmount?.min,
-      ipoEndAmount: ipoAmount?.max,
+      ipoStartAmount: ipoAmount?.min && amountTransform(ipoAmount?.min),
+      ipoEndAmount: ipoAmount?.max && amountTransform(ipoAmount?.max),
       ...rest
     }
   }

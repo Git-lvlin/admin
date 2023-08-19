@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import { amountTransform } from '@/utils/utils'
 
 // 早筛额外奖领取统计
 export const awardCount = async (params, options = {}) => {
@@ -17,8 +18,8 @@ export const aednoSubOrder = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      ipoStartAmount: IPOAmount?.min,
-      ipoEndAmount: IPOAmount?.max,
+      ipoStartAmount: IPOAmount?.min && amountTransform(IPOAmount?.min),
+      ipoEndAmount: IPOAmount?.max && amountTransform(IPOAmount?.max),
       ...rest
     },
     ...options
@@ -38,8 +39,8 @@ export const awardCountPageDetail = async (params, options = {}) => {
     data: {
       page: current,
       size: pageSize,
-      ipoStartAmount: ipoAmount?.min,
-      ipoEndAmount: ipoAmount?.max,
+      ipoStartAmount: ipoAmount?.min && amountTransform(ipoAmount?.min),
+      ipoEndAmount: ipoAmount?.max && amountTransform(ipoAmount?.max),
       ...rest
     },
     ...options
