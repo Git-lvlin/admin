@@ -136,3 +136,22 @@ export const ipoDetailPage = async (params, options = {}) => {
     success: res.success
   }
 }
+
+// 销售人早筛体检单数实时查询
+export const ipoDetailPageReal = async (params, options = {}) => {
+  const { pageSize, current, ...rest } = params
+  const res = await request('/auth/healthy/screening/ipoDetailPageReal', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data.records,
+    total: res.data.total,
+    success: res.success
+  }
+}

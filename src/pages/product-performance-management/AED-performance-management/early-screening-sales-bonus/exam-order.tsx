@@ -9,7 +9,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions'
 import type { FormInstance } from "antd"
 
-import { ipoDetail, ipoDetailPage } from '@/services/product-performance-management/early-screening-sales-bonus'
+import { ipoDetail, ipoDetailPage, ipoDetailPageReal } from '@/services/product-performance-management/early-screening-sales-bonus'
 import styles from "./styles.less"
 import Export from '@/components/export'
 
@@ -71,6 +71,9 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
   const [data, setData] = useState()
   const [month, setMonth] = useState(dataSource.months)
   const form = useRef<FormInstance>()
+
+  const api = type === 'sales' ? ipoDetailPageReal : ipoDetailPage
+  const code = type === 'sales' ? 'ipoDetailPageRealAdm' : 'ipoDetailPageAdm'
 
   const getFieldsValue = () => {
     const { orderMemberId, orderMemberPhone, ...rest } = form.current?.getFieldsValue()
@@ -206,7 +209,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
           `销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`:
           ''
         }
-        request={ipoDetailPage}
+        request={api}
         scroll={{x: 'max-content'}}
         formRef={form}
         pagination={{
@@ -220,7 +223,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
             ...dom.reverse(),
             <Export 
               key='export'
-              type='ipoDetailPageAdm'
+              type={code}
               conditions={getFieldsValue}
             />
           ]
