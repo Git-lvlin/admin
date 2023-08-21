@@ -92,7 +92,6 @@ const SalesPerformance: React.FC = () => {
   return (
     <>
       <ProTable
-        rowKey='memberId'
         columns={columns}
         request={ipoList}
         params={{}}
