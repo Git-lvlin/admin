@@ -13,7 +13,7 @@ import { ipoDetail, ipoDetailPage, ipoDetailPageReal } from '@/services/product-
 import styles from "./styles.less"
 import Export from '@/components/export'
 
-const Aggregate: FC<any> = ({data, info}) => {
+const Aggregate: FC<any> = ({data}) => {
   
   const columns: ProDescriptionsItemProps[] = [
     {
@@ -201,7 +201,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
       </ProForm>
       {
         type !== 'sales' &&
-        <Aggregate data={data} info={dataSource}/>
+        <Aggregate data={data}/>
       }
       <ProTable
         columns={columns}

@@ -19,7 +19,7 @@ const RewardDetails: React.FC<logProps> = ({visible, setVisible, data}) => {
       align: 'center',
       render: (_, r) => {
         if(r?.subOrderSn) {
-          return <a onClick={()=> {setNormalOrderVisible(true); setId(r.subOrderSn)}}>{_}</a>
+          return <a onClick={()=> {setNormalOrderVisible(true); setId(r.orderId)}}>{_}</a>
         } else {
           return <span>{_}</span>
         }
