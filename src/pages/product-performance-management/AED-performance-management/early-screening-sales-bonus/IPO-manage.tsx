@@ -151,6 +151,7 @@ const IPOManage: React.FC = () => {
       dataIndex: 'process',
       valueType: 'select',
       valueEnum: {
+        1: '未合格',
         2: '待完成',
         8: '待申请',
         16: '待审核',
