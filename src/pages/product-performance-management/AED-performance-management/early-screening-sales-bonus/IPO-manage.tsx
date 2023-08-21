@@ -70,7 +70,7 @@ const IPOManage: React.FC = () => {
             申请IPO奖
           </a>
         </Menu.Item>
-        <Menu.Item key='2' disabled={!(r.ipoStatus === 1)}>
+        <Menu.Item key='2' disabled={!(r.process === 128)}>
           <a
             onClick={()=> {
               setRewardDetailsVisible(true)

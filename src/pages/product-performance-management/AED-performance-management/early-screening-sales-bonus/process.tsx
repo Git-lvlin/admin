@@ -134,7 +134,7 @@ const Process: React.FC<props> = ({type, id, visible, setVisible, callback, titl
                   name='reason'
                   width='md'
                   fieldProps={{
-                    placeholder: '请输入5-15个字符',
+                    placeholder: '请输入5-30个字符',
                     showCount: true,
                     maxLength: 30
                   }}
