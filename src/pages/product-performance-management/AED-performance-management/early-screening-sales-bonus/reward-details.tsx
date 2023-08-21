@@ -61,7 +61,7 @@ const RewardDetails: React.FC<logProps> = ({visible, setVisible, data}) => {
       align: 'center',
       render: (_, r) => {
         if(r?.contractId) {
-          return <a href={r?.contractId} target='_blank' referrerPolicy='no-referrer'>{_}</a>
+          return <a href={r?.contractUrl} target='_blank' referrerPolicy='no-referrer'>{_}</a>
         } else {
           return <span>{_}</span>
         }
