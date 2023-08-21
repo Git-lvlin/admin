@@ -55,7 +55,6 @@ const Aggregate: FC<any> = ({data, info}) => {
       bordered
       dataSource={data}
       layout='vertical'
-      title={`销售人用户ID：${info?.memberId}销售人手机号码：${info?.memberPhone} 已支付早筛体检子单信息`}
     />
   )
 }
@@ -170,11 +169,17 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
   ]
 
   return (
-    <Drawer 
-      title={false}
+    <Drawer
       visible={visible}
       onClose={()=> setVisible(false)}
       width={1200}
+      title={()=> {
+        if(type === 'sales') {
+          return <div>{`销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`}</div>
+        } else {
+          return ''
+        }
+      }}
       className={styles.desc}
     >
       <ProForm
@@ -205,11 +210,6 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
           months: month,
           ids: type === 'sales' ? dataSource?.idArr : undefined
         }}
-        headerTitle={
-          type === 'sales' ?
-          `销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`:
-          ''
-        }
         request={api}
         scroll={{x: 'max-content'}}
         formRef={form}
