@@ -486,7 +486,8 @@ const StoreList = (props) => {
         12: '买AED课程系统建店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈系统建店'
+        33: '爱心回馈系统建店',
+        36: '早筛孝爱活动建站'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -501,7 +502,8 @@ const StoreList = (props) => {
         12: '买AED课程系统建店',
         20: '绿色通道申请',
         30: '健康生活馆',
-        33: '爱心回馈系统建店'
+        33: '爱心回馈系统建店',
+        36: '早筛孝爱活动建站'
       },
       hideInSearch: true,
       hideInTable: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
