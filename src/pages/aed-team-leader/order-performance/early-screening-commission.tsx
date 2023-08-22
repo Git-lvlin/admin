@@ -23,7 +23,7 @@ export default (props:CumulativeProps)=>{
   const { visible, setVisible,msgDetail,onClose,searchTime} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState<number>(0)
-  const [time,setTime]=useState<DrtailItem>({})
+  const [time,setTime]=useState<DrtailItem>()
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState<boolean>(false)
 
@@ -34,7 +34,11 @@ export default (props:CumulativeProps)=>{
       renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
+<<<<<<< HEAD
       initialValue: [moment(searchTime?.dateRange[0]),moment(searchTime?.dateRange[1])]
+=======
+      initialValue: searchTime?[moment(searchTime?.dateRange[0]),moment(searchTime?.dateRange[1])]:''
+>>>>>>> e0e3d69d96402271f2906bc8d7ebe927b26cc7e0
     },
     {
       title: '早筛码',
@@ -177,7 +181,7 @@ export default (props:CumulativeProps)=>{
           setTime(val)
         }}
         onReset={()=>{
-          setTime({})
+          setTime(undefined)
         }}
         options={false}
         search={{

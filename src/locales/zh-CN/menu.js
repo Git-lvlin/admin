@@ -317,6 +317,9 @@ export default {
   'menu.product-sharing-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-sharing-management.designated-commodity-settlement.designated-commodity-settlement': '分成配置',
   'menu.product-sharing-management.designated-commodity-settlement.merchandise-settlement-record': '配置记录',
+  'menu.product-sharing-management.allocation-management': '分成配置管理',
+
+
 
   'menu.financial-management': '财务管理',
   'menu.financial-management.money-management': '资金管理',
@@ -505,6 +508,9 @@ export default {
   'menu.product-performance-management.AED-performance-management.early-screening-order-performance': '早筛订单业绩管理',
   'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
+  'menu.product-performance-management.AED-performance-management.early-screening-sales-bonus': '早筛销售额外奖',
+  'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
+  'menu.product-performance-management.early-screening-statistics': '早筛额外奖领取统计',
 
 
 
