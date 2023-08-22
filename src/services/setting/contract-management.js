@@ -163,12 +163,13 @@ export const MemberLifeHouse = async (params, options = {}) => {
 
 // AED志愿者服务协议合同
 export const contractList = async (params, options = {}) => {
-  const { pageSize=10, current=1, ...rest } = params
+  const { pageSize=10, current=1, months, ...rest } = params
   const res = await request('/auth/java-admin/report/config/orderContractPage', {
     method: 'POST',
     data:  {
       page: current,
       size: pageSize,
+      months: months && moment(months).format('YYYYMM'),
       ...rest
     },
     ...options

@@ -105,7 +105,25 @@ export default {
           component: './product-performance-management/AED-performance-management/early-screening-order-performance',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'early-screening-sales-bonus',
+          path: '/product-performance-management/AED-performance-management/early-screening-sales-bonus',
+          component: './product-performance-management/AED-performance-management/early-screening-sales-bonus',
+          wrappers: [RouteWatcher],
+        },
       ]
+    },
+    {
+      name: 'early-screening-reward-allocation',
+      path: '/product-performance-management/early-screening-reward-allocation',
+      component: './product-performance-management/early-screening-reward-allocation',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'early-screening-statistics',
+      path: '/product-performance-management/early-screening-statistics',
+      component: './product-performance-management/early-screening-statistics',
+      wrappers: [RouteWatcher],
     }
   ]
 }
