@@ -24,7 +24,7 @@ const Apply: React.FC<props> = ({type, id, visible, setVisible, callback}) => {
       if(res.code === 0) {
         form.current?.setFieldsValue({
           num: `${res.data?.applyUser} 人`,
-          months: `${res.data?.totalMonths} 个月`
+          // months: `${res.data?.totalMonths} 个月`
         })
       }
     }).finally(()=> {
@@ -65,11 +65,11 @@ const Apply: React.FC<props> = ({type, id, visible, setVisible, callback}) => {
           name='num'
           readonly
         />
-        <ProFormText 
+        {/* <ProFormText 
           label='申请月数'
           name='months'
           readonly
-        />
+        /> */}
       </Spin>
     </ModalForm>
   )
