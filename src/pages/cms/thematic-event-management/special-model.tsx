@@ -14,6 +14,7 @@ import Associated0Goods from './associated0-goods'
 import Upload from '@/components/upload';
 import ReactColor from '@/components/react-color'
 import {saveSubjectActiveConfig,getActiveConfigById} from '@/services/cms/member/thematic-event-management'
+import { getMiniQr } from '@/services/common'
 import type { DetailListItem,PropsItem } from './data'
 import { amountTransform } from '@/utils/utils'
 const { Title } = Typography;
@@ -44,6 +45,7 @@ export default (props:PropsItem) => {
   const [detailList,setDetailList]=useState<DetailListItem>()
   const [savePrevie,setSavePrevie]=useState<number>(0)
   const [savePrevie2,setSavePrevie2]=useState<boolean>(false)
+  const [qrCodeUrl,setQrCodeUrl]=useState<string>('')
   const onSubmit = (values) => {
     if(detailList?.length==0) return message.error('请选择商品')
     const params={
@@ -167,6 +169,15 @@ export default (props:PropsItem) => {
     }
   },[record?.id,savePrevie2])
 
+  useEffect(()=>{
+    getMiniQr({ url:`/pages/webview/index?url=${encodeURIComponent(record?.copyUrl)}` }).then(res=>{
+      if(res.code==0){
+        console.log('url',res)
+        setQrCodeUrl(res?.data?.url)
+      }
+    })
+  },[])
+
   const disabledDate = (current) => {
     return current && current < moment().startOf('day');
   }
@@ -254,9 +265,12 @@ export default (props:PropsItem) => {
           {
             savePrevie2&&<iframe src={record?.copyUrl} style={{width:'375px',height:'667px'}}></iframe>
           }
-          {/* {
-            record?.id&&<Image width={375} src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"/>
-          } */}
+          {
+            record?.id&&<Title level={5}>活动小程序码</Title>
+          }
+          {
+            record?.id&&<img width={375} src={qrCodeUrl}/>
+          }
 
         </div>
         <div className={styles?.border_box}>
