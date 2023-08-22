@@ -34,11 +34,7 @@ export default (props:CumulativeProps)=>{
       renderFormItem: () => <TimeSelect />,
       align: 'center',
       hideInTable: true,
-<<<<<<< HEAD
-      initialValue: [moment(searchTime?.dateRange[0]),moment(searchTime?.dateRange[1])]
-=======
       initialValue: searchTime?[moment(searchTime?.dateRange[0]),moment(searchTime?.dateRange[1])]:''
->>>>>>> e0e3d69d96402271f2906bc8d7ebe927b26cc7e0
     },
     {
       title: '早筛码',
