@@ -130,16 +130,8 @@ const StoreReview = () => {
     },
     {
       title: '申请类型',
-      dataIndex: ['applyType', 'code'],
+      dataIndex: ['applyType', 'desc'],
       width: 100,
-      valueType: 'select',
-      valueEnum: {
-        10: '正常申请',
-        11: 'VIP社区店',
-        20: '绿色通道申请',
-        30: '健康生活馆',
-        33: '爱心回馈系统建店'
-      },
       hideInSearch: true,
     },
     // {
