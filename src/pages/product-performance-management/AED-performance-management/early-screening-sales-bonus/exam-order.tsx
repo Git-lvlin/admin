@@ -173,13 +173,7 @@ const ExamOrder: FC<props> = ({visible, setVisible, dataSource, type}) => {
       visible={visible}
       onClose={()=> setVisible(false)}
       width={1200}
-      title={()=> {
-        if(type === 'sales') {
-          return <div>{`销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`}</div>
-        } else {
-          return ''
-        }
-      }}
+      title={<div>{`销售人用户ID：${dataSource?.memberId}销售人手机号码：${dataSource?.memberPhone} 已支付早筛体检子单信息`}</div>}
       className={styles.desc}
     >
       <ProForm
