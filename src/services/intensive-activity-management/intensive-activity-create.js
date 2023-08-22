@@ -11,6 +11,7 @@ export const productList = async (params, options = {}) => {
       gcId2: gcId[1],
       gcId3: gcId[2],
       NEGoodsSaleType: 1,
+      selectType: 1,
       ...rest
     },
     ...options
