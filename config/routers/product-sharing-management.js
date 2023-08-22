@@ -35,5 +35,11 @@ export default {
         },
       ]
     },
+    {
+      name: 'allocation-management',
+      path: '/product-sharing-management/allocation-management',
+      component: './product-sharing-management/allocation-management',
+      wrappers: [RouteWatcher],
+    }
   ]
 }
