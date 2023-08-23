@@ -80,7 +80,7 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
     },
   ]
 
-  const submit = () => {
+  const submit = async () => {
     setLoading(true)
     return new Promise<void>((resolve, reject) => {
       setIpoConfig({
