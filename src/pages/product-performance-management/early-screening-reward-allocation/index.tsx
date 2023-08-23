@@ -1,12 +1,30 @@
 import { useState, useEffect } from 'react'
-import { Button, Radio } from 'antd'
+import { Button, Radio, Spin } from 'antd'
 
 import type { ProColumns } from '@ant-design/pro-table'
 
 import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
+import { getIpoConfig, setIpoConfig } from '@/services/product-performance-management/early-screening-reward-allocation'
 
 const EarlyScreeningRewardAllocation: React.FC = () => {
+  const [book, setBook] = useState()
+  const [wine, setWine] = useState()
+  const [vip, setVip] = useState()
+  const [loading, setLoading] = useState(false)
+
+  useEffect(()=> {
+    setLoading(true)
+    getIpoConfig().then(res=> {
+      if(res?.code === 0) {
+        setBook(res.data?.book)
+        setWine(res.data?.wine)
+        setVip(res.data?.vip)
+      }
+    }).finally(()=> {
+      setLoading(false)
+    })
+  }, [])
 
   const data = [
     {
@@ -15,6 +33,8 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
       num: '1 本 /销售人',
       option: (
         <Radio.Group 
+          value={book}
+          onChange={(e)=> {setBook(e.target.value)}}
           options={[
             {label: '每月满足条件，每月都给销售人奖励', value: 1},
             {label: '多月满足条件，销售人仅限领取1次', value: 2}
@@ -28,6 +48,8 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
       num: '1 箱 /销售人',
       option: (
         <Radio.Group 
+          value={wine}
+          onChange={(e)=> {setWine(e.target.value)}}
           options={[
             {label: '每月满足条件，每月都给销售人奖励', value: 1},
             {label: '多月满足条件，销售人仅限领取1次', value: 2}
@@ -41,6 +63,8 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
       num: '1 年 /销售人',
       option: (
         <Radio.Group 
+          value={vip}
+          onChange={(e)=> {setVip(e.target.value)}}
           options={[
             {label: '每月满足条件，每月都给销售人奖励', value: 1},
             {label: '多月满足条件，销售人仅限领取1次', value: 2}
@@ -57,7 +81,20 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
   ]
 
   const submit = () => {
-
+    setLoading(true)
+    return new Promise<void>((resolve, reject) => {
+      setIpoConfig({
+        book, wine, vip
+      }, {showSuccess: true}).then(res => {
+        if(res?.code === 0) {
+          resolve()
+        } else {
+          reject('设置失败，请重新设置')
+        }
+      })
+    }).finally(()=> {
+      setLoading(false)
+    })
   }
 
   const column: ProColumns[] = [
@@ -86,18 +123,20 @@ const EarlyScreeningRewardAllocation: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable
-        bordered
-        rowKey='name'
-        columns={column}
-        paginationProps={false}
-        search={false}
-        options={false}
-        dataSource={data}
-      />
-      <div style={{textAlign: 'center', background: '#fff', paddingBottom: '10px'}}>
-        <Button type='primary' onClick={()=> submit}>保存</Button>
-      </div>
+      <Spin spinning={loading}>
+        <ProTable
+          bordered
+          rowKey='name'
+          columns={column}
+          paginationProps={false}
+          search={false}
+          options={false}
+          dataSource={data}
+        />
+        <div style={{textAlign: 'center', background: '#fff', paddingBottom: '10px'}}>
+          <Button type='primary' onClick={async()=> await submit()}>保存</Button>
+        </div>
+      </Spin>
     </PageContainer>
   )
 }

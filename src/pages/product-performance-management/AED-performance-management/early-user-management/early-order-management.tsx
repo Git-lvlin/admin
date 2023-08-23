@@ -269,6 +269,11 @@ const AEDEarlyOrderManagement: React.FC = () => {
       align: 'center'
     },
     {
+      title: '直推人手机号', 
+      dataIndex: 'directPhone',
+      align: 'center'
+    },
+    {
       title: '订单金额',
       dataIndex: 'payAmountDesc',
       align: 'center',

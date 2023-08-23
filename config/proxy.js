@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/auth/': {
-      target: 'https://adminapi-dev.yeahgo.com',
+      target: 'https://adminapi-uat.yeahgo.com',
       // target: 'https://adminapi.yeahgo.com',
       changeOrigin: true,
       pathRewrite: {
@@ -16,7 +16,7 @@ export default {
       },
     },
     '/healthy/': {
-      target: 'https://api-dev.yeahgo.com',
+      target: 'https://api-uat.yeahgo.com',
       // target: 'https://adminapi.yeahgo.com',
       changeOrigin: true,
       pathRewrite: {
