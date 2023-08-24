@@ -113,6 +113,7 @@ export default (props) => {
         request={productList}
         params={{
           selectType: 1,
+          NEGoodsSaleType: 1 
         }}
         search={{
           defaultCollapsed: true,
