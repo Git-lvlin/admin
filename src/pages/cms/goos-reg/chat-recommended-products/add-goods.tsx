@@ -55,7 +55,7 @@ export default (props) => {
     },
     {
       title: '供货类型',
-      dataIndex: 'goodsFromTypeDisplay',
+      dataIndex: 'goodsSaleTypeDisplay',
       hideInSearch: true,
     },
     {
