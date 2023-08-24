@@ -62,11 +62,11 @@ export default function TransactionData () {
       title: '供应商ID',
       dataIndex: 'supplierId',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true  
     },
     {
       title: '销售价',
-      dataIndex: 'goodsMarketPrice',
+      dataIndex: 'goodsSaleMinPrice',
       align: 'center',
       hideInSearch: true,
       render: (_) => {
@@ -129,10 +129,10 @@ export default function TransactionData () {
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'goods-share-content'}
+              type={'goods-chat'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type='goods-share-content'/>,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type='goods-chat'/>,
           ],
         }}
       />

@@ -60,7 +60,7 @@ export default (props) => {
     },
     {
       title: '销售价',
-      dataIndex: 'goodsMarketPrice',
+      dataIndex: 'goodsSaleMinPrice',
       valueType: 'text',
       hideInSearch: true,
       render: (_) => {
