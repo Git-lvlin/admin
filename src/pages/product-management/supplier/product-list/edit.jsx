@@ -1379,16 +1379,13 @@ export default (props) => {
                   name="shareContent1"
                   label="分享文案"
                   placeholder="请输入5-100个字的分享文案"
-                  rules={[{ required: true, message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
+                  rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
                 />
                 <ProFormText
                   name="shareContent2"
                   label=" "
                   colon={false}
                   placeholder="请输入5-100个字的分享文案"
-                  fieldProps={{
-                    colon: false
-                  }}
                   rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
                 />
                 <ProFormText
@@ -1396,9 +1393,6 @@ export default (props) => {
                   label=" "
                   colon={false}
                   placeholder="请输入5-100个字的分享文案"
-                  fieldProps={{
-                    colon: false
-                  }}
                   rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
                 />
               </>
