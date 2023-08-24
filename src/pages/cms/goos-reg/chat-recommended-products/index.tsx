@@ -68,10 +68,7 @@ export default function TransactionData () {
       title: '销售价',
       dataIndex: 'goodsSaleMinPrice',
       align: 'center',
-      hideInSearch: true,
-      render: (_) => {
-        return amountTransform(_,'/').toFixed(2)
-      }
+      hideInSearch: true
     },
     {
       title: '状态',
