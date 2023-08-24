@@ -95,7 +95,11 @@ export const paramsEmptyFilter = (params) => {
   // eslint-disable-next-line no-restricted-syntax
   for (const key in params) {
     if (params[key] !== '') {
-      obj[key] = params[key]
+      if (typeof params[key] === 'string') {
+        obj[key] = params[key].trim()
+      } else {
+        obj[key] = params[key]
+      }
     }
   }
 
@@ -109,7 +113,11 @@ export const paramsUndefinedToEmpty = (params) => {
     if (params[key] === undefined) {
       obj[key] = ''
     } else {
-      obj[key] = params[key]
+      if (typeof params[key] === 'string') {
+        obj[key] = params[key].trim()
+      } else {
+        obj[key] = params[key]
+      }
     }
   }
 
