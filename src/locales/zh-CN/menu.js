@@ -222,6 +222,7 @@ export default {
   'menu.cms.goos-reg.weekend-revelry': '周末大狂欢',
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
+  'menu.cms.goos-reg.chat-recommended-products': '聊天推荐商品',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.home-activity': '首页活动图标',
   'menu.cms.home-classification': '首页分类管理',

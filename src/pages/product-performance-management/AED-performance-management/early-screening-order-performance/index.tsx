@@ -132,13 +132,11 @@ export default function TransactionData () {
       title: '直推人手机号',
       dataIndex: 'recomMemberPhone',
       align: 'center',
-      hideInSearch: true,
     },
     {
       title: '间推人手机号',
       dataIndex: 'indirectPhone',
       align: 'center',
-      hideInSearch: true
     },
     {
       title: '体检市区域',

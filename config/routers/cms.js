@@ -61,6 +61,12 @@ export default {
           path: '/cms/goos-reg/strategy-today',
           component: './cms/goos-reg/strategy-today',
           wrappers: [RouteWatcher],
+        },
+        {
+          name: 'chat-recommended-products',
+          path: '/cms/goos-reg/chat-recommended-products',
+          component: './cms/goos-reg/chat-recommended-products',
+          wrappers: [RouteWatcher],
         }
       ]
     },
