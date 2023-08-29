@@ -19,6 +19,7 @@ import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
 import { useLocation } from 'umi';
 import { changeStoreState,getCommissionConfigBySpuId } from '@/services/product-management/product-list';
+import ImportFile from '@/components/ImportFile'
 
 
 const SubTable = (props) => {
@@ -597,6 +598,12 @@ const TableList = (props) => {
           pageSize: 10,
           showQuickJumper: true,
         }}
+        toolBarRender={()=> [
+          <Button key='1' type='primary' href='https://uat-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/template/goods-share-content.xlsx'>
+            下载享赚商品分享文案模板
+          </Button>,
+          <ImportFile key='2' code='goods-share-content' title='导入享赚商品分享文案' />
+        ]}
         revalidateOnFocus={false}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         search={{
