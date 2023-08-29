@@ -169,6 +169,9 @@ export default (props) => {
       distributePrice,
       goodsName,
       declaration,
+      shareContent1,
+      shareContent2,
+      shareContent3,
       ...rest } = values;
     const { specValues1, specValues2 } = form.getFieldsValue(['specValues1', 'specValues2']);
     const specName = {};
@@ -279,6 +282,8 @@ export default (props) => {
     //   reject();
     // }
 
+    const shareContent = [shareContent1, shareContent2, shareContent3].filter(item => !!item)
+
     const obj = {
       isMultiSpec,
       supplierHelperId,
@@ -298,6 +303,7 @@ export default (props) => {
         supplyInvoiceType: goods.supplyInvoiceType,
         wholesaleTaxRate: goods.wholesaleTaxRate,
         declaration,
+        shareContent,
       },
       isLossMoney: isLossMoney.current ? 1 : 0,
       primaryImages: urlsTransform(primaryImages),
@@ -750,6 +756,12 @@ export default (props) => {
   useEffect(() => {
     if (detailData) {
       const { specName, specValues, specData, freightTemplateId, freightTemplateName, settleType } = detailData;
+      const shareContent = {}
+      if (goods.shareContent.length) {
+        goods.shareContent.forEach((item,index) => {
+          shareContent[`shareContent${index+1}`] = item
+        })
+      }
       form.setFieldsValue({
         goodsName: goods.goodsName,
         goodsDesc: goods.goodsDesc,
@@ -789,6 +801,7 @@ export default (props) => {
         showOn: goods.showOn,
         operateType: goods.operateType,
         declaration: goods.declaration,
+        ...shareContent,
       })
 
       if (freightTemplateId && freightTemplateName) {
@@ -1356,6 +1369,36 @@ export default (props) => {
             />
           }
         }
+      </ProFormDependency>
+      <ProFormDependency name={['operateType']}>
+        {({operateType}) => {
+          return <>
+            {operateType === 2 &&
+              <>
+                <ProFormText
+                  name="shareContent1"
+                  label="分享文案"
+                  placeholder="请输入5-100个字的分享文案"
+                  rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
+                />
+                <ProFormText
+                  name="shareContent2"
+                  label=" "
+                  colon={false}
+                  placeholder="请输入5-100个字的分享文案"
+                  rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
+                />
+                <ProFormText
+                  name="shareContent3"
+                  label=" "
+                  colon={false}
+                  placeholder="请输入5-100个字的分享文案"
+                  rules={[{ message: '请输入5-100个字的分享文案', min: 5, max: 100 }]}
+                />
+              </>
+            }
+          </>
+        }}
       </ProFormDependency>
 
       <ProFormSelect

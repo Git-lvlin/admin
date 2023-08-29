@@ -226,6 +226,13 @@ export default (props) => {
       >
         {{ 1: '秒约', 2: '分享补贴' }[goods?.operateType]}
       </Form.Item>
+      {
+        goods?.operateType===2&&<Form.Item
+          label="分享文案"
+        >
+          {goods.shareContent.map(item => (<div style={{ marginBottom: 10 }}>{item}</div>))}
+        </Form.Item>
+      }
       <Form.Item
         label="规格属性"
       >
@@ -446,7 +453,7 @@ export default (props) => {
               </>
             }
             {
-              goods.goodsSaleType !==2&&
+              goods.goodsSaleType !== 2 &&
               <>
                 <Form.Item
                   label="店主新集约价"
@@ -554,7 +561,7 @@ export default (props) => {
         {
           detailData?.primaryImages.map(item => (
             <div
-              style={{ marginRight: 10, marginBottom:10, display: 'inline-block' }}
+              style={{ marginRight: 10, marginBottom: 10, display: 'inline-block' }}
               key={item.imageSort}
             >
               <Image width={100} height={100} src={item.imageUrl} />
