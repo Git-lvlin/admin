@@ -32,6 +32,12 @@ export default function TransactionData () {
       dataIndex:'signCode',
     },
     {
+      title: '状态',
+      dataIndex: 'processDesc',
+      align: 'center',
+      hideInSearch: true,
+    },
+    {
       title: '子单号',
       dataIndex: 'subOrderSn',
       align: 'center',
@@ -126,7 +132,11 @@ export default function TransactionData () {
       title: '直推人手机号',
       dataIndex: 'recomMemberPhone',
       align: 'center',
-      hideInSearch: true,
+    },
+    {
+      title: '间推人手机号',
+      dataIndex: 'indirectPhone',
+      align: 'center',
     },
     {
       title: '体检市区域',
@@ -155,12 +165,6 @@ export default function TransactionData () {
         15 :'退款成功',
         20 :'已失效', 
       }
-    },
-    {
-      title: '状态',
-      dataIndex: 'processDesc',
-      align: 'center',
-      hideInSearch: true,
     },
     {
       title: '体检省市区',

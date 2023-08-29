@@ -35,10 +35,22 @@ const Details = ({visible, setVisible, query}) => {
     }
   }, [change])
 
+  const title = () => {
+    if(query.accountType==='supplier'){
+      return '供应商'
+    } else if(query.accountType==='store' || query.accountType==='member'){
+      return '社区店'
+    }else if(query.accountType==='agentStore'){
+      return '代发店'
+    }else{
+      return ''
+    }
+  }
+
   const card = () => {
     if(query.accountType==='supplier'){
       return '供应商家银行账户'
-    } else if(query.accountType==='store'){
+    } else if(query.accountType==='store' || query.accountType==='member'){
       return '社区店银行账户'
     }else if(query.accountType==='agentStore'){
       return '代发店银行账户'
@@ -49,7 +61,7 @@ const Details = ({visible, setVisible, query}) => {
   const leftCard = () => {
     if(query.accountType==='supplier'){
       return '供应商虚拟子账户'
-    } else if(query.accountType==='store'){
+    } else if(query.accountType==='store' || query.accountType==='member'){
       return '社区店虚拟子账户'
     }else if(query.accountType==='agentStore'){
       return '代发店虚拟子账户'
@@ -167,6 +179,7 @@ const Details = ({visible, setVisible, query}) => {
           query={paymentQuery}
           visible={paymentVisible}
           setVisible={setPaymentVisible}
+          title={title()}
         />
       }
        {

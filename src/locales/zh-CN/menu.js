@@ -222,6 +222,7 @@ export default {
   'menu.cms.goos-reg.weekend-revelry': '周末大狂欢',
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
+  'menu.cms.goos-reg.chat-recommended-products': '聊天推荐商品',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.home-activity': '首页活动图标',
   'menu.cms.home-classification': '首页分类管理',
@@ -272,6 +273,9 @@ export default {
   'menu.cms.message-management.detail': '详情',
   'menu.cms.message-management.stand-inside-letter-list': '站内信列表',
   'menu.cms.message-management.popup-template': 'APP内弹窗模板',
+  'menu.cms.business-ads': '商务广告',
+  'menu.cms.business-ads.ads-management': '三方广告管理',
+  'menu.cms.business-ads.tripartite-advertising-data-statistics': '三方广告位数据统计',
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -314,6 +318,9 @@ export default {
   'menu.product-sharing-management.designated-commodity-settlement': '指定商品结算',
   'menu.product-sharing-management.designated-commodity-settlement.designated-commodity-settlement': '分成配置',
   'menu.product-sharing-management.designated-commodity-settlement.merchandise-settlement-record': '配置记录',
+  'menu.product-sharing-management.allocation-management': '分成配置管理',
+
+
 
   'menu.financial-management': '财务管理',
   'menu.financial-management.money-management': '资金管理',
@@ -502,6 +509,9 @@ export default {
   'menu.product-performance-management.AED-performance-management.early-screening-order-performance': '早筛订单业绩管理',
   'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
+  'menu.product-performance-management.AED-performance-management.early-screening-sales-bonus': '早筛销售额外奖',
+  'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
+  'menu.product-performance-management.early-screening-statistics': '早筛额外奖领取统计',
 
 
 

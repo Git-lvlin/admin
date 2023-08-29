@@ -30,6 +30,7 @@ const MemberStoreFundManagement = () => {
     subtotal({
       ...search,
       page,
+      accountTypes: ['store', 'member'],
       settleTimeBegin: search?.settleTime?.[0].format('YYYY-MM-DD'),
       settleTimeEnd: search?.settleTime?.[1].format('YYYY-MM-DD'),
       registTimeBegin: search?.registTime?.[0].format('YYYY-MM-DD'),

@@ -61,6 +61,12 @@ export default {
           path: '/cms/goos-reg/strategy-today',
           component: './cms/goos-reg/strategy-today',
           wrappers: [RouteWatcher],
+        },
+        {
+          name: 'chat-recommended-products',
+          path: '/cms/goos-reg/chat-recommended-products',
+          component: './cms/goos-reg/chat-recommended-products',
+          wrappers: [RouteWatcher],
         }
       ]
     },
@@ -363,5 +369,23 @@ export default {
       component: './cms/hydrogen-atom-start-window',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'business-ads',
+      path: '/cms/business-ads',
+      routes: [
+        {
+          name: 'ads-management',
+          path: '/cms/business-ads/ads-management',
+          component: './cms/business-ads/ads-management',
+          wrappers: [RouteWatcher],
+        },
+        {
+          name: 'tripartite-advertising-data-statistics',
+          path: '/cms/business-ads/tripartite-advertising-data-statistics',
+          component: './cms/business-ads/tripartite-advertising-data-statistics',
+          wrappers: [RouteWatcher],
+        }
+      ]
+    }
   ]
 }
