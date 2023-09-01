@@ -29,6 +29,7 @@ import { getListByParams } from '@/services/transaction-sharing-management/alloc
 import { amountTransform } from '@/utils/utils'
 import Upload from '@/components/upload'
 import ContractConfig from './contract-config'
+import { FEE, RATIO } from '@/constants'
 
 const defaultData = [
   {
@@ -921,7 +922,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
   roleData.forEach((item: any) => {
     let num = 0
     if(item?.billVal) {
-      num = new Big(item.billVal).times(5)
+      num = new Big(item.billVal).times(FEE)
     }
     if (item?.roleCode === 'platform' || !item?.status) {
       return
@@ -935,7 +936,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
     if (type == 2) {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
-        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(RATIO))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount = new Big(balanceAmount).minus(amountTransform(num))
@@ -946,7 +947,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
     } else {
       if (item.roleCode === 'goodsAmount') {
         balanceAmount -= price
-        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(0.0065))
+        balanceAmount = new Big(balanceAmount).minus(new Big(balanceAmount).times(RATIO))
       } else {
         if(item.roleCode === 'hyCityAgent' && item?.scope === 'nation') {
           balanceAmount = new Big(balanceAmount).minus(new Big(minValueObject.salePrice).times(amountTransform(num, '/')))
@@ -958,7 +959,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
   })
   
   if(store === 'platform' && isSign === 1) {
-    balanceAmount = new Big(balanceAmount).minus(500)
+    balanceAmount = new Big(balanceAmount).minus(amountTransform(FEE))
   }
 
   return {
