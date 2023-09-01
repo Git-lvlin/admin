@@ -66,8 +66,8 @@ export const ORDER_TYPE = {
   100: '合计'
 }
 
-// 合同费
+// 分成合同费
 export const FEE = 5
 
-// 比例
+// 分成比例
 export const RATIO = 0.0065
