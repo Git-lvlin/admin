@@ -98,6 +98,7 @@ export default {
   'menu.setting.dc-management.import-export': '导入导出配置',
   'menu.setting.dc-management.import-export.export-configuration': '导出配置',
   'menu.setting.dc-management.import-export.import-configuration': '导入配置',
+  'menu.setting.dc-management.add-order-type': '分账订单类型列表',
   'menu.setting.advert-config': '广告配置',
 
   'menu.finger-doctor': '手指医生',

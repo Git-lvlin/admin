@@ -50,32 +50,34 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     categoryAll()?.then(res => {
       if(res.code === 0) {
         originData.current = res.data.records
-        const arr1: any[] = []
-        const arr2: any[] = []
-        const arr3: any[] = []
+        // const arr1: any[] = []
+        // const arr2: any[] = []
+        // const arr3: any[] = []
         
-        res.data.records.forEach((item: any) => {
-          if(item.level === 3) {
-            arr1.push(item)
-          }
-        })
-        arr1.forEach(item => {
-          arr2.push(res.data.records.find((it: any) => item.gcParentId === it.id))
-        })
-        arr2.forEach(item => {
-          arr3.push(res.data.records.find((it: any) => item.gcParentId === it.id))
-        })
-        const data = Array.from(new Set([...arr1, ...arr2, ...arr3])).map(item => ({
+        // res.data.records.forEach((item: any) => {
+        //   if(item.level === 3) {
+        //     arr1.push(item)
+        //   }
+        // })
+        // console.log(res.data.records);
+        
+        // res.data.records.forEach(item => {
+        //   arr2.push(res.data.records.find((it: any) => item?.gcParentId === it.id))
+        // })
+        // arr2.forEach(item => {
+        //   arr3.push(res.data.records.find((it: any) => item?.gcParentId === it.id))
+        // })
+        const data = res.data.records.map((item: any) => ({
           ...item,
-          pid: item.gcParentId,
-          title: item.gcName,
-          key: item.id,
-          value: item.id,
+          pid: item?.gcParentId,
+          title: item?.gcName,
+          key: item?.id,
+          value: item?.id,
           selectable: false
         }))
         const arr = arrayToTree(data || [], 0)
         let str = JSON.stringify(arr)
-        const newArr = JSON.parse(str)
+        const newArr = JSON.parse(str).filter((res: any) => res.children)
         setCategory(newArr)
       }
     }).finally(()=> {
@@ -108,12 +110,11 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
     const arr: React.Key[] = []
     originData.current.map((it: any) => {
       values.category.map((res: any) => {
-        if(it.level === 3 && it.id === res) {
+        if(it.id === res) {
           arr.push(res)
         }
       })
     })
-
     return new Promise<void>((resolve, reject) => {
       modifyGoodsGlf({
         ...values,
