@@ -303,8 +303,8 @@ const Detail = (props) => {
                   </div>
                 }
                 {
-                  detailData?.subType == 2001 && <div className={styles.box}>
-                    <div>《大健康区县服务协议》</div>
+                  detailData?.contractId && <div className={styles.box}>
+                    <div>法大大电子合同</div>
                     <div className={detailData?.contractUrl ?'':styles.make}>
                       {detailData?.contractUrl ? <a href={detailData?.contractUrl} target="_blank">{detailData?.contractId}</a> : '未签写'}
                     </div>
