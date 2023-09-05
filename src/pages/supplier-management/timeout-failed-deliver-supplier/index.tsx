@@ -9,23 +9,23 @@ import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import RangeNumberInput from '@/components/range-number-input'
 import TimeoutOrderDetails from './timeout-order-details'
-import {
-    ProFormFieldSet,
-  } from '@ant-design/pro-form';
-import { Select } from 'antd';
+import RangeOvertime from './range-overtime';
+import type { Statistics } from "./data"
+import styles from './style.less'
 
-const OrderList = (props) => {
+const OrderList = (props:Statistics) => {
     const { activeKey } = props
     const [visible, setVisible] = useState(false);
     const [msgDetail, setMsgDetail] = useState(); 
     const [visit, setVisit] = useState(false)
     const actionRef = useRef<ActionType>();
+    const [deadline, setDeadline] = useState<string>('')
 
     const getFieldValue = (searchConfig) => {
         const {orderNum,orderAmount,...rest}=searchConfig.form.getFieldsValue()
         return {
-            orderNumMin:orderNum&&amountTransform(orderNum.min,'*'),
-            orderNumMax:orderNum&&amountTransform(orderNum.max,'*'),
+            orderNumMin:orderNum&&orderNum.min,
+            orderNumMax:orderNum&&orderNum.max,
             orderAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
             orderAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
           ...rest,
@@ -90,29 +90,11 @@ const OrderList = (props) => {
         valueType: 'text',
         hideInSearch: true,
       },
-      {
+      { 
         title: '',
         dataIndex: 'overDay',
         hideInTable: true,
-        renderFormItem: () => {
-            return <ProFormFieldSet>
-                        支付后距今超过 
-                        <Select
-                          name='day'
-                          style={{ width: 120 }}
-                          options={[
-                            { value: '5', label: '5天' },
-                            { value: '7', label: '7天' },
-                            { value: '10', label: '10天' },
-                            { value: '15', label: '15天'},
-                            { value: '30', label: '30天'},
-                            { value: '60', label: '60天'},
-                            { value: '90', label: '90天'},
-                          ]}
-                        />
-                        天还未发货的供应商
-                    </ProFormFieldSet>;
-        }
+        renderFormItem: () => <RangeOvertime />
       },
       {
         title: '操作',
@@ -144,15 +126,22 @@ const OrderList = (props) => {
               <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
             ],
           }}
+          postData={(data)=>{
+            setDeadline(data[0]&&data[0].createTime)
+            return data
+          }}
           columns={columns}
           actionRef={actionRef}
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+          className={styles.timeout_failed_deliver_supplier}
+          toolBarRender={(_,record) => <p>截止{deadline}</p>}
         />
         {
           visible&&<TimeoutOrderDetails
             setVisible={setVisible}
             visible={visible}
             msgDetail={msgDetail}
+            activeKey={activeKey}
           />
         }
       </>

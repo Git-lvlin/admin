@@ -8,8 +8,8 @@ export const purchaseUnshippedStats = async (params = {}, options = {}) => {
     params: {
       page: current,
       size: pageSize,
-      orderNumMin:orderNum&&amountTransform(orderNum.min,'*'),
-      orderNumMax:orderNum&&amountTransform(orderNum.max,'*'),
+      orderNumMin:orderNum&&orderNum.min,
+      orderNumMax:orderNum&&orderNum.max,
       orderAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
       orderAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
       ...rest

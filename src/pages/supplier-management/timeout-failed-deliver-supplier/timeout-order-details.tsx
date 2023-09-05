@@ -10,10 +10,11 @@ import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import TimeSelect from '@/components/time-select'
-import ProForm, {
+import {
     ProFormFieldSet,
   } from '@ant-design/pro-form';
 import { amountTransform } from "@/utils/utils";
+import RangeOvertime0rder from './range-overtime-order';
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -21,7 +22,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible, msgDetail } = props;
+  const { visible, setVisible, msgDetail, activeKey } = props;
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState(false)
@@ -55,7 +56,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '商品件数',
-      dataIndex: 'optRemark',
+      dataIndex: 'buySkuNum',
       align: 'center',
       hideInSearch: true
     },
@@ -101,35 +102,9 @@ export default (props:CumulativeProps)=>{
     },
     {
         title: '',
-        dataIndex: 'orderDay',
+        dataIndex: 'overDay',
         hideInTable: true,
-        renderFormItem: () => {
-            return <ProFormFieldSet>
-                        支付后距今超过 
-                        <Select
-                          name='day'
-                          style={{ width: 120 }}
-                          options={[
-                            { value: '5', label: '5天' },
-                            { value: '7', label: '7天' },
-                            { value: '10', label: '10天' },
-                            { value: '15', label: '15天'},
-                            { value: '30', label: '30天'},
-                            { value: '60', label: '60天'},
-                            { value: '90', label: '90天'},
-                          ]}
-                        />
-                        天还未发货的供应商
-                        <Select
-                          name='oder'
-                          style={{ width: 120 }}
-                          options={[
-                            { value: 'jack', label: '普通订单' },
-                            { value: 'lucy', label: '集约订单' },
-                          ]}
-                        />
-                    </ProFormFieldSet>;
-        }
+        renderFormItem: () => <RangeOvertime0rder />
       },
   ]
 
@@ -138,7 +113,7 @@ export default (props:CumulativeProps)=>{
     <DrawerForm
       layout="horizontal"
       title={<>
-               <p>首页 /  供应商管理 / 超时未发货供应商 / 超时未发货订单明细</p>
+               <p>首页 /  供应商管理 / 超时未发货供应商 / 超时未发货订单明细 / {activeKey=='1'?'普通订单':'集约订单'}</p>
                <p style={{ color:'#8D8D8D' }}>供应商ID：{msgDetail?.supplierId}    供应商名称：{msgDetail?.supplierName}</p>
              </>
       }
@@ -167,9 +142,7 @@ export default (props:CumulativeProps)=>{
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          goodsQlfId:msgDetail?.goodsQlfId,
-          gc:msgDetail?.gc,
-          supId:msgDetail?.supId,
+          supplierId: msgDetail?.id
         }}
         options={false}
         search={{
