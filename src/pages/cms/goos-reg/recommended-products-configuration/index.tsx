@@ -1,9 +1,8 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import type { DescriptionsProps, TableProps } from "./data"
 import { Form, message, Button, Space,Spin} from 'antd';
 
-import { aedTeamPm,aedTeamPmStats } from "@/services/aed-team-leader/aed-head-performance"
+import { getGoodsConfig, setGoodsConfig } from "@/services/cms/member/goos-reg"
 import ProCard from "@ant-design/pro-card"
 import ProForm, { ProFormRadio } from '@ant-design/pro-form'
 import styles from './style.less'
@@ -15,28 +14,31 @@ const formItemLayout = {
 
 const ChatRecommendedProductRestrictionSwitch = (props) => {
   const { activeKey } = props
-  const [detailList,setDetailList]=useState<DescriptionsProps>()
-  const [time,setTime]=useState<TableProps>()
-  const [visit, setVisit] = useState<boolean>(false)
   const [form] = Form.useForm()
   const ref=useRef()
 
   useEffect(() => {
-    const params={
-      ...time
-    }
-    aedTeamPmStats(params).then(res=>{
+    getGoodsConfig({ code:'chatTab' }).then(res=>{
       if(res.code==0){
-        setDetailList(res.data[0])
+        console.log('res',res)
+        form.setFieldsValue({
+          switch:`${res.data.switch}`
+        })
       }
     })
 
-  }, [time])
+  }, [])
 
   const onsubmit = (values) => {
-    updateSigninConfig(values).then(res=>{
+    const params={
+      code: 'chatTab',
+      content: {
+        switch: parseInt(values.switch)
+      }
+    }
+    setGoodsConfig(params).then(res=>{
       if(res.code==0){
-        message.success('配置成功')
+        message.success('保存成功')
       }
     })
   }
@@ -70,7 +72,7 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
   >
     {
       activeKey=='1'&&<ProFormRadio.Group
-        name="value"
+        name="of"
         label='选择聊天可发送平台推荐商品的角色'
         layout="vertical"
         options={[
@@ -93,7 +95,7 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
     {
       activeKey=='2'&&
       <ProFormRadio.Group
-          name="value"
+          name="switch"
           label='APP端用户聊天发送商品里的平台推荐商品'
           layout="vertical"
           options={[

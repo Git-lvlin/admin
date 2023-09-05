@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import ProTable from '@/components/pro-table';
-import type { ProColumns } from '@ant-design/pro-table';
 import { getActiveConfigList } from '@/services/cms/member/thematic-event-management'
 import moment from 'moment'
 import { Button,message } from 'antd'
@@ -9,21 +8,9 @@ import SpecialModel from './special-model'
 import EndModel from './end-model'
 import styles from './style.less'
 import PreviewModel from './preview-model'
-
-
-type ThematicEventItem={
-  id: number;
-  type: number;
-  status: number;
-  name: string;
-  startTime: number;
-  endTime: number;
-  updateTime: number;
-  statusDisplay: string;
-  actionType: number;
-  goodsCount: number;
-  copyUrl: string;
-}
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import { ActionType } from '@ant-design/pro-table';
 
 export default () => {
   const [detailId, setDetailId] = useState<string | {}>()
@@ -31,9 +18,17 @@ export default () => {
   const [endVisible, setEndVisible] = useState<boolean>(false)
   const [previewVisible, setPreviewVisible] = useState<boolean>(false)
   const [total, setTotal]= useState<number>()
-  const [copy, setCopy] = useState<string>(false)
-  const ref=useRef()
-  const columns:ProColumns<ThematicEventItem>[]= [
+  const [copy, setCopy] = useState<string>()
+  const [visit, setVisit] = useState(false)
+  const ref=useRef<ActionType>()
+
+  const getFieldValue = (searchConfig) => {
+    const { ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
+  }
+  const columns= [
     {
       title: '专题名称',
       dataIndex: 'name',
@@ -106,7 +101,7 @@ export default () => {
   ];
   return (
     <PageContainer>
-        <ProTable<ThematicEventItem>
+        <ProTable
           actionRef={ref}
           rowKey="id"
           options={false}
@@ -119,7 +114,15 @@ export default () => {
           labelWidth: 100,
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
-            <Button key='add' style={{color:'red',border:'1px solid red'}} onClick={()=>{setVisible(true)}}>新建专题</Button>
+            <Button key='add' style={{color:'red',border:'1px solid red'}} onClick={()=>{setVisible(true)}}>新建专题</Button>,
+            <Export
+                key='export'
+                change={(e) => { setVisit(e) }}
+                type={'bind-box-use-detail-export'}
+                conditions={()=>{return getFieldValue(searchConfig)}}
+                text="导出活动商品"
+              />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
           ],
           }}
           postData={(data)=>{
@@ -146,8 +149,8 @@ export default () => {
             copy={copy}
             visible={visible}
             setVisible={setVisible}
-            onClose={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
-            callback={()=>{setDetailId(null);setCopy(null);ref?.current?.reload()}}
+            onClose={()=>{setDetailId(undefined);setCopy(undefined);ref?.current?.reload()}}
+            callback={()=>{setDetailId(undefined);setCopy(undefined);ref?.current?.reload()}}
           />
         }
         {
@@ -155,8 +158,8 @@ export default () => {
           visible={endVisible} 
           setVisible={setEndVisible}  
           endId={detailId}
-          onClose={()=>{setDetailId(null);ref?.current?.reload()}}
-          callback={()=>{setDetailId(null);ref?.current?.reload()}}
+          onClose={()=>{setDetailId(undefined);ref?.current?.reload()}}
+          callback={()=>{setDetailId(undefined);ref?.current?.reload()}}
           />
         }
         {
@@ -164,8 +167,8 @@ export default () => {
           visible={previewVisible} 
           setVisible={setPreviewVisible}  
           link={detailId?.copyUrl}
-          onClose={()=>{setDetailId(null);ref?.current?.reload()}}
-          callback={()=>{setDetailId(null);ref?.current?.reload()}}
+          onClose={()=>{setDetailId(undefined);ref?.current?.reload()}}
+          callback={()=>{setDetailId(undefined);ref?.current?.reload()}}
           />
         }
   </PageContainer>

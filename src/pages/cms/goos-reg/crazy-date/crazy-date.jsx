@@ -9,6 +9,9 @@ import { ACTION_TYPE } from '@/utils/text';
 import ProCard from '@ant-design/pro-card';
 import EndModel from './end-model'
 import styles from './style.less'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 const CrazyDate = ( props ) => {
   const { status } = props
@@ -18,6 +21,15 @@ const CrazyDate = ( props ) => {
   const [visible, setVisible] = useState(false);
   const [goDetail, setGoDetail] = useState(false)
   const [copy, setCopy] = useState(false)
+  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = (searchConfig) => {
+    const { activityStartTime, ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      activityStartTime: moment(activityStartTime).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
 
   const columns = [
     {
@@ -127,6 +139,21 @@ const CrazyDate = ( props ) => {
             新建活动
           </Button>,
         ]}
+        search={{
+          defaultCollapsed: false,
+          labelWidth: 100,
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Export
+                key='export'
+                change={(e) => { setVisit(e) }}
+                type={'bind-box-use-detail-export'}
+                conditions={()=>{return getFieldValue(searchConfig)}}
+                text="导出活动商品"
+              />,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+          ],
+        }}
         className={styles.crazy_date}
       />
       {formVisible && <Edit

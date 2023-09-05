@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Form } from 'antd';
+import { Form, Select } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
@@ -13,6 +13,7 @@ import TimeSelect from '@/components/time-select'
 import ProForm, {
     ProFormFieldSet,
   } from '@ant-design/pro-form';
+import { amountTransform } from "@/utils/utils";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -43,13 +44,14 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '订单号',
-      dataIndex: 'optItem',
+      dataIndex: 'subOrderSn',
       align: 'center',
     },
     {
       title: '商品名称',
-      dataIndex: 'optContent',
+      dataIndex: 'goodName',
       align: 'center',
+      width: 200
     },
     {
       title: '商品件数',
@@ -59,26 +61,28 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '实付金额',
-      dataIndex: 'qlfNumber',
+      dataIndex: 'payAmount',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_) => {
+        return amountTransform(_,'/').toFixed(2)
+      }
     },
     {
       title: '下单人手机号',
-      dataIndex: 'qlfImg',
-      valueType:  'image',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '下单用户ID',
-      dataIndex: 'createTime',
+      dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '支付时间距今已过天数',
-      dataIndex: 'optName',
+      dataIndex: 'earliestDay',
       valueType: 'text',
       hideInSearch: true
     },
@@ -91,7 +95,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '支付时间',
-      dataIndex: 'optRole',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true
     },
@@ -135,7 +139,7 @@ export default (props:CumulativeProps)=>{
       layout="horizontal"
       title={<>
                <p>首页 /  供应商管理 / 超时未发货供应商 / 超时未发货订单明细</p>
-               <p style={{ color:'#8D8D8D' }}>供应商ID：{msgDetail?.supId}    供应商名称：{msgDetail?.supName}</p>
+               <p style={{ color:'#8D8D8D' }}>供应商ID：{msgDetail?.supplierId}    供应商名称：{msgDetail?.supplierName}</p>
              </>
       }
       onVisibleChange={setVisible}

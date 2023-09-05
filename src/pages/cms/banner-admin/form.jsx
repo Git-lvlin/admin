@@ -6,10 +6,12 @@ import ProForm, {
   ProFormRadio,
   ProFormSelect,
   ProFormTextArea,
+  ProFormDateTimePicker
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import CheckBox from '@/components/checkbox';
 import { bannerAdd, selAllVersion } from '@/services/cms/member/member';
+import moment from 'moment';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, verifyVersionId, title } = props;
@@ -411,14 +413,30 @@ export default (props) => {
         initialValue={0}
         options={[
           {
-            label: '上线',
+            label: <>
+                     <p>上架</p>
+                     <ProFormDateTimePicker
+                       name='time1'
+                       label='指定上架生效时间'
+                       initialValue={moment()}
+                     />
+                   </>,
             value: 1,
           },
           {
-            label: '下架',
+            label: <>
+                    <p>下架</p>
+                    <ProFormDateTimePicker
+                      name='time2'
+                      label='指定下架生效时间'
+                      initialValue={moment('2099-12-31T23:59:59')}
+                      extra={<span style={{ color:'#F1813E' }}>选中确认后将会立刻下架banner</span>}
+                    />
+                  </>,
             value: 0,
           },
         ]}
+        direction="vertical"
       />
       <ProFormText
         name="id"

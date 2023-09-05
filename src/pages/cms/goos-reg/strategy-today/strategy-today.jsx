@@ -11,6 +11,8 @@ import ReplaceForm from './replace-form';
 import { hotGoosList, hotGoosOperation, tagSortTop, cmsImageInfo } from '@/services/cms/member/member';
 import ContentVersionTab from '@/components/content-version-tab';
 import ProForm from '@ant-design/pro-form';
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
 
 import Title from './title'
 
@@ -23,6 +25,7 @@ const StrategyToday = () => {
   const [detailData, setDetailData] = useState(true);
   const [flag, setFlag] = useState(false);
   const [verifyVersionId, setVerifyVersionId] = useState(1);
+  const [visit, setVisit] = useState(false)
 
   const [img, setImg] = useState(null);
 
@@ -64,6 +67,13 @@ const StrategyToday = () => {
         message.success(`置顶成功`);
       }
     })
+  }
+
+  const getFieldValue = (searchConfig) => {
+    const { ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      ...rest,
+    }
   }
 
   const columns = [
@@ -272,7 +282,19 @@ const StrategyToday = () => {
         </Space>
       )}
       search={{
-        labelWidth: 'auto',
+        defaultCollapsed: false,
+        labelWidth: 100,
+        optionRender: (searchConfig, formProps, dom) => [
+          ...dom.reverse(),
+          <Export
+              key='export'
+              change={(e) => { setVisit(e) }}
+              type={'bind-box-use-detail-export'}
+              conditions={()=>{return getFieldValue(searchConfig)}}
+              text="导出活动商品"
+            />,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+        ],
       }}
       pagination={{
         pageSize: 10,
