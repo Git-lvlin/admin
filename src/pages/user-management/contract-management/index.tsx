@@ -9,6 +9,7 @@ import HydrogenThirdpartnarContract from "./hydrogen-thirdpartnar-contract"
 import HealthyLivingPavilionContract from "./healthy-living-pavilion-contract"
 import ADEVolunteerContract from "./ADE-volunteer-contract"
 import IPOContract from "./IPO-contract"
+import OutpatientContract from "./outpatient-contract"
 
  const ContractManagement:FC = () => {
   const key = JSON.parse(window.localStorage.getItem('managed') as string)?.type
@@ -21,6 +22,9 @@ import IPOContract from "./IPO-contract"
           defaultActiveKey: `${key}` || '1',
         }}
       >
+        <ProCard.TabPane key="0" tab="当前合同">
+          <OutpatientContract />
+        </ProCard.TabPane>
         <ProCard.TabPane key="1" tab="供应商入驻合同">
           <SupplierEntryContract/>
         </ProCard.TabPane>

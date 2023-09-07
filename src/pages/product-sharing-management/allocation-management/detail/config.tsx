@@ -922,7 +922,7 @@ const computedValue = (goodsData = [], roleData: any, type = 2, isSign = 0, stor
   roleData.forEach((item: any) => {
     let num = 0
     if(item?.billVal) {
-      num = new Big(item.billVal).times(FEE)
+      num = new Big(item.billVal).minus(5)
     }
     if (item?.roleCode === 'platform' || !item?.status) {
       return
