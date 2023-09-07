@@ -282,6 +282,7 @@ export default {
   'menu.outpatient-service-management.county-service-providers-management': '区县服务商管理',
   'menu.outpatient-service-management.store-partners-management': '门店合作商管理',
   'menu.outpatient-service-management.procurement-zone': '门店合作商店铺采购专区',
+  'menu.outpatient-service-management.store-partne-purchasing-areas': '大健康供应系统专区',
 
 
   'menu.price-comparsion-management': '比价管理菜单',
