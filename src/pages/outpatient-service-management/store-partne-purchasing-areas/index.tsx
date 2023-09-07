@@ -474,7 +474,7 @@ export default () => {
           setEditableKeys([]); 
           const newData=dataSource.map(item=>{
             if(item.skuId==data.skuId){
-              return {...item,...data}
+              return {...item,...data.map(ele=>({...ele,actPrice:amountTransform(ele.actPrice,'/').toFixed(2)}))}
             }
             return item
            }) 
