@@ -7,11 +7,11 @@ import type { FormInstance } from 'antd'
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import AddressCascader from '@/components/address-cascader'
-import { providerList } from '@/services/outpatient-service-management/county-service-providers-management'
+import { providerAuditSecond } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
 import Detail from './detail'
 
-const CountyServiceProviders:React.FC = () => {
+const Reexamine:React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
@@ -83,6 +83,12 @@ const CountyServiceProviders:React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '订单金额',
+      dataIndex: 'payAmountDesc',
+      align: 'center', 
+      hideInSearch: true
+    },
+    {
       title: '合同签订时间',
       dataIndex: 'signTime',
       align: 'center',
@@ -92,16 +98,6 @@ const CountyServiceProviders:React.FC = () => {
       title: '签约时间',
       dataIndex: 'signTime',
       renderFormItem: ()=> <TimeSelect />,
-      hideInTable: true
-    },
-    {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
       hideInTable: true
     },
     {
@@ -118,10 +114,20 @@ const CountyServiceProviders:React.FC = () => {
       }
     },
     {
-      title: '门店数量',
-      dataIndex: 'providerStoreNum',
+      title: '合同状态',
+      dataIndex: 'contractStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '合同状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '已签订',
+        2: '未签订'
+      },
+      hideInTable: true
     },
     {
       title: '推荐人手机号',
@@ -129,10 +135,10 @@ const CountyServiceProviders:React.FC = () => {
       align: 'center'
     },
     {
-      title: '店铺编号',
-      dataIndex: 'storeHouseNumber',
+      title: '操作',
+      valueType: 'option',
       align: 'center',
-      hideInSearch: true
+      render: (_, r) => <a onClick={()=> {}}>复审</a>
     }
   ]
 
@@ -143,14 +149,14 @@ const CountyServiceProviders:React.FC = () => {
         options={false}
         params={{}}
         formRef={form}
-        request={providerList}
+        request={providerAuditSecond}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerList'
+              type='providerAuditSecond'
               conditions={getFieldsValue}
             />
           ]
@@ -168,4 +174,4 @@ const CountyServiceProviders:React.FC = () => {
   )
 }
 
-export default CountyServiceProviders
+export default Reexamine

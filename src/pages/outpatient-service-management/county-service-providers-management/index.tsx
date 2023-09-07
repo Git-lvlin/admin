@@ -2,6 +2,9 @@ import ProCard from '@ant-design/pro-card'
 
 import PageContainer from '@/components/PageContainer'
 import CountyServiceProviders from './county-service-providers'
+import CountyServiceProvidersOrder from './county-service-providers-order'
+import Reexamine from './reexamine'
+import Audit from './audit'
 
 const StorePartnersManagement: React.FC = () => {
   return (
@@ -12,16 +15,16 @@ const StorePartnersManagement: React.FC = () => {
         }}
       >
         <ProCard.TabPane key='1' tab='区县服务商'>
-          <CountyServiceProviders type='service'/>
+          <CountyServiceProviders />
         </ProCard.TabPane>
         <ProCard.TabPane key='2' tab='区县服务商复审'>
-          <CountyServiceProviders type='review'/>
+          <Reexamine />
         </ProCard.TabPane>
         <ProCard.TabPane key='3' tab='区县服务商初审'>
-          <CountyServiceProviders type='verify'/>
+          <Audit />
         </ProCard.TabPane>
         <ProCard.TabPane key='4' tab='区县服务商订单'>
-          <CountyServiceProviders type='order'/>
+          <CountyServiceProvidersOrder />
         </ProCard.TabPane>
       </ProCard> 
     </PageContainer>
