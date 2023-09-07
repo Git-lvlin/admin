@@ -53,6 +53,20 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           hideInSearch: true
         },
         {
+          title: '门店合作商编号',
+          dataIndex: 'imei',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
+        {
+          title: '区县服务商编号',
+          dataIndex: 'imei',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
+        {
           title: '设备状态',
           dataIndex: 'status',
           align: 'center',
@@ -92,6 +106,18 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           },
           fieldProps: {
             placeholder: '请选择管理期状态'
+          }
+        },
+        {
+          title: '设备类型',
+          dataIndex: 'status',
+          align: 'center',
+          hideInTable: true,
+          valueEnum: {
+            1: '门店合作商店铺设备',
+            2: '非门店合作商店铺设备',
+            3: '区县服务商店铺设备',
+            4: '非区县服务商店铺设备',
           }
         },
         {

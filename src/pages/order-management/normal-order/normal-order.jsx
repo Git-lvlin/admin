@@ -340,6 +340,26 @@ const TableList = () => {
         >
           <TimeSelect/>
         </ProForm.Item>
+        <ProFormSelect
+          label="大健康供应系统交易"
+          name="businessType"
+          options={[
+            {
+              value: 1,
+              label: '是'
+            },
+            {
+              value: 0,
+              label: '否'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}

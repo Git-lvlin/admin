@@ -275,6 +275,38 @@ const StoreList = (props) => {
       },
       order:-1
     },
+    {
+      title: '门店合作商状态',
+      dataIndex: 'isShopPartner',
+      valueType: 'select',
+      hideInSearch: storeType !== 'normal',
+      hideInTable: true,
+      valueEnum: {
+        0: '未开通',
+        1: '有效',
+        2: '过期'
+      },
+      fieldProps: {
+        placeholder:'请选择'
+      },
+      order:-2
+    },
+    {
+      title: '区县服务商状态',
+      dataIndex: 'isAreaProvider',
+      valueType: 'select',
+      hideInSearch: storeType !== 'normal',
+      hideInTable: true,
+      valueEnum: {
+        0: '未开通',
+        1: '有效',
+        2: '过期'
+      },
+      fieldProps: {
+        placeholder:'请选择'
+      },
+      order:-3
+    },
     // {
     //   title: '积分',
     //   dataIndex: 'score',
@@ -487,7 +519,9 @@ const StoreList = (props) => {
         20: '绿色通道申请',
         30: '健康生活馆',
         33: '爱心回馈系统建店',
-        36: '早筛孝爱活动建站'
+        36: '早筛孝爱活动建站',
+        40: '区县服务商建店',
+        41: '门店合作商建店'
       },
       hideInTable: true,
       hideInSearch: storeType == 'freshStores' || storeType == 'vip' || storeType === 'life_house',
@@ -1287,6 +1321,9 @@ const ShopHealthPackages = (props) => {
         20: '绿色通道申请',
         30: '健康生活馆',
         33: '爱心回馈系统建店',
+        36: '早筛孝爱活动建站',
+        40: '区县服务商建店',
+        41: '门店合作商建店'
       },
       hideInTable: true,
       hideInSearch: storeType != 'love_customer_store',
@@ -1388,6 +1425,9 @@ const ShopHealthPackages = (props) => {
         20: '绿色通道申请',
         30: '健康生活馆',
         33: '爱心回馈系统建店',
+        36: '早筛孝爱活动建站',
+        40: '区县服务商建店',
+        41: '门店合作商建店'
       },
       hideInTable: true,
       hideInSearch: storeType != 'buy_aed',
