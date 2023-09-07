@@ -282,31 +282,29 @@ const StoreList = (props) => {
       hideInSearch: storeType !== 'normal',
       hideInTable: true,
       valueEnum: {
-        0: '未开通',
-        1: '有效',
-        2: '过期'
+        0: '不是门店合作商',
+        1: '门店合作商',
       },
       fieldProps: {
         placeholder:'请选择'
       },
       order:-2
     },
-    {
-      title: '区县服务商状态',
-      dataIndex: 'isAreaProvider',
-      valueType: 'select',
-      hideInSearch: storeType !== 'normal',
-      hideInTable: true,
-      valueEnum: {
-        0: '未开通',
-        1: '有效',
-        2: '过期'
-      },
-      fieldProps: {
-        placeholder:'请选择'
-      },
-      order:-3
-    },
+    // {
+    //   title: '区县服务商状态',
+    //   dataIndex: 'isAreaProvider',
+    //   valueType: 'select',
+    //   hideInSearch: storeType !== 'normal',
+    //   hideInTable: true,
+    //   valueEnum: {
+    //     0: '不是区县服务商',
+    //     1: '区县服务商',
+    //   },
+    //   fieldProps: {
+    //     placeholder:'请选择'
+    //   },
+    //   order:-3
+    // },
     // {
     //   title: '积分',
     //   dataIndex: 'score',
