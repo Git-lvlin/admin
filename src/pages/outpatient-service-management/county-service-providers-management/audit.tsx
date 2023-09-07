@@ -1,20 +1,26 @@
 import { useState, useRef } from 'react'
+import { Space } from 'antd'
 import moment from 'moment'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import AddressCascader from '@/components/address-cascader'
-import { providerList } from '@/services/outpatient-service-management/county-service-providers-management'
+import { providerAuditSecond } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
 import Detail from './detail'
+import AuditModal from './audit-modal'
+import PaymentVoucher from './payment-voucher'
 
-const CountyServiceProviders:React.FC = () => {
+const Audit:React.FC = () => {
   const [visible, setVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [paymentVoucherVisible, setPaymentVoucherVisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldsValue = () => {
     const { serviceArea, signTime, ...rest } = form.current?.getFieldsValue()
@@ -83,6 +89,12 @@ const CountyServiceProviders:React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '订单金额',
+      dataIndex: 'payAmountDesc',
+      align: 'center', 
+      hideInSearch: true
+    },
+    {
       title: '合同签订时间',
       dataIndex: 'signTime',
       align: 'center',
@@ -92,16 +104,6 @@ const CountyServiceProviders:React.FC = () => {
       title: '签约时间',
       dataIndex: 'signTime',
       renderFormItem: ()=> <TimeSelect />,
-      hideInTable: true
-    },
-    {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
       hideInTable: true
     },
     {
@@ -118,10 +120,20 @@ const CountyServiceProviders:React.FC = () => {
       }
     },
     {
-      title: '门店数量',
-      dataIndex: 'providerStoreNum',
+      title: '合同状态',
+      dataIndex: 'contractStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '合同状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '已签订',
+        2: '未签订'
+      },
+      hideInTable: true
     },
     {
       title: '推荐人手机号',
@@ -129,10 +141,15 @@ const CountyServiceProviders:React.FC = () => {
       align: 'center'
     },
     {
-      title: '店铺编号',
-      dataIndex: 'storeHouseNumber',
+      title: '操作',
+      valueType: 'option',
       align: 'center',
-      hideInSearch: true
+      render: (_, r) => (
+        <Space>
+          <a onClick={()=> {setModalVisible(true); setId(r.subOrderSn)}}>初审</a>
+          <a onClick={()=> {setPaymentVoucherVisible(true); setId(r.subOrderSn)}}>上传缴费凭证</a>
+        </Space>
+      )
     }
   ]
 
@@ -143,14 +160,15 @@ const CountyServiceProviders:React.FC = () => {
         options={false}
         params={{}}
         formRef={form}
-        request={providerList}
+        request={providerAuditSecond}
+        actionRef={actRef}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerList'
+              type='providerAuditSecond'
               conditions={getFieldsValue}
             />
           ]
@@ -164,8 +182,26 @@ const CountyServiceProviders:React.FC = () => {
           id={id}
         />
       }
+      {
+        modalVisible&&
+        <AuditModal 
+          visible={modalVisible}
+          setVisible={setModalVisible}
+          id={id}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        paymentVoucherVisible&&
+        <PaymentVoucher
+          visible={paymentVoucherVisible}
+          setVisible={setPaymentVoucherVisible}
+          callback={()=> actRef.current?.reload()}
+          id={id}
+        />
+      }
     </>
   )
 }
 
-export default CountyServiceProviders
+export default Audit

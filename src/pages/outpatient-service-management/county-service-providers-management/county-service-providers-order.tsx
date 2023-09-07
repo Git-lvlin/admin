@@ -1,20 +1,21 @@
 import { useState, useRef } from 'react'
 import moment from 'moment'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import AddressCascader from '@/components/address-cascader'
-import { providerList } from '@/services/outpatient-service-management/county-service-providers-management'
+import { providerOrder } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
-import Detail from './detail'
+import PaymentVoucher from './payment-voucher'
 
-const CountyServiceProviders:React.FC = () => {
+const CountyServiceProvidersOrder:React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldsValue = () => {
     const { serviceArea, signTime, ...rest } = form.current?.getFieldsValue()
@@ -30,6 +31,12 @@ const CountyServiceProviders:React.FC = () => {
 
   const columns: ProColumns[] = [
     {
+      title: '签约时间',
+      dataIndex: 'signTime',
+      renderFormItem: ()=> <TimeSelect />,
+      hideInTable: true
+    },
+    {
       title: '服务商编号',
       dataIndex: 'houseNumber',
       align: 'center'
@@ -40,7 +47,7 @@ const CountyServiceProviders:React.FC = () => {
       align: 'center'
     },
     {
-      title: '用户ID',
+      title: '下单用户ID',
       dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
@@ -70,15 +77,14 @@ const CountyServiceProviders:React.FC = () => {
       hideInTable: true
     },
     {
-      title: '付款凭证张数(张)',
-      dataIndex: 'voucherNum',
-      align: 'center',
-      hideInSearch: true,
-      render: (_, r) => <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>{_}</a>
+      title: '交合同费(元)',
+      dataIndex: '',
+      align: 'center', 
+      hideInSearch: true
     },
     {
-      title: '已交金额(元)',
-      dataIndex: 'offlineAmountDesc',
+      title: '交定金金额(元)',
+      dataIndex: '',
       align: 'center', 
       hideInSearch: true
     },
@@ -87,22 +93,6 @@ const CountyServiceProviders:React.FC = () => {
       dataIndex: 'signTime',
       align: 'center',
       hideInSearch: true
-    },
-    {
-      title: '签约时间',
-      dataIndex: 'signTime',
-      renderFormItem: ()=> <TimeSelect />,
-      hideInTable: true
-    },
-    {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
-      hideInTable: true
     },
     {
       title: '合同ID',
@@ -118,10 +108,20 @@ const CountyServiceProviders:React.FC = () => {
       }
     },
     {
-      title: '门店数量',
-      dataIndex: 'providerStoreNum',
+      title: '合同状态',
+      dataIndex: 'contractStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '合同状态',
+      dataIndex: 'contractStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '已签订',
+        2: '未签订'
+      },
+      hideInTable: true
     },
     {
       title: '推荐人手机号',
@@ -129,10 +129,27 @@ const CountyServiceProviders:React.FC = () => {
       align: 'center'
     },
     {
-      title: '店铺编号',
-      dataIndex: 'storeHouseNumber',
+      title: '招募状态',
+      dataIndex: '',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '招募状态',
+      dataIndex: '',
+      hideInTable: true
+    },
+    {
+      title: '操作',
+      valueType: 'option',
+      align: 'center',
+      render: (_, r) => {
+        if(r) {
+          return <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>上传缴费凭证</a>
+        } else {
+          return
+        }
+      }
     }
   ]
 
@@ -143,14 +160,15 @@ const CountyServiceProviders:React.FC = () => {
         options={false}
         params={{}}
         formRef={form}
-        request={providerList}
+        actionRef={actRef}
+        request={providerOrder}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerList'
+              type='providerOrder'
               conditions={getFieldsValue}
             />
           ]
@@ -158,14 +176,15 @@ const CountyServiceProviders:React.FC = () => {
       />
       {
         visible &&
-        <Detail 
+        <PaymentVoucher 
           visible={visible}
           setVisible={setVisible}
           id={id}
+          callback={()=> {actRef.current?.reload()}}
         />
       }
     </>
   )
 }
 
-export default CountyServiceProviders
+export default CountyServiceProvidersOrder
