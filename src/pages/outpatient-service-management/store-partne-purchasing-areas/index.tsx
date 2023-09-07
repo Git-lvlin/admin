@@ -472,9 +472,9 @@ export default () => {
         callback={(data)=>{ 
           setFalge(false); 
           setEditableKeys([]); 
-          const newData=dataSource.map(item=>{
+          const newData=dataSource?.map(item=>{
             if(item.skuId==data.skuId){
-              return {...item,...data.map(ele=>({...ele,actPrice:amountTransform(ele.actPrice,'/').toFixed(2)}))}
+              return {...item,...{...data,actPrice:amountTransform(data.actPrice,'/').toFixed(2)}}
             }
             return item
            }) 
@@ -483,7 +483,7 @@ export default () => {
         onClose={()=>{  
           setFalge(false);
           setEditableKeys([]);
-          const newData=dataSource.map(item=>{
+          const newData=dataSource?.map(item=>{
             if(item.skuId==oldData.skuId){
               return {...item,...oldData}
             }
