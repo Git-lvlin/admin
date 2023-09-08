@@ -141,11 +141,19 @@ const CountyServiceProvidersOrder:React.FC = () => {
         }
       }
     },
-    // {
-    //   title: '招募状态',
-    //   dataIndex: 'status',
-    //   hideInTable: true
-    // },
+    {
+      title: '招募状态',
+      dataIndex: 'allStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '已签法大大合同',
+        2: '已交定金',
+        3: '审核拒绝',
+        4: '审核终止招募',
+        5: '已失效'
+      },
+      hideInTable: true
+    },
     {
       title: '操作',
       valueType: 'option',
