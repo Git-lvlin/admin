@@ -4,7 +4,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { provideGetListByParams } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
 import OperationModel from './operation-model'
-import { Button, InputNumber } from 'antd';
+import { Button, InputNumber, message } from 'antd';
 import RangeNumberInput from '@/components/range-number-input'
 import { PageContainer } from '@/components/PageContainer';
 import FormModel from './form-model'
@@ -82,12 +82,7 @@ export default () => {
       }else if(falge&&data.skuId==editableKeys[0]){
         //点保存时触发弹窗
         setFormVisible(true)
-
-        if(recordList?.length){
-          setMsgDetail([oldData,data])
-          return
-        }
-        setMsgDetail([oldData,{}])
+        setMsgDetail([oldData,data])
       }
     }
     
@@ -298,10 +293,10 @@ export default () => {
       editable:false,
       hideInSearch: true,
       render: (_,data) => {
-        if(_==1){
-          return <span style={{ color:'#14C100' }}>已配置</span>
-        }else{
-          return <a onClick={()=>{ setDivideVisible(true); setMsgDetail(data) }}>未配置（点击配置）</a>
+        if(_==1&&data.actPrice){
+          return <a onClick={()=>{ setDivideVisible(true); setMsgDetail(data) }}>已配置</a>
+        }else if(_==0&&data.actPrice){
+          return <a onClick={()=>{ setDivideVisible(true); setMsgDetail(data) }}><span style={{ color:'red' }} >未配置</span>（点击配置）</a>
         }
       }
     },
