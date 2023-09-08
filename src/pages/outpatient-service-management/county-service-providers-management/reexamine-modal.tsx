@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from 'react'
-import { Spin, Image, Button } from 'antd'
+import { Spin, Image } from 'antd'
 import ProForm, { 
   ModalForm, 
   ProFormText, 
   ProFormRadio,
   ProFormDependency,
-  ProFormDigit,
   ProFormTextArea
 } from '@ant-design/pro-form'
 
