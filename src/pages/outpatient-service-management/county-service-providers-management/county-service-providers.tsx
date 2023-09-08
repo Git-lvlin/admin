@@ -121,7 +121,14 @@ const CountyServiceProviders:React.FC = () => {
       title: '门店数量',
       dataIndex: 'providerStoreNum',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.providerStoreNum > 0) {
+          return <a href="/outpatient-service-management/store-partners-management">{_}</a>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
     {
       title: '推荐人手机号',

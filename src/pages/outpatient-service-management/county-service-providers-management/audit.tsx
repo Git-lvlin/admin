@@ -1,5 +1,4 @@
 import { useState, useRef } from 'react'
-import { Space } from 'antd'
 import moment from 'moment'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
@@ -8,16 +7,14 @@ import type { FormInstance } from 'antd'
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import AddressCascader from '@/components/address-cascader'
-import { providerAuditSecond } from '@/services/outpatient-service-management/county-service-providers-management'
+import { providerAuditFirst } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
 import Detail from './detail'
 import AuditModal from './audit-modal'
-import PaymentVoucher from './payment-voucher'
 
 const Audit:React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
-  const [paymentVoucherVisible, setPaymentVoucherVisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
@@ -144,12 +141,7 @@ const Audit:React.FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r) => (
-        <Space>
-          <a onClick={()=> {setModalVisible(true); setId(r.subOrderSn)}}>初审</a>
-          <a onClick={()=> {setPaymentVoucherVisible(true); setId(r.subOrderSn)}}>上传缴费凭证</a>
-        </Space>
-      )
+      render: (_, r) => <a onClick={()=> {setModalVisible(true); setId(r)}}>初审</a>
     }
   ]
 
@@ -160,7 +152,7 @@ const Audit:React.FC = () => {
         options={false}
         params={{}}
         formRef={form}
-        request={providerAuditSecond}
+        request={providerAuditFirst}
         actionRef={actRef}
         search={{
           labelWidth: 120,
@@ -168,7 +160,7 @@ const Audit:React.FC = () => {
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerAuditSecond'
+              type='providerAuditFirst'
               conditions={getFieldsValue}
             />
           ]
@@ -187,17 +179,8 @@ const Audit:React.FC = () => {
         <AuditModal 
           visible={modalVisible}
           setVisible={setModalVisible}
-          id={id}
+          meta={id}
           callback={()=> actRef.current?.reload()}
-        />
-      }
-      {
-        paymentVoucherVisible&&
-        <PaymentVoucher
-          visible={paymentVoucherVisible}
-          setVisible={setPaymentVoucherVisible}
-          callback={()=> actRef.current?.reload()}
-          id={id}
         />
       }
     </>

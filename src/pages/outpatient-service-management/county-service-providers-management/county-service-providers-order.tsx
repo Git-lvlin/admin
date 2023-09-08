@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import moment from 'moment'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
-import type { FormInstance } from 'antd'
+import { FormInstance, Tooltip } from 'antd'
 
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
@@ -78,13 +78,13 @@ const CountyServiceProvidersOrder:React.FC = () => {
     },
     {
       title: '交合同费(元)',
-      dataIndex: '',
+      dataIndex: 'payAmountDesc',
       align: 'center', 
       hideInSearch: true
     },
     {
       title: '交定金金额(元)',
-      dataIndex: '',
+      dataIndex: 'offlineAmountDesc',
       align: 'center', 
       hideInSearch: true
     },
@@ -130,21 +130,28 @@ const CountyServiceProvidersOrder:React.FC = () => {
     },
     {
       title: '招募状态',
-      dataIndex: '',
+      dataIndex: 'statusDesc',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      render: (_, r) => {
+        if(r.reason) {
+          return <Tooltip title={`拒绝原因：${r.reason}`} >{_}</Tooltip>
+        } else {
+          return <span>{_}</span>
+        }
+      }
     },
-    {
-      title: '招募状态',
-      dataIndex: '',
-      hideInTable: true
-    },
+    // {
+    //   title: '招募状态',
+    //   dataIndex: 'status',
+    //   hideInTable: true
+    // },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
       render: (_, r) => {
-        if(r) {
+        if(r.status === 0 || r.status === 4) {
           return <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>上传缴费凭证</a>
         } else {
           return

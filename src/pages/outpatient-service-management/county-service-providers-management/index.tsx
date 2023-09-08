@@ -1,4 +1,5 @@
 import ProCard from '@ant-design/pro-card'
+import { useState } from 'react'
 
 import PageContainer from '@/components/PageContainer'
 import CountyServiceProviders from './county-service-providers'
@@ -7,24 +8,28 @@ import Reexamine from './reexamine'
 import Audit from './audit'
 
 const StorePartnersManagement: React.FC = () => {
+  const [activeKey, setActiveKey] = useState('1')
+  
   return (
     <PageContainer>
       <ProCard
         tabs={{
-          type: 'card'
+          type: 'card',
+          activeKey,
+          onChange: setActiveKey
         }}
       >
         <ProCard.TabPane key='1' tab='区县服务商'>
-          <CountyServiceProviders />
+          { activeKey === '1' && <CountyServiceProviders /> }
         </ProCard.TabPane>
         <ProCard.TabPane key='2' tab='区县服务商复审'>
-          <Reexamine />
+          { activeKey === '2' && <Reexamine /> }
         </ProCard.TabPane>
         <ProCard.TabPane key='3' tab='区县服务商初审'>
-          <Audit />
+          { activeKey === '3' && <Audit /> }
         </ProCard.TabPane>
         <ProCard.TabPane key='4' tab='区县服务商订单'>
-          <CountyServiceProvidersOrder />
+        { activeKey === '4' && <CountyServiceProvidersOrder /> }
         </ProCard.TabPane>
       </ProCard> 
     </PageContainer>

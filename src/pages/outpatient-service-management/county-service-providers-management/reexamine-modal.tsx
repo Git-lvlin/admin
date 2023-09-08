@@ -11,7 +11,7 @@ import ProForm, {
 
 import type { FormInstance } from 'antd'
 
-import { getProviderOrderDetail, auditFirst } from '@/services/outpatient-service-management/county-service-providers-management'
+import { getProviderOrderDetail, auditSecond } from '@/services/outpatient-service-management/county-service-providers-management'
 import { amountTransform } from '@/utils/utils'
 
 type props = {
@@ -21,7 +21,7 @@ type props = {
   callback: () => void
 }
 
-const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
+const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
   const [data, setdata] = useState<any>()
   const [loading, setLoading] = useState(false)
   const form = useRef<FormInstance>()
@@ -48,18 +48,19 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
         area: data?.provinceName + data?.cityName + data?.areaName,
         payAmount: `${amountTransform(data?.payAmount, '/').toFixed(2)}元`,
         contractId: meta?.contractId,
-        optName: window.localStorage.getItem('nickName')
+        optName: data?.optName,
+        offlineAmount: `${amountTransform(data?.offlineAmount, '/').toFixed(2)}元`,
+        optTime: data?.optTime,
+        reOptName: window.localStorage.getItem('nickName')
       })
     }
   }, [data])
 
   const submit = (v:any) => {
     return new Promise<void>((resolve, reject) => {
-      auditFirst({
+      auditSecond({
         ...v,
-        subOrderSn: meta?.subOrderSn,
-        offlineAmount: v?.offlineAmount && amountTransform(v?.offlineAmount),
-        type: data?.isExistProvider === 1 ? 3 : v?.type
+        subOrderSn: meta?.subOrderSn
       }, {
         showSuccess: true
       }).then(res => {
@@ -74,7 +75,7 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
 
   return (
     <ModalForm
-      title='区县服务商初审'
+      title='区县服务商复审'
       width={500}
       visible={visible}
       formRef={form}
@@ -89,42 +90,13 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
         callback()
         return true
       }}
-      submitter={{
-        render: (props, defaultDoms) => {
-          if(data?.isExistProvider === 1) {
-            return [
-              <Button
-                key="rest"
-                onClick={() => {
-                  props.reset()
-                }}
-              >
-                取消
-              </Button>,
-              <Button
-                key="submit"
-                onClick={() => {
-                  props.submit()
-                }}
-                type='primary'
-              >
-                审核拒绝，终止招募
-              </Button>
-            ]
-          } else {
-            return [
-              ...defaultDoms
-            ]
-          }
-        }
-      }}
     >
       <Spin spinning={loading}>
         <div
           style={{
-          maxHeight: '500px',
-          overflowX: 'auto'
-        }}
+            maxHeight: '500px',
+            overflowX: 'auto'
+          }}
         >
           <ProFormText 
             label='服务商编号'
@@ -164,33 +136,34 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
               })
             }
           </ProForm.Item>
-          {
-            data?.isExistProvider === 0 &&
-            <ProFormRadio.Group
-              label='审核结果'
-              name='type'
-              options={[
-                {label: '审核通过', value: 1},
-                {label: '审核拒绝', value: 2},
-                {label: '审核拒绝，终止招募', value: 3}
-              ]}
-            />
-          }
+          <ProFormText
+            label='已审缴费总计'
+            name='offlineAmount'
+            extra='为初审确认录入的（已交订单金额 + 已确认付款凭证金额）'
+            readonly
+          />
+          <ProFormText
+            label='初审人'
+            name='optName'
+            readonly
+          />
+          <ProFormText
+            label='初审时间'
+            name='optTime'
+            readonly
+          />
+          <ProFormRadio.Group
+            label='审核结果'
+            name='type'
+            options={[
+              {label: '审核通过', value: 1},
+              {label: '审核拒绝', value: 2},
+              {label: '审核拒绝，终止招募', value: 3}
+            ]}
+          />
           <ProFormDependency name={['type']}>
             {({type})=> {
-              if(type === 1) {
-                return (
-                  <ProFormDigit
-                    label='缴费总计'
-                    name='offlineAmount'
-                    rules={[{required: true}]}
-                    fieldProps={{
-                      controls: false
-                    }}
-                    placeholder='请输入已交订单金额 + 已确认付款凭证金额'
-                  />
-                )
-              } else if(type === 2 || type === 3){
+              if(type === 2 || type === 3){
                 return (
                   <ProFormTextArea
                     label='拒绝原因'
@@ -218,18 +191,15 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
               }
             }}
           </ProFormDependency>
-          {
-            data?.isExistProvider === 0 &&
-            <ProFormText
-              label='初审人'
-              name='optName'
-              readonly
-            />
-          }
+          <ProFormText
+            label='复审人'
+            name='reOptName'
+            readonly
+          />
         </div>
       </Spin>
     </ModalForm>
   )
 }
 
-export default AuditModal
+export default ReexamineModal

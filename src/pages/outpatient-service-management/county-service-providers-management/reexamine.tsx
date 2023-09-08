@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import moment from 'moment'
 
-import type { ProColumns } from '@ant-design/pro-table'
+import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
@@ -10,11 +10,14 @@ import AddressCascader from '@/components/address-cascader'
 import { providerAuditSecond } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
 import Detail from './detail'
+import ReexamineModal from './reexamine-modal'
 
 const Reexamine:React.FC = () => {
   const [visible, setVisible] = useState(false)
+  const [moadlvisible, setMoadlvisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
+  const actRef = useRef<ActionType>()
 
   const getFieldsValue = () => {
     const { serviceArea, signTime, ...rest } = form.current?.getFieldsValue()
@@ -138,7 +141,7 @@ const Reexamine:React.FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      render: (_, r) => <a onClick={()=> {}}>复审</a>
+      render: (_, r) => <a onClick={()=> {setMoadlvisible(true); setId(r)}}>复审</a>
     }
   ]
 
@@ -149,6 +152,7 @@ const Reexamine:React.FC = () => {
         options={false}
         params={{}}
         formRef={form}
+        actionRef={actRef}
         request={providerAuditSecond}
         search={{
           labelWidth: 120,
@@ -168,6 +172,15 @@ const Reexamine:React.FC = () => {
           visible={visible}
           setVisible={setVisible}
           id={id}
+        />
+      }
+      {
+        moadlvisible &&
+        <ReexamineModal
+          visible={moadlvisible}
+          setVisible={setMoadlvisible}
+          callback={()=> actRef.current?.reload()}
+          meta={id}
         />
       }
     </>

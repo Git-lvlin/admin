@@ -106,6 +106,15 @@ export const voucherDetail = async (params = {}, options = {}) => {
   })
 }
 
+// 服务商订单审核详情
+export const getProviderOrderDetail = async (params = {}, options = {}) => {
+  return await request('/auth/healthy/provider/getProviderOrderDetail', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
 // 首次审核
 export const auditFirst = async (params = {}, options = {}) => {
   return await request('/auth/healthy/provider/auditFirst', {
