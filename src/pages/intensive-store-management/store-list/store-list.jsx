@@ -290,21 +290,21 @@ const StoreList = (props) => {
       },
       order:-2
     },
-    // {
-    //   title: '区县服务商状态',
-    //   dataIndex: 'isAreaProvider',
-    //   valueType: 'select',
-    //   hideInSearch: storeType !== 'normal',
-    //   hideInTable: true,
-    //   valueEnum: {
-    //     0: '不是区县服务商',
-    //     1: '区县服务商',
-    //   },
-    //   fieldProps: {
-    //     placeholder:'请选择'
-    //   },
-    //   order:-3
-    // },
+    {
+      title: '区县服务商状态',
+      dataIndex: 'isAreaProvider',
+      valueType: 'select',
+      hideInSearch: storeType !== 'normal',
+      hideInTable: true,
+      valueEnum: {
+        0: '不是区县服务商',
+        1: '区县服务商',
+      },
+      fieldProps: {
+        placeholder:'请选择'
+      },
+      order:-3
+    },
     // {
     //   title: '积分',
     //   dataIndex: 'score',
