@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react';
-import ProCard from '@ant-design/pro-card';
+import { useState, useRef } from 'react';
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table';
-import { helperList, statusSwitch } from '@/services/supplier-management/supplier-list'
+import { adventPage } from '@/services/supplier-management/balance-delivery-supplier'
 import type { ActionType } from "@ant-design/pro-table"
 import { amountTransform } from '@/utils/utils';
 import Export from '@/pages/export-excel/export'
@@ -10,16 +9,18 @@ import ExportHistory from '@/pages/export-excel/export-history'
 import RangeNumberInput from '@/components/range-number-input'
 
 const OrderList = () => {
-    const [visible, setVisible] = useState(false);
-    const [msgDetail, setMsgDetail] = useState(); 
     const [visit, setVisit] = useState(false)
     const actionRef = useRef<ActionType>();
 
     const getFieldValue = (searchConfig) => {
-        const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
+        const {balanceAvailable,balanceProcessable,balanceExpire,...rest}=searchConfig.form.getFieldsValue()
         return {
-          startTime1:dateTimeRange&&dateTimeRange[0],
-          startTime2:dateTimeRange&&dateTimeRange[1],
+          balanceAvailableStart:balanceAvailable&&balanceAvailable.min,
+          balanceAvailableEnd:balanceAvailable&&balanceAvailable.max,
+          balanceProcessableStart:balanceProcessable&&balanceProcessable.min,
+          balanceProcessableEnd:balanceProcessable&&balanceProcessable.max,
+          balanceExpireStart:balanceExpire&&balanceExpire.min,
+          balanceExpireEnd:balanceExpire&&balanceExpire.max,
           ...rest,
         }
       }
@@ -27,7 +28,7 @@ const OrderList = () => {
     const columns = [
       {
         title: '供应商ID',
-        dataIndex: 'companyName',
+        dataIndex: 'supplierId',
         valueType: 'text',
         fieldProps: {
           placeholder: '请输入供应商ID'
@@ -35,22 +36,22 @@ const OrderList = () => {
       },
       {
         title: '供应商名称',
-        dataIndex: 'companyName',
+        dataIndex: 'supplierName',
         valueType: 'text',
         fieldProps: {
           placeholder: '请输入供应商名称'
         }
       },
       {
-        title: '临期余额',
-        dataIndex: 'accountName',
+        title: '可提现余额',
+        dataIndex: 'balanceAvailable',
         valueType: 'text',
         renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
         hideInTable:true
       },
       {
-        title: '临期余额',
-        dataIndex: 'accountName',
+        title: '可提现余额（元）',
+        dataIndex: 'balanceAvailable',
         valueType: 'text',
         render: (_) => {
           return amountTransform(_,'/').toFixed(2)
@@ -58,66 +59,58 @@ const OrderList = () => {
         hideInSearch: true,
       },
       {
-        title: '总余额',
-        dataIndex: 'accountName',
+        title: '已过120天未到178天订单余额(元)',
+        dataIndex: 'balanceProcessable',
         valueType: 'text',
         renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
         hideInTable:true
       },
       {
-        title: '技术可处理余额剩余天数',
-        dataIndex: 'companyUserPhone',
+        title: '已过120天未到178天订单余额(元)',
+        dataIndex: 'balanceProcessable',
         valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '临期余额相关订单支付最远时间',
-        dataIndex: 'remark',
-        valueType: 'text',
-        hideInSearch: true,
-      },
-      {
-        title: '总余额',
-        dataIndex: 'createTime',
-        valueType: 'text',
-        hideInSearch: true,
         render: (_) => {
-            return amountTransform(_,'/').toFixed(2)
+          return amountTransform(_,'/').toFixed(2)
         },
-      },
-      {
-        title: '技术可处理总余额剩余天数',
-        dataIndex: 'companyUserPhone',
-        valueType: 'text',
         hideInSearch: true,
       },
       {
-        title: '总余额相关订单支付最远时间',
-        dataIndex: 'remark',
+        title: '已过178天订单余额(元)',
+        dataIndex: 'balanceExpire',
         valueType: 'text',
+        renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
+        hideInTable:true
+      },
+      {
+        title: '已过178天订单余额(元)',
+        dataIndex: 'balanceExpire',
+        valueType: 'text',
+        render: (_) => {
+          return amountTransform(_,'/').toFixed(2)
+        },
         hideInSearch: true,
       },
       {
         title: '最近提现申请时间',
-        dataIndex: 'remark',
+        dataIndex: 'lastWithdrawTime',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '最近提现成功时间',
-        dataIndex: 'remark',
+        dataIndex: 'lastWithdrawSuccessTime',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '最近订单支付时间',
-        dataIndex: 'remark',
+        dataIndex: 'lastPayTime',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '在售商品spu数量',
-        dataIndex: 'remark',
+        dataIndex: 'totalSpu',
         valueType: 'text',
         hideInSearch: true,
       }
@@ -126,10 +119,10 @@ const OrderList = () => {
     return (
         <PageContainer>
             <ProTable
-            rowKey="id"
+            rowKey="supplierId"
             headerTitle='总余额大于100元的供应商'
             options={false}
-            request={helperList}
+            request={adventPage}
             search={{
                 defaultCollapsed: true,
                 labelWidth: 100,
@@ -138,10 +131,10 @@ const OrderList = () => {
                 <Export
                     key='export'
                     change={(e) => { setVisit(e) }}
-                    type={'bind-box-use-detail-export'}
+                    type={'exportSupplierAdventList'}
                     conditions={()=>{return getFieldValue(searchConfig)}}
                 />,
-                <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+                <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportSupplierAdventList'}/>,
                 ],
             }}
             columns={columns}
