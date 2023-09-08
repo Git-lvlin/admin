@@ -7,6 +7,7 @@ import { amountTransform } from '@/utils/utils';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import RangeNumberInput from '@/components/range-number-input'
+import styles from './style.less'
 
 const OrderList = () => {
     const [visit, setVisit] = useState(false)
@@ -15,12 +16,12 @@ const OrderList = () => {
     const getFieldValue = (searchConfig) => {
         const {balanceAvailable,balanceProcessable,balanceExpire,...rest}=searchConfig.form.getFieldsValue()
         return {
-          balanceAvailableStart:balanceAvailable&&balanceAvailable.min,
-          balanceAvailableEnd:balanceAvailable&&balanceAvailable.max,
-          balanceProcessableStart:balanceProcessable&&balanceProcessable.min,
-          balanceProcessableEnd:balanceProcessable&&balanceProcessable.max,
-          balanceExpireStart:balanceExpire&&balanceExpire.min,
-          balanceExpireEnd:balanceExpire&&balanceExpire.max,
+          balanceAvailableStart:balanceAvailable&&amountTransform(balanceAvailable.min,'*'),
+          balanceAvailableEnd:balanceAvailable&&amountTransform(balanceAvailable.max,'*'),
+          balanceProcessableStart:balanceProcessable&&amountTransform(balanceProcessable.min,'*'),
+          balanceProcessableEnd:balanceProcessable&&amountTransform(balanceProcessable.max,'*'),
+          balanceExpireStart:balanceExpire&&amountTransform(balanceExpire.min,'*'),
+          balanceExpireEnd:balanceExpire&&amountTransform(balanceExpire.max,'*'),
           ...rest,
         }
       }
@@ -59,7 +60,7 @@ const OrderList = () => {
         hideInSearch: true,
       },
       {
-        title: '已过120天未到178天订单余额(元)',
+        title: '已过120天未到178天订单余额',
         dataIndex: 'balanceProcessable',
         valueType: 'text',
         renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
@@ -75,7 +76,7 @@ const OrderList = () => {
         hideInSearch: true,
       },
       {
-        title: '已过178天订单余额(元)',
+        title: '已过178天订单余额',
         dataIndex: 'balanceExpire',
         valueType: 'text',
         renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
@@ -140,6 +141,7 @@ const OrderList = () => {
             columns={columns}
             actionRef={actionRef}
             scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
+            className={styles.balance_delivery_supplier}
             />
       </PageContainer>
     );

@@ -8,12 +8,12 @@ export const adventPage = async (params = {}, options = {}) => {
     params: {
       page: current,
       size: pageSize,
-      balanceAvailableStart:balanceAvailable&&balanceAvailable.min,
-      balanceAvailableEnd:balanceAvailable&&balanceAvailable.max,
-      balanceProcessableStart:balanceProcessable&&balanceProcessable.min,
-      balanceProcessableEnd:balanceProcessable&&balanceProcessable.max,
-      balanceExpireStart:balanceExpire&&balanceExpire.min,
-      balanceExpireEnd:balanceExpire&&balanceExpire.max,
+      balanceAvailableStart:balanceAvailable&&amountTransform(balanceAvailable.min,'*'),
+      balanceAvailableEnd:balanceAvailable&&amountTransform(balanceAvailable.max,'*'),
+      balanceProcessableStart:balanceProcessable&&amountTransform(balanceProcessable.min,'*'),
+      balanceProcessableEnd:balanceProcessable&&amountTransform(balanceProcessable.max,'*'),
+      balanceExpireStart:balanceExpire&&amountTransform(balanceExpire.min,'*'),
+      balanceExpireEnd:balanceExpire&&amountTransform(balanceExpire.max,'*'),
       ...rest
     },
     ...options
