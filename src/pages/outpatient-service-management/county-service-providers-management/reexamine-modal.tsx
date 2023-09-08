@@ -7,6 +7,7 @@ import ProForm, {
   ProFormDependency,
   ProFormTextArea
 } from '@ant-design/pro-form'
+import { Space } from 'antd'
 
 import type { FormInstance } from 'antd'
 
@@ -50,7 +51,7 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
         optName: data?.optName,
         offlineAmount: `${amountTransform(data?.offlineAmount, '/').toFixed(2)}元`,
         optTime: data?.optTime,
-        reOptName: window.localStorage.getItem('nickName')
+        reOptName: window.localStorage.getItem('nickname')
       })
     }
   }, [data])
@@ -122,18 +123,20 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
             label='付款凭证图片'
             name='voucherImg'
           >
-            {
-              data?.voucher.map((res: any) => {
-                return (
-                  <Image 
-                    src={res} 
-                    width={50} 
-                    height={50}
-                    key={res}
-                  />
-                )
-              })
-            }
+            <Space>
+              {
+                data?.voucher.map((res: any) => {
+                  return (
+                    <Image 
+                      src={res} 
+                      width={50} 
+                      height={50}
+                      key={res}
+                    />
+                  )
+                })
+              }
+            </Space>
           </ProForm.Item>
           <ProFormText
             label='已审缴费总计'

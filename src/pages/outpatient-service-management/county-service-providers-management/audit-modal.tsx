@@ -8,6 +8,7 @@ import ProForm, {
   ProFormDigit,
   ProFormTextArea
 } from '@ant-design/pro-form'
+import { Space } from 'antd'
 
 import type { FormInstance } from 'antd'
 
@@ -48,7 +49,7 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
         area: data?.provinceName + data?.cityName + data?.areaName,
         payAmount: `${amountTransform(data?.payAmount, '/').toFixed(2)}元`,
         contractId: meta?.contractId,
-        optName: window.localStorage.getItem('nickName')
+        optName: window.localStorage.getItem('nickname')
       })
     }
   }, [data])
@@ -151,18 +152,20 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
             label='付款凭证图片'
             name='voucherImg'
           >
-            {
-              data?.voucher.map((res: any) => {
-                return (
-                  <Image 
-                    src={res} 
-                    width={50} 
-                    height={50}
-                    key={res}
-                  />
-                )
-              })
-            }
+            <Space>
+              {
+                data?.voucher.map((res: any) => {
+                  return (
+                    <Image 
+                      src={res} 
+                      width={50} 
+                      height={50}
+                      key={res}
+                    />
+                  )
+                })
+              }
+            </Space>
           </ProForm.Item>
           {
             data?.isExistProvider === 0 &&
