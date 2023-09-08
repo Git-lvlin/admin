@@ -6,6 +6,7 @@ import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import Export from '@/components/export'
 import { orderContractPage, dict } from "@/services/setting/contract-management"
+import styles from '../styles.less'
 
 const OutpatientContract:React.FC = () => {
   const [type, setType] = useState<any[]>([])
@@ -22,11 +23,12 @@ const OutpatientContract:React.FC = () => {
     {
       title: '序号',
       valueType: 'indexBorder',
+      align: 'center',
       hideInSearch: true
     },
     {
       title: '合同业务',
-      dataIndex: 'businessType',
+      dataIndex: 'businessTypeName',
       align: 'center',
       hideInSearch: true
     },
@@ -140,6 +142,7 @@ const OutpatientContract:React.FC = () => {
         ]
       }}
       options={false}
+      className={styles.desc}
     />
   )
 }
