@@ -423,6 +423,7 @@ export default () => {
              key='import'
              code="goods-provide-input"
              conditions={getFieldValue2}
+             title="导入商品"
             />,
             <ImportHistory key='importhist' show={importVisit} setShow={setImportVisit} type="goods-provide-input" />,
           ]}
