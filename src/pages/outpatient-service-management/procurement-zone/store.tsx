@@ -18,7 +18,7 @@ type props = {
 }
 
 const Store: React.FC<props> = ({columns, dataSource, setDataSource, info, setMinPrice, computedValue, type, val}) => {
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1, 2, 3, 4, 5, 6])
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1, 2, 3, 4, 5, 6, 7])
 
   return (
     <EditableProTable

@@ -94,6 +94,17 @@ const storeData = [
     trueUnfrezeeTypeDesc: '满足业务解冻',
     businessUnfrezeeType: '6',
     businessUnfrezeeTypeDesc: '满足业务解冻',
+  },
+  {
+    id: 7,
+    roleCode: 'others',
+    roleName: '其他',
+    settleType: 3,
+    settleTypeDesc: '线下',
+    trueUnfrezeeType: '6',
+    trueUnfrezeeTypeDesc: '满足业务解冻',
+    businessUnfrezeeType: '6',
+    businessUnfrezeeTypeDesc: '满足业务解冻',
   }
 ]
 
