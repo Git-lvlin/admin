@@ -596,7 +596,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
                 <Space>
                   <ProFormText name='agreementName' fieldProps={{placeholder: '请输入协议名称'}}/>
                   <ProForm.Item name='agreementUrl'>
-                    <Upload />
+                    <Upload accept='.pdf' isPDF/>
                   </ProForm.Item>
                 </Space>
               }
