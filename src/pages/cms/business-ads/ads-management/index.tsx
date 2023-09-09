@@ -14,6 +14,7 @@ import Edit from './edit'
 import UpdateHistory from './update-history'
 import TripartiteAdvertisingDataStatistics from './tripartite-advertising-data-statistics'
 import Export from '@/components/export'
+import MainSwitch from './main-switch'
 
 const AdsManagement: React.FC = () => {
   const [type, setType] = useState<string | undefined>()
@@ -26,6 +27,7 @@ const AdsManagement: React.FC = () => {
   const [updateHistoryVisible, setUpdateHistoryVisible] = useState(false)
   const [statisticsVisible, setStatisticsVisible] = useState(false)
   const [editVisible, setEditVisible] = useState(false)
+  const [switchVisible, setSwitchVisible] = useState(false)
   const actRef = useRef<ActionType>()
   const form = useRef<FormInstance>()
 
@@ -149,6 +151,7 @@ const AdsManagement: React.FC = () => {
        <div className={styles.header}>
         <div className={styles.title}>配置</div>
         <Space>
+          <a onClick={()=> {setSwitchVisible(true)}}>总开关设置</a>
           <a onClick={()=>{setStatisticsVisible(true)}}>数据统计</a>
           <a onClick={()=>{setUpdateHistoryVisible(true)}}>更新历史</a>
         </Space>
@@ -236,6 +239,13 @@ const AdsManagement: React.FC = () => {
         <TripartiteAdvertisingDataStatistics 
           visible={statisticsVisible}
           setVisible={setStatisticsVisible}
+        />
+      }
+      {
+        <MainSwitch
+          visible={switchVisible}
+          setVisible={setSwitchVisible}
+          callback={()=> actRef.current?.reload()}
         />
       }
     </PageContainer>

@@ -9,7 +9,7 @@ type RangeInputProps = {
 
 const RangeNumberInput: React.FC<RangeInputProps> = ({
   onChange = () => { },
-  beforePlaceholder = '请输入最低金额',
+  beforePlaceholder = '最低金额',
   afterPlaceholder = '最高金额'
 }) => {
 

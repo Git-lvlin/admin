@@ -65,3 +65,9 @@ export const ORDER_TYPE = {
   93: 'B端散装生鲜',
   100: '合计'
 }
+
+// 分成合同费
+export const FEE = 5
+
+// 分成比例
+export const RATIO = 0.0065

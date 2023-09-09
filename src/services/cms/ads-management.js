@@ -45,3 +45,12 @@ export const advTypePage = async (params, options = {}) => {
     ...options
   })
 }
+
+// 广告位总开关
+export const mainSwitch = async (params, options = {}) => {
+  return await request('/auth/index/advPosition/mainSwitch', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

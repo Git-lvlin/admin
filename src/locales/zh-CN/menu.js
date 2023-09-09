@@ -98,6 +98,7 @@ export default {
   'menu.setting.dc-management.import-export': '导入导出配置',
   'menu.setting.dc-management.import-export.export-configuration': '导出配置',
   'menu.setting.dc-management.import-export.import-configuration': '导入配置',
+  'menu.setting.dc-management.add-order-type': '分账订单类型列表',
   'menu.setting.advert-config': '广告配置',
 
   'menu.finger-doctor': '手指医生',
@@ -276,6 +277,13 @@ export default {
   'menu.cms.business-ads': '商务广告',
   'menu.cms.business-ads.ads-management': '三方广告管理',
   'menu.cms.business-ads.tripartite-advertising-data-statistics': '三方广告位数据统计',
+
+  'menu.outpatient-service-management': '门诊服务管理',
+  'menu.outpatient-service-management.county-service-providers-management': '区县服务商管理',
+  'menu.outpatient-service-management.store-partners-management': '门店合作商管理',
+  'menu.outpatient-service-management.procurement-zone': '门店合作商店铺采购专区',
+  'menu.outpatient-service-management.store-partne-purchasing-areas': '大健康供应系统专区',
+
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
