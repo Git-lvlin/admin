@@ -16,12 +16,12 @@ export default {
       component: './outpatient-service-management/store-partners-management',
       wrappers: [RouteWatcher],
     },
-    {
-      name: 'procurement-zone',
-      path: '/outpatient-service-management/procurement-zone',
-      component: './outpatient-service-management/procurement-zone',
-      wrappers: [RouteWatcher],
-    },
+    // {
+    //   name: 'procurement-zone',
+    //   path: '/outpatient-service-management/procurement-zone',
+    //   component: './outpatient-service-management/procurement-zone',
+    //   wrappers: [RouteWatcher],
+    // },
     {
       name: 'store-partne-purchasing-areas',
       path: '/outpatient-service-management/store-partne-purchasing-areas',
