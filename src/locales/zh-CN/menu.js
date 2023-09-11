@@ -546,5 +546,4 @@ export default {
   'menu.health-gift-package-activities.health-package-performance-statistics': '健康礼包业绩统计',
   'menu.health-gift-package-activities.health-package-commission': '健康礼包推荐提成',
   'menu.health-gift-package-activities.divide-configure': '健康礼包分成配置',
-
 };
