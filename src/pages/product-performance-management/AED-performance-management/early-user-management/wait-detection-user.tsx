@@ -29,20 +29,20 @@ const WaitDetectionUser: React.FC = () => {
       width: '80px',
       hideInSearch: true
     },
-    {
-      title: '门店合作商编号',
-      dataIndex: 'imei',
-      align: 'center',
-      hideInSearch: true,
-      hideInTable: false
-    },
-    {
-      title: '区县服务商编号',
-      dataIndex: 'imei',
-      align: 'center',
-      hideInSearch: true,
-      hideInTable: false
-    },
+    // {
+    //   title: '门店合作商编号',
+    //   dataIndex: 'imei',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   hideInTable: false
+    // },
+    // {
+    //   title: '区县服务商编号',
+    //   dataIndex: 'imei',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   hideInTable: false
+    // },
     {
       title: '通知状态',
       dataIndex: 'isNoticeDesc',

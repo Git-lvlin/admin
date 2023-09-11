@@ -4,7 +4,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
 import { provideGetListByParams } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
 import OperationModel from './operation-model'
-import { Button, InputNumber, message } from 'antd';
+import { Button, InputNumber } from 'antd';
 import RangeNumberInput from '@/components/range-number-input'
 import { PageContainer } from '@/components/PageContainer';
 import FormModel from './form-model'
@@ -52,8 +52,8 @@ type ThematicEventItem={
 }
 
 export default () => {
-  const [dataSource, setDataSource] = useState([]);
-  const [editableKeys, setEditableKeys] = useState([])
+  const [dataSource, setDataSource] = useState<ThematicEventItem>();
+  const [editableKeys, setEditableKeys] = useState<React.Key[]>([])
   const [msgDetail, setMsgDetail] = useState();
   const [visible, setVisible] = useState(false);
   const [goodVisible, setGoodVisible] = useState(false);
@@ -61,12 +61,11 @@ export default () => {
   const [importVisit, setImportVisit] = useState(false)
   const [divideVisible, setDivideVisible] = useState(false);
   const [visit, setVisit] = useState(false)
-  const [recordList,setRecordList] = useState([])
   const [falge, setFalge] = useState(false)
-  const [loding, setLoding] = useState(0)
+  const [loding, setLoding] = useState<number>(0)
   const [time,setTime]=useState<ThematicEventItem>()
   const ref= useRef<ActionType>()
-  const [oldData,setOldData] = useState()
+  const [oldData,setOldData] = useState<ThematicEventItem>()
 
   const handleMenuClick = (key:string, data:ThematicEventItem) => {
     if (key === '1') {
@@ -108,7 +107,7 @@ export default () => {
     }
     provideGetListByParams(params).then(res=>{
         if(res.code==0){
-            setDataSource(res.data.map(item=>({...item,actPrice:amountTransform(item.actPrice,'/').toFixed(2)})))
+            setDataSource(res.data.map((item: { actPrice: number; })=>({...item,actPrice:amountTransform(item.actPrice,'/').toFixed(2)})))
         }
     })
   },[loding,time])
@@ -384,7 +383,6 @@ export default () => {
               return [defaultDoms.delete];
             },
             onValuesChange: (record, recordList) => {
-              setRecordList(recordList)
               setDataSource(recordList)
             },
           }}
