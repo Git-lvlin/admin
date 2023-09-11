@@ -97,15 +97,14 @@ const AEDEarlyOrderManagement: React.FC = () => {
       align: 'center'
     },
     {
-      title: '早筛订单类型',
+      title: '订单来源',
       dataIndex: 'status',
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '门店合作商店铺设备',
-        2: '非门店合作商店铺设备',
-        3: '区县服务商店铺设备',
-        4: '非区县服务商店铺设备',
+        1: '门店合作商店铺',
+        2: '区县服务商店铺',
+        3: '其他来源',
       }
     },
     {

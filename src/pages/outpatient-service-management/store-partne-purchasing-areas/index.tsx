@@ -351,7 +351,9 @@ export default () => {
       editable:false,
       width: 200,
       render: (_:string, data:ThematicEventItem) => [
-        <a key="1" onClick={()=>{ handleMenuClick ('1',data) }}>{falge&&data.skuId==editableKeys[0]?'保存':'编辑'}&nbsp;&nbsp;</a>,
+        <span key='edit'>
+          {data.editType!=0&&<a key="1" onClick={()=>{ handleMenuClick ('1',data) }}>{falge&&data.skuId==editableKeys[0]?'保存':'编辑'}&nbsp;&nbsp;</a>}
+        </span>,
         <span key='option'>
         {
             data.id!=0&&<>
