@@ -278,7 +278,7 @@ export default {
   'menu.cms.business-ads.ads-management': '三方广告管理',
   'menu.cms.business-ads.tripartite-advertising-data-statistics': '三方广告位数据统计',
 
-  'menu.outpatient-service-management': '门诊服务管理',
+  'menu.outpatient-service-management': '大健康服务项目',
   'menu.outpatient-service-management.county-service-providers-management': '区县服务商管理',
   'menu.outpatient-service-management.store-partners-management': '门店合作商管理',
   'menu.outpatient-service-management.procurement-zone': '门店合作商店铺采购专区',
