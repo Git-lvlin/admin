@@ -23,92 +23,6 @@ import CountyServiceProvider from './county-service-provider'
 import { RATIO } from '@/constants'
 import { amountTransform } from '@/utils/utils'
 
-// const storeData = [
-//   {
-//     id: 1,
-//     roleCode: 'goodsAmount',
-//     roleName: '供应商',
-//     name: '产品成本',
-//     isChannelFee: 1,
-//     isChannelFeeDesc: '承担通道费',
-//     settleType: 1,
-//     settleTypeDesc: '汇付',
-//     trueUnfrezeeType: '4',
-//     trueUnfrezeeTypeDesc: '确认收货后解冻',
-//     businessUnfrezeeType: '4',
-//     businessUnfrezeeTypeDesc: '确认收货后解冻'
-//   },
-//   {
-//     id: 2,
-//     roleCode: 'platform',
-//     roleName: '平台',
-//     name: '运营费用',
-//     isChannelFee: 1,
-//     isChannelFeeDesc: '承担通道费',
-//     settleType: 1,
-//     settleTypeDesc: '汇付',
-//     trueUnfrezeeType: '1',
-//     trueUnfrezeeTypeDesc: '分账后即解冻',
-//     businessUnfrezeeType: '1',
-//     businessUnfrezeeTypeDesc: '分账后即解冻',
-//   },
-//   {
-//     id: 3,
-//     roleCode: 'healthyProvider',
-//     roleName: '区县服务商',
-//     settleType: 3,
-//     settleTypeDesc: '线下',
-//     trueUnfrezeeType: '6',
-//     trueUnfrezeeTypeDesc: '满足业务解冻',
-//     businessUnfrezeeType: '6',
-//     businessUnfrezeeTypeDesc: '满足业务解冻',
-//   },
-//   {
-//     id: 4,
-//     roleCode: 'orderDirectMember',
-//     roleName: '订单直推人',
-//     settleType: 2,
-//     settleTypeDesc: '线上代付',
-//     trueUnfrezeeType: '6',
-//     trueUnfrezeeTypeDesc: '满足业务解冻',
-//     businessUnfrezeeType: '6',
-//     businessUnfrezeeTypeDesc: '满足业务解冻',
-//   },
-//   {
-//     id: 5,
-//     roleCode: 'businessCollege',
-//     roleName: '商学院',
-//     settleType: 3,
-//     settleTypeDesc: '线下',
-//     trueUnfrezeeType: '6',
-//     trueUnfrezeeTypeDesc: '满足业务解冻',
-//     businessUnfrezeeType: '6',
-//     businessUnfrezeeTypeDesc: '满足业务解冻',
-//   },
-//   {
-//     id: 6,
-//     roleCode: 'companyManager',
-//     roleName: '管理',
-//     settleType: 3,
-//     settleTypeDesc: '线下',
-//     trueUnfrezeeType: '6',
-//     trueUnfrezeeTypeDesc: '满足业务解冻',
-//     businessUnfrezeeType: '6',
-//     businessUnfrezeeTypeDesc: '满足业务解冻',
-//   },
-//   {
-//     id: 7,
-//     roleCode: 'others',
-//     roleName: '其他',
-//     settleType: 3,
-//     settleTypeDesc: '线下',
-//     trueUnfrezeeType: '6',
-//     trueUnfrezeeTypeDesc: '满足业务解冻',
-//     businessUnfrezeeType: '6',
-//     businessUnfrezeeTypeDesc: '满足业务解冻',
-//   }
-// ]
-
 const countyServiceProviderData = [
   {
     id: 1,
@@ -226,8 +140,8 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 trueUnfrezeeType: '6',
                 trueUnfrezeeTypeDesc: '满足业务解冻',
                 businessUnfrezeeType: '6',
-                scope: item?.scope?.[0]?.code,
-                scopeDesc: item?.scope?.[0]?.name,
+                scope: item?.scope,
+                scopeDesc: item?.scopeDesc,
                 businessUnfrezeeTypeDesc: '满足业务解冻',
                 cond: 'providerStoreArea',
                 condDesc: '大健康服务商或门店区域',
@@ -456,7 +370,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
     },
     {
       title: '业绩范围',
-      dataIndex: 'scope',
+      dataIndex: 'scopeDesc',
       align: 'center',
       renderFormItem: (_, { record })=> {
         if(record.roleCode === 'platform' || record.roleCode === 'goodsAmount') {
