@@ -78,13 +78,13 @@ const StorePartnersManagement: React.FC = () => {
     },
     {
       title: '交合同费(元)',
-      dataIndex: 'payAmount2Yuan',
+      dataIndex: 'payAmountYuan',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '交技术费(元)',
-      dataIndex: 'payAmountYuan',
+      dataIndex: 'payAmount2Yuan',
       align: 'center',
       hideInSearch: true 
     },
