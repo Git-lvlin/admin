@@ -187,6 +187,17 @@ export default () => {
       editable:false,
     },
     {
+      title: '商品状态',
+      dataIndex: 'goodsState',
+      valueType: 'text',
+      editable:false,
+      valueEnum:{
+        1: '上架中',
+        0: '已下架'
+      },
+      hideInTable: true
+    },
+    {
       title: '供应商ID',
       dataIndex: 'supplierId',
       valueType: 'text',
@@ -435,8 +446,9 @@ export default () => {
           setVisible={setGoodVisible}
           onClose={()=>{ setLoding(loding+1); }}
           callback={(row)=>{ 
+            console.log('row',row)
             try {
-              const data=dataSource.concat(row)
+              const data=dataSource?.concat(row)
              setDataSource(data); 
             } catch (error) {
               console.log('error',error)
@@ -473,7 +485,7 @@ export default () => {
               return {...item,...{...data,actPrice:amountTransform(data.actPrice,'/').toFixed(2)}}
             }
             return item
-           }) 
+          }) 
           setDataSource(newData)
       }}
         onClose={()=>{  
