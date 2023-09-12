@@ -71,10 +71,17 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
-    form.current?.setFieldsValue({
-      billType: 2
-    })
-  }, [])
+    if(meta?.billType) {
+      form.current?.setFieldsValue({
+        billType: meta?.billType
+      })
+      setCount(meta?.billType)
+    } else {
+      form.current?.setFieldsValue({
+        billType: 2
+      })
+    }
+  }, [meta])
 
   useEffect(()=> {
     setLoading(true)
@@ -234,15 +241,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       setMinPrice(computedValue(meta, storeDataSource, count))
     }
   }, [storeDataSource])
-  
-  useEffect(()=> {
-    if(meta) {
-      form.current?.setFieldsValue({
-        billType: meta?.billType
-      })
-      setCount(meta?.billType)
-    }
-  }, [meta])
 
   const submit = (val: any) => {
     return new Promise<void>((resolve, reject) => {
