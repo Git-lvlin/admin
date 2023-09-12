@@ -19,7 +19,7 @@ const PaymentVoucher: React.FC<Props> = ({visible, setVisible, id, callback}) =>
   const [loading, setloading] = useState(false)
 
   const form = useRef<FormInstance>()
-  const name = window.localStorage.getItem('nickName')
+  const name = window.localStorage.getItem('nickname')
 
   useEffect(()=> {
     setloading(true)

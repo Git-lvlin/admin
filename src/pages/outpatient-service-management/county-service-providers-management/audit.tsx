@@ -79,14 +79,14 @@ const Audit:React.FC = () => {
       hideInSearch: true,
       render: (_, r) => <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>{_}</a>
     },
+    // {
+    //   title: '已交金额(元)',
+    //   dataIndex: 'offlineAmountDesc',
+    //   align: 'center', 
+    //   hideInSearch: true
+    // },
     {
-      title: '已交金额(元)',
-      dataIndex: 'offlineAmountDesc',
-      align: 'center', 
-      hideInSearch: true
-    },
-    {
-      title: '订单金额',
+      title: '交定金金额(元)',
       dataIndex: 'payAmountDesc',
       align: 'center', 
       hideInSearch: true
@@ -123,14 +123,9 @@ const Audit:React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
-      hideInTable: true
+      title: '签约订单号',
+      dataIndex: 'contractOrderSn',
+      align: 'center',
     },
     {
       title: '推荐人手机号',

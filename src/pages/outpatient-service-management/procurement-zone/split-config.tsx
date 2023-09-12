@@ -8,7 +8,8 @@ import {
   Divider,
   Input,
   InputNumber,
-  Select
+  Select,
+  Spin
 } from 'antd'
 import Big from 'big.js'
 
@@ -16,97 +17,97 @@ import type { FormInstance } from 'antd'
 import type { ProColumns } from '@ant-design/pro-table'
 
 import styles from './styles.less'
-import { provideSetDivideInfo } from '@/services/outpatient-service-management/procurement-zone'
+import { provideSetDivideInfo, provideGetRoleInfo } from '@/services/outpatient-service-management/procurement-zone'
 import Store from './store'
 import CountyServiceProvider from './county-service-provider'
 import { RATIO } from '@/constants'
 import { amountTransform } from '@/utils/utils'
 
-const storeData = [
-  {
-    id: 1,
-    roleCode: 'goodsAmount',
-    roleName: '供应商',
-    name: '产品成本',
-    isChannelFee: 1,
-    isChannelFeeDesc: '承担通道费',
-    settleType: 1,
-    settleTypeDesc: '汇付',
-    trueUnfrezeeType: '4',
-    trueUnfrezeeTypeDesc: '确认收货后解冻',
-    businessUnfrezeeType: '4',
-    businessUnfrezeeTypeDesc: '确认收货后解冻'
-  },
-  {
-    id: 2,
-    roleCode: 'platform',
-    roleName: '平台',
-    name: '运营费用',
-    isChannelFee: 1,
-    isChannelFeeDesc: '承担通道费',
-    settleType: 1,
-    settleTypeDesc: '汇付',
-    trueUnfrezeeType: '1',
-    trueUnfrezeeTypeDesc: '分账后即解冻',
-    businessUnfrezeeType: '1',
-    businessUnfrezeeTypeDesc: '分账后即解冻',
-  },
-  {
-    id: 3,
-    roleCode: 'healthyProvider',
-    roleName: '区县服务商',
-    settleType: 3,
-    settleTypeDesc: '线下',
-    trueUnfrezeeType: '6',
-    trueUnfrezeeTypeDesc: '满足业务解冻',
-    businessUnfrezeeType: '6',
-    businessUnfrezeeTypeDesc: '满足业务解冻',
-  },
-  {
-    id: 4,
-    roleCode: 'orderDirectMember',
-    roleName: '订单直推人',
-    settleType: 2,
-    settleTypeDesc: '线上代付',
-    trueUnfrezeeType: '6',
-    trueUnfrezeeTypeDesc: '满足业务解冻',
-    businessUnfrezeeType: '6',
-    businessUnfrezeeTypeDesc: '满足业务解冻',
-  },
-  {
-    id: 5,
-    roleCode: 'businessCollege',
-    roleName: '商学院',
-    settleType: 3,
-    settleTypeDesc: '线下',
-    trueUnfrezeeType: '6',
-    trueUnfrezeeTypeDesc: '满足业务解冻',
-    businessUnfrezeeType: '6',
-    businessUnfrezeeTypeDesc: '满足业务解冻',
-  },
-  {
-    id: 6,
-    roleCode: 'companyManager',
-    roleName: '管理',
-    settleType: 3,
-    settleTypeDesc: '线下',
-    trueUnfrezeeType: '6',
-    trueUnfrezeeTypeDesc: '满足业务解冻',
-    businessUnfrezeeType: '6',
-    businessUnfrezeeTypeDesc: '满足业务解冻',
-  },
-  {
-    id: 7,
-    roleCode: 'others',
-    roleName: '其他',
-    settleType: 3,
-    settleTypeDesc: '线下',
-    trueUnfrezeeType: '6',
-    trueUnfrezeeTypeDesc: '满足业务解冻',
-    businessUnfrezeeType: '6',
-    businessUnfrezeeTypeDesc: '满足业务解冻',
-  }
-]
+// const storeData = [
+//   {
+//     id: 1,
+//     roleCode: 'goodsAmount',
+//     roleName: '供应商',
+//     name: '产品成本',
+//     isChannelFee: 1,
+//     isChannelFeeDesc: '承担通道费',
+//     settleType: 1,
+//     settleTypeDesc: '汇付',
+//     trueUnfrezeeType: '4',
+//     trueUnfrezeeTypeDesc: '确认收货后解冻',
+//     businessUnfrezeeType: '4',
+//     businessUnfrezeeTypeDesc: '确认收货后解冻'
+//   },
+//   {
+//     id: 2,
+//     roleCode: 'platform',
+//     roleName: '平台',
+//     name: '运营费用',
+//     isChannelFee: 1,
+//     isChannelFeeDesc: '承担通道费',
+//     settleType: 1,
+//     settleTypeDesc: '汇付',
+//     trueUnfrezeeType: '1',
+//     trueUnfrezeeTypeDesc: '分账后即解冻',
+//     businessUnfrezeeType: '1',
+//     businessUnfrezeeTypeDesc: '分账后即解冻',
+//   },
+//   {
+//     id: 3,
+//     roleCode: 'healthyProvider',
+//     roleName: '区县服务商',
+//     settleType: 3,
+//     settleTypeDesc: '线下',
+//     trueUnfrezeeType: '6',
+//     trueUnfrezeeTypeDesc: '满足业务解冻',
+//     businessUnfrezeeType: '6',
+//     businessUnfrezeeTypeDesc: '满足业务解冻',
+//   },
+//   {
+//     id: 4,
+//     roleCode: 'orderDirectMember',
+//     roleName: '订单直推人',
+//     settleType: 2,
+//     settleTypeDesc: '线上代付',
+//     trueUnfrezeeType: '6',
+//     trueUnfrezeeTypeDesc: '满足业务解冻',
+//     businessUnfrezeeType: '6',
+//     businessUnfrezeeTypeDesc: '满足业务解冻',
+//   },
+//   {
+//     id: 5,
+//     roleCode: 'businessCollege',
+//     roleName: '商学院',
+//     settleType: 3,
+//     settleTypeDesc: '线下',
+//     trueUnfrezeeType: '6',
+//     trueUnfrezeeTypeDesc: '满足业务解冻',
+//     businessUnfrezeeType: '6',
+//     businessUnfrezeeTypeDesc: '满足业务解冻',
+//   },
+//   {
+//     id: 6,
+//     roleCode: 'companyManager',
+//     roleName: '管理',
+//     settleType: 3,
+//     settleTypeDesc: '线下',
+//     trueUnfrezeeType: '6',
+//     trueUnfrezeeTypeDesc: '满足业务解冻',
+//     businessUnfrezeeType: '6',
+//     businessUnfrezeeTypeDesc: '满足业务解冻',
+//   },
+//   {
+//     id: 7,
+//     roleCode: 'others',
+//     roleName: '其他',
+//     settleType: 3,
+//     settleTypeDesc: '线下',
+//     trueUnfrezeeType: '6',
+//     trueUnfrezeeTypeDesc: '满足业务解冻',
+//     businessUnfrezeeType: '6',
+//     businessUnfrezeeTypeDesc: '满足业务解冻',
+//   }
+// ]
 
 const countyServiceProviderData = [
   {
@@ -149,9 +150,10 @@ type props = {
 
 const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
   const [count, setCount] = useState(2)
-  const [storeDataSource, setStoreDataSource] = useState<any>(storeData)
+  const [loading, setLoading] = useState(false)
+  const [storeDataSource, setStoreDataSource] = useState<any>([])
   const [countyServiceProviderdataSource, setCountyServiceProviderdataSource] = useState<any>(countyServiceProviderData)
-  const [minPrice, setMinPrice] = useState<any>()
+  const [minPrice, setMinPrice] = useState<number>(0)
   const form = useRef<FormInstance>()
 
   useEffect(()=> {
@@ -161,16 +163,162 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
   }, [])
 
   useEffect(()=> {
-    if(meta?.divideInfoList1?.length > 0) {
-      setStoreDataSource(
-        meta?.divideInfoList1.map((it: any) => {
-          return {
-            ...it,
-            billVal: amountTransform(it.billVal, '/')
-          }
-        })
-      )
-    }
+    setLoading(true)
+    provideGetRoleInfo().then(res => {
+      if(res?.code === 0) {
+        if(meta.divideInfoList1.length > 0) {
+          const arr = res.data.map((res: any) => {
+            return meta.divideInfoList1.find((item: any) => res.roleCode === item.roleCode)
+          })
+          setStoreDataSource(arr.map((item: any, idx: number) => {
+            if(item?.roleCode === 'goodsAmount') {
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                billVal: amountTransform(item?.billVal, '/'),
+                name: '产品成本',
+                isChannelFee: 1,
+                settleType: 1,
+                settleTypeDesc: '汇付',
+                trueUnfrezeeType: '4',
+                trueUnfrezeeTypeDesc: '确认收货后解冻',
+                businessUnfrezeeType: '4',
+                businessUnfrezeeTypeDesc: '确认收货后解冻'
+              }
+            } else if(item?.roleCode === 'platform') {
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                billVal: amountTransform(item?.billVal, '/'),
+                name: '运营费用',
+                isChannelFee: 1,
+                settleType: 1,
+                settleTypeDesc: '汇付',
+                trueUnfrezeeType: '1',
+                trueUnfrezeeTypeDesc: '分账后即解冻',
+                businessUnfrezeeType: '1',
+                businessUnfrezeeTypeDesc: '分账后即解冻',
+              }
+            } else if(item?.roleCode === 'directMember'){
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                billVal: amountTransform(item?.billVal, '/'),
+                settleType: 2,
+                name: '销售佣金',
+                settleTypeDesc: '线上代付',
+                trueUnfrezeeType: '6',
+                trueUnfrezeeTypeDesc: '满足业务解冻',
+                businessUnfrezeeType: '6',
+                businessUnfrezeeTypeDesc: '满足业务解冻',
+                scope: 't',
+                scopeDesc: '推荐关系链',
+                cond: 'storeDirectUser',
+                condDesc: '订单直推人 (大健康门店合作商)',
+              }
+            } else {
+              return {
+                ...item,
+                billVal: amountTransform(item?.billVal, '/'),
+                id: idx + 1,
+                roleCode: item?.roleCode,
+                roleName: item?.roleName,
+                settleType: 3,
+                settleTypeDesc: '线下',
+                trueUnfrezeeType: '6',
+                trueUnfrezeeTypeDesc: '满足业务解冻',
+                businessUnfrezeeType: '6',
+                scope: item?.scope?.[0]?.code,
+                scopeDesc: item?.scope?.[0]?.name,
+                businessUnfrezeeTypeDesc: '满足业务解冻',
+                cond: 'providerStoreArea',
+                condDesc: '大健康服务商或门店区域',
+              }
+            }
+          }))
+        } else {
+          setStoreDataSource(res.data.map((item: any, idx: number) => {
+            if(item.roleCode === 'goodsAmount') {
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                name: '产品成本',
+                isChannelFee: 1,
+                settleType: 1,
+                settleTypeDesc: '汇付',
+                trueUnfrezeeType: '4',
+                trueUnfrezeeTypeDesc: '确认收货后解冻',
+                businessUnfrezeeType: '4',
+                businessUnfrezeeTypeDesc: '确认收货后解冻'
+              }
+            } else if(item.roleCode === 'platform') {
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                name: '运营费用',
+                isChannelFee: 1,
+                settleType: 1,
+                settleTypeDesc: '汇付',
+                trueUnfrezeeType: '1',
+                trueUnfrezeeTypeDesc: '分账后即解冻',
+                businessUnfrezeeType: '1',
+                businessUnfrezeeTypeDesc: '分账后即解冻',
+              }
+            } else if(item.roleCode === 'directMember'){
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                settleType: 2,
+                name: '销售佣金',
+                settleTypeDesc: '线上代付',
+                trueUnfrezeeType: '6',
+                trueUnfrezeeTypeDesc: '满足业务解冻',
+                businessUnfrezeeType: '6',
+                businessUnfrezeeTypeDesc: '满足业务解冻',
+                scope: 't',
+                scopeDesc: '推荐关系链',
+                cond: 'storeDirectUser',
+                condDesc: '订单直推人 (大健康门店合作商)',
+              }
+            } else {
+              return {
+                ...item,
+                id: idx + 1,
+                roleCode: item.roleCode,
+                roleName: item.roleName,
+                settleType: 3,
+                settleTypeDesc: '线下',
+                trueUnfrezeeType: '6',
+                trueUnfrezeeTypeDesc: '满足业务解冻',
+                businessUnfrezeeType: '6',
+                scope: item?.scope?.[0]?.code,
+                scopeDesc: item?.scope?.[0]?.name,
+                businessUnfrezeeTypeDesc: '满足业务解冻',
+                cond: 'providerStoreArea',
+                condDesc: '大健康服务商或门店区域',
+              }
+            }
+          }))
+        }
+      }
+    }).finally(()=> {
+      setLoading(false)
+    })  
+  }, [meta])
+  
+  useEffect(()=> {
     if(meta?.divideInfoList2?.length > 0) {
       setCountyServiceProviderdataSource(
         meta?.divideInfoList2.map((it: any) => {
@@ -182,9 +330,11 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       )
     }
   }, [meta])
-
+    
   useEffect(()=> {
-    setMinPrice(computedValue(meta, storeDataSource, count))
+    if(storeDataSource.length > 0) {
+      setMinPrice(computedValue(meta, storeDataSource, count))
+    }
   }, [storeDataSource])
   
 
@@ -319,6 +469,32 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       dataIndex: 'businessUnfrezeeTypeDesc',
       align: 'center',
       renderFormItem: (_, { record })=> record.businessUnfrezeeTypeDesc
+    },
+    {
+      title: '业绩范围',
+      dataIndex: 'scope',
+      align: 'center',
+      renderFormItem: (_, { record })=> {
+        if(record.roleCode === 'platform' || record.roleCode === 'goodsAmount') {
+          return '/'
+        } else if(record.roleCode === 'businessCollege' || record.roleCode === 'companyManager' || record.roleCode === 'other'){
+          return '全国'
+        } else {
+          return record?.scopeDesc
+        }
+      }
+    },
+    {
+      title: '分账条件',
+      dataIndex: 'condDesc',
+      align: 'center',
+      renderFormItem: (_, { record })=> {
+        if(record.roleCode === 'platform' || record.roleCode === 'goodsAmount' || record.roleCode === 'businessCollege' || record.roleCode === 'companyManager' || record.roleCode === 'other') {
+          return '/'
+        } else{
+          return record?.condDesc
+        }
+      }
     }
   ]
 
@@ -343,33 +519,34 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       formRef={form}
       className={styles.desc}
     >
-      <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        <div style={{fontWeight: 600}}>基本信息</div>
-        <div>
-          通道费：
-          <span style={{color: '#E7342F'}}>0.65%</span>
+      <Spin spinning={loading}>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div style={{fontWeight: 600}}>基本信息</div>
+          <div>
+            通道费：
+            <span style={{color: '#E7342F'}}>0.65%</span>
+          </div>
         </div>
-      </div>
-      <Divider />
-      <ProFormText
-        name='id'
-        hidden
-      />
-      <ProFormRadio.Group
-        name='billType'
-        label='计算类型'
-        rules={[{required: true}]}
-        options={[
-          {label: '比例', value: 1},
-          {label: '金额', value: 2}
-        ]}
-        fieldProps={{
-          onChange: (e) => {
-            setCount(e.target.value)
-            setMinPrice(computedValue(meta, storeDataSource, e.target.value))
-          }
-        }}
-      />
+        <Divider />
+        <ProFormText
+          name='id'
+          hidden
+        />
+        <ProFormRadio.Group
+          name='billType'
+          label='计算类型'
+          rules={[{required: true}]}
+          options={[
+            {label: '比例', value: 1},
+            {label: '金额', value: 2}
+          ]}
+          fieldProps={{
+            onChange: (e) => {
+              setCount(e.target.value)
+              setMinPrice(computedValue(meta, storeDataSource, e.target.value))
+            }
+          }}
+        />
         <Store 
           columns={columns}
           dataSource={storeDataSource}
@@ -386,6 +563,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
           setDataSource={setCountyServiceProviderdataSource}
           meta={meta}
         />
+      </Spin>
     </DrawerForm>
   )
 }
@@ -395,10 +573,10 @@ const computedValue = (meta: any, roleData: any, type = 2) => {
 
   const val = new Big(meta?.actPriceStr ?? 0).minus(meta?.retailSupplyPriceStr ?? 0)
   let balanceAmount = val.minus(val.times(RATIO))
-  roleData.forEach((e: any) => {
+  roleData?.forEach((e: any) => {
     if(type === 2) {
       if(e.roleCode !== 'goodsAmount' && e.roleCode !== 'platform') {
-        balanceAmount = new Big(balanceAmount).minus(e?.billVal ?? 0)
+        balanceAmount = new Big(balanceAmount).minus(e.billVal ?? 0)
       }
     } else {
       if(e.roleCode !== 'goodsAmount' && e.roleCode !== 'platform') {

@@ -141,3 +141,12 @@ export const uploadVoucher = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 审核终止
+export const cancelProvider = async (params = {}, options = {}) => {
+  return await request('/auth/healthy/provider/cancelProvider', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

@@ -86,7 +86,13 @@ const Reexamine:React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '订单金额',
+      title: '交合同费(元)',
+      dataIndex: 'contractFeeDesc',
+      align: 'center', 
+      hideInSearch: true
+    },
+    {
+      title: '交定金金额(元)',
       dataIndex: 'payAmountDesc',
       align: 'center', 
       hideInSearch: true
@@ -123,14 +129,9 @@ const Reexamine:React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
-      hideInTable: true
+      title: '签约订单号',
+      dataIndex: 'contractOrderSn',
+      align: 'center',
     },
     {
       title: '推荐人手机号',

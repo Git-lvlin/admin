@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import moment from 'moment'
+import { Space } from 'antd'
 
 import type { ActionType, ProColumns } from '@ant-design/pro-table'
 import { FormInstance, Tooltip } from 'antd'
@@ -10,9 +11,11 @@ import AddressCascader from '@/components/address-cascader'
 import { providerOrder } from '@/services/outpatient-service-management/county-service-providers-management'
 import Export from '@/components/export'
 import PaymentVoucher from './payment-voucher'
+import TerminationRecruitment from './termination-recruitment'
 
 const CountyServiceProvidersOrder:React.FC = () => {
   const [visible, setVisible] = useState(false)
+  const [recruitmentVisible, setRecruitmentVisible] = useState(false)
   const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
@@ -25,7 +28,7 @@ const CountyServiceProvidersOrder:React.FC = () => {
       signEndTime: signTime && moment(signTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       provinceId: serviceArea && serviceArea?.[0].value,
       cityId: serviceArea && serviceArea?.[1].value,
-      areaId: serviceArea && serviceArea?.[2].value,
+      areaId: serviceArea && serviceArea?.[2].value
     }
   }
 
@@ -77,7 +80,7 @@ const CountyServiceProvidersOrder:React.FC = () => {
       hideInTable: true
     },
     {
-      title: '交合同费(元)',
+      title: '交合同费(元)',  
       dataIndex: 'payAmountDesc',
       align: 'center', 
       hideInSearch: true
@@ -114,14 +117,9 @@ const CountyServiceProvidersOrder:React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
-      hideInTable: true
+      title: '签约订单号',
+      dataIndex: 'contractOrderSn',
+      align: 'center',
     },
     {
       title: '推荐人手机号',
@@ -146,11 +144,12 @@ const CountyServiceProvidersOrder:React.FC = () => {
       dataIndex: 'allStatus',
       valueType: 'select',
       valueEnum: {
-        1: '已签法大大合同',
-        2: '已交定金',
-        3: '审核拒绝',
-        4: '审核终止招募',
-        5: '已失效'
+        1: '待签合同',
+        2: '待交定金',
+        3: '待上传付尾款凭证',
+        4: '审核拒绝',
+        5: '终止招募',
+        6: '已失效'
       },
       hideInTable: true
     },
@@ -160,7 +159,22 @@ const CountyServiceProvidersOrder:React.FC = () => {
       align: 'center',
       render: (_, r) => {
         if(r.status === 0 || r.status === 4) {
-          return <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>上传缴费凭证</a>
+          return (
+            <Space>
+              <a onClick={()=> {setVisible(true); setId(r.subOrderSn)}}>上传尾款凭证</a>
+              {
+                r.thpId > 0 &&
+                <a 
+                  onClick={()=> {
+                    setRecruitmentVisible(true)
+                    setId(r)
+                  }}
+                >
+                  终止招募
+                </a>
+              }
+            </Space>
+          )
         } else {
           return
         }
@@ -195,6 +209,15 @@ const CountyServiceProvidersOrder:React.FC = () => {
           visible={visible}
           setVisible={setVisible}
           id={id}
+          callback={()=> {actRef.current?.reload()}}
+        />
+      }
+      {
+        recruitmentVisible &&
+        <TerminationRecruitment
+          visible={recruitmentVisible}
+          setVisible={setRecruitmentVisible}
+          meta={id}
           callback={()=> {actRef.current?.reload()}}
         />
       }

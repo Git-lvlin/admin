@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { EditableProTable } from '@ant-design/pro-table'
 import { Tooltip } from 'antd'
 
@@ -18,7 +18,13 @@ type props = {
 }
 
 const Store: React.FC<props> = ({columns, dataSource, setDataSource, info, setMinPrice, computedValue, type, val}) => {
-  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([1, 2, 3, 4, 5, 6, 7])
+  const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([])
+
+  useEffect(()=> {
+    if(dataSource.length > 0) {
+      setEditableRowKeys(dataSource?.map(item => item.id))
+    }
+  }, [dataSource])
 
   return (
     <EditableProTable

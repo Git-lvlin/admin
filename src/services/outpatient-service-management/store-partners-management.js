@@ -4,7 +4,7 @@ import moment from 'moment'
 // 门店合作商分页列表
 export const shopPartnerPage = async (params = {}, options = {}) => {
   const { current, pageSize, area, signTime, ...rest } = params
-  const res = await request('/auth/store/shopPartner/page', {
+  const res = await request('/auth/store/shopPartner/pageOrder', {
     method: 'GET',
     params: {
       ...rest,
