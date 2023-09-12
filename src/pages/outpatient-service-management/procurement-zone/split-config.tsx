@@ -235,6 +235,14 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
     }
   }, [storeDataSource])
   
+  useEffect(()=> {
+    if(meta) {
+      form.current?.setFieldsValue({
+        billType: meta?.billType
+      })
+      setCount(meta?.billType)
+    }
+  }, [meta])
 
   const submit = (val: any) => {
     return new Promise<void>((resolve, reject) => {
