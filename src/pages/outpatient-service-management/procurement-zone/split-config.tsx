@@ -175,8 +175,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 billVal: amountTransform(item?.billVal, '/'),
                 name: '产品成本',
                 isChannelFee: 1,
@@ -191,8 +189,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 billVal: amountTransform(item?.billVal, '/'),
                 name: '运营费用',
                 isChannelFee: 1,
@@ -207,8 +203,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 billVal: amountTransform(item?.billVal, '/'),
                 settleType: 2,
                 name: '销售佣金',
@@ -227,8 +221,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 billVal: amountTransform(item?.billVal, '/'),
                 id: idx + 1,
-                roleCode: item?.roleCode,
-                roleName: item?.roleName,
                 settleType: 3,
                 settleTypeDesc: '线下',
                 trueUnfrezeeType: '6',
@@ -248,8 +240,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 name: '产品成本',
                 isChannelFee: 1,
                 settleType: 1,
@@ -263,8 +253,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 name: '运营费用',
                 isChannelFee: 1,
                 settleType: 1,
@@ -278,8 +266,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 settleType: 2,
                 name: '销售佣金',
                 settleTypeDesc: '线上代付',
@@ -296,8 +282,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                roleCode: item.roleCode,
-                roleName: item.roleName,
                 settleType: 3,
                 settleTypeDesc: '线下',
                 trueUnfrezeeType: '6',
