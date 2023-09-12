@@ -134,7 +134,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 businessUnfrezeeTypeDesc: '满足业务解冻',
                 scope: 't',
                 scopeDesc: '推荐关系链',
-                cond: 'storeDirectUser',
+                billCond: 'storeDirectUser',
                 condDesc: '订单直推人 (大健康门店合作商)',
               }
             } else {
@@ -150,7 +150,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 scope: item?.scope,
                 scopeDesc: item?.scopeDesc,
                 businessUnfrezeeTypeDesc: '满足业务解冻',
-                cond: 'providerStoreArea',
+                billCond: 'providerStoreArea',
                 condDesc: '大健康服务商或门店区域',
               }
             }
@@ -196,7 +196,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 businessUnfrezeeTypeDesc: '满足业务解冻',
                 scope: 't',
                 scopeDesc: '推荐关系链',
-                cond: 'storeDirectUser',
+                billCond: 'storeDirectUser',
                 condDesc: '订单直推人 (大健康门店合作商)',
               }
             } else {
@@ -211,7 +211,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 scope: item?.scope?.[0]?.code,
                 scopeDesc: item?.scope?.[0]?.name,
                 businessUnfrezeeTypeDesc: '满足业务解冻',
-                cond: 'providerStoreArea',
+                billCond: 'providerStoreArea',
                 condDesc: '大健康服务商或门店区域',
               }
             }
