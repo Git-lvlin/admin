@@ -87,7 +87,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
     setLoading(true)
     provideGetRoleInfo().then(res => {
       if(res?.code === 0) {
-        if(meta.divideInfoList1.length > 0) {
+        if(meta?.divideInfoList1?.length > 0) {
           const arr = res.data.map((res: any) => {
             return meta.divideInfoList1.find((item: any) => res.roleCode === item.roleCode)
           })
