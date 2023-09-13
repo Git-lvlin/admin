@@ -311,10 +311,10 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       title: `${count === 2 ? '分成金额(元)' : '分成比例(%)'}`,
       dataIndex: 'billVal',
       align: 'center',
-      renderFormItem: (_, {recordKey}) => {
-        if(recordKey === '1') {
+      renderFormItem: (_, {record}) => {
+        if(record.roleCode === 'goodsAmount') {
           return `${meta?.retailSupplyPriceStr ?? 0}（零售供货价）`
-        } else if(recordKey === '2'){
+        } else if(record.roleCode === 'platform'){
           return `${minPrice ?? 0}元`
         } else {
           return <InputNumber placeholder='请输入' controls={false}/>
@@ -325,10 +325,10 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       title: '费用名称',
       dataIndex: 'name',
       align: 'center',
-      renderFormItem: (_, { recordKey }) => {
-        if(recordKey === '1') {
+      renderFormItem: (_, { record }) => {
+        if(record.roleCode === 'goodsAmount') {
           return '产品成本'
-        } else if(recordKey === '2') {
+        } else if(record.roleCode === 'platform') {
           return '运营费用'
         } else {
           return <Input placeholder='请输入'/>
@@ -339,8 +339,8 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       title: '是否承担通道费',
       dataIndex: 'isChannelFee',
       align: 'center',
-      renderFormItem: (_, {recordKey})=> {
-        if(recordKey === '1' || recordKey === '2') {
+      renderFormItem: (_, {record})=> {
+        if(record.roleCode === 'platform' || record.roleCode === 'goodsAmount') {
           return '承担通道费'
         } else {
           return (
