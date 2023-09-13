@@ -101,33 +101,46 @@ export default () => {
   },[loding,time])
 
   const debounceFetcher = useMemo(() => {
-    const loadData = (value) => {
+    // 定义数据加载函数
+    const loadData = async (value) => {
       const { recordList, record } = value;
+  
+      // 定义用于处理列表的函数
       const getList = (list, salePriceProfitLoss) => {
-        const arr = list.map(ele=>{
-          if(ele?.skuId==record?.skuId){
-            return {...ele,tPlatformGain:salePriceProfitLoss}
-          }else{
-            return {...ele}
+        return list.map((ele) => {
+          if (ele?.skuId === record?.skuId) {
+            return { ...ele, tPlatformGain: salePriceProfitLoss };
+          } else {
+            return { ...ele };
           }
-        })
-        return arr;
-      }
-      const params={
-        operateType:1,
-        skuId:record?.skuId,
-        retailSupplyPrice:record?.retailSupplyPrice,
-        wholesaleTaxRate:record?.wholesaleTaxRate,
-        salePrice:amountTransform(record?.actPrice,'*')
-      }
-      subAccountCheck(params).then(res => {
+        });
+      };
+  
+      // 构建请求参数
+      const params = {
+        operateType: 1,
+        skuId: record?.skuId,
+        retailSupplyPrice: record?.retailSupplyPrice,
+        wholesaleTaxRate: record?.wholesaleTaxRate,
+        salePrice: amountTransform(record?.actPrice, '*'),
+      };
+  
+      try {
+        // 发起异步请求并获取结果
+        const res = await subAccountCheck(params);
         const salePriceProfitLoss = res?.data[0]?.salePriceProfitLoss;
-        setDataSource(getList(recordList, salePriceProfitLoss))
-      })
+  
+        // 更新数据源
+        setDataSource(getList(recordList, salePriceProfitLoss));
+      } catch (error) {
+        console.error('数据加载失败', error);
+      }
     };
-
+  
+    // 返回使用防抖函数包装的数据加载函数
     return debounce(loadData, 10);
   }, [dataSource]);
+  
 
   const getFieldValue = (searchConfig) => {
     const { tPlatformGain, ...rest }=searchConfig.form.getFieldsValue()

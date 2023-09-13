@@ -342,14 +342,14 @@ const TableList = () => {
         </ProForm.Item>
         <ProFormSelect
           label="大健康供应系统交易"
-          name="provide"
+          name="objectId"
           options={[
             {
-              value: 'objectId',
+              value: 'provide',
               label: '是'
             },
             {
-              value:'notObjectId',
+              value:'!provide',
               label: '否'
             }
           ]}
