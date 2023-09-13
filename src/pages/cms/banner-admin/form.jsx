@@ -277,6 +277,10 @@ export default (props) => {
             {
               label: '仅普通店主可见',
               value: 4,
+            },
+            {
+              label: '仅VIP店主可见',
+              value: 5,
             }
           ]}
       />
