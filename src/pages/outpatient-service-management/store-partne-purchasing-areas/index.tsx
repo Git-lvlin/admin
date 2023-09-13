@@ -67,39 +67,27 @@ export default () => {
   const ref= useRef<ActionType>()
   const [oldData,setOldData] = useState<ThematicEventItem>()
 
-  const handleMenuClick = (key:string, data:ThematicEventItem) => {
+  const handleMenuClick = (key: string, data: ThematicEventItem) => {
     if (key === '1') {
-      if(!falge){
-        //点编辑时触发单行可编辑状态
-        setEditableKeys([data?.skuId])
-        setFalge(!falge)
-        setOldData(data)
-      }else if(falge&&data.skuId!=editableKeys[0]){
-        //另外一行触发可编辑状态
-        setEditableKeys([data?.skuId])
-        setOldData(data)
-      }else if(falge&&data.skuId==editableKeys[0]){
-        //点保存时触发弹窗
-        setFormVisible(true)
-        setMsgDetail([oldData,data])
+      if (!falge || data.skuId !== editableKeys[0]) {
+        // 点击编辑时触发单行可编辑状态
+        setEditableKeys([data?.skuId]);
+        setOldData(data);
+        setFalge(true);
+      } else {
+        // 点击保存时触发弹窗
+        setFormVisible(true);
+        setMsgDetail([oldData, data]);
       }
     }
-    
-    if (key === '2') {
-      setMsgDetail({ ...data, type:key })
-      setVisible(true)
+  
+    if (key === '2' || key === '3' || key === '4') {
+      // 点击2、3、4时设置消息详情并显示
+      setMsgDetail({ ...data, type: key });
+      setVisible(true);
     }
-
-    if (key === '3') {
-      setMsgDetail({ ...data, type:key })
-      setVisible(true)
-    }
-
-    if (key === '4') {
-        setMsgDetail({ ...data, type:key })
-        setVisible(true)
-      }
   }
+  
 
   useEffect(()=>{
     const params={
@@ -384,7 +372,6 @@ export default () => {
           rowKey="skuId"
           options={false}
           value={dataSource}
-          // request={provideGetListByParams}
           recordCreatorProps={false}
           columns={columns}
           editable={{
@@ -446,10 +433,9 @@ export default () => {
           setVisible={setGoodVisible}
           onClose={()=>{ setLoding(loding+1); }}
           callback={(row)=>{ 
-            console.log('row',row)
             try {
               const data=dataSource?.concat(row)
-             setDataSource(data); 
+              setDataSource(data); 
             } catch (error) {
               console.log('error',error)
             }
@@ -487,7 +473,7 @@ export default () => {
             return item
           }) 
           setDataSource(newData)
-      }}
+        }}
         onClose={()=>{  
           setFalge(false);
           setEditableKeys([]);

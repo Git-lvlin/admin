@@ -510,6 +510,9 @@ const TableList = () => {
                     {
                       item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
                     }
+                     {
+                      item.objectName && <div>{item.objectName}</div>
+                    }
                   </div>
                   <div style={{ textAlign: 'center' }}>
                     {/* <a onClick={() => { history.push(`/order-management/normal-order-detail${isPurchase ? '-purchase' : ''}/${item.id}`) }}>详情</a> */}

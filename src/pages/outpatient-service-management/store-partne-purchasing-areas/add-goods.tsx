@@ -92,7 +92,7 @@ export default (props) => {
       visible={visible}
       width={1200}
       onFinish={() => {
-        callback(selectedRow.map(item=>({...item,id:0,actPrice:amountTransform(item?.actPrice,'/'),divideState:0})));
+        callback(selectedRow.map(item=>({...item,id:0,actPrice:amountTransform(item?.actPrice,'/')})));
         setVisible(false)
         return true;
       }}
