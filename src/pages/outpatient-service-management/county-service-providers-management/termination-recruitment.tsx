@@ -109,7 +109,7 @@ const TerminationRecruitment:React.FC<props> = ({visible, setVisible, meta, call
           label='付款凭证图片'
           name='voucher'
         >
-          <Space>
+          <Space wrap>
             {
               data?.voucher?.map(res => (
                 <Image src={res} width={50} height={50} key={res}/>
