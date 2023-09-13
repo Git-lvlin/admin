@@ -98,7 +98,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
     },
     {
       title: '订单来源',
-      dataIndex: 'status',
+      dataIndex: 'providerType',
       align: 'center',
       hideInTable: true,
       valueEnum: {
