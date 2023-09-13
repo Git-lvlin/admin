@@ -308,7 +308,23 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       renderFormItem: (_, { record })=> record.roleName
     },
     {
-      title: `${count === 2 ? '分成金额(元)' : '分成比例(%)'}`,
+      title: ()=> {
+        if(count === 2) {
+          return (
+            <>
+              分成金额(元)
+              <span style={{color: '#ff0000'}}>*</span>
+            </>
+          )
+        } else {
+          return (
+            <>
+              分成比例(%)
+              <span style={{color: '#ff0000'}}>*</span>
+            </>
+          )
+        }
+      },
       dataIndex: 'billVal',
       align: 'center',
       renderFormItem: (_, {record}) => {
@@ -322,7 +338,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       }
     },
     {
-      title: '费用名称',
+      title: () => (<>费用名称<span style={{color: '#ff0000'}}>*</span></>),
       dataIndex: 'name',
       align: 'center',
       renderFormItem: (_, { record }) => {
@@ -336,7 +352,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       }
     },
     {
-      title: '是否承担通道费',
+      title: () => (<>是否承担通道费<span style={{color: '#ff0000'}}>*</span></>),
       dataIndex: 'isChannelFee',
       align: 'center',
       renderFormItem: (_, {record})=> {
