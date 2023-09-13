@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
-import { Spin } from 'antd'
+import ProForm, { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form'
+import { Spin, Space, Image } from 'antd'
 
 import type { FormInstance } from 'antd'
 
@@ -105,11 +105,18 @@ const TerminationRecruitment:React.FC<props> = ({visible, setVisible, meta, call
           name='contractId'
           readonly
         />
-        <ProFormText 
+        <ProForm.Item
           label='付款凭证图片'
           name='voucher'
-          readonly
-        />
+        >
+          <Space>
+            {
+              data?.voucher?.map(res => (
+                <Image src={res} width={50} height={50} key={res}/>
+              ))
+            }
+          </Space>
+        </ProForm.Item>
         <ProFormTextArea
           label='终止原因'
           name='reason'
