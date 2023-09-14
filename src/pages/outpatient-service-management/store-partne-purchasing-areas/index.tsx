@@ -261,19 +261,19 @@ export default () => {
         />
       },
     },
-    // {
-    //   title: '加购数',
-    //   dataIndex: 'buyMoreNum',
-    //   valueType: 'text',
-    //   hideInSearch: true,
-    //   renderFormItem: (_) => {
-    //     return <InputNumber
-    //       min="1"
-    //       max={_?.entry?.stockNum}
-    //       stringMode
-    //     />
-    //   },
-    // },
+    {
+      title: '加购数',
+      dataIndex: 'batchNumber',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: (_) => {
+        return <InputNumber
+          min="1"
+          max={_?.entry?.stockNum}
+          stringMode
+        />
+      },
+    },
     {
       title: '分成配置状态',
       dataIndex: 'divideState',

@@ -156,12 +156,12 @@ export default (props:MyComponentProps) => {
               "newValue": msgDetail?.[1]?.sort,
               "id": 3
             },
-            // {
-            //   "parameterName": "加购数",
-            //   "oldValue": msgDetail?.[0]?.buyMoreNum,
-            //   "newValue": msgDetail?.[1]?.buyMoreNum,
-            //   "id": 4
-            // }
+            {
+              "parameterName": "加购数",
+              "oldValue": msgDetail?.[0]?.batchNumber,
+              "newValue": msgDetail?.[1]?.batchNumber,
+              "id": 4
+            }
           ]}
          columnEmptyText={false}
          options={false}
