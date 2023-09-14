@@ -47,7 +47,6 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
       form.current?.setFieldsValue({
         houseNumber: data?.houseName,
         area: data?.provinceName + data?.cityName + data?.areaName,
-        payAmount: `${amountTransform(data?.payAmount, '/').toFixed(2)}元`,
         contractId: meta?.contractId,
         optName: window.localStorage.getItem('nickname')
       })
@@ -136,13 +135,14 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
             label='服务区域'
             name='area'
             readonly
-            extra={data?.isExistProviderDesc}
+            extra={<span style={data?.isExistProviderDesc === '此区域已有服务商(已交15000元)'? {color: 'red'}: {color: 'rgb(16, 172, 7)'}}>{data?.isExistProviderDesc}</span>}
           />
-          <ProFormText 
+          <ProForm.Item 
             label='订单金额'
             name='payAmount'
-            readonly
-          />
+          >
+            <span style={{color: 'red'}}>{amountTransform(data?.payAmount, '/').toFixed(2)}</span>元
+          </ProForm.Item>
           <ProFormText
             label='法大大合同ID'
             name='contractId'

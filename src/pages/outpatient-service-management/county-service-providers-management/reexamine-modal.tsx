@@ -46,10 +46,8 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
       form.current?.setFieldsValue({
         houseNumber: data?.houseName,
         area: data?.provinceName + data?.cityName + data?.areaName,
-        payAmount: `${amountTransform(data?.payAmount, '/').toFixed(2)}元`,
         contractId: meta?.contractId,
         optName: data?.optName,
-        offlineAmount: `${amountTransform(data?.offlineAmount, '/').toFixed(2)}元`,
         optTime: data?.optTime,
         reOptName: window.localStorage.getItem('nickname')
       })
@@ -107,13 +105,14 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
             label='服务区域'
             name='area'
             readonly
-            extra={data?.isExistProviderDesc}
+            extra={<span style={data?.isExistProviderDesc === '此区域已有服务商(已交15000元)'? {color: 'red'}: {color: 'rgb(16, 172, 7)'}}>{data?.isExistProviderDesc}</span>}
           />
-          <ProFormText 
+          <ProForm.Item
             label='订单金额'
             name='payAmount'
-            readonly
-          />
+          >
+            <span style={{color: 'red'}}>{amountTransform(data?.payAmount, '/').toFixed(2)}</span>元
+          </ProForm.Item>
           <ProFormText
             label='法大大合同ID'
             name='contractId'
@@ -123,7 +122,7 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
             label='付款凭证图片'
             name='voucherImg'
           >
-            <Space>
+            <Space wrap>
               {
                 data?.voucher.map((res: any) => {
                   return (
@@ -138,12 +137,13 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
               }
             </Space>
           </ProForm.Item>
-          <ProFormText
+          <ProForm.Item
             label='已审缴费总计'
             name='offlineAmount'
-            extra='为初审确认录入的（已交订单金额 + 已确认付款凭证金额）'
-            readonly
-          />
+            extra={<span style={{color: '#FF8900'}}>为初审确认录入的（已交订单金额 + 已确认付款凭证金额）</span>}
+          >
+            <span style={{color: 'red'}}>{amountTransform(data?.offlineAmount, '/').toFixed(2)}</span>元
+          </ProForm.Item>
           <ProFormText
             label='初审人'
             name='optName'

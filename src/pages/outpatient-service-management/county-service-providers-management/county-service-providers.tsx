@@ -70,7 +70,7 @@ const CountyServiceProviders:React.FC = () => {
       hideInTable: true
     },
     {
-      title: '付款凭证张数(张)',
+      title: '尾款凭证张数(张)',
       dataIndex: 'voucherNum',
       align: 'center',
       hideInSearch: true,
