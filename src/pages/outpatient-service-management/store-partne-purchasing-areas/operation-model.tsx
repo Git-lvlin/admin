@@ -5,14 +5,17 @@ import {
 } from '@ant-design/pro-form';
 import { ExclamationCircleFilled} from '@ant-design/icons';
 import { provideUpdateGoodsState, provideDeleteByIdArr, provideSort } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
+import type { MyComponentProps } from './data'
 
-export default (props) => {
+
+
+export default (props:MyComponentProps) => {
   const { setVisible,visible,callback,onClose,msgDetail } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
   const titleType=()=>{
-    const type=msgDetail.type
+    const type=msgDetail?.type
     switch (type) {
       case '2':
         return msgDetail?.storeState?`确认要从到门店店铺下架商品（skuID：${msgDetail?.skuId}）？`:`确认要上架商品到门店店铺（skuID：${msgDetail?.skuId}）？`
@@ -26,7 +29,7 @@ export default (props) => {
   }
 
   const contentType=()=>{
-    const type=msgDetail.type
+    const type=msgDetail?.type
     switch (type) {
       case '2':
         return msgDetail?.storeState?'下架后门店合作商将无法购买此商品':'上架后门店合作商即可购买'
@@ -40,7 +43,7 @@ export default (props) => {
   }
 
   const submitType=()=>{
-    const type=msgDetail.type
+    const type=msgDetail?.type
     switch (type) {
       case '2':
         return msgDetail?.storeState?'确认下架':'确认上架'
@@ -53,52 +56,49 @@ export default (props) => {
     }
   }
 
-  const apiType=()=>{
-    const type=msgDetail.type
-    switch (type) {
-      case '2':
-        return provideUpdateGoodsState
-      case '3':
-        return provideDeleteByIdArr
-      case '4':
-        return provideSort
-      default:
-        return ''
-    }
-  }
-
-  const paramsType=()=>{
-    const type=msgDetail.type
-    switch (type) {
-      case '2':
-        return {
-          idArr:[msgDetail.id],
-          storeState:msgDetail.storeState?0:1
-        }
-      case '3':
-        return {
-          idArr:[msgDetail.id],
-        }
-      case '4':
-        return {
-          id:msgDetail.id,
-          sort:1
-        }
-      default:
-        return {}
-    }
-  }
-
-  const onsubmit = () => {
-    const api=apiType()
-    api(paramsType()).then(res=>{
-      if(res.code==0){
-        callback()
-        setVisible(false)
-        message.success('操作成功')
-      }
-    })
+  const apiType = () => {
+    const type = msgDetail?.type || '';
+    const apiMap = {
+      '2': provideUpdateGoodsState,
+      '3': provideDeleteByIdArr,
+      '4': provideSort,
+    };
+    return apiMap[type] || '';
   };
+  
+  const paramsType = () => {
+    const type = msgDetail?.type || '';
+    const paramsMap = {
+      '2': {
+        idArr: [msgDetail?.id],
+        storeState: msgDetail?.storeState ? 0 : 1,
+      },
+      '3': {
+        idArr: [msgDetail?.id],
+      },
+      '4': {
+        id: msgDetail?.id,
+        sort: 1,
+      },
+    };
+    return paramsMap[type] || {};
+  };
+  
+  const onsubmit = () => {
+    const api = apiType();
+    const params = paramsType();
+    
+    if (api) {
+      api(params).then((res:{ code: number }) => {
+        if (res.code === 0) {
+          callback();
+          setVisible(false);
+          message.success('操作成功');
+        }
+      });
+    }
+  };
+  
 
   return (
     <ModalForm
