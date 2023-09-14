@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import moment from 'moment'
+import { useLocation } from 'umi'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -17,6 +18,8 @@ const StorePartnersManagement: React.FC = () => {
   const [data, setData] = useState()
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
+
+  const { query } = useLocation()
 
   const getFieldsValue = () => {
     const { area, signTime, ...rest } = form.current?.getFieldsValue()
@@ -39,6 +42,7 @@ const StorePartnersManagement: React.FC = () => {
     {
       title: '服务商编号',
       dataIndex: 'areaProviderNo',
+      initialValue: query?.areaProviderNo,
       hideInTable: true
     },
     {
@@ -198,7 +202,7 @@ const StorePartnersManagement: React.FC = () => {
       <ProTable 
         rowKey='id'
         columns={columns}
-        params={{}}
+        params={{areaProviderNo: query?.areaProviderNo && query.areaProviderNo}}
         actionRef={actRef}
         request={shopPartnerPage}
         formRef={form}

@@ -120,7 +120,7 @@ const CountyServiceProviders:React.FC = () => {
       hideInSearch: true,
       render: (_, r) => {
         if(r.providerStoreNum > 0) {
-          return <a href="/outpatient-service-management/store-partners-management">{_}</a>
+          return <a href={`/outpatient-service-management/store-partners-management?areaProviderNo=${r.houseNumber}`} target='_blank'>{_}</a>
         } else {
           return <span>{_}</span>
         }
