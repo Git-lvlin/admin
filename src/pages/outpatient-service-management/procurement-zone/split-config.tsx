@@ -8,6 +8,7 @@ import {
   Divider,
   Input,
   InputNumber,
+  message,
   Select,
   Spin
 } from 'antd'
@@ -89,7 +90,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       if(res?.code === 0) {
         if(meta?.divideInfoList1?.length > 0) {
           const arr = res.data.map((res: any) => {
-            return meta.divideInfoList1.find((item: any) => res.roleCode === item.roleCode)
+            return meta.divideInfoList1.find((item: any) => res?.roleCode === item?.roleCode)
           })
           setStoreDataSource(arr.map((item: any, idx: number) => {
             if(item?.roleCode === 'goodsAmount') {
@@ -244,58 +245,63 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
 
   const submit = (val: any) => {
     return new Promise<void>((resolve, reject) => {
-      const arr = storeDataSource.map((res: any) => {
-        if(res.roleCode === 'goodsAmount') {
-          return {
-            ...res,
-            billVal: meta.retailSupplyPrice
+      
+      if(storeDataSource.every((res: any) => (res.name && res.billVal?.toString() && res.isChannelFee?.toString()))) {
+        const arr = storeDataSource.map((res: any) => {
+          if(res.roleCode === 'goodsAmount') {
+            return {
+              ...res,
+              billVal: meta.retailSupplyPrice
+            }
           }
-        }
-        if(res.roleCode === 'platform') {
-          return {
-            ...res,
-            billVal: amountTransform(+minPrice)
+          if(res.roleCode === 'platform') {
+            return {
+              ...res,
+              billVal: amountTransform(+minPrice)
+            }
+          } else {
+            return {
+              ...res,
+              billVal: amountTransform(res.billVal)
+            }
           }
-        } else {
-          return {
-            ...res,
-            billVal: amountTransform(res.billVal)
+        })
+  
+        const arr1 = countyServiceProviderdataSource.map((res: any) => {
+  
+          if(res.roleCode === 'goodsAmount') {
+            return {
+              ...res,
+              billVal: meta.retailSupplyPrice
+            }
           }
-        }
-      })
-
-      const arr1 = countyServiceProviderdataSource.map((res: any) => {
-
-        if(res.roleCode === 'goodsAmount') {
-          return {
-            ...res,
-            billVal: meta.retailSupplyPrice
+          if(res.roleCode === 'platform') {
+            return {
+              ...res,
+              billVal: amountTransform(+res.billVal)
+            }
+          } else {
+            return res
           }
-        }
-        if(res.roleCode === 'platform') {
-          return {
-            ...res,
-            billVal: amountTransform(+res.billVal)
+        })
+        provideSetDivideInfo({
+          ...val,
+          id: meta?.id,
+          divideInfoList1: arr,
+          divideInfoList2: arr1,
+        }, {
+          showSuccess: true
+        }).then(res => {
+          if(res.code === 0) {
+            resolve()
+          } else {
+            reject()
           }
-        } else {
-          return res
-        }
-      })
-
-      provideSetDivideInfo({
-        ...val,
-        id: meta?.id,
-        divideInfoList1: arr,
-        divideInfoList2: arr1,
-      }, {
-        showSuccess: true
-      }).then(res => {
-        if(res.code === 0) {
-          resolve()
-        } else {
-          reject()
-        }
-      })
+        })
+      } else {
+        message.error('请补全分账信息')
+        reject()
+      }
     })
   }
 
