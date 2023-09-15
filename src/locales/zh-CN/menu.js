@@ -59,6 +59,7 @@ export default {
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
   'menu.order-management.invoice-management': '开发票管理',
+  'menu.order-management.case-order-management': '病例订单管理',
 
 
   'menu.product-management': '商品管理',
