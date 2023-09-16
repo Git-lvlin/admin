@@ -71,6 +71,13 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
   const [minPrice, setMinPrice] = useState<number>(0)
   const form = useRef<FormInstance>()
 
+
+  useEffect(()=> {
+    if(!meta?.actPriceStr) {
+      meta['actPriceStr'] = Number(meta?.actPrice)
+    }
+  }, [])
+
   useEffect(()=> {
     if(meta?.billType) {
       form.current?.setFieldsValue({
