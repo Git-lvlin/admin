@@ -483,6 +483,7 @@ export default {
   'menu.aed-team-leader.aed-head-early-screening-order-performance': '团长订单业绩',
   'menu.aed-team-leader.aed-settlement-configuration': 'AED课程服务套餐业绩结算规则配置',
   'menu.aed-team-leader.aed-early-screening-order-performance': '早筛订单业绩管理',
+  'menu.aed-team-leader.health-supply-order-performance': '大健康供应链系统订单业绩',
 
 
   'menu.great-project-team': '大团队长',
@@ -494,6 +495,8 @@ export default {
   'menu.hydrogen-atom-generation.aed-training-service-achievement': 'AED培训服务套餐订单业绩',
   'menu.hydrogen-atom-generation.health-package-order-performance': '健康礼包订单业绩',
   'menu.hydrogen-atom-generation.settings-page': '设置',
+  'menu.hydrogen-atom-generation.health-supply-order-performance': '大健康供应链系统订单业绩',
+
 
   'menu.great-health-province': '大健康省代',
   'menu.great-health-province.hydrogen-atom-saved-management': '大健康省代管理',
@@ -501,6 +504,7 @@ export default {
   'menu.great-health-province.health-package-order-performance': '健康礼包订单业绩',
   'menu.great-health-province.settings-page': '设置',
   'menu.great-health-province.early-screening-order-performance': '早筛订单业绩',
+  'menu.great-health-province.health-supply-order-performance': '大健康供应链系统订单业绩',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',

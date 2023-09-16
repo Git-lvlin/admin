@@ -34,5 +34,11 @@ export default {
       component: './great-health-province/early-screening-order-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-supply-order-performance',
+      path: '/great-health-province/health-supply-order-performance',
+      component: './great-health-province/health-supply-order-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
