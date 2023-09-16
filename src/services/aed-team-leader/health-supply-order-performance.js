@@ -38,8 +38,8 @@ export const subCompanyStoreGoodsAdm = async (params = {}, options = {}) => {
 
 
 
-export const AEDRecordSubAmountSum = async (params = {}, options = {}) => {
-    const res = await request('/auth/java-admin/financial/aedRecord/subAmountSum', {
+export const subCompanyProviderStoreGoodsSt = async (params = {}, options = {}) => {
+    const res = await request('/auth/healthy/provider/subCompanyProviderStoreGoodsSt', {
         method: 'POST',
         data:params,
         ...options
@@ -53,9 +53,9 @@ export const AEDRecordSubAmountSum = async (params = {}, options = {}) => {
 }
 
 
-export const AEDRecordSubAmountPage = async (params = {}, options = {}) => {
+export const subCompanyProviderStoreGoods = async (params = {}, options = {}) => {
     const { current, pageSize, dateRange, ...rest } = params;
-    const res = await request('/auth/java-admin/financial/aedRecord/subAmountPage', {
+    const res = await request('/auth/healthy/provider/subCompanyProviderStoreGoods', {
       method: 'POST',
       data: {
         page: current,

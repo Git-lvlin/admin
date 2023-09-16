@@ -31,9 +31,9 @@ const formItemLayout = {
     const divideName=()=>{
       switch (type) {
         case 1:
-          return '业绩明细'
+          return '大健康供应链系统订单业绩'
         case 2:
-          return '提成明细'
+          return '大健康供应链系统订单提成'
         default:
           return ''
       }
@@ -154,7 +154,7 @@ const formItemLayout = {
     return (
       <DrawerForm
         layout="horizontal"
-        title={`${msgDetail?.name}  ${type == 1?'大健康供应链系统订单业绩':'大健康供应链系统订单提成'} （ID:${msgDetail?.agencyId}）`}
+        title={`${msgDetail?.name}  ${divideName()} （ID:${msgDetail?.agencyId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}
