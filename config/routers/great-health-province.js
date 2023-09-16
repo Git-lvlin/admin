@@ -40,5 +40,17 @@ export default {
       component: './great-health-province/health-supply-order-performance',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'health-store-partner-order-performance',
+      path: '/great-health-province/health-store-partner-order-performance',
+      component: './great-health-province/health-store-partner-order-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-service-providers-order-performance',
+      path: '/great-health-province/health-service-providers-order-performance',
+      component: './great-health-province/health-service-providers-order-performance',
+      wrappers: [RouteWatcher],
+    },
   ]
 }
