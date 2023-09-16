@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import { Spin, Image } from 'antd'
 import ProForm, { 
-  ModalForm, 
+  // ModalForm,
+  DrawerForm, 
   ProFormText, 
   ProFormRadio,
   ProFormDependency,
@@ -72,15 +73,12 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
   }
 
   return (
-    <ModalForm
+    <DrawerForm
       title='区县服务商复审'
-      width={500}
+      width={1200}
       visible={visible}
       formRef={form}
       onVisibleChange={setVisible}
-      modalProps={{
-        destroyOnClose: true
-      }}
       layout='horizontal'
       labelCol={{span: 10}}
       onFinish={async (v)=> {
@@ -92,7 +90,7 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
       <Spin spinning={loading}>
         <div
           style={{
-            maxHeight: '500px',
+            maxHeight: '1080px',
             overflowX: 'auto'
           }}
         >
@@ -200,7 +198,7 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
           />
         </div>
       </Spin>
-    </ModalForm>
+    </DrawerForm>
   )
 }
 

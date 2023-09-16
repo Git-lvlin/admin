@@ -75,9 +75,9 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
   return (
     <ModalForm
       title='区县服务商初审'
-      width={500}
+      width={700}
       visible={visible}
-      formRef={form}
+      formRef={form}  
       onVisibleChange={setVisible}
       modalProps={{
         destroyOnClose: true
