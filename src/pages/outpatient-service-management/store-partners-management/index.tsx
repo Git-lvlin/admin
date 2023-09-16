@@ -194,7 +194,13 @@ const StorePartnersManagement: React.FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center', 
-      render: (_, r) => <a onClick={()=> {setVisible(true); setData(r)}}>更新培训状态</a>
+      render: (_, r) => {
+        if(r.recruitmentStatus !== 4) {
+          return <a onClick={()=> {setVisible(true); setData(r)}}>更新培训状态</a>
+        } else {
+          return
+        }
+      }
     },
   ]
   return (
