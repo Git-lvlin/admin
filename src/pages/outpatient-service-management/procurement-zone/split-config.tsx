@@ -76,6 +76,9 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
     if(!meta?.actPriceStr) {
       meta['actPriceStr'] = Number(meta?.actPrice)
     }
+    if(!meta?.retailSupplyPriceStr) {
+      meta['retailSupplyPriceStr'] = amountTransform(Number(meta?.retailSupplyPrice), '/')
+    }
   }, [])
 
   useEffect(()=> {
