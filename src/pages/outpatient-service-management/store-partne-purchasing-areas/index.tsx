@@ -474,7 +474,7 @@ export default () => {
           setEditableKeys([]);
           const newData = dataSource?.map(item => {
             if (item.skuId == data.skuId) {
-              return { ...item, ...{ ...data, actPrice: amountTransform(data.actPrice, '/').toFixed(2) } }
+              return { ...item, ...{ ...data, actPrice: amountTransform(data.actPrice, '/').toFixed(2), actPriceStr: amountTransform(data.actPrice, '/').toFixed(2)  } }
             }
             return item
           })
