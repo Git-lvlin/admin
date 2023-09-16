@@ -191,6 +191,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 settleType: 2,
                 name: '销售佣金',
                 settleTypeDesc: '线上代付',
+                isChannelFee: 0,
                 trueUnfrezeeType: '6',
                 trueUnfrezeeTypeDesc: '满足业务解冻',
                 businessUnfrezeeType: '6',
@@ -206,6 +207,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 id: idx + 1,
                 settleType: 3,
                 settleTypeDesc: '线下',
+                isChannelFee: 0,
                 trueUnfrezeeType: '6',
                 trueUnfrezeeTypeDesc: '满足业务解冻',
                 businessUnfrezeeType: '6',
@@ -245,45 +247,45 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
 
   const submit = (val: any) => {
     return new Promise<void>((resolve, reject) => {
-      
-      if(storeDataSource.every((res: any) => (res.name && res.billVal?.toString() && res.isChannelFee?.toString()))) {
-        const arr = storeDataSource.map((res: any) => {
-          if(res.roleCode === 'goodsAmount') {
-            return {
-              ...res,
-              billVal: meta.retailSupplyPrice
-            }
+      const arr = storeDataSource.map((res: any) => {
+        if(res.roleCode === 'goodsAmount') {
+          return {
+            ...res,
+            billVal: meta.retailSupplyPrice
           }
-          if(res.roleCode === 'platform') {
-            return {
-              ...res,
-              billVal: amountTransform(+minPrice)
-            }
-          } else {
-            return {
-              ...res,
-              billVal: amountTransform(res.billVal)
-            }
+        }
+        if(res.roleCode === 'platform') {
+          return {
+            ...res,
+            billVal: amountTransform(+minPrice)
           }
-        })
-  
-        const arr1 = countyServiceProviderdataSource.map((res: any) => {
-  
-          if(res.roleCode === 'goodsAmount') {
-            return {
-              ...res,
-              billVal: meta.retailSupplyPrice
-            }
+        } else {
+          return {
+            ...res,
+            billVal: res.billVal ? amountTransform(res.billVal) : undefined
           }
-          if(res.roleCode === 'platform') {
-            return {
-              ...res,
-              billVal: amountTransform(+res.billVal)
-            }
-          } else {
-            return res
+        }
+      })
+
+      const arr1 = countyServiceProviderdataSource.map((res: any) => {
+
+        if(res.roleCode === 'goodsAmount') {
+          return {
+            ...res,
+            billVal: meta.retailSupplyPrice
           }
-        })
+        }
+        if(res.roleCode === 'platform') {
+          return {
+            ...res,
+            billVal: amountTransform(+res.billVal)
+          }
+        } else {
+          return res
+        }
+      })
+
+      if(arr.every((res: any) => (res.name && res.billVal?.toString() && res.isChannelFee.toString()))) {
         provideSetDivideInfo({
           ...val,
           id: meta?.id,
@@ -339,7 +341,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         } else if(record.roleCode === 'platform'){
           return `${minPrice ?? 0}元`
         } else {
-          return <InputNumber placeholder='请输入' controls={false}/>
+          return <InputNumber placeholder='请输入' controls={false} stringMode/>
         }
       }
     },
