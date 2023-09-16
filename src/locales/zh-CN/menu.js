@@ -59,7 +59,6 @@ export default {
   'menu.order-management.intensive-intervention-list': '集约售后介入',
   'menu.order-management.intensive-intervention-list-details': '集约售后详情',
   'menu.order-management.invoice-management': '开发票管理',
-  'menu.order-management.case-order-management': '病例订单管理',
 
 
   'menu.product-management': '商品管理',
@@ -284,6 +283,9 @@ export default {
   'menu.outpatient-service-management.store-partners-management': '门店合作商管理',
   'menu.outpatient-service-management.procurement-zone': '门店合作商店铺采购专区',
   'menu.outpatient-service-management.store-partne-purchasing-areas': '大健康供应系统专区',
+  'menu.outpatient-service-management.case-order-management': '病例订单管理',
+  'menu.outpatient-service-management.ipo-gift-management': 'IPO赠送管理',
+  'menu.outpatient-service-management.digital-store-account-management': '数字化门店账号管理',
 
 
   'menu.price-comparsion-management': '比价管理菜单',
@@ -519,8 +521,10 @@ export default {
   'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
   'menu.product-performance-management.AED-performance-management.early-screening-sales-bonus': '早筛销售额外奖',
+  'menu.product-performance-management.AED-performance-management.health-ipo-bonus-receiving-statistics': '大健康IPO额外奖领取统计',
   'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
   'menu.product-performance-management.early-screening-statistics': '早筛额外奖领取统计',
+  'menu.product-performance-management.health-store-partner-order-performance': '大健康门店合作商订单业绩',
 
 
 

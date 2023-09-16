@@ -179,10 +179,5 @@ export default {
       component: './order-management/invoice-management',
       wrappers: [RouteWatcher]
     },
-    {
-      name: 'case-order-management',
-      path: '/order-management/case-order-management',
-      component: '../../src/common/pages/case-order-management',
-    },
   ]
 }

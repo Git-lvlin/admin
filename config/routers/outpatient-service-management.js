@@ -27,6 +27,23 @@ export default {
       path: '/outpatient-service-management/store-partne-purchasing-areas',
       component: './outpatient-service-management/store-partne-purchasing-areas',
       wrappers: [RouteWatcher],
-    }
+    },
+    {
+      name: 'case-order-management',
+      path: '/outpatient-service-management/case-order-management',
+      component: '../../src/common/pages/case-order-management',
+    },
+    {
+      name: 'ipo-gift-management',
+      path: '/outpatient-service-management/ipo-gift-management',
+      component: './outpatient-service-management/ipo-gift-management',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'digital-store-account-management',
+      path: '/outpatient-service-management/digital-store-account-management',
+      component: './outpatient-service-management/digital-store-account-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

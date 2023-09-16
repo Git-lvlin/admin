@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react'
+import moment from 'moment'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 
@@ -9,16 +10,26 @@ import Export from '@/components/export'
 import { shopPartnerPage } from '@/services/outpatient-service-management/store-partners-management'
 import AddressCascader from '@/components/address-cascader'
 import Update from './update'
+import ImportHistory from '@/components/ImportFile/import-history'
+import Import from '@/components/ImportFile/import'
+import { Button } from 'antd'
+import type { FormInstance } from 'antd'
 
 const StorePartnersManagement: React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState()
-
+  const [importVisit, setImportVisit] = useState<boolean>(false)
+  const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
   const columns: ProColumns[] = [
     {
       title: '合作商编号',
+      dataIndex: 'houseFullName',
+      align: 'center'
+    },
+    {
+      title: '姓名',
       dataIndex: 'houseFullName',
       align: 'center'
     },
@@ -52,6 +63,12 @@ const StorePartnersManagement: React.FC = () => {
     },
     {
       title: '合作商所在地',
+      dataIndex: 'area',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '详细地址',
       dataIndex: 'area',
       align: 'center',
       hideInSearch: true
@@ -156,6 +173,17 @@ const StorePartnersManagement: React.FC = () => {
       render: (_, r) => <a onClick={()=> {setVisible(true); setData(r)}}>更新培训状态</a>
     },
   ]
+  const getFieldValue2 = () => {
+    const { area, signTime, ...rest }=form.current?.getFieldsValue()
+    return {
+      ...rest,
+      provinceId: area && area?.[0].value,
+      cityId: area && area?.[1].value,
+      areaId: area && area?.[2].value,
+      signTimeStart: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      signTimeEnd: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss')
+    }
+  }
   return (
     <PageContainer>
       <ProTable 
@@ -164,6 +192,7 @@ const StorePartnersManagement: React.FC = () => {
         params={{}}
         actionRef={actRef}
         request={shopPartnerPage}
+        formRef={form}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom)=> [
@@ -174,7 +203,21 @@ const StorePartnersManagement: React.FC = () => {
               conditions={{}}
             />
           ]
-        }} 
+        }}
+        toolBarRender={()=>[
+          <Button key='allDele' type='primary'><a href='https://uat-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/template/goods-provide-input.xlsx'>下单导入地址模板</a></Button>,
+          <Import
+           change={(e) => { 
+            setImportVisit(e)
+            actRef.current?.reload()
+           }}
+           key='import'
+           code="goods-provide-input"
+           conditions={getFieldValue2}
+           title="导入地址"
+          />,
+          <ImportHistory key='importhist' show={importVisit} setShow={setImportVisit} type="goods-provide-input" />,
+        ]}
         options={false}
       />
       {
