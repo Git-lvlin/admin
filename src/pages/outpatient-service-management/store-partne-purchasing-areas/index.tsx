@@ -441,8 +441,7 @@ export default () => {
           callback={(row) => {
             try {
               setPageTotal(pageTotal + row.length)
-              const data = dataSource?.concat(row)
-              setDataSource(data);
+              setDataSource([...row, ...dataSource]);
             } catch (error) {
               console.log('error', error)
             }

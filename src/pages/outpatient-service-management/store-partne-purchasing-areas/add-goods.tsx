@@ -97,7 +97,8 @@ export default (props:MyComponentProps) => {
             ...item,
             id: 0,
             actPrice: amountTransform(item?.actPrice, '/'),
-            batchNumber: 1
+            batchNumber: 1,
+            sort: 1
         })) || [];
         callback(updatedRows);
         setVisible(false);
