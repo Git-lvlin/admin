@@ -25,11 +25,11 @@ const StorePartnersManagement: React.FC = () => {
     const { area, signTime, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      provinceId: area && area?.[0].value,
-      cityId: area && area?.[1].value,
-      areaId: area && area?.[2].value,
+      provinceId: area && area?.[0]?.value,
+      cityId: area && area?.[1]?.value,
+      areaId: area && area?.[2]?.value,
       signTimeStart: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      signTimeEnd: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss')
+      signTimeEnd: signTime && moment(signTime?.[1]).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 
