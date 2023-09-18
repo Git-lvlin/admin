@@ -291,20 +291,31 @@ const YeahgoVirtualAccountManagement = () => {
           <div className={styles.platformXinbao}>
             <div className={styles.fs}>
               <div className={styles.halfw}>优付虚拟户</div>
-              <div className={styles.halfw}>薪宝虚拟户</div>
+              {/* <div className={styles.halfw}>薪宝虚拟户</div> */}
             </div>
             <div className={styles.fs}>
               <div><span className={styles.sn}>{account?.withdrawPayment?.youfuSn}</span></div>
-              <div><span className={styles.sn}>{account?.withdrawPayment?.xinbaoSn}</span></div>
+              {/* <div><span className={styles.sn}>{account?.withdrawPayment?.xinbaoSn}</span></div> */}
             </div>
             <div>
               <div className={styles.balance}>
                 <div>
                   优付虚拟户余额： <span>{`${amountTransform(account?.withdrawPayment?.youfuBalance, '/')}元`}</span>
                 </div>
-                <div>
+                {/* <div>
                   薪宝虚拟户余额： <span>{`${amountTransform(account?.withdrawPayment?.xinbaoBalance, '/')}元`}</span>
-                </div>
+                </div> */}
+              </div>
+            </div>
+            <div className={styles.fs}>
+              <div className={styles.halfw}>薪宝虚拟户</div>
+            </div>
+            <div className={styles.fs}>
+              <div><span className={styles.sn}>{account?.withdrawPayment?.xinbaoSn}</span></div>
+            </div>
+            <div className={styles.balance}>
+              <div>
+                薪宝虚拟户余额： <span>{`${amountTransform(account?.withdrawPayment?.xinbaoBalance, '/')}元`}</span>
               </div>
             </div>
           </div>

@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react'
+import moment from 'moment'
+import { useLocation } from 'umi'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
+import type { FormInstance } from 'antd'
 
 import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
@@ -13,8 +16,22 @@ import Update from './update'
 const StorePartnersManagement: React.FC = () => {
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState()
-
+  const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
+
+  const { query } = useLocation()
+
+  const getFieldsValue = () => {
+    const { area, signTime, ...rest } = form.current?.getFieldsValue()
+    return {
+      ...rest,
+      provinceId: area && area?.[0].value,
+      cityId: area && area?.[1].value,
+      areaId: area && area?.[2].value,
+      signTimeStart: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      signTimeEnd: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss')
+    }
+  }
 
   const columns: ProColumns[] = [
     {
@@ -25,6 +42,7 @@ const StorePartnersManagement: React.FC = () => {
     {
       title: '服务商编号',
       dataIndex: 'areaProviderNo',
+      initialValue: query?.areaProviderNo,
       hideInTable: true
     },
     {
@@ -63,10 +81,16 @@ const StorePartnersManagement: React.FC = () => {
       renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
-      title: '订单金额(元)',
+      title: '交合同费(元)',
       dataIndex: 'payAmountYuan',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '交技术费(元)',
+      dataIndex: 'payAmount2Yuan',
+      align: 'center',
+      hideInSearch: true 
     },
     {
       title: '合同签订时间',
@@ -116,15 +140,32 @@ const StorePartnersManagement: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '签约订单号',
+      dataIndex: 'subOrderSn',
+      align: 'center',
+    },
+    {
       title: '推荐人手机号',
       dataIndex: 'inviterPhone',
       align: 'center' 
     },
     {
       title: '招募状态',
-      dataIndex: 'recruitmentStatus',
+      dataIndex: 'recruitmentStatusDesc',
       align: 'center',
       hideInSearch: true
+    },
+    {
+      title: '招募状态',
+      dataIndex: 'recruitmentStatus',
+      valueType: 'select',
+      valueEnum: {
+        1: '待签合同',
+        2: '待交技术费',
+        3: '已交技术费',
+        4: '已失效'
+      },
+      hideInTable: true
     },
     {
       title: '培训状态',
@@ -153,7 +194,13 @@ const StorePartnersManagement: React.FC = () => {
       title: '操作',
       valueType: 'option',
       align: 'center', 
-      render: (_, r) => <a onClick={()=> {setVisible(true); setData(r)}}>更新培训状态</a>
+      render: (_, r) => {
+        if(r.recruitmentStatus !== 4) {
+          return <a onClick={()=> {setVisible(true); setData(r)}}>更新培训状态</a>
+        } else {
+          return
+        }
+      }
     },
   ]
   return (
@@ -161,17 +208,18 @@ const StorePartnersManagement: React.FC = () => {
       <ProTable 
         rowKey='id'
         columns={columns}
-        params={{}}
+        params={{areaProviderNo: query?.areaProviderNo && query.areaProviderNo}}
         actionRef={actRef}
         request={shopPartnerPage}
+        formRef={form}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom)=> [
             ...dom.reverse(),
             <Export 
               key='1'
-              type=''
-              conditions={{}}
+              type='export_ShopPartner_pageOrder'
+              conditions={getFieldsValue}
             />
           ]
         }} 
