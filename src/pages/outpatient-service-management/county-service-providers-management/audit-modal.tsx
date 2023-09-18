@@ -45,7 +45,7 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
   useEffect(()=> {
     if(data) {
       form.current?.setFieldsValue({
-        houseNumber: data?.houseName,
+        houseNumber: data?.houseFullName,
         area: data?.provinceName + data?.cityName + data?.areaName,
         contractId: meta?.contractId,
         optName: window.localStorage.getItem('nickname')
@@ -152,7 +152,7 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
             label='付款凭证图片'
             name='voucherImg'
           >
-            <Space>
+            <Space wrap>
               {
                 data?.voucher.map((res: any) => {
                   return (

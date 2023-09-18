@@ -45,7 +45,7 @@ const ReexamineModal:React.FC<props> = ({visible, setVisible, meta, callback}) =
   useEffect(()=> {
     if(data) {
       form.current?.setFieldsValue({
-        houseNumber: data?.houseName,
+        houseNumber: data?.houseFullName,
         area: data?.provinceName + data?.cityName + data?.areaName,
         contractId: meta?.contractId,
         optName: data?.optName,
