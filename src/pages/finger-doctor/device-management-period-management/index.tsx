@@ -52,20 +52,20 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           align: 'center',
           hideInSearch: true
         },
-        // {
-        //   title: '门店合作商编号',
-        //   dataIndex: 'imei',
-        //   align: 'center',
-        //   hideInSearch: true,
-        //   hideInTable: false
-        // },
-        // {
-        //   title: '区县服务商编号',
-        //   dataIndex: 'imei',
-        //   align: 'center',
-        //   hideInSearch: true,
-        //   hideInTable: false
-        // },
+        {
+          title: '门店合作商编号',
+          dataIndex: 'areaStoreNo',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
+        {
+          title: '区县服务商编号',
+          dataIndex: 'areaProviderNo',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
         {
           title: '设备状态',
           dataIndex: 'status',
@@ -108,19 +108,19 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
             placeholder: '请选择管理期状态'
           }
         },
-        // {
-        //   dataIndex: 'status',
-        //   align: 'center',
-        //   hideInTable: true,
-        //   valueEnum: {
-        //     1: '门店合作商店铺',
-        //     2: '区县服务商店铺',
-        //     3: '其他来源',
-        //   },
-        //   fieldProps: {
-        //     placeholder: '请选择订单来源'
-        //   }
-        // },
+        {
+          dataIndex: 'areaType',
+          align: 'center',
+          hideInTable: true,
+          valueEnum: {
+            1: '区县服务商店铺',
+            2: '门店合作商店铺',
+            0: '其他来源',
+          },
+          fieldProps: {
+            placeholder: '请选择订单来源'
+          }
+        },
         {
           title: '当前管理期类型',
           dataIndex: 'manageType',

@@ -6,20 +6,24 @@ import {
 import ProTable from '@/components/pro-table'
 import { provideSaveData } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
 import { amountTransform } from '@/utils/utils';
+import type { MyComponentProps } from './data'
+import type { ProColumns } from '@ant-design/pro-table'
 
-export default (props) => {
+export default (props:MyComponentProps) => {
   const { setVisible,visible,callback,onClose,msgDetail } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
-  const columns= [
+  const columns: ProColumns[] = [
     {
       title: 'spuID',
       dataIndex: 'spuId',
+      valueType: 'text',
     },
     {
       title: 'skuID',
       dataIndex: 'skuId',
+      valueType: 'text',
     },
     {
       title: '商品图片',
@@ -29,6 +33,7 @@ export default (props) => {
     {
       title: '商品名称',
       dataIndex: 'goodsName',
+      valueType: 'text',
     },
   ]
 
@@ -65,12 +70,11 @@ export default (props) => {
           message.success('保存成功')
       }
     })
-
+    return 
   };
 
   return (
     <ModalForm
-      key="sort"
       title='确认保存店铺供应链系统商品'
       onVisibleChange={setVisible}
       formRef={formRef}
@@ -151,6 +155,12 @@ export default (props) => {
               "oldValue": msgDetail?.[0]?.sort,
               "newValue": msgDetail?.[1]?.sort,
               "id": 3
+            },
+            {
+              "parameterName": "加购数",
+              "oldValue": msgDetail?.[0]?.batchNumber,
+              "newValue": msgDetail?.[1]?.batchNumber,
+              "id": 4
             }
           ]}
          columnEmptyText={false}
