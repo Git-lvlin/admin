@@ -208,7 +208,7 @@ const StorePartnersManagement: React.FC = () => {
       <ProTable 
         rowKey='id'
         columns={columns}
-        params={{areaProviderNo: query?.areaProviderNo && query.areaProviderNo}}
+        params={{}}
         actionRef={actRef}
         request={shopPartnerPage}
         formRef={form}
