@@ -454,7 +454,15 @@ export default () => {
         visible={divideVisible}
         setVisible={setDivideVisible}
         meta={msgDetail}
-        callback={() => { setLoding(loding + 1); }}
+        callback={() => { 
+            const newData = dataSource?.map(item => {
+            if (item.skuId == msgDetail.skuId) {
+              return { ...item, divideState: 1 }
+            }
+            return item
+          })
+          setDataSource(newData)
+         }}
       />}
 
       {visible && <OperationModel
