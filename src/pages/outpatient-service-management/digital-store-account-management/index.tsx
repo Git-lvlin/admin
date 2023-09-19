@@ -4,7 +4,7 @@ import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps } from "./data"
 
-import { configHpa } from "@/services/great-health-province/hydrogen-atom-saved-management"
+import { providerGetList } from "@/services/outpatient-service-management/digital-store-account-management"
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 import AddressCascader from '@/components/address-cascader'
@@ -23,7 +23,7 @@ export default function GenerationManagement () {
   const tableColumns: ProColumns<TableProps>[] = [
     {
       title: 'ID',
-      dataIndex: 'agencyId',
+      dataIndex: 'accountId',
       align: 'center',
       hideInSearch: true
     },
@@ -35,19 +35,19 @@ export default function GenerationManagement () {
     },
     {
       title: '联系人姓名',
-      dataIndex: 'manager',
+      dataIndex: 'contactName',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '联系人手机号',
-      dataIndex: 'managerPhone',
+      dataIndex: 'contactPhone',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '服务区域',
-      dataIndex: 'serviceArea',
+      dataIndex: 'areaAddress',
       align: 'center',
       hideInSearch: true
     },
@@ -67,7 +67,7 @@ export default function GenerationManagement () {
     },
     {
       title: '招募时间',
-      dataIndex: 'signTime',
+      dataIndex: 'recruitTime',
       hideInTable: true,
       renderFormItem: () => <TimeSelect />
     },
@@ -76,10 +76,14 @@ export default function GenerationManagement () {
       dataIndex: 'status',
       align: 'center',
       hideInSearch: true,
+      valueEnum: {
+        1: '启用',
+        2: '禁用'
+      }
     },
     {
       title: '门店数量',
-      dataIndex: 'storesNumber',
+      dataIndex: 'nums',
       align: 'center',
       hideInSearch: true,
     },
@@ -98,9 +102,9 @@ export default function GenerationManagement () {
   return (
     <PageContainer title={false}>
       <ProTable<TableProps>
-        rowKey="agencyId"
+        rowKey="accountId"
         columns={tableColumns}
-        request={configHpa}
+        request={providerGetList}
         columnEmptyText={false}
         actionRef={ref}
         pagination={{

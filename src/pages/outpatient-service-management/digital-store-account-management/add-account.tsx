@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react'
-import ProForm,{
+import { useRef, useState } from 'react'
+import {
   DrawerForm,
   ProFormText,
   ProFormGroup,
@@ -10,15 +10,12 @@ import {
   Divider,
   Typography,
   Button,
-  Descriptions,
-  Image,
-  Space
 } from 'antd'
 
 import type { FormInstance } from 'antd'
 import OperationModel from './operation-model'
-
-// import { provideSetDivideInfo } from '@/services/outpatient-service-management/procurement-zone'
+import { accountProviderList } from '@/services/outpatient-service-management/digital-store-account-management'
+import md5 from 'blueimp-md5';
 
 const { Title } = Typography;
 
@@ -34,33 +31,10 @@ type props = {
 export default (props:props)=> {
   const {visible, setVisible, msgDetail, callback} = props
   const form = useRef<FormInstance>()
-  const [detailData, setDetailData] = useState();
+  const [submitMsg, setSubmitMsg] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectItems, setSelectItems] = useState([]);
   const [optionVisible, serOptionVisible] = useState<boolean>(false)
-
-  const data=[
-    {
-      "serviceArea": "北京",
-      "houseNumber": "BJ001",
-      "servicePhone": "13800138000",
-      "memberPhone": "13900139000",
-      "memberId": "123456",
-      "manager": "张三",
-      "managerPhone": "13700137000",
-      "signTime": "2023-09-16T09:32:05+08:00"
-    },
-    {
-      "serviceArea": "上海",
-      "houseNumber": "SH001",
-      "servicePhone": "13800138001",
-      "memberPhone": "13900139001",
-      "memberId": "123457",
-      "manager": "李四",
-      "managerPhone": "13700137001",
-      "signTime": "2023-09-16T09:32:06+08:00"
-    }
-  ]
   
   const tableColumns = [
     {
@@ -77,7 +51,7 @@ export default (props:props)=> {
     },
     {
       title: '区县服务商下单人手机号',
-      dataIndex: 'servicePhone',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInTable: true,
     },
@@ -95,22 +69,31 @@ export default (props:props)=> {
     },
     {
       title: '联系人姓名',
-      dataIndex: 'manager',
+      dataIndex: 'consignee',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '联系人手机号',
-      dataIndex: 'managerPhone',
+      dataIndex: 'consigneePhone',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '复审时间',
-      dataIndex: 'signTime',
+      dataIndex: 'finishTime',
       hideInSearch: true
     }
   ]
+  const onsubmit=values=>{
+    try {
+      serOptionVisible(true) 
+      setSubmitMsg({...values,password:values?.password&&md5(values?.password),agencyList:selectedRowKeys})
+    } catch (error) {
+      console.log('error',error)
+    }
+
+ }
   return (
     <DrawerForm
       layout='horizontal'
@@ -120,7 +103,7 @@ export default (props:props)=> {
         {
           render: (props, defaultDoms) => {
             return [
-              <Button type="primary" key="submit" onClick={() => { serOptionVisible(true) }}>
+              <Button type="primary" key="submit" onClick={() => { props.form?.submit() }}>
                  提交
               </Button>,
               <Button type="default" onClick={() => props.form?.resetFields()}>
@@ -130,17 +113,19 @@ export default (props:props)=> {
           }
         }
       }
+      onFinish={async (values)=>{
+        await  onsubmit(values);
+      }}
       visible={visible}
       onVisibleChange={setVisible}
       formRef={form}
     >
       <Title level={5}>一、选择服务区域</Title>
       <ProTable
-        rowKey="memberId"
+        rowKey="id"
         columns={tableColumns}
-        // request={configHpa}
+        request={accountProviderList}
         columnEmptyText={false}
-        dataSource={data}
         // actionRef={ref}
         pagination={{
           pageSize: 10,
@@ -165,31 +150,34 @@ export default (props:props)=> {
         已选 {selectedRowKeys.length} 个服务区域
       </p>
       {
-        selectItems.map((item,index)=><span>{index+1}、{item.serviceArea}&nbsp;&nbsp;</span>)
+        selectItems.map((item,index)=><span>{index+1}、{item?.serviceArea}&nbsp;&nbsp;</span>)
       }
       <Divider />
       <Title style={{ marginTop: -10, marginBottom: '20px' }} level={5}>二、填写账号信息</Title>
       <ProFormGroup>
         <ProFormText
-          name=''
+          name='nickName'
           label='名称'
-          rules={[{ required: true, message: '请请输入名称' }]}
+          rules={[
+            { required: true, message: '请输入名称' },
+            { min: 3, max: 15, message: '请输入3-15个字' },
+          ]}
           placeholder='请输入3-15个字'
         />
         <ProFormText
-          name=''
+          name='userName'
           label='登录账号'
           rules={[{ required: true, message: '请输入登录账号' }]}
         />
         <ProFormText
-          name=''
+          name='contactName'
           label='联系人'
         />
       </ProFormGroup>
 
       <ProFormGroup>
         <ProFormRadio.Group
-          name="state"
+          name="status"
           label="启用状态"
           initialValue={0}
           options={[
@@ -199,24 +187,28 @@ export default (props:props)=> {
             },
             {
               label: '关闭',
-              value: 0,
+              value: 2,
             },
           ]}
         />
         <ProFormText
-          name=''
+          name='password'
           label='登录密码'
-          rules={[{ required: true, message: '请输入登录账号' }]}
+          rules={[
+            { required: true, message: '请输入登录账号' },
+            { min:6, message: '密码最少6个字符' },
+          ]}
         />
         <ProFormText
-          name=''
+          name='contactPhone'
           label='联系人手机号'
         />
       </ProFormGroup>
       {optionVisible&&<OperationModel
         visible={optionVisible}
         setVisible={serOptionVisible}
-        callback={()=>{  }}
+        callback={()=>{ callback(); setVisible(false) }}
+        msgDetail={submitMsg}
       />}
     </DrawerForm>
   )

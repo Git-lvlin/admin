@@ -2,7 +2,7 @@ import TimeSelect from '@/components/time-select'
 import { useRef,useEffect, useState } from "react"
 import ProTable from '@/components/pro-table'
 import ProCard from "@ant-design/pro-card"
-import { cityAgentHealthyGift,cityAgentHealthyGiftStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
+import { hyCityAgentStoreGoodsAdm,hyCityAgentStoreGoodsAdmSt } from "@/services/hydrogen-atom-generation/health-supply-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import StoreInformation from './store-information'
@@ -33,7 +33,7 @@ const GenerationManagement =(props:DevicesProps) => {
         endTime:time?.dateRange&&time?.dateRange[1],
         scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
       }
-      cityAgentHealthyGiftStats(params).then(res=>{
+      hyCityAgentStoreGoodsAdmSt(params).then(res=>{
         if(res.code==0){
           setDetailList(res.data[0])
         }
@@ -76,7 +76,7 @@ const GenerationManagement =(props:DevicesProps) => {
       },
       {
         title: '大健康供应链系统订单业绩',
-        dataIndex: 'totalPayAmount',
+        dataIndex: 'payAmount',
         align: 'center',
         render: (_,data)=>{
           if(parseFloat(_)){
@@ -89,7 +89,7 @@ const GenerationManagement =(props:DevicesProps) => {
       },
       {
         title: '大健康供应链系统订单提成',
-        dataIndex: 'totalCommission',
+        dataIndex: 'commission',
         align: 'center',
         render: (_,data)=>{
           if(parseFloat(_)){
@@ -112,15 +112,15 @@ const GenerationManagement =(props:DevicesProps) => {
     return (
       <>
         <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
-          <Descriptions.Item  label="氢原子市代总数量">{detailList?.totalNum}  </Descriptions.Item>
-          <Descriptions.Item  label="大健康供应链系统订单业绩">{amountTransform(detailList?.totalPayAmount,'/').toFixed(2)}  </Descriptions.Item>
-          <Descriptions.Item  label="大健康供应链系统订单提成">{amountTransform(detailList?.totalCommission,'/').toFixed(2)}  </Descriptions.Item>
+          <Descriptions.Item  label="氢原子市代总数量">{detailList?.agencyNum}  </Descriptions.Item>
+          <Descriptions.Item  label="大健康供应链系统订单业绩">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  </Descriptions.Item>
+          <Descriptions.Item  label="大健康供应链系统订单提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  </Descriptions.Item>
         </Descriptions>
         <ProTable
           rowKey="agencyId"
           headerTitle='列表'
           columns={tableColumns}
-          request={cityAgentHealthyGift}
+          request={hyCityAgentStoreGoodsAdm}
           columnEmptyText={false}
           actionRef={form}
           onSubmit={(val:TableProps) => {
@@ -149,9 +149,9 @@ const GenerationManagement =(props:DevicesProps) => {
               <Export
                 key='export'
                 change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) } }
-                type={'cityAgentHealthyGift'}
+                type={'hyCityAgentStoreGoodsAdm'}
                 conditions={() => { return getFieldValue(searchConfig) } } />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type='cityAgentHealthyGift' />,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type='hyCityAgentStoreGoodsAdm' />,
             ],
           }}        
           />

@@ -4,22 +4,25 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 import { ExclamationCircleFilled} from '@ant-design/icons';
-import { provideUpdateGoodsState, provideDeleteByIdArr, provideSort } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
+import { providerAdd } from '@/services/outpatient-service-management/digital-store-account-management'
 
 export default (props) => {
-  const { setVisible,visible,onClose,msgDetail } = props;
+  const { setVisible,visible,onClose,msgDetail, callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
 
   const onsubmit = () => {
-    // api(paramsType()).then(res=>{
-    //   if(res.code==0){
-    //     callback()
-    //     setVisible(false)
-    //     message.success('操作成功')
-    //   }
-    // })
+    const params={
+      ...msgDetail
+    }
+    providerAdd(params).then(res=>{
+      if(res.code==0){
+        callback()
+        setVisible(false)
+        message.success('操作成功')
+      }
+    })
   };
 
   return (

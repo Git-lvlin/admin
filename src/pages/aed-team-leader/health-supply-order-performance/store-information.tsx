@@ -206,7 +206,7 @@ const formItemLayout = {
             { dom }
             <div className={styles.summary}>
               <div>
-                累计收益'
+                累计收益
                 <span>￥{amountTransform(orderSum?.amount,'/').toFixed(2)}</span>
               </div>
               <div>

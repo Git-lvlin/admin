@@ -1,7 +1,7 @@
 export type DescriptionsProps = {
-  agentNum: number;
-  hydrogenAmount: number;
-  hydrogenCommission: number;
+  agencyNum: number;
+  payAmount: number;
+  commission: number;
   wholesaleCommission: number;
   totalCommission: number;
   hydrogenLeaseCommission: number

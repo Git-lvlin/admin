@@ -6,7 +6,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from '@/components/pro-table'
-import { hpaScreenDetail, hpaScreenDetailStats } from '@/services/great-health-province/early-screening-order-performance'
+import { provinceAgentProviderPm, provinceAgentProviderSt } from '@/services/great-health-province/health-service-providers-order-performance'
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns } from "@ant-design/pro-table"
 import styles from './styles.less'
@@ -28,7 +28,7 @@ export default (props: any) => {
       date = dateRange,
       obj = rest
     }
-    hpaScreenDetailStats({
+    provinceAgentProviderSt({
       agencyId: msgDetail.agencyId,
       ...obj,
       startTime:date&&moment(date?.[0]).format('YYYY-MM-DD HH:mm:ss'),
@@ -43,7 +43,7 @@ export default (props: any) => {
   const Columns: ProColumns[] = [
     {
       title: '订单日期',
-      dataIndex: 'payTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -62,12 +62,12 @@ export default (props: any) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '服务区域',
-      dataIndex: 'consignee',
+      dataIndex: 'address',
       valueType: 'text',
       hideInSearch:true,
     },
@@ -79,7 +79,7 @@ export default (props: any) => {
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(_){
@@ -92,7 +92,7 @@ export default (props: any) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -141,7 +141,7 @@ export default (props: any) => {
         rowKey="orderSn"
         columns={Columns}
         formRef={form}
-        request={hpaScreenDetail}
+        request={provinceAgentProviderPm}
         params={{ agencyId: msgDetail?.agencyId}}
         options={false}
         onSubmit={()=> {setchange(change + 1)}}
@@ -151,7 +151,7 @@ export default (props: any) => {
             ...dom.reverse(),
             <Export
               key='export'
-              type='hpaScreenDetail'
+              type='provinceAgentProviderPm'
               conditions={getFieldValue}
             />
           ],
@@ -163,7 +163,7 @@ export default (props: any) => {
               <Space size='large'>
                 <div>
                   累计收益
-                  <span>￥{amountTransform(orderSum?.[0]?.commission,'/').toFixed(2)}</span>
+                  <span>￥{amountTransform(orderSum?.[0]?.amount,'/').toFixed(2)}</span>
                 </div>
                 <div>
                   累计金额

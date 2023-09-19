@@ -5,7 +5,7 @@ import {
   DrawerForm
 } from '@ant-design/pro-form';
 import ProTable from '@/components/pro-table'
-import { cityAgentHealthyGiftOrder,cityAgentHealthyGiftOrderStats } from "@/services/hydrogen-atom-generation/health-package-order-performance"
+import { hyCityAgentProviderStoreGoods,hyCityAgentProviderStoreGoodsSt } from "@/services/hydrogen-atom-generation/health-supply-order-performance"
 import { amountTransform } from '@/utils/utils'
 import type { GithubIssueItem } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
@@ -26,6 +26,7 @@ const formItemLayout = {
       },
     }
   };
+  
 
 export default (props) => {
   const { visible, setVisible,msgDetail,onClose,scope} = props;
@@ -34,6 +35,17 @@ export default (props) => {
   const [time,setTime]=useState({})
   const ref = useRef()
   const [visit, setVisit] = useState<boolean>(false)
+
+  const divideName=()=>{
+    switch (type) {
+      case 1:
+        return '大健康供应链系统订单业绩'
+      case 2:
+        return '大健康供应链系统订单提成'
+      default:
+        return ''
+    }
+  }
 
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
@@ -55,7 +67,6 @@ export default (props) => {
       valueType: 'text',
       ellipsis:true,
       hideInSearch:true,
-      // hideInTable: type == 2
     },
     {
       title: '下单人手机号',
@@ -79,14 +90,12 @@ export default (props) => {
       dataIndex: 'consignee',
       valueType: 'text',
       hideInSearch:true,
-      // hideInTable: type == 2
     },
     {
       title: '订单类型',
       dataIndex: 'orderTypeDesc',
       align: 'center',
       hideInSearch: true,
-      // hideInTable: type == 2
     },
     {
       title: '订单金额',
@@ -113,14 +122,12 @@ export default (props) => {
           return '-'
         }
       },
-      // hideInTable: type==2
     },
     {
       title: '业绩范围',
       dataIndex: 'settleStatusDesc',
       align: 'center',
       hideInSearch: true,
-      // hideInTable: type == 2
     },
   ]
   useEffect(()=>{
@@ -131,9 +138,9 @@ export default (props) => {
       scope:scope,
       ...time
     }
-    cityAgentHealthyGiftOrderStats(params).then(res=>{
+    hyCityAgentProviderStoreGoodsSt(params).then(res=>{
       if(res.code==0){
-        setOrderSum(res?.data?.[0]?.commission)
+        setOrderSum(res?.data?.[0])
       }
     })
 
@@ -151,7 +158,7 @@ export default (props) => {
   }
   return (
     <DrawerForm
-      title={`${msgDetail?.name} 大健康供应链系统订单提成 （ID:${msgDetail?.agencyId}）`}
+      title={`${msgDetail?.name} ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -177,7 +184,7 @@ export default (props) => {
        <ProTable<GithubIssueItem>
         rowKey="orderSn"
         columns={Columns}
-        request={cityAgentHealthyGiftOrder}
+        request={hyCityAgentProviderStoreGoods}
         columnEmptyText={false}
         actionRef={ref}
         params={{
@@ -201,10 +208,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'cityAgentHealthyGiftOrderCom'}
+              type={'hyCityAgentProviderStoreGoods'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'cityAgentHealthyGiftOrderCom'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hyCityAgentProviderStoreGoods'}/>
           ],
         }}
         tableRender={(_, dom) => {
@@ -213,7 +220,11 @@ export default (props) => {
             <div className={styles.summary}>
               <div>
                 累计收益
-                <span>￥{amountTransform(orderSum,'/').toFixed(2)}</span>
+                <span>￥{amountTransform(orderSum?.amount,'/').toFixed(2)}</span>
+              </div>
+              <div>
+                累计金额
+                <span>￥{amountTransform(orderSum?.payAmount,'/').toFixed(2)}</span>
               </div>
             </div>
           </>

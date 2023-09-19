@@ -5,7 +5,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 
 import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
-import { hpaScreen, hpaScreenStats } from '@/services/great-health-province/early-screening-order-performance'
+import { provinceAgentProviderAdm, provinceAgentProviderAdmSt } from '@/services/great-health-province/health-service-providers-order-performance'
 import TimeSelect from '@/components/time-select'
 import { amountTransform } from '@/utils/utils'
 import Detail from './detail'
@@ -16,7 +16,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
   const [id, setId] = useState()
 
   useEffect(()=> {
-    hpaScreenStats().then(res=> {
+    provinceAgentProviderAdmSt().then(res=> {
       if(res.code === 0) {
         setData(res.data[0])
       }
@@ -37,7 +37,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
     },
     {
       title: '大健康区县服务商订单业绩',
-      dataIndex: 'totalPayAmountDesc',
+      dataIndex: 'payAmountDesc',
       align: 'center',
       hideInSearch: true
     },
@@ -49,7 +49,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
     },
     {
       title: '大健康区县服务商订单提成',
-      dataIndex: 'totalCommissionDesc',
+      dataIndex: 'commissionDesc',
       render: (_, r) => <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>,
       align: 'center',
       hideInSearch: true,
@@ -65,7 +65,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
   return (
     <PageContainer>
       <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff', padding: '20px'}} column={3} layout="vertical" bordered>
-        <Descriptions.Item  label="大健康省代数量">{data?.totalNums ?? 0}</Descriptions.Item>
+        <Descriptions.Item  label="大健康省代数量">{data?.agencyNum ?? 0}</Descriptions.Item>
         <Descriptions.Item  label="大健康区县服务商订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
         <Descriptions.Item  label="大健康区县服务商订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>
       </Descriptions>
@@ -80,7 +80,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
           ]
         }}
         params={{}}
-        request={hpaScreen}
+        request={provinceAgentProviderAdm}
       />
       {
         visible &&
