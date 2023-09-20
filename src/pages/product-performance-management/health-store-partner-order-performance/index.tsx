@@ -10,7 +10,6 @@ import Export from '@/components/export'
 import { providerStorePm } from '@/services/product-performance-management/health-store-partner-order-performance'
 import AddressCascader from '@/components/address-cascader'
 import type { FormInstance } from 'antd'
-import ExportHistory from '@/pages/export-excel/export-history'
 
 const HealthStorePartnerOrderPerformance: React.FC = () => {
   const [visible, setVisible] = useState(false)
@@ -149,8 +148,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
              key='export'
              type='providerStorePm'
              conditions={getFieldValue}
-            />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'providerStorePm'}/>
+            />
           ]
         }}
         options={false}

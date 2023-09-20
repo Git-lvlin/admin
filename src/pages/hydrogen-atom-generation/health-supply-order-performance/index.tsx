@@ -12,6 +12,7 @@ import { Descriptions } from 'antd';
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import moment from "moment"
+import styles from './styles.less'
 
 
 const GenerationManagement =(props:DevicesProps) => {
@@ -147,7 +148,8 @@ const GenerationManagement =(props:DevicesProps) => {
                 conditions={() => { return getFieldValue(searchConfig) } } />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type='hyCityAgentStoreGoodsAdm' />,
             ],
-          }}        
+          }}
+          className={styles.health_supply_order_performance}        
           />
         {
           storeVisible&&

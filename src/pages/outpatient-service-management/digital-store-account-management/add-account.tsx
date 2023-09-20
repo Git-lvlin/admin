@@ -139,6 +139,7 @@ export default (props:props)=> {
           ],
         }}
         rowSelection={{
+          preserveSelectedRowKeys: true,
           selectedRowKeys,
           onChange: (_,val) => {
             setSelectedRowKeys(_);
