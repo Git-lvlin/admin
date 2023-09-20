@@ -18,7 +18,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
   useEffect(()=> {
     provinceAgentStoreAdmSt().then(res=> {
       if(res.code === 0) {
-        setData(res.data[0])
+        setData(res.data?.[0])
       }
     })
   }, [])

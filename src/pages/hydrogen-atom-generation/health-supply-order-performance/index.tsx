@@ -34,7 +34,7 @@ const GenerationManagement =(props:DevicesProps) => {
       }
       hyCityAgentStoreGoodsAdmSt(params).then(res=>{
         if(res.code==0){
-          setDetailList(res.data[0])
+          setDetailList(res.data?.[0])
         }
       })
   

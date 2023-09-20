@@ -30,7 +30,7 @@ export default function TransactionData () {
     }
     subCompanyStoreGoodsAdmSt(params).then(res=>{
       if(res.code==0){
-        setDetailList(res.data)
+        setDetailList(res.data?.[0])
       }
     })
 

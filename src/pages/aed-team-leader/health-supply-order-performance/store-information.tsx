@@ -124,7 +124,7 @@ const formItemLayout = {
       }
       subCompanyProviderStoreGoodsSt(params).then(res=>{
         if(res.code==0){
-          setOrderSum(res?.data)
+          setOrderSum(res?.data?.[0])
         }
       })
     },[time])
