@@ -7,7 +7,7 @@ import { ExclamationCircleFilled} from '@ant-design/icons';
 import { providerAdd } from '@/services/outpatient-service-management/digital-store-account-management'
 
 export default (props) => {
-  const { setVisible,visible,onClose,msgDetail, callback } = props;
+  const { setVisible, visible, msgDetail, callback } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 

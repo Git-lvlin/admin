@@ -61,7 +61,7 @@ const formItemLayout = {
       },
       {
         title: '下单人手机号',
-        dataIndex: 'buyerMobile',
+        dataIndex: 'memberPhone',
         align: 'center',
         hideInSearch: true
       },
@@ -84,7 +84,7 @@ const formItemLayout = {
       },
       {
         title: '订单类型',
-        dataIndex: 'orderTypeDesc',
+        dataIndex: 'orderType',
         align: 'center',
         hideInSearch: true,
       },
@@ -116,7 +116,7 @@ const formItemLayout = {
       },
       {
         title: '业绩范围',
-        dataIndex: 'settleStatusDesc',
+        dataIndex: ' scope',
         align: 'center',
         hideInSearch: true,
       },

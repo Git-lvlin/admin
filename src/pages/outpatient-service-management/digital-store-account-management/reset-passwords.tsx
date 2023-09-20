@@ -4,7 +4,7 @@ import {
   ProFormText,
   ModalForm
 } from '@ant-design/pro-form';
-import { hydrogenProvinceAgentResetPwd } from "@/services/great-health-province/hydrogen-atom-saved-management"
+import { providerResetPwd } from "@/services/outpatient-service-management/digital-store-account-management"
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -50,7 +50,7 @@ export default (props) => {
         },
       }}
       onFinish={async (values) => {
-        hydrogenProvinceAgentResetPwd(values).then(res=>{
+        providerResetPwd(values).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)

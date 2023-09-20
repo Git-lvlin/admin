@@ -56,7 +56,7 @@ const HealthSupplyOrderPerformance: React.FC = () => {
     },
     {
       title: '业绩范围',
-      dataIndex: 'scopeDesc',
+      dataIndex: 'scope',
       align: 'center',
       hideInSearch: true
     }

@@ -43,12 +43,12 @@ export type DevicesProps = {
 }
 
 export type CumulativeProps = {
-  msgDetail: {
+  msgDetail?: {
     agentId: String;
     agentName: string;
   }
   type: string;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  onClose: function;
+  onClose?: function;
 }

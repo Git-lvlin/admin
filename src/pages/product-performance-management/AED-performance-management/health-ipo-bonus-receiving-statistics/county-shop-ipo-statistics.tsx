@@ -69,7 +69,6 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   return (
     <ProDescriptions
       columns={columns}
-      labelStyle={{width: '10%'}}
       column={{ xl: 3, xxl: 5 }}
       bordered
       dataSource={data}
@@ -157,12 +156,12 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   return (
     <>
       <ProTable
-        headerTitle={<Aggregate form={searchConfig}/>}
         columns={columns}
         options={false}
         params={{}}
         formRef={form}
         request={providerList}
+        tableExtraRender={()=><Aggregate form={searchConfig}/>}
         onSubmit={()=>{
           setSearchConfig(form.current?.getFieldsValue())
         }}

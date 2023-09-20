@@ -7,7 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import Export from '@/components/export'
-import { shopPartnerPage } from '@/services/outpatient-service-management/store-partners-management'
+import { providerStorePm } from '@/services/product-performance-management/health-store-partner-order-performance'
 import AddressCascader from '@/components/address-cascader'
 import type { FormInstance } from 'antd'
 import ExportHistory from '@/pages/export-excel/export-history'
@@ -21,7 +21,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
   const columns: ProColumns[] = [
     {
       title: '推荐人手机号',
-      dataIndex: 'memberPhone',
+      dataIndex: 'directPhone',
       align: 'center'
     },
     {
@@ -32,43 +32,43 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
     },
     {
       title: '大健康省代',
-      dataIndex: 'supplierId',
+      dataIndex: 'hyProvinceAgent',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '汇智能通省代',
-      dataIndex: 'supplierId',
+      dataIndex: 'provinceAgent',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '汇智能通市代',
-      dataIndex: 'supplierId',
+      dataIndex: 'cityAgent',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '宾购市代',
-      dataIndex: 'supplierId',
+      dataIndex: 'bingouCityAgent',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '汇鸿鑫科技',
-      dataIndex: 'supplierId',
+      dataIndex: 'hhxAward',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '区县服务商',
-      dataIndex: 'supplierId',
+      dataIndex: 'healthyProvider',
       valueType: 'text',
       hideInSearch: true
     },
     {
       title: '合作商编号',
-      dataIndex: 'houseFullName',
+      dataIndex: 'houseNumber',
       align: 'center'
     },
     {
@@ -84,19 +84,19 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
     },
     {
       title: '所在地',
-      dataIndex: 'area',
+      dataIndex: 'address',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '缴费金额(元)',
-      dataIndex: 'payAmountYuan',
+      dataIndex: 'payAmountDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '合同签订时间',
-      dataIndex: 'signTime',
+      dataIndex: 'contractSignTime',
       align: 'center',
       hideInSearch: true
     },
@@ -108,7 +108,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
     },
     {
       title: '签订时间',
-      dataIndex: 'signTime',
+      dataIndex: 'dateRange',
       hideInTable: true,
       renderFormItem: () => <TimeSelect />
     },
@@ -139,7 +139,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
         columns={columns}
         params={{}}
         actionRef={actRef}
-        request={shopPartnerPage}
+        request={providerStorePm}
         formRef={form}
         search={{
           labelWidth: 120,
@@ -147,10 +147,10 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
             ...dom.reverse(),
             <Export
              key='export'
-             type='hpaAedTrainOrderSdm'
+             type='providerStorePm'
              conditions={getFieldValue}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-give-detail-export'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'providerStorePm'}/>
           ]
         }}
         options={false}

@@ -29,7 +29,7 @@ type props = {
 }
 
 export default (props:props)=> {
-  const {visible, setVisible, msgDetail, callback} = props
+  const {visible, setVisible, callback} = props
   const form = useRef<FormInstance>()
   const [submitMsg, setSubmitMsg] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -106,7 +106,7 @@ export default (props:props)=> {
               <Button type="primary" key="submit" onClick={() => { props.form?.submit() }}>
                  提交
               </Button>,
-              <Button type="default" onClick={() => props.form?.resetFields()}>
+              <Button type="default" onClick={() => { props.form?.resetFields(); setSelectedRowKeys([]); setSelectItems([]) } }>
                  重置
               </Button>
             ];
@@ -179,7 +179,7 @@ export default (props:props)=> {
         <ProFormRadio.Group
           name="status"
           label="启用状态"
-          initialValue={0}
+          initialValue={1}
           options={[
             {
               label: '开启',
@@ -202,6 +202,10 @@ export default (props:props)=> {
         <ProFormText
           name='contactPhone'
           label='联系人手机号'
+          rules={[
+            { required: true, message: '请输入联系人手机号' },
+            { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' },
+          ]}
         />
       </ProFormGroup>
       {optionVisible&&<OperationModel

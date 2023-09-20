@@ -144,9 +144,7 @@ export default function GenerationManagement () {
         <AddAccount
           visible={visible}
           setVisible={setVisible}
-          msgDetail={msgDetail}
           callback={()=>{ ref?.current?.reload();setMsgDetail(undefined)}}
-          onClose={()=>{ ref?.current?.reload();setMsgDetail(undefined)}}
         />
       }
     </PageContainer>

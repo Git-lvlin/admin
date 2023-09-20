@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { Form } from 'antd';
 import {
   ProFormText,
-  DrawerForm
+  DrawerForm,
+  ProFormRadio
 } from '@ant-design/pro-form';
-import { hydrogenProvinceAgentDetail,hydrogenProvinceAgentEdit,checkAccount } from "@/services/great-health-province/hydrogen-atom-saved-management"
+import { providerDetail,providerEdit,providerCheckAccount } from "@/services/outpatient-service-management/digital-store-account-management"
 import md5 from 'blueimp-md5';
 
 const formItemLayout = {
@@ -24,10 +25,11 @@ export default (props) => {
   const { visible, setVisible, callback,msgDetail,onClose} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
-    hydrogenProvinceAgentDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
+    providerDetail({accountId:msgDetail?.accountId,agencyId:msgDetail?.agencyId}).then(res=>{
       if(res.code==0){
         form.setFieldsValue({
-          name:msgDetail?.agentName,
+          contactPhone: msgDetail?.contactPhone,
+          contactName: msgDetail?.contactName,
           ...res.data
         })
       }
@@ -46,7 +48,7 @@ export default (props) => {
 
   const checkConfirm2 = (rule: any, value: any ) => {
     return new Promise<void>(async (resolve, reject) => {
-      checkAccount({userName:value,accountId:msgDetail?.accountId}).then(async res=>{
+      providerCheckAccount({userName:value,accountId:msgDetail?.accountId}).then(async res=>{
         if (res.code==0) {
           await resolve()
         }else {
@@ -91,7 +93,7 @@ export default (props) => {
           ...values,
           password:values?.password&&md5(values?.password)
         }
-        hydrogenProvinceAgentEdit(params).then(res=>{
+        providerEdit(params).then(res=>{
           if(res.code==0){
             setVisible(false)
             callback(true)
@@ -112,7 +114,7 @@ export default (props) => {
       <ProFormText
         width={250}
         label="名称"
-        name="name"
+        name="nickname"
         readonly
       />
       <ProFormText
@@ -134,7 +136,6 @@ export default (props) => {
         name="password"
         placeholder='请输入登录密码'
         rules={[
-          // { required: true, message: '请输入登录密码' },
           {validator: checkConfirm3}
         ]}
         fieldProps={{
@@ -147,13 +148,28 @@ export default (props) => {
       />
       <ProFormText
         label="联系人"
-        name="manager"
+        name="contactName"
       />
       <ProFormText
         label="联系人手机号"
-        name="managerPhone"
+        name="contactPhone"
         rules={[
          { validator: checkConfirm }
+        ]}
+      />
+      <ProFormRadio.Group
+        name="status"
+        label="启用状态"
+        initialValue={1}
+        options={[
+          {
+            label: '开启',
+            value: 1,
+          },
+          {
+            label: '关闭',
+            value: 2,
+          },
         ]}
       />
     </DrawerForm >

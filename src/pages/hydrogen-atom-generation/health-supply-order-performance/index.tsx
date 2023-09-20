@@ -6,7 +6,6 @@ import { hyCityAgentStoreGoodsAdm,hyCityAgentStoreGoodsAdmSt } from "@/services/
 import { amountTransform } from '@/utils/utils'
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import StoreInformation from './store-information'
-import CumulativePerformance from './cumulative-performance'
 import { PageContainer } from "@ant-design/pro-layout"
 import type { DescriptionsProps, TableProps, DevicesProps } from "./data"
 import { Descriptions } from 'antd';
@@ -23,6 +22,7 @@ const GenerationManagement =(props:DevicesProps) => {
     const [detailList,setDetailList]=useState<DescriptionsProps>()
     const [time,setTime]=useState<TableProps>()
     const [visit, setVisit] = useState<boolean>(false)
+    const [type, setType] = useState<number>(0)
     const form = useRef<ActionType>()
   
     useEffect(() => {
@@ -31,7 +31,6 @@ const GenerationManagement =(props:DevicesProps) => {
         agentName:time?.agentName,
         startTime:time?.dateRange&&time?.dateRange[0],
         endTime:time?.dateRange&&time?.dateRange[1],
-        scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
       }
       hyCityAgentStoreGoodsAdmSt(params).then(res=>{
         if(res.code==0){
@@ -47,7 +46,6 @@ const GenerationManagement =(props:DevicesProps) => {
         ...rest,
         startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD'),
         endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD'),
-        scope:activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'
       }
       return params
     }
@@ -80,7 +78,7 @@ const GenerationManagement =(props:DevicesProps) => {
         align: 'center',
         render: (_,data)=>{
           if(parseFloat(_)){
-            return <a onClick={()=>{setVisible(true);setMsgDetail(data)}}>{amountTransform(_,'/').toFixed(2)}</a>
+            return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(1)}}>{amountTransform(_,'/').toFixed(2)}</a>
           }else{
             return '0.00'
           }
@@ -93,7 +91,7 @@ const GenerationManagement =(props:DevicesProps) => {
         align: 'center',
         render: (_,data)=>{
           if(parseFloat(_)){
-            return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data)}}>{amountTransform(_,'/').toFixed(2)}</a>
+            return <a onClick={()=>{setStoreVisible(true);setMsgDetail(data);setType(2)}}>{amountTransform(_,'/').toFixed(2)}</a>
           }else{
             return '0.00'
           }
@@ -103,7 +101,7 @@ const GenerationManagement =(props:DevicesProps) => {
       },
       {
         title: '业绩范围',
-        dataIndex: 'scopeDesc',
+        dataIndex: 'scope',
         align: 'center',
         hideInSearch: true
       }
@@ -134,16 +132,12 @@ const GenerationManagement =(props:DevicesProps) => {
           onReset={() => {
             setTime(undefined)
           } }
-          params={{
-            scope: activeKey == 1 ? 'hyCityAgentAllCommission' : 'hyCityAgentCommission'
-          }}
           pagination={{
             pageSize: 10,
             showQuickJumper: true,
           }}
           options={false}
           search={{
-            labelWidth: 200,
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),
               <Export
@@ -161,18 +155,8 @@ const GenerationManagement =(props:DevicesProps) => {
             visible={storeVisible}
             setVisible={setStoreVisible}
             msgDetail={msgDetail}
-            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
             onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
-          />
-        }
-        {
-          visible&&
-          <CumulativePerformance
-            visible={visible}
-            setVisible={setVisible}
-            msgDetail={msgDetail}
-            scope={activeKey == 1?'hyCityAgentAllCommission':'hyCityAgentCommission'}
-            onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+            type={type}
           />
         }
       </>
@@ -180,7 +164,7 @@ const GenerationManagement =(props:DevicesProps) => {
   }
 
 export default ()=>{
-  const [activeKey, setActiveKey] = useState<string>('1')
+  const [activeKey, setActiveKey] = useState<string>('2')
   return (
       <PageContainer title={false}>
       <ProCard
@@ -190,11 +174,11 @@ export default ()=>{
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key="1" tab="全国业绩">
+        {/* <ProCard.TabPane key="1" tab="全国业绩">
           {
             activeKey=='1'&&<GenerationManagement activeKey={activeKey}/>
           }
-        </ProCard.TabPane>
+        </ProCard.TabPane> */}
         <ProCard.TabPane key="2" tab="本地业绩">
           {
             activeKey=='2'&&<GenerationManagement activeKey={activeKey}/>

@@ -29,7 +29,7 @@ const formItemLayout = {
   
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose,scope} = props;
+  const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [orderSum,setOrderSum]=useState()
   const [time,setTime]=useState({})
@@ -50,7 +50,7 @@ export default (props) => {
   const Columns: ProColumns<GithubIssueItem>[] = [
     {
       title: '订单日期',
-      dataIndex: 'payTime',
+      dataIndex: 'createTime',
       align: 'center',
       hideInSearch: true,
     },
@@ -70,7 +70,7 @@ export default (props) => {
     },
     {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
@@ -82,24 +82,24 @@ export default (props) => {
     },
     {
       title: '订单号',
-      dataIndex: 'orderNo',
+      dataIndex: 'orderSn',
       align: 'center',
     },
     {
       title: '门店所在地',
-      dataIndex: 'consignee',
+      dataIndex: 'address',
       valueType: 'text',
       hideInSearch:true,
     },
     {
       title: '订单类型',
-      dataIndex: 'orderTypeDesc',
+      dataIndex: 'orderType',
       align: 'center',
       hideInSearch: true,
     },
     {
       title: '订单金额',
-      dataIndex: 'orderAmount',
+      dataIndex: 'payAmount',
       align: 'center',
       render: (_,data)=>{
         if(_){
@@ -112,7 +112,7 @@ export default (props) => {
     },
     {
       title: '收益',
-      dataIndex: 'amount',
+      dataIndex: 'commission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
@@ -125,7 +125,7 @@ export default (props) => {
     },
     {
       title: '业绩范围',
-      dataIndex: 'settleStatusDesc',
+      dataIndex: 'scope',
       align: 'center',
       hideInSearch: true,
     },
@@ -135,7 +135,6 @@ export default (props) => {
       agencyId:msgDetail?.agencyId,
       startTime:time?.dateRange?.[0],
       endTime:time?.dateRange?.[1],
-      scope:scope,
       ...time
     }
     hyCityAgentProviderStoreGoodsSt(params).then(res=>{
@@ -152,7 +151,6 @@ export default (props) => {
       agencyId:msgDetail?.agencyId,
       startTime:dateRange&&moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:dateRange&&moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      scope:scope,
       ...rest,
     }
   }
@@ -189,7 +187,6 @@ export default (props) => {
         actionRef={ref}
         params={{
           agencyId:msgDetail?.agencyId,
-          scope:scope
         }}
         pagination={{
           pageSize: 10,

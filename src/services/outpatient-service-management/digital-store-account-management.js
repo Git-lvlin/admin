@@ -1,13 +1,19 @@
 import request from "@/utils/request";
+import moment from 'moment'
 
 //数字化门店账号列表
 export const providerGetList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, serviceArea, recruitTime, ...rest } = params;
   const res = await request('/auth/agency/provider/getList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      startTime: recruitTime && moment(recruitTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: recruitTime && moment(recruitTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: serviceArea && serviceArea?.[0].value,
+      cityId: serviceArea && serviceArea?.[1].value,
+      areaId: serviceArea && serviceArea?.[2].value,
       ...rest
     },
     ...options
@@ -57,9 +63,9 @@ export const accountProviderList= async (params = {}, options = {}) => {
     }
   }
 
-//省代编辑
-export const hydrogenProvinceAgentEdit = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/hydrogenProvinceAgent/edit', {
+//数字化门店账号编辑
+export const providerEdit = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/provider/edit', {
         method: 'POST',
         data:params,
         ...options
@@ -72,9 +78,9 @@ export const hydrogenProvinceAgentEdit = async (params = {}, options = {}) => {
     }
   }
   
-  //省代详情
-  export const hydrogenProvinceAgentDetail = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/hydrogenProvinceAgent/detail', {
+  //数字化门店账号详情
+  export const providerDetail = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/provider/detail', {
         method: 'POST',
         data:params,
         ...options
@@ -87,9 +93,9 @@ export const hydrogenProvinceAgentEdit = async (params = {}, options = {}) => {
     }
   }
 
-  //省代账号检查
-  export const checkAccount = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/hydrogenProvinceAgent/checkAccount', {
+  //数字化门店账号检查
+  export const providerCheckAccount = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/provider/checkAccount', {
         method: 'POST',
         data:params,
         ...options
@@ -102,9 +108,9 @@ export const hydrogenProvinceAgentEdit = async (params = {}, options = {}) => {
     }
   }
   
-  //省代重置密码
-  export const hydrogenProvinceAgentResetPwd = async (params = {}, options = {}) => {
-    const res = await request('/auth/agency/hydrogenProvinceAgent/resetPwd', {
+  //数字化门店账号重置密码
+  export const providerResetPwd = async (params = {}, options = {}) => {
+    const res = await request('/auth/agency/provider/resetPwd', {
         method: 'POST',
         data:params,
         ...options

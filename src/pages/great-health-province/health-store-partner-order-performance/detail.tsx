@@ -56,7 +56,7 @@ export default (props: any) => {
     },
     {
       title: '下单人手机号',
-      dataIndex: 'buyerMobile',
+      dataIndex: 'memberPhone',
       align: 'center',
       hideInSearch: true
     },
@@ -70,12 +70,6 @@ export default (props: any) => {
       dataIndex: 'address',
       valueType: 'text',
       hideInSearch:true,
-    },
-    {
-      title: '订单类型',
-      dataIndex: 'orderTypeDesc',
-      align: 'center',
-      hideInSearch: true,
     },
     {
       title: '订单金额',
@@ -105,7 +99,7 @@ export default (props: any) => {
     },
     {
       title: '业绩范围',
-      dataIndex: 'settleStatusDesc',
+      dataIndex: 'scope',
       align: 'center',
       hideInSearch: true,
     },
