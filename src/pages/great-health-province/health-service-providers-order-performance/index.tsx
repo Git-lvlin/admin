@@ -52,7 +52,7 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
       dataIndex: 'commissionDesc',
       render: (_,data)=>{
         if(_!=0){
-          return <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>
+          return <a onClick={()=> {setVisible(true); setId(data)}}>{_}</a>
         }else{
           return '0'
         }
