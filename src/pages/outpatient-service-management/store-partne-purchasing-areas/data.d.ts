@@ -30,6 +30,7 @@ export type ThematicEventItem={
   salePriceStr: number;
   goodsStateStr: string;
   type: string;
+  drainageType: number;
 }
 
 

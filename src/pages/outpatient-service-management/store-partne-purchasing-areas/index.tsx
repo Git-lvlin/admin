@@ -292,9 +292,9 @@ export default () => {
       editable: false,
       hideInSearch: true,
       render: (_, data) => {
-        if (_ == 1 && data.actPrice) {
+        if (_ == 1 && data.actPrice&&data.drainageType==0) {
           return <a onClick={() => { setDivideVisible(true); setMsgDetail(data) }}>已配置</a>
-        } else if (_ == 0 && data.actPrice) {
+        } else if (_ == 0 && data.actPrice&&data.drainageType==0) {
           return <a onClick={() => { setDivideVisible(true); setMsgDetail(data) }}><span style={{ color: 'red' }} >未配置</span>（点击配置）</a>
         } else {
           return ''
