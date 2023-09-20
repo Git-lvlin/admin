@@ -83,12 +83,6 @@ const formItemLayout = {
         hideInSearch:true,
       },
       {
-        title: '订单类型',
-        dataIndex: 'orderType',
-        align: 'center',
-        hideInSearch: true,
-      },
-      {
         title: '订单金额',
         dataIndex: 'payAmount',
         align: 'center',
@@ -116,7 +110,7 @@ const formItemLayout = {
       },
       {
         title: '业绩范围',
-        dataIndex: ' scope',
+        dataIndex: 'scope',
         align: 'center',
         hideInSearch: true,
       },

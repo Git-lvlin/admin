@@ -35,7 +35,7 @@ export default (props: any) => {
       endTime:date&&moment(date?.[1]).format('YYYY-MM-DD HH:mm:ss'),
     }).then(res=> {
       if(res.code === 0) {
-        setOrderSum(res.data.records)
+        setOrderSum(res.data?.[0])
       }
     })
   }, [change])
@@ -170,11 +170,11 @@ export default (props: any) => {
               <Space size='large'>
                 <div>
                   累计收益
-                  <span>￥{amountTransform(orderSum?.[0]?.amount,'/').toFixed(2)}</span>
+                  <span>￥{amountTransform(orderSum?.amount,'/').toFixed(2)}</span>
                 </div>
                 <div>
                   累计金额
-                  <span>￥{amountTransform(orderSum?.[0]?.payAmount,'/').toFixed(2)}</span>
+                  <span>￥{amountTransform(orderSum?.payAmount,'/').toFixed(2)}</span>
                 </div>
               </Space>
             </div>

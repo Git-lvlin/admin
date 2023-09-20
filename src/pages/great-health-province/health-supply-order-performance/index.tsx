@@ -50,7 +50,13 @@ const HealthSupplyOrderPerformance: React.FC = () => {
     {
       title: '大健康供应链系统订单提成',
       dataIndex: 'commissionDesc',
-      render: (_, r) => <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>,
+      render: (_,data)=>{
+        if(_!=0){
+          return <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>
+        }else{
+          return '0'
+        }
+      },
       align: 'center',
       hideInSearch: true,
     },

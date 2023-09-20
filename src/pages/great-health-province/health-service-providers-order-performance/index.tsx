@@ -50,7 +50,13 @@ const HealthServiceProvidersOrderPerformance: React.FC = () => {
     {
       title: '大健康区县服务商订单提成',
       dataIndex: 'commissionDesc',
-      render: (_, r) => <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>,
+      render: (_,data)=>{
+        if(_!=0){
+          return <a onClick={()=> {setVisible(true); setId(r)}}>{_}</a>
+        }else{
+          return '0'
+        }
+      },
       align: 'center',
       hideInSearch: true,
     },
