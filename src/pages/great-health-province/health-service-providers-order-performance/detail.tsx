@@ -72,19 +72,6 @@ export default (props: any) => {
       hideInSearch:true,
     },
     {
-      title: '订单金额',
-      dataIndex: 'payAmount',
-      align: 'center',
-      render: (_,data)=>{
-        if(_){
-          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
-        }else{
-          return '-'
-        }
-      },
-      hideInSearch: true,
-    },
-    {
       title: '收益',
       dataIndex: 'commission',
       align: 'center',
