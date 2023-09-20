@@ -29,7 +29,7 @@ export default (props: any) => {
       obj = rest
     }
     provinceAgentProviderSt({
-      agencyId: msgDetail.agencyId,
+      agencyId: msgDetail?.agencyId,
       ...obj,
       startTime:date&&moment(date?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime:date&&moment(date?.[1]).format('YYYY-MM-DD HH:mm:ss'),
