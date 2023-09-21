@@ -204,6 +204,15 @@ export const orderContractPage = async (params, options = {}) => {
 
 // 合同业务
 export const dict = async (params, options = {}) => {
+  return await request('/auth/java-admin/public/common/dict', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 合同业务
+export const dictSub = async (params, options = {}) => {
   return await request('/auth/java-admin/public/common/dictSub', {
     method: 'POST',
     data: params,
