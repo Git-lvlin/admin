@@ -170,7 +170,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 billVal: amountTransform(item?.billVal, '/'),
                 id: idx + 1,
-                name: feeName[item.roleCode],
+                name: feeName[item?.roleCode],
                 settleType: 3,
                 settleTypeDesc: '线下',
                 trueUnfrezeeType: '6',
@@ -291,7 +291,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         } else {
           return {
             ...res,
-            billVal: res.billVal ? amountTransform(res.billVal) : undefined
+            billVal: res.billVal?.toString() ? amountTransform(res.billVal) : undefined
           }
         }
       })
