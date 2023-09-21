@@ -45,5 +45,11 @@ export default {
       component: './outpatient-service-management/digital-store-account-management',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'supply-chain-commodity-label-management',
+      path: '/outpatient-service-management/supply-chain-commodity-label-management',
+      component: './outpatient-service-management/supply-chain-commodity-label-management',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

@@ -92,17 +92,3 @@ export const provideUpdateGoodsClassTag = async (params = {}, options = {}) => {
         code: res.code
     }
 }
-
-export const provideSaveClassTagData = async (params = {}, options = {}) => {
-    const res = await request('/auth/goods/product/provideSaveClassTagData', {
-        method: 'POST',
-        data:params,
-        ...options
-    });
-
-    return {
-        data: res.data,
-        success: true,
-        code: res.code
-    }
-}

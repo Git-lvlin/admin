@@ -286,6 +286,7 @@ export default {
   'menu.outpatient-service-management.case-order-management': '病例订单管理',
   'menu.outpatient-service-management.ipo-gift-management': 'IPO赠送管理',
   'menu.outpatient-service-management.digital-store-account-management': '数字化门店账号管理',
+  'menu.outpatient-service-management.supply-chain-commodity-label-management': '供应链商品标签管理',
 
 
   'menu.price-comparsion-management': '比价管理菜单',
