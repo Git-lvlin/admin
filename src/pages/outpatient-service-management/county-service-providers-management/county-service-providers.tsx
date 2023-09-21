@@ -70,7 +70,7 @@ const CountyServiceProviders:React.FC = () => {
       hideInTable: true
     },
     {
-      title: '付款凭证张数(张)',
+      title: '尾款凭证张数(张)',
       dataIndex: 'voucherNum',
       align: 'center',
       hideInSearch: true,
@@ -83,6 +83,12 @@ const CountyServiceProviders:React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '订单金额',
+      dataIndex: 'payAmountDesc',
+      align: 'center',  
+      hideInSearch: true
+    },
+    {
       title: '合同签订时间',
       dataIndex: 'signTime',
       align: 'center',
@@ -92,16 +98,6 @@ const CountyServiceProviders:React.FC = () => {
       title: '签约时间',
       dataIndex: 'signTime',
       renderFormItem: ()=> <TimeSelect />,
-      hideInTable: true
-    },
-    {
-      title: '合同状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '已签订',
-        2: '未签订'
-      },
       hideInTable: true
     },
     {
@@ -124,11 +120,16 @@ const CountyServiceProviders:React.FC = () => {
       hideInSearch: true,
       render: (_, r) => {
         if(r.providerStoreNum > 0) {
-          return <a href="/outpatient-service-management/store-partners-management">{_}</a>
+          return <a href={`/outpatient-service-management/store-partners-management?areaProviderNo=${r.houseNumber}`} target='_blank'>{_}</a>
         } else {
           return <span>{_}</span>
         }
       }
+    },
+    {
+      title: '签约订单号',
+      dataIndex: 'contractOrderSn',
+      align: 'center',
     },
     {
       title: '推荐人手机号',

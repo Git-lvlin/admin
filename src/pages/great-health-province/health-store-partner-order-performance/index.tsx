@@ -65,7 +65,20 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       dataIndex: 'scope',
       align: 'center',
       hideInSearch: true
-    }
+    },
+    // {
+    //   title: '大健康门店合作商订单提成-扣除通道费后',
+    //   dataIndex: 'commission',
+    //   align: 'center',
+    //   hideInSearch: true,
+    //   render: (_,data)=>{
+    //     if(_){
+    //       return amountTransform(_,'/').toFixed(2)
+    //     }else{
+    //       return '-'
+    //     }
+    //   },
+    // },
   ]
 
   return (
@@ -74,6 +87,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
         <Descriptions.Item  label="大健康省代数量">{data?.agencyNum ?? 0}</Descriptions.Item>
         <Descriptions.Item  label="大健康门店合作商订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
         <Descriptions.Item  label="大健康门店合作商订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>
+        {/* <Descriptions.Item  label="大健康门店合作商订单提成-扣除通道费后">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item> */}
       </Descriptions>
       <ProTable
         rowKey='agencyId'

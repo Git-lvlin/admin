@@ -105,6 +105,16 @@ const GenerationManagement =(props:DevicesProps) => {
         dataIndex: 'scope',
         align: 'center',
         hideInSearch: true
+      },
+      {
+        title: '大健康供应链系统订单提成 - 扣通道费后',
+        dataIndex: 'scope',
+        align: 'center',
+        hideInSearch: true,
+        render: (_,data)=>{
+          return amountTransform(_,'/').toFixed(2)
+  
+        },
       }
     ]
   
@@ -114,6 +124,7 @@ const GenerationManagement =(props:DevicesProps) => {
           <Descriptions.Item  label="氢原子市代总数量">{detailList?.agencyNum}  </Descriptions.Item>
           <Descriptions.Item  label="大健康供应链系统订单业绩">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  </Descriptions.Item>
           <Descriptions.Item  label="大健康供应链系统订单提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  </Descriptions.Item>
+          <Descriptions.Item  label="大健康供应链系统订单提成 - 扣通道费后">{amountTransform(detailList?.commission,'/').toFixed(2)}  </Descriptions.Item>
         </Descriptions>
         <ProTable
           rowKey="agencyId"

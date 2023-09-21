@@ -72,20 +72,20 @@ const AEDEarlyOrderManagement: React.FC = () => {
       align: 'left', 
       hideInSearch: true
     },
-    // {
-    //   title: '门店合作商编号',
-    //   dataIndex: 'imei',
-    //   align: 'center',
-    //   hideInSearch: true,
-    //   hideInTable: false
-    // },
-    // {
-    //   title: '区县服务商编号',
-    //   dataIndex: 'imei',
-    //   align: 'center',
-    //   hideInSearch: true,
-    //   hideInTable: false
-    // },
+    {
+      title: '门店合作商编号',
+      dataIndex: 'storeHouseNumber',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: false
+    },
+    {
+      title: '区县服务商编号',
+      dataIndex: 'areaHouseNumber',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: false
+    },
     {
       title: '早筛码',
       dataIndex: 'signCode',
@@ -96,17 +96,17 @@ const AEDEarlyOrderManagement: React.FC = () => {
       dataIndex: 'signUser',
       align: 'center'
     },
-    // {
-    //   title: '订单来源',
-    //   dataIndex: 'status',
-    //   align: 'center',
-    //   hideInTable: true,
-    //   valueEnum: {
-    //     1: '门店合作商店铺',
-    //     2: '区县服务商店铺',
-    //     3: '其他来源',
-    //   }
-    // },
+    {
+      title: '订单来源',
+      dataIndex: 'providerType',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        'store': '门店合作商店铺',
+        'provider': '区县服务商店铺',
+        'other': '其他来源',
+      }
+    },
     {
       title: '早筛人手机号',
       dataIndex: 'signMemberPhone',

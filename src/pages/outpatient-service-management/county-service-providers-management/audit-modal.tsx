@@ -45,9 +45,8 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
   useEffect(()=> {
     if(data) {
       form.current?.setFieldsValue({
-        houseNumber: data?.houseName,
+        houseNumber: data?.houseFullName,
         area: data?.provinceName + data?.cityName + data?.areaName,
-        payAmount: `${amountTransform(data?.payAmount, '/').toFixed(2)}元`,
         contractId: meta?.contractId,
         optName: window.localStorage.getItem('nickname')
       })
@@ -76,9 +75,9 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
   return (
     <ModalForm
       title='区县服务商初审'
-      width={500}
+      width={700}
       visible={visible}
-      formRef={form}
+      formRef={form}  
       onVisibleChange={setVisible}
       modalProps={{
         destroyOnClose: true
@@ -136,13 +135,14 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
             label='服务区域'
             name='area'
             readonly
-            extra={data?.isExistProviderDesc}
+            extra={<span style={data?.isExistProviderDesc === '此区域已有服务商(已交15000元)'? {color: 'red'}: {color: 'rgb(16, 172, 7)'}}>{data?.isExistProviderDesc}</span>}
           />
-          <ProFormText 
+          <ProForm.Item 
             label='订单金额'
             name='payAmount'
-            readonly
-          />
+          >
+            <span style={{color: 'red'}}>{amountTransform(data?.payAmount, '/').toFixed(2)}</span>元
+          </ProForm.Item>
           <ProFormText
             label='法大大合同ID'
             name='contractId'
@@ -152,7 +152,7 @@ const AuditModal:React.FC<props> = ({visible, setVisible, meta, callback}) => {
             label='付款凭证图片'
             name='voucherImg'
           >
-            <Space>
+            <Space wrap>
               {
                 data?.voucher.map((res: any) => {
                   return (

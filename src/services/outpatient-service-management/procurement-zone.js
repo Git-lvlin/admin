@@ -27,3 +27,12 @@ export const provideSetDivideInfo = async (params = {}, options = {}) => {
     ...options
   })
 }
+
+// 合作商商品分账角色
+export const provideGetRoleInfo = async (params = {}, options = {}) => {
+  return await request('/auth/goods/product/provideGetRoleInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

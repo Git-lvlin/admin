@@ -16,7 +16,7 @@ export const provideGetListByParams = async (params = {}, options = {}) => {
     ...options
   })
   return {
-    data: res.data.records,
+    data: res.data,
     success: res.success,
     code: res.code,
     total: res.data.total
@@ -67,6 +67,34 @@ export const provideDeleteByIdArr = async (params = {}, options = {}) => {
 
 export const provideSort = async (params = {}, options = {}) => {
     const res = await request('/auth/goods/product/provideSort', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+}
+
+export const provideUpdateGoodsClassTag = async (params = {}, options = {}) => {
+    const res = await request('/auth/goods/product/provideUpdateGoodsClassTag', {
+        method: 'POST',
+        data:params,
+        ...options
+    });
+
+    return {
+        data: res.data,
+        success: true,
+        code: res.code
+    }
+}
+
+export const provideSaveClassTagData = async (params = {}, options = {}) => {
+    const res = await request('/auth/goods/product/provideSaveClassTagData', {
         method: 'POST',
         data:params,
         ...options
