@@ -11,9 +11,9 @@ export const providerGetList = async (params = {}, options = {}) => {
       size: pageSize,
       startTime: recruitTime && moment(recruitTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: recruitTime && moment(recruitTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: serviceArea && serviceArea?.[0].value,
-      cityId: serviceArea && serviceArea?.[1].value,
-      areaId: serviceArea && serviceArea?.[2].value,
+      provinceId: serviceArea?.[0] && serviceArea?.[0].value,
+      cityId: serviceArea?.[1] && serviceArea?.[1].value,
+      areaId: serviceArea?.[2] && serviceArea?.[2].value,
       ...rest
     },
     ...options

@@ -10,9 +10,9 @@ export const getListByParams = async (params = {}, options = {}) => {
       size: pageSize,
       createTimeStart: dateRange&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       createTimeEnd: dateRange&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area&&area[0].value,
-      cityId: area&&area[1].value,
-      regionId: area&&area[2].value,
+      provinceId: area?.[0]&&area[0].value,
+      cityId: area?.[1]&&area[1].value,
+      regionId: area?.[2]&&area[2].value,
       ...rest
     },
     ...options
