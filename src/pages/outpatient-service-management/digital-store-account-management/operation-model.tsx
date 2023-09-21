@@ -7,7 +7,7 @@ import { ExclamationCircleFilled} from '@ant-design/icons';
 import { providerAdd } from '@/services/outpatient-service-management/digital-store-account-management'
 
 export default (props) => {
-  const { setVisible, visible, msgDetail, callback } = props;
+  const { setVisible, visible, msgDetail, callback, type } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -28,7 +28,7 @@ export default (props) => {
   return (
     <ModalForm
       key="sort"
-      title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/>确认添加数字化门店账号？</p>}
+      title={<p><ExclamationCircleFilled style={{color:'#FBC550'}}/>确认添加{type==1?'数字化门店账号':'服务区域'}？</p>}
       onVisibleChange={setVisible}
       formRef={formRef}
       visible={visible}

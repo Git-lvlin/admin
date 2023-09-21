@@ -3,14 +3,12 @@ import moment from 'moment'
 
 //数字化门店账号列表
 export const providerGetList = async (params = {}, options = {}) => {
-  const { current, pageSize, serviceArea, recruitTime, ...rest } = params;
+  const { current, pageSize, serviceArea, ...rest } = params;
   const res = await request('/auth/agency/provider/getList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
-      startTime: recruitTime && moment(recruitTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime: recruitTime && moment(recruitTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       provinceId: serviceArea?.[0] && serviceArea?.[0].value,
       cityId: serviceArea?.[1] && serviceArea?.[1].value,
       areaId: serviceArea?.[2] && serviceArea?.[2].value,

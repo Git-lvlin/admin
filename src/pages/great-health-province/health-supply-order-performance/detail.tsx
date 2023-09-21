@@ -158,7 +158,7 @@ export default (props: any) => {
             ...dom.reverse(),
             <Export
               key='export'
-              type='provinceAgentProviderStoreGoods'
+              type='provinceAgentProviderStoreGoodsDetail'
               conditions={getFieldValue}
             />
           ],

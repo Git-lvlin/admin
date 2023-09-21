@@ -8,19 +8,20 @@ import { providerGetList } from "@/services/outpatient-service-management/digita
 import EditInformation from './edit-information'
 import ResetPasswords from './reset-passwords'
 import AddressCascader from '@/components/address-cascader'
-import TimeSelect from '@/components/time-select'
 import { Button } from "antd"
 import AddAccount from './add-account'
+import AddArea from './add-area'
 
 export default function GenerationManagement () {
   const [editVisible, setEditVisible] = useState<boolean>(false)
   const [resetVisible, setResetVisible] = useState<boolean>(false)
   const [visible, setVisible] = useState<boolean>(false)
+  const [areaVisible, setAreaVisible] = useState<boolean>(false)
   const [msgDetail, setMsgDetail] = useState<TableProps>()
   const ref = useRef<ActionType>()
 
 
-  const tableColumns: ProColumns<TableProps>[] = [
+  const tableColumns: ProColumns[] = [
     {
       title: 'ID',
       dataIndex: 'accountId',
@@ -66,12 +67,6 @@ export default function GenerationManagement () {
       hideInTable: true
     },
     {
-      title: '招募时间',
-      dataIndex: 'recruitTime',
-      hideInTable: true,
-      renderFormItem: () => <TimeSelect />
-    },
-    {
       title: '启用状态',
       dataIndex: 'status',
       align: 'center',
@@ -94,14 +89,15 @@ export default function GenerationManagement () {
       hideInSearch: true,
       render: (_,data)=>([
         <a onClick={()=>{setEditVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
-        <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>
+        <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>,
+        // <a onClick={()=>{setAreaVisible(true);setMsgDetail(data) }} key='addArea'>添加区域</a>,
       ])
     },
   ]
 
   return (
     <PageContainer title={false}>
-      <ProTable<TableProps>
+      <ProTable
         rowKey="accountId"
         columns={tableColumns}
         request={providerGetList}
@@ -144,6 +140,15 @@ export default function GenerationManagement () {
         <AddAccount
           visible={visible}
           setVisible={setVisible}
+          callback={()=>{ ref?.current?.reload();setMsgDetail(undefined)}}
+        />
+      }
+       {
+        areaVisible&&
+        <AddArea
+          visible={areaVisible}
+          setVisible={setAreaVisible}
+          msgDetail={msgDetail}
           callback={()=>{ ref?.current?.reload();setMsgDetail(undefined)}}
         />
       }

@@ -132,7 +132,7 @@ export default (props: any) => {
             ...dom.reverse(),
             <Export
               key='export'
-              type='provinceAgentProviderPm'
+              type='provinceAgentProviderPmDetail'
               conditions={getFieldValue}
             />
           ],

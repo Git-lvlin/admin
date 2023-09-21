@@ -1,13 +1,9 @@
 import { useRef, useState } from 'react'
 import {
   DrawerForm,
-  ProFormText,
-  ProFormGroup,
-  ProFormRadio
 } from '@ant-design/pro-form'
 import ProTable from '@/components/pro-table'
 import {
-  Divider,
   Typography,
   Button,
 } from 'antd'
@@ -15,7 +11,6 @@ import {
 import type { FormInstance } from 'antd'
 import OperationModel from './operation-model'
 import { accountProviderList } from '@/services/outpatient-service-management/digital-store-account-management'
-import md5 from 'blueimp-md5';
 import type { CumulativeProps } from "./data"
 import type { ProColumns } from "@ant-design/pro-table"
 
@@ -81,7 +76,7 @@ export default (props:CumulativeProps)=> {
   const onsubmit=values=>{
     try {
       serOptionVisible(true) 
-      setSubmitMsg({...values,password:values?.password&&md5(values?.password),agencyList:selectedRowKeys})
+      setSubmitMsg({...values,agencyList:selectedRowKeys})
     } catch (error) {
       console.log('error',error)
     }
@@ -90,7 +85,7 @@ export default (props:CumulativeProps)=> {
   return (
     <DrawerForm
       layout='horizontal'
-      title='大健康服务项目 / 数字化门店账号管理  / 添加账号'
+      title='大健康服务项目 / 数字化门店账号管理  / 添加服务区域'
       width={1000}
       submitter={
         {
@@ -99,7 +94,7 @@ export default (props:CumulativeProps)=> {
               <Button type="primary" key="submit" onClick={() => { props.form?.submit() }}>
                  提交
               </Button>,
-              <Button type="default" onClick={() => { props.form?.resetFields(); setSelectedRowKeys([]); setSelectItems([]) } }>
+              <Button type="default" onClick={() => { setSelectedRowKeys([]); setSelectItems([]) } }>
                  重置
               </Button>
             ];
@@ -146,68 +141,12 @@ export default (props:CumulativeProps)=> {
       {
         selectItems.map((item,index)=><span>{index+1}、{item?.serviceArea}&nbsp;&nbsp;</span>)
       }
-      <Divider />
-      <Title style={{ marginTop: -10, marginBottom: '20px' }} level={5}>二、填写账号信息</Title>
-      <ProFormGroup>
-        <ProFormText
-          name='nickName'
-          label='名称'
-          rules={[
-            { required: true, message: '请输入名称' },
-            { min: 3, max: 15, message: '请输入3-15个字' },
-          ]}
-          placeholder='请输入3-15个字'
-        />
-        <ProFormText
-          name='userName'
-          label='登录账号'
-          rules={[{ required: true, message: '请输入登录账号' }]}
-        />
-        <ProFormText
-          name='contactName'
-          label='联系人'
-        />
-      </ProFormGroup>
-
-      <ProFormGroup>
-        <ProFormRadio.Group
-          name="status"
-          label="启用状态"
-          initialValue={1}
-          options={[
-            {
-              label: '开启',
-              value: 1,
-            },
-            {
-              label: '关闭',
-              value: 2,
-            },
-          ]}
-        />
-        <ProFormText
-          name='password'
-          label='登录密码'
-          rules={[
-            { required: true, message: '请输入登录账号' },
-            { min:6, message: '密码最少6个字符' },
-          ]}
-        />
-        <ProFormText
-          name='contactPhone'
-          label='联系人手机号'
-          rules={[
-            { required: true, message: '请输入联系人手机号' },
-            { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号' },
-          ]}
-        />
-      </ProFormGroup>
       {optionVisible&&<OperationModel
         visible={optionVisible}
         setVisible={serOptionVisible}
         callback={()=>{ callback(); setVisible(false) }}
         msgDetail={submitMsg}
-        type={1}
+        type={2}
       />}
     </DrawerForm>
   )

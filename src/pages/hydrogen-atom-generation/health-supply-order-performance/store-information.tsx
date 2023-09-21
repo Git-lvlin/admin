@@ -205,10 +205,10 @@ export default (props) => {
             <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'hyCityAgentProviderStoreGoods'}
+              type={'hyCityAgentProviderStoreGoodsDetail'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hyCityAgentProviderStoreGoods'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'hyCityAgentProviderStoreGoodsDetail'}/>
           ],
         }}
         tableRender={(_, dom) => {

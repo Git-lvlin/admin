@@ -189,10 +189,10 @@ const formItemLayout = {
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'subCompanyProviderStoreGoods'}
+              type={'subCompanyProviderStoreGoodsDetail'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'subCompanyProviderStoreGoods'}/>
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'subCompanyProviderStoreGoodsDetail'}/>
           ],
         }}
         tableRender={(_, dom) => {
