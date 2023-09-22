@@ -125,7 +125,7 @@ export default (props) => {
     },
     {
       title: '扣除通道费后收益',
-      dataIndex: 'commission',
+      dataIndex: 'trueCommission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{

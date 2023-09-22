@@ -27,7 +27,11 @@ export default () => {
       dataIndex: 'tagNum',
       valueType: 'text',
       render:(_,data)=>{
-        return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partne-purchasing-areas?classTag=${data.id}`) }}>{_}</a>
+        if(_){
+          return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partne-purchasing-areas?classTag=${data.id}`) }}>{_}</a>
+        }else{
+          return _
+        }
       }
     },
     {

@@ -94,12 +94,15 @@ export default function TransactionData () {
       },
       hideInSearch: true
     },
-    // {
-    //   title: '大健康供应链系统订单提成 - 扣通道费后',
-    //   dataIndex: 'agencyId',
-    //   align: 'center',
-    //   hideInSearch: true
-    // },
+    {
+      title: '大健康供应链系统订单提成 - 扣通道费后',
+      dataIndex: 'trueCommission',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data)=>{
+        return amountTransform(_,'/').toFixed(2)
+      },
+    },
   ]
 
   return (
@@ -116,7 +119,7 @@ export default function TransactionData () {
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={9} layout="vertical" bordered>
             <Descriptions.Item  label="总交易业绩（元）">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  </Descriptions.Item>
             <Descriptions.Item  label="总提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  </Descriptions.Item>
-            {/* <Descriptions.Item  label="大健康供应链系统订单提成 - 扣通道费后">{amountTransform(detailList?.commission,'/').toFixed(2)}  </Descriptions.Item> */}
+            <Descriptions.Item  label="大健康供应链系统订单提成 - 扣通道费后">{amountTransform(detailList?.trueCommission,'/').toFixed(2)}  </Descriptions.Item>
           </Descriptions>
         }
         onSubmit={(val:MsgDetailProps)=>{

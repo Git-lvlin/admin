@@ -1,6 +1,7 @@
 export type DescriptionsProps = {
   commission: number;
   payAmount: number;
+  trueCommission: number;
 }
 
 export type MsgDetailProps = { 
