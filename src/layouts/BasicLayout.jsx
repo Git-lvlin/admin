@@ -8,9 +8,9 @@ import ProLayout, {
   SettingDrawer
 } from '@ant-design/pro-layout';
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
-import { Link, useIntl, connect, history } from 'umi';
+import { Link, useIntl, connect, history, useLocation } from 'umi';
 // import { GithubOutlined } from '@ant-design/icons';
-import { Result, Button } from 'antd';
+import { Result, Button, Select } from 'antd';
 import Authorized from '@/utils/Authorized';
 import { setAuthority, getAuthority } from '@/utils/authority';
 import RightContent from '@/components/GlobalHeader/RightContent';
@@ -78,7 +78,11 @@ const BasicLayout = (props) => {
     },
   } = props;
   const menuDataRef = useRef([]);
-  const [auth, setAuth] = useState(getAuthority);
+  const [auth, setAuth] = useState(getAuthority());
+  const [options, setOptions] = useState([]);
+  const locationP = useLocation();
+  const [selectValue, setSelectValue] = useState(undefined);
+  const optionsRef = useRef([])
 
 
   const menuDataRender = useCallback(
@@ -87,7 +91,7 @@ const BasicLayout = (props) => {
       if (!auth) {
         return null;
       }
-      return menuList.map((item) => {
+      const listData = menuList.map((item) => {
         const localItem = {
           ...item,
           children: item.children ? menuDataRender(item.children) : undefined,
@@ -95,6 +99,8 @@ const BasicLayout = (props) => {
         return auth.find(it => it.name === item.path.substring(1)) ? localItem : null;
         // return localItem;
       });
+      optionsRef.current = optionsRef.current.concat(listData)
+      return listData
     },
     [auth],
   )
@@ -132,6 +138,25 @@ const BasicLayout = (props) => {
     [location.pathname],
   );
   const { formatMessage } = useIntl();
+
+  const onSearch = (v) => {
+    setSelectValue(v)
+    const data = []
+    auth.filter(item => item.ruleType===2).forEach(it => {
+      data.push(optionsRef.current.find(item => item?.path?.substring?.(1) === it.name))
+    })
+    setOptions(data.filter(item => {
+      const reg = new RegExp(v)
+      return v && item && reg.test(item.name) && item.path !== locationP.pathname
+    }))
+  }
+
+  const selectOnChange = (v) => {
+    optionsRef.current = []
+    history.push(v)
+    setOptions([])
+    setSelectValue(undefined)
+  }
   return (
     <>
       {
@@ -143,6 +168,19 @@ const BasicLayout = (props) => {
           onCollapse={handleMenuCollapse}
           collapsedButtonRender={null}
           onMenuHeaderClick={() => history.push('/')}
+          headerContentRender={() => (
+            <Select
+              onChange={selectOnChange}
+              value={selectValue}
+              showSearch={true}
+              filterOption={false}
+              fieldNames={{ label: 'name', value: 'path' }}
+              showArrow={false} style={{ width: 300 }}
+              placeholder="输入页面名称"
+              onSearch={onSearch}
+              options={options}
+            />
+          )}
           menuItemRender={(menuItemProps, defaultDom) => {
             if (
               menuItemProps.isUrl ||
@@ -152,7 +190,7 @@ const BasicLayout = (props) => {
               return defaultDom;
             }
 
-            return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+            return <Link title={menuItemProps.name} to={menuItemProps.path}>{defaultDom}</Link>;
           }}
           breadcrumbRender={(routers = []) => [
             {

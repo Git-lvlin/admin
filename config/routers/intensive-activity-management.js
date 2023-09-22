@@ -149,13 +149,13 @@ export default {
             hideInMenu: true,
             wrappers: [RouteWatcher],
           },
-          {
-            name: 'activity-detail',
-            path: '/intensive-activity-management/penny-activity/activity-detail',
-            component: './intensive-activity-management/penny-activity/activity-detail',
-            hideInMenu: true,
-            wrappers: [RouteWatcher],
-          },
+          // {
+          //   name: 'activity-detail',
+          //   path: '/intensive-activity-management/penny-activity/activity-detail',
+          //   component: './intensive-activity-management/penny-activity/activity-detail',
+          //   hideInMenu: true,
+          //   wrappers: [RouteWatcher],
+          // },
           {
             name: 'activity-tabulate-data',
             path: '/intensive-activity-management/penny-activity/activity-tabulate-data',

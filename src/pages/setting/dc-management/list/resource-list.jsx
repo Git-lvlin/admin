@@ -376,7 +376,7 @@ const TableList = () => {
           ],
         }}
         columns={columns}
-        pagination={pagination}
+        paginationProps={pagination}
         onChange={handleTableChange}
       />
     </PageContainer>
