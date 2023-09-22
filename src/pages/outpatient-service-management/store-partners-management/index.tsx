@@ -216,6 +216,7 @@ const StorePartnersManagement: React.FC = () => {
       }
     },
   ]
+
   return (
     <PageContainer>
       <ProTable 
@@ -230,6 +231,7 @@ const StorePartnersManagement: React.FC = () => {
             key='1'
             text='下载导入地址模板'
             type='export_ShopPartner_pageOrder_address'
+            conditions={getFieldsValue}
           />,
           <ImportFile
             key='2'
@@ -247,7 +249,7 @@ const StorePartnersManagement: React.FC = () => {
               conditions={getFieldsValue}
             />
           ]
-        }} 
+        }}
         options={false}
       />
       {
