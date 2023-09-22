@@ -6,7 +6,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
-import { providerList } from '@/services/outpatient-service-management/county-service-providers-management'
+import { ipoAwardProviderDirectMember, ipoAwardProviderDirectMemberSt, ipoAwardStoreDirectMember, ipoAwardStoreDirectMemberSt } from '@/services/product-performance-management/health-ipo-bonus-receiving-statistics'
 import Export from '@/components/export'
 import ProDescriptions from '@ant-design/pro-descriptions'
 import { amountTransform } from '@/utils/utils'
@@ -19,17 +19,14 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const [visible, setVisible] = useState(false)
   const form = useRef<FormInstance>()
   const [searchConfig, setSearchConfig] = useState<FormInstance>()
-  const [msgId, setMsgId] = useState<string>()
+  const [msgDetail, setMsgDetail] = useState<string>()
 
   const getFieldsValue = () => {
-    const { serviceArea, signTime, ...rest } = form.current?.getFieldsValue()
+    const { amount, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      signStartTime: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      signEndTime: signTime && moment(signTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: serviceArea && serviceArea?.[0].value,
-      cityId: serviceArea && serviceArea?.[1].value,
-      areaId: serviceArea && serviceArea?.[2].value,
+      min: amount && amountTransform(amount?.min,'*'),
+      max: amount && amountTransform(amount?.max,'*'),
     }
   }
 
@@ -37,11 +34,12 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const [data, setData] = useState()
   
   const getData = async () => {
-    // await aedCoursesSum({
-    //   ...form
-    // }).then(res => {
-    //   setData(res.data)
-    // })
+    const api=activeKey=='1'?ipoAwardProviderDirectMemberSt:ipoAwardStoreDirectMemberSt
+    await api({
+      ...form
+    }).then(res => {
+      setData(res.data?.[0])
+    })
   }
   
   useEffect(()=> {
@@ -51,17 +49,17 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const columns: ProDescriptionsItemProps[] = [
     {
       title: '总领取人数',
-      dataIndex: 'totalAmount',
+      dataIndex: 'userNums',
       render: (_) => _
     },
     {
       title: activeKey=='1'?'总累计领取次数':'总累计领取月数',
-      dataIndex: activeKey=='1'?'totalUsers':'',
+      dataIndex: 'awardNums',
       render: _ => _
     },
     {
       title: '总领取IPO奖金(元)',
-      dataIndex: 'totalOrder',
+      dataIndex: 'amount',
       render: _ => `${amountTransform(_, '/').toFixed(2)}`
     },
   ]
@@ -85,7 +83,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     },
     {
       title: '销售人用户ID',
-      dataIndex: 'userId',
+      dataIndex: 'memberId',
       align: 'center',
       hideInSearch: true
     },
@@ -103,7 +101,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     },
     {
       title: '领取人用户ID',
-      dataIndex: 'userId',
+      dataIndex: 'memberId',
       align: 'center',
       hideInTable: true
     },
@@ -117,38 +115,37 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     },
     {
       title: '累计IPO奖金额',
-      dataIndex: 'memberId',
+      dataIndex: 'amount',
       align: 'center',
       renderFormItem: () => <RangeNumberInput beforePlaceholder='最低金额' afterPlaceholder='最高金额'/>,
       hideInTable: true
     },
     {
       title: '领取次数',
-      dataIndex: 'claimsNumber',
+      dataIndex: 'awardNums',
       align: 'center',
       hideInSearch: true,
       hideInTable: activeKey=='2'
     },
     {
       title: '领取月数(个月)',
-      dataIndex: 'claimsNumber',
+      dataIndex: 'awardNums',
       align: 'center',
       hideInSearch: true,
       hideInTable: activeKey=='1'
     },
     {
       title: '累计IPO奖金额(元)',
-      dataIndex: 'memberId',
+      dataIndex: 'amountDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '明细',
-      dataIndex: 'signTime',
       align: 'center',
       hideInSearch: true,
       render: (_,data) => {
-        return <a onClick={()=>{ setVisible(true); setMsgId(data.id) }}>查看明细</a>
+        return <a onClick={()=>{ setVisible(true); setMsgDetail(data) }}>查看明细</a>
       }
     }
   ]
@@ -160,7 +157,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
         options={false}
         params={{}}
         formRef={form}
-        request={providerList}
+        request={activeKey=='1'?ipoAwardProviderDirectMember:ipoAwardStoreDirectMember}
         tableExtraRender={()=><Aggregate form={searchConfig}/>}
         onSubmit={()=>{
           setSearchConfig(form.current?.getFieldsValue())
@@ -174,7 +171,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerList'
+              type='ipoAwardProviderDirectMember'
               conditions={getFieldsValue}
             />
           ]
@@ -184,7 +181,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
         visible={visible}
         setVisible={setVisible}
         callback={()=>{  }}
-        msgId={msgId}
+        msgDetail={msgDetail}
         activeKey={activeKey}
       />}
     </>

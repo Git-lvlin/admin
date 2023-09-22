@@ -5,7 +5,7 @@ import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
 
 import ProTable from '@/components/pro-table'
-import { providerList } from '@/services/outpatient-service-management/county-service-providers-management'
+import { ipoCurrMonth } from '@/services/outpatient-service-management/ipo-gift-management'
 import Export from '@/components/export'
 import RangeNumberInput from '@/components/range-number-input'
 
@@ -14,14 +14,11 @@ const ShopMonthIPOPrize:React.FC = () => {
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const { serviceArea, signTime, ...rest } = form.current?.getFieldsValue()
+    const { orderNums, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      signStartTime: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      signEndTime: signTime && moment(signTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: serviceArea && serviceArea?.[0].value,
-      cityId: serviceArea && serviceArea?.[1].value,
-      areaId: serviceArea && serviceArea?.[2].value,
+      min: orderNums && orderNums?.min,
+      max: orderNums && orderNums?.max,
     }
   }
 
@@ -33,50 +30,45 @@ const ShopMonthIPOPrize:React.FC = () => {
     },
     {
       title: '订单直推成功单数',
-      dataIndex: 'memberId',
+      dataIndex: 'orderNums',
       align: 'center',
       renderFormItem: () => <RangeNumberInput beforePlaceholder='最少单数' afterPlaceholder='最多单数'/>,
       hideInTable: true
     },
     {
       title: '状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        1: '待合格',
-        2: '待到期',
-      },
+      dataIndex: 'statusDesc',
       hideInSearch: true
     },
     {
       title: '状态',
-      dataIndex: 'contractStatus',
+      dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
         1: '待合格',
-        2: '待到期',
+        3: '待到期',
       },
       hideInTable: true
     },
     {
       title: 'IPO奖金额(元)',
-      dataIndex: 'memberId',
+      dataIndex: 'amountDesc',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '业绩月份',
-      dataIndex: 'serviceArea',
+      dataIndex: 'months',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '订单直推成功单数',
-      dataIndex: 'signTime',
+      dataIndex: 'orderNums',
       align: 'center',
       hideInSearch: true,
-      render: (_, r) => {
-        if(r.contractUrl) {
+      render: (_) => {
+        if(_) {
             return <a onClick={()=>{  }}>{_}</a>
           } else {
             return <span>{_}</span>
@@ -87,18 +79,18 @@ const ShopMonthIPOPrize:React.FC = () => {
 
   return (
       <ProTable
+        rowKey='memberId'
         columns={columns}
         options={false}
-        params={{}}
         formRef={form}
-        request={providerList}
+        request={ipoCurrMonth}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
             ...dom.reverse(),
             <Export
               key='1'
-              type='providerList'
+              type='ipoCurrMonth'
               conditions={getFieldsValue}
             />
           ]

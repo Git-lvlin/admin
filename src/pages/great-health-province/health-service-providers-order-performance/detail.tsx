@@ -146,10 +146,6 @@ export default (props: any) => {
                   累计收益
                   <span>￥{amountTransform(orderSum?.amount,'/').toFixed(2)}</span>
                 </div>
-                <div>
-                  累计金额
-                  <span>￥{amountTransform(orderSum?.payAmount,'/').toFixed(2)}</span>
-                </div>
               </Space>
             </div>
           </>

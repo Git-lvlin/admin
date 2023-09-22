@@ -18,10 +18,10 @@ const IpoGiftManagement: React.FC = () => {
         }}
       >
         <ProCard.TabPane key='1' tab='区县服务商订单直推人IPO奖'>
-          { activeKey === '1' && <IPOPrize /> }
+          { activeKey === '1' && <IPOPrize  activeKey={activeKey}/> }
         </ProCard.TabPane>
         <ProCard.TabPane key='2' tab='区县服务商IPO奖'>
-          { activeKey === '2' && <IPOPrize /> }
+          { activeKey === '2' && <IPOPrize  activeKey={activeKey}/> }
         </ProCard.TabPane>
         <ProCard.TabPane key='3' tab='门店合作商订单直推人IPO奖-本月'>
           { activeKey === '3' && <ShopMonthIPOPrize /> }
