@@ -370,7 +370,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         } else if(record.roleCode === 'platform'){
           return `${minPrice ?? 0}元`
         } else {
-          return <InputNumber placeholder='请输入' controls={false} stringMode/>
+          return <InputNumber min={0} placeholder='请输入' controls={false} stringMode/>
         }
       }
     },

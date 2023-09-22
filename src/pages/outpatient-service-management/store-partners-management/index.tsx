@@ -12,6 +12,7 @@ import Export from '@/components/export'
 import { shopPartnerPage } from '@/services/outpatient-service-management/store-partners-management'
 import AddressCascader from '@/components/address-cascader'
 import Update from './update'
+import ImportFile from '@/components/ImportFile'
 
 const StorePartnersManagement: React.FC = () => {
   const [visible, setVisible] = useState(false)
@@ -44,6 +45,12 @@ const StorePartnersManagement: React.FC = () => {
       dataIndex: 'areaProviderNo',
       initialValue: query?.areaProviderNo,
       hideInTable: true
+    },
+    {
+      title: '名称',
+      dataIndex: 'name',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '下单人手机号',
@@ -79,6 +86,12 @@ const StorePartnersManagement: React.FC = () => {
       dataIndex: 'area',
       hideInTable: true,
       renderFormItem: () => <AddressCascader changeOnSelect/>
+    },
+    {
+      title: '详细地址',
+      dataIndex: 'address',
+      align: 'center',
+      hideInSearch: true
     },
     {
       title: '交合同费(元)',
@@ -212,6 +225,18 @@ const StorePartnersManagement: React.FC = () => {
         actionRef={actRef}
         request={shopPartnerPage}
         formRef={form}
+        toolBarRender={()=> [
+          <Export
+            key='1'
+            text='下载导入地址模板'
+            type='export_ShopPartner_pageOrder_address'
+          />,
+          <ImportFile
+            key='2'
+            title='导入地址'
+            code='importProviderStore'
+          />
+        ]}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom)=> [
