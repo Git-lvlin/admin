@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import moment from 'moment'
+import { history } from 'umi'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'
@@ -10,7 +10,6 @@ import Export from '@/components/export'
 import RangeNumberInput from '@/components/range-number-input'
 
 const ShopMonthIPOPrize:React.FC = () => {
-  const [visible, setVisible] = useState(false)
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
@@ -69,7 +68,7 @@ const ShopMonthIPOPrize:React.FC = () => {
       hideInSearch: true,
       render: (_) => {
         if(_) {
-            return <a onClick={()=>{  }}>{_}</a>
+            return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partners-management`)  }}>{_}</a>
           } else {
             return <span>{_}</span>
           }

@@ -13,8 +13,6 @@ import RangeNumberInput from '@/components/range-number-input'
 import { amountTransform } from '@/utils/utils'
 
 const ShopHistoryIpoPrize:React.FC = () => {
-  const [visible, setVisible] = useState(false)
-  const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
   const ref= useRef<ActionType>()
 

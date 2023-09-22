@@ -17,7 +17,7 @@ import type { ProColumns } from "@ant-design/pro-table"
 const { Title } = Typography;
 
 export default (props:CumulativeProps)=> {
-  const {visible, setVisible, callback} = props
+  const {visible, setVisible, callback, msgDetail} = props
   const form = useRef<FormInstance>()
   const [submitMsg, setSubmitMsg] = useState();
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -76,7 +76,7 @@ export default (props:CumulativeProps)=> {
   const onsubmit=values=>{
     try {
       serOptionVisible(true) 
-      setSubmitMsg({...values,agencyList:selectedRowKeys})
+      setSubmitMsg({accountId:msgDetail?.accountId,agencyList:selectedRowKeys})
     } catch (error) {
       console.log('error',error)
     }

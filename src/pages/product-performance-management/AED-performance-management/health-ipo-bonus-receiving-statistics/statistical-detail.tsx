@@ -12,6 +12,7 @@ import RangeNumberInput from '@/components/range-number-input'
 import type { ProColumns } from '@ant-design/pro-table'
 import Export from '@/components/export'
 import { amountTransform } from "@/utils/utils";
+import moment from 'moment'
 
 type editProps = {
     visible: boolean
@@ -22,13 +23,13 @@ type editProps = {
   }
 
 const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKey}) => {
-  const [imgVisible, setImgVisible] = useState<boolean>(false)
   const form = useRef<FormInstance>()
 
   const getFieldsValue = () => {
-    const { amount, ...rest } = form.current?.getFieldsValue()
+    const { amount, months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
+      months: moment(months).format('YYYY-MM'),
       min: amount && amountTransform(amount?.min,'*'),
       max: amount && amountTransform(amount?.max,'*'),
     }
@@ -54,7 +55,7 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
       align: 'center',
       hideInTable: true,
       hideInSearch: activeKey=='1',
-      valueType: 'dateTime'
+      valueType: 'dateMonth'
     },
     {
       title: '所属月份',
@@ -80,7 +81,7 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
 
   return (
     <DrawerForm
-      title='首页/产品业绩管理/AED业绩管理/大健康IPO额外奖领取统计/大健康IPO额外奖领取统计明细'
+      title={`首页/产品业绩管理/AED业绩管理/大健康IPO额外奖领取统计/${activeKey=='1'?'区县服务商及订单直推人领取IPO奖统计明细':'门店合作商订单直推人领取IPO奖统计明细'}`}
       visible={visible}
       onVisibleChange={setVisible}
       layout='horizontal'
@@ -95,7 +96,7 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
     >
     <ProTable
       rowKey='id'
-      headerTitle={`领取人用户ID：${msgDetail?.memberId}    领取人手机号码：${msgDetail?.memberPhone}    领取IPO奖明细`}
+      headerTitle={<p>{activeKey=='1'?'领取人用户ID':'销售人用户ID'}：{msgDetail?.memberId} &nbsp; &nbsp;  {activeKey=='1'?'领取人手机号码':'销售人手机号码'}：{msgDetail?.memberPhone} &nbsp; &nbsp;  领取IPO奖明细</p>}
       columns={columns}
       options={false}
       params={{
@@ -109,7 +110,7 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
           ...dom.reverse(),
           <Export
             key='1'
-            type='providerList'
+            type={activeKey=='1'?'ipoAwardProviderDirectMemberDetail':'ipoAwardStoreDirectMemberDetail'}
             conditions={getFieldsValue}
           />
         ]

@@ -98,7 +98,7 @@ export const ipoHistoryMonth = async (params = {}, options = {}) => {
 
 
 export const ipoNotice = async (params = {}, options = {}) => {
-    const res = await request('/auth/commonService/common/health/ipoNotice', {
+    const res = await request('/auth/healthy/provider/ipoNotice', {
         method: 'POST',
         data:params,
         ...options

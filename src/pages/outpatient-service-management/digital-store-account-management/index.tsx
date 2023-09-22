@@ -90,7 +90,7 @@ export default function GenerationManagement () {
       render: (_,data)=>([
         <a onClick={()=>{setEditVisible(true);setMsgDetail(data)}} key='edit'>编辑</a>,
         <a onClick={()=>{setResetVisible(true);setMsgDetail(data)}} key='reset'>重置密码</a>,
-        // <a onClick={()=>{setAreaVisible(true);setMsgDetail(data) }} key='addArea'>添加区域</a>,
+        <a onClick={()=>{setAreaVisible(true);setMsgDetail(data) }} key='addArea'>添加区域</a>,
       ])
     },
   ]

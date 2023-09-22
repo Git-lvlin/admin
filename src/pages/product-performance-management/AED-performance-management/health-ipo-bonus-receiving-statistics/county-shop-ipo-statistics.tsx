@@ -22,9 +22,10 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const [msgDetail, setMsgDetail] = useState<string>()
 
   const getFieldsValue = () => {
-    const { amount, ...rest } = form.current?.getFieldsValue()
+    const { amount, months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
+      months: moment(months).format('YYYY-MM'),
       min: amount && amountTransform(amount?.min,'*'),
       max: amount && amountTransform(amount?.max,'*'),
     }
@@ -36,7 +37,8 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const getData = async () => {
     const api=activeKey=='1'?ipoAwardProviderDirectMemberSt:ipoAwardStoreDirectMemberSt
     await api({
-      ...form
+      ...form,
+      months: moment(form?.months).format('YYYY-MM')
     }).then(res => {
       setData(res.data?.[0])
     })
@@ -77,7 +79,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
   const columns: ProColumns[] = [
     {
       title: '排名',
-      dataIndex: 'sort',
+      dataIndex: 'rank',
       align: 'center',
       hideInSearch: true
     },
@@ -107,11 +109,11 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     },
     {
       title: '所属月份',
-      dataIndex: 'month',
+      dataIndex: 'months',
       align: 'center',
       hideInTable: true,
       hideInSearch: activeKey=='1',
-      valueType: 'dateTime'
+      valueType: 'dateMonth'
     },
     {
       title: '累计IPO奖金额',

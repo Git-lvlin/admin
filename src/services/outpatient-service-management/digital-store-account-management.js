@@ -120,3 +120,19 @@ export const providerEdit = async (params = {}, options = {}) => {
         code: res.code
     }
   }
+
+
+//数字化门店账号添加服务商
+export const accountAddProvider = async (params = {}, options = {}) => {
+  const res = await request('/auth/healthy/provider/accountAddProvider', {
+      method: 'POST',
+      data:params,
+      ...options
+  });
+
+  return {
+      data: res.data,
+      success: true,
+      code: res.code
+  }
+}

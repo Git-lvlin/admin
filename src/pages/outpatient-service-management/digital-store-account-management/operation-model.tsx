@@ -4,7 +4,7 @@ import {
   ModalForm,
 } from '@ant-design/pro-form';
 import { ExclamationCircleFilled} from '@ant-design/icons';
-import { providerAdd } from '@/services/outpatient-service-management/digital-store-account-management'
+import { providerAdd, accountAddProvider } from '@/services/outpatient-service-management/digital-store-account-management'
 
 export default (props) => {
   const { setVisible, visible, msgDetail, callback, type } = props;
@@ -16,7 +16,8 @@ export default (props) => {
     const params={
       ...msgDetail
     }
-    providerAdd(params).then(res=>{
+    const api=type==1?providerAdd:accountAddProvider
+    api(params).then(res=>{
       if(res.code==0){
         callback()
         setVisible(false)

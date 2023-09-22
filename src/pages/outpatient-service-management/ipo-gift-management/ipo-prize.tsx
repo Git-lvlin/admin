@@ -13,8 +13,6 @@ import { amountTransform } from '@/utils/utils'
 
 const IPOPrize = (props:{ activeKey:string }) => {
   const { activeKey } = props
-  const [visible, setVisible] = useState(false)
-  const [id, setId] = useState<string>()
   const form = useRef<FormInstance>()
   const ref= useRef<ActionType>()
 
@@ -138,18 +136,12 @@ const IPOPrize = (props:{ activeKey:string }) => {
       dataIndex: 'finishTime',
       align: 'center',
       hideInSearch: true,
-      render: (_) => {
-        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
-      }
     },
     {
       title: '通知时间',
       dataIndex: 'noticeTime',
       align: 'center',
       hideInSearch: true,
-      render: (_) => {
-        return moment(_*1000).format('YYYY-MM-DD HH:mm:ss')
-      }
     },
     {
       title: 'IPO合同签订状态',
@@ -190,8 +182,10 @@ const IPOPrize = (props:{ activeKey:string }) => {
       key: 'option',
       fixed: 'right',
       valueType: 'option',
+      align: 'center', 
+      width: 100,
       render:(text, record, _, action)=>{
-        if(record?.awardId){
+        if(record.status == 1){
           return  <a key='detail' onClick={()=>{ 
             ipoNotice({ awardId: record.awardId }).then(res=>{
               if(res.code==0){
@@ -210,7 +204,7 @@ const IPOPrize = (props:{ activeKey:string }) => {
 
   return (
       <ProTable
-        rowKey='awardId'
+        rowKey='buyerId'
         columns={columns}
         options={false}
         formRef={form}
