@@ -31,6 +31,7 @@ const ContractFee:React.FC = () => {
     const { signTime, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
+      contractType: 'commonContractConfig',
       signTimeStart: signTime && moment(signTime[0]).format('YYYY-MM-DD HH:mm:ss'),
       signTimeEnd: signTime && moment(signTime[1]).format('YYYY-MM-DD HH:mm:ss'),
     }
@@ -167,7 +168,7 @@ const ContractFee:React.FC = () => {
     <>
       <ProTable
         columns={columns}
-        params={{}}
+        params={{contractType: 'commonContractConfig'}}
         formRef={form}
         request={orderContractPage}
         search={{
