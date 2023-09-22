@@ -66,13 +66,6 @@ const ShopMonthIPOPrize:React.FC = () => {
       dataIndex: 'orderNums',
       align: 'center',
       hideInSearch: true,
-      render: (_) => {
-        if(_) {
-            return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partners-management`)  }}>{_}</a>
-          } else {
-            return <span>{_}</span>
-          }
-      }
     }
   ]
 

@@ -124,13 +124,6 @@ const ShopHistoryIpoPrize:React.FC = () => {
       dataIndex: 'orderNums',
       align: 'center',
       hideInSearch: true,
-      render: (_) => {
-        if(_) {
-            return <a onClick={()=>{  }}>{_}</a>
-          } else {
-            return <span>{_}</span>
-          }
-      }
     },
     {
       title: '通知时间',
