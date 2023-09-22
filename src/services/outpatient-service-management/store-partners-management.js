@@ -27,7 +27,7 @@ export const shopPartnerPage = async (params = {}, options = {}) => {
 
 // 更新培训状态
 export const shopPartnerChange = async (params = {}, options = {}) => {
-  return await request('/auth/store/shopPartner/change', {
+  return await request('/auth/healthy/provider/change', {
     method: 'POST',
     data: params,
     ...options
