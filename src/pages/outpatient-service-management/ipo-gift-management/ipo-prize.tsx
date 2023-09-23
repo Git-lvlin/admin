@@ -51,8 +51,8 @@ const IPOPrize = (props:{ activeKey:string }) => {
       dataIndex: 'contractStatus',
       valueType: 'select',
       valueEnum: {
-        1: '未签订',
-        2: '已签订',
+        1: '已签订',
+        2: '未签订',
       },
       hideInTable: true,
     },
