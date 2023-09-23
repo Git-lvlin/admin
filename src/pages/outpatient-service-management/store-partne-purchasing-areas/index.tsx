@@ -68,9 +68,9 @@ export default (props:{location: any; classTag: string }) => {
 
   useEffect(() => {
     const params = {
+      classTag: classTag,
       ...time,
       pageSize: 9999,
-      classTag: classTag
     }
     provideGetListByParams(params).then(res => {
       if (res.code == 0) {
