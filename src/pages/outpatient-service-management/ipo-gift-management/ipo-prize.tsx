@@ -99,15 +99,8 @@ const IPOPrize = (props:{ activeKey:string }) => {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'statusDesc',
       valueType: 'select',
-      valueEnum: {
-        1: '待通知',
-        2: '待支付',
-        3: '待签订',
-        4: '已领取',
-        10: '已过期',
-      },
       hideInSearch: true
     },
     {
@@ -145,14 +138,9 @@ const IPOPrize = (props:{ activeKey:string }) => {
     },
     {
       title: 'IPO合同签订状态',
-      dataIndex: 'contractStatus',
+      dataIndex: 'contractStatusDesc',
       align: 'center', 
       hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '未签订',
-        2: '已签订',
-      },
     },
     {
       title: 'IPO合同ID',

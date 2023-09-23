@@ -133,14 +133,9 @@ const ShopHistoryIpoPrize:React.FC = () => {
     },
     {
       title: 'IPO合同签订状态',
-      dataIndex: 'contractStatus',
+      dataIndex: 'contractStatusDesc',
       align: 'center', 
       hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: '未签订',
-        2: '已签订',
-      },
     },
     {
       title: 'IPO合同ID',
