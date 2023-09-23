@@ -28,7 +28,7 @@ export default () => {
       valueType: 'text',
       render:(_,data)=>{
         if(_){
-          return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partne-purchasing-areas?classTag=${data.id}`) }}>{_}</a>
+          return <a onClick={()=>{ history.push(`/outpatient-service-management/store-partne-purchasing-areas`); window.localStorage.setItem('classTag',data.id)}}>{_}</a>
         }else{
           return _
         }

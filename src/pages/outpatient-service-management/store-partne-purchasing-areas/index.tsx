@@ -19,8 +19,7 @@ import debounce from 'lodash/debounce';
 import SplitConfig from '../procurement-zone/split-config'
 import type { ThematicEventItem, SearchConfig } from './data'
 
-export default (props:{location: any; classTag: string }) => {
-  const { classTag } = props.location.query
+export default () => {
   const [dataSource, setDataSource] = useState<ThematicEventItem[]>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>([])
   const [msgDetail, setMsgDetail] = useState<any>();
@@ -65,8 +64,9 @@ export default (props:{location: any; classTag: string }) => {
     }
   }
 
-
   useEffect(() => {
+    const classTag=window.localStorage.getItem('classTag')
+    console.log('classTag',classTag)
     const params = {
       classTag: classTag,
       ...time,
@@ -79,6 +79,7 @@ export default (props:{location: any; classTag: string }) => {
         setSelectOptions(res.data.tagData?.map(item=>({ label:item.name, value:item.id})))
       }
     })
+    window.localStorage.removeItem('classTag')
   }, [loding, time])
 
   useEffect(()=>{

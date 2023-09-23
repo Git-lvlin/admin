@@ -77,7 +77,7 @@ export default (props:MyComponentProps) => {
       <ProFormText
         label='标签名称'
         name='name'
-        width={200}
+        width={300}
         rules={[
           { required: true, message: '请输入标签名称' },
           { min: 2, max: 6, message: '请输入2-6个字' }
@@ -87,7 +87,7 @@ export default (props:MyComponentProps) => {
        <ProFormText
         label='显示序号'
         name='sort'
-        width={200}
+        width={300}
         rules={[
           { required: true, message: '请输入显示序号' },
           { pattern: /^[0-9]*$/, message: '只能输入数字' }
