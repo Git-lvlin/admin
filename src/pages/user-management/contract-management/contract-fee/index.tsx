@@ -122,16 +122,6 @@ const ContractFee:React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '签订状态',
-      dataIndex: 'contractStatus',
-      valueType: 'select',
-      valueEnum: {
-        0: '未签订',
-        1: '已签订'
-      },
-      hideInTable: true
-    },
-    {
       title: '签订人姓名',
       dataIndex: 'personName',
       align: 'center'
