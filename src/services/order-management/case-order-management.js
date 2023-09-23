@@ -4,7 +4,6 @@ import moment from 'moment';
 //病例订单管理列表
 export const getListByParams = async (params = {}, options = {}) => {
   const { current, pageSize, dateRange, area, ...rest } = params;
-  console.log('dateRange',dateRange)
   const res = await request('/auth/healthy/provide/getListByParams', {
     method: 'POST',
     data: {
