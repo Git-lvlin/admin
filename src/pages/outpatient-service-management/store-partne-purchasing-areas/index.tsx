@@ -163,6 +163,9 @@ export default (props:{location: any; classTag: string }) => {
   };
 
   const onAddTag = () => {
+    if(selectItems.length==0){
+      return message.error('请先添加商品')
+    }
     
     const params={
       idArr: selectItems.map(item=>item.id),

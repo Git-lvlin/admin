@@ -3,7 +3,7 @@ import moment from 'moment'
 
 
 export const ipoProviderDirectAward = async (params = {}, options = {}) => {
-  const { current, pageSize, recheckTime, dateRange, ...rest } = params;
+  const { current, pageSize, recheckTime, dateRange, houseNumber, ...rest } = params;
   const res = await request('/auth/healthy/provider/ipoProviderDirectAward', {
     method: 'POST',
     data: {
@@ -13,6 +13,9 @@ export const ipoProviderDirectAward = async (params = {}, options = {}) => {
       finishEndTime: recheckTime?.[1] && moment(recheckTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       noticeStartTime: dateRange?.[0] && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       noticeEndTime: dateRange?.[1] && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: houseNumber && houseNumber?.[0]?.value,
+      cityId: houseNumber && houseNumber?.[1]?.value,
+      regionId: houseNumber && houseNumber?.[2]?.value,
       ...rest
     },
     ...options
@@ -27,7 +30,7 @@ export const ipoProviderDirectAward = async (params = {}, options = {}) => {
 }
 
 export const ipoProviderAward = async (params = {}, options = {}) => {
-    const { current, pageSize, recheckTime, dateRange, ...rest } = params;
+    const { current, pageSize, recheckTime, dateRange, houseNumber, ...rest } = params;
     const res = await request('/auth/healthy/provider/ipoProviderAward', {
       method: 'POST',
       data: {
@@ -37,6 +40,9 @@ export const ipoProviderAward = async (params = {}, options = {}) => {
         finishEndTime: recheckTime?.[1] && moment(recheckTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
         noticeStartTime: dateRange?.[0] && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
         noticeEndTime: dateRange?.[1] && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+        provinceId: houseNumber && houseNumber?.[0]?.value,
+        cityId: houseNumber && houseNumber?.[1]?.value,
+        regionId: houseNumber && houseNumber?.[2]?.value,
         ...rest
       },
       ...options

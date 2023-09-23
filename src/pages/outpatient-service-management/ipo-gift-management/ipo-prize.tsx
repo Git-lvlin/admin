@@ -10,6 +10,7 @@ import TimeSelect from '@/components/time-select'
 import { ipoProviderDirectAward, ipoProviderAward, ipoNotice } from '@/services/outpatient-service-management/ipo-gift-management'
 import Export from '@/components/export'
 import { amountTransform } from '@/utils/utils'
+import AddressCascader from '@/components/address-cascader'
 
 const IPOPrize = (props:{ activeKey:string }) => {
   const { activeKey } = props
@@ -34,9 +35,10 @@ const IPOPrize = (props:{ activeKey:string }) => {
       align: 'center'
     },
     {
-      title: '服务商编号',
+      title: '服务区域',
       dataIndex: 'houseNumber',
       align: 'center',
+      renderFormItem: () => <AddressCascader changeOnSelect/>,
       hideInTable: true
     },
     {
