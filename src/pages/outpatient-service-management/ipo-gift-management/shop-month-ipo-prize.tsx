@@ -1,5 +1,4 @@
-import { useState, useRef } from 'react'
-import { history } from 'umi'
+import { useRef } from 'react'
 
 import type { ProColumns } from '@ant-design/pro-table'
 import type { FormInstance } from 'antd'

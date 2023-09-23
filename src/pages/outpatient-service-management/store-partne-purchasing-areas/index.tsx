@@ -5,7 +5,7 @@ import { amountTransform } from '@/utils/utils'
 import { provideGetListByParams, provideUpdateGoodsClassTag, provideUpdateGoodsState } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
 import { provideGetClassTagListByParams } from '@/services/outpatient-service-management/supply-chain-commodity-label-management'
 import OperationModel from './operation-model'
-import { Button, InputNumber, Select, Space, Input, message } from 'antd';
+import { Button, InputNumber, Select, Space, message } from 'antd';
 import RangeNumberInput from '@/components/range-number-input'
 import { PageContainer } from '@/components/PageContainer';
 import FormModel from './form-model'
@@ -19,7 +19,7 @@ import debounce from 'lodash/debounce';
 import SplitConfig from '../procurement-zone/split-config'
 import type { ThematicEventItem, SearchConfig } from './data'
 
-export default (props) => {
+export default (props:{location: any; classTag: string }) => {
   const { classTag } = props.location.query
   const [dataSource, setDataSource] = useState<ThematicEventItem[]>();
   const [editableKeys, setEditableKeys] = useState<React.Key[]>([])
@@ -88,7 +88,6 @@ export default (props) => {
         res.data?.map(item=>{
           obj[item.id]=item.name
         })
-        console.log('obj',obj)
         setSelectValueEnum(obj)
       }
     })
@@ -160,7 +159,6 @@ export default (props) => {
   }
 
   const onChange = (value: string) => {
-    console.log(`selected ${value}`);
     setChangeClassTag(value)
   };
 

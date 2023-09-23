@@ -75,7 +75,7 @@ export default () => {
          setVisible={setVisible}
          msgDetail={msgDetail}
          callback={()=>{ ref.current?.reload(); setMsgDetail(undefined) }}
-         onclose={()=>{ setMsgDetail(undefined) }}
+         onClose={()=>{ setMsgDetail(undefined) }}
       />}
     </PageContainer>
   );

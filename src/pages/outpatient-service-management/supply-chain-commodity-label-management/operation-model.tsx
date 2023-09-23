@@ -6,8 +6,21 @@ import {
 } from '@ant-design/pro-form';
 import { provideSaveClassTagData } from '@/services/outpatient-service-management/supply-chain-commodity-label-management'
 
-export default (props) => {
-  const { setVisible, visible, msgDetail, callback, onclose } = props;
+type MyComponentProps = {
+  setVisible: (visible: boolean) => void;
+  visible: boolean;
+  callback: (data?: any) => void;
+  onClose: () => void;
+  msgDetail?: {
+    name: string;
+    sort: number;
+    id: string;
+    tagNum: number;
+  };
+}
+
+export default (props:MyComponentProps) => {
+  const { setVisible, visible, msgDetail, callback, onClose } = props;
   const formRef = useRef();
   const [form] = Form.useForm();
 
@@ -20,7 +33,7 @@ export default (props) => {
   },[])
 
 
-  const onsubmit = (values) => {
+  const onsubmit = (values:{ name: string, sort: number }) => {
     const params={
       id: msgDetail?.id?msgDetail?.id:0,
       ...values
@@ -48,7 +61,7 @@ export default (props) => {
         forceRender: true,
         destroyOnClose: true,
         onCancel:()=>{
-          onclose()
+          onClose()
         }
       }}
       onFinish={async (values) => {
