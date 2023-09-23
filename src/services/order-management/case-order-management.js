@@ -6,7 +6,7 @@ export const getListByParams = async (params = {}, options = {}) => {
   const { current, pageSize, dateRange, area, ...rest } = params;
   const res = await request('/auth/healthy/provide/getListByParams', {
     method: 'POST',
-    params: {
+    data: {
       page: current,
       size: pageSize,
       createTimeStart: dateRange?.[0]&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
@@ -30,7 +30,7 @@ export const getListByParams = async (params = {}, options = {}) => {
 export const sendProduct = (params = {}, options = {}) => {
     return request('/auth/healthy/provide/sendProduct', {
       method: 'POST',
-      params,
+      data: params,
       ...options
     });
   }
@@ -39,7 +39,7 @@ export const sendProduct = (params = {}, options = {}) => {
 export const consultAnswer = (params = {}, options = {}) => {
 return request('/auth/healthy/provide/consultAnswer', {
     method: 'POST',
-    params,
+    data: params,
     ...options
 });
 }
@@ -48,7 +48,7 @@ return request('/auth/healthy/provide/consultAnswer', {
 export const getConsultDataByParams = (params = {}, options = {}) => {
     return request('/auth/healthy/provide/getConsultDataByParams', {
         method: 'POST',
-        params,
+        data: params,
         ...options
     });
     }
