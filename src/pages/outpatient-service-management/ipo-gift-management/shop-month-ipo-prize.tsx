@@ -71,7 +71,7 @@ const ShopMonthIPOPrize:React.FC = () => {
 
   return (
       <ProTable
-        rowKey='memberId'
+        rowKey='id'
         columns={columns}
         options={false}
         formRef={form}

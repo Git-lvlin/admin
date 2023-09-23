@@ -204,7 +204,7 @@ const IPOPrize = (props:{ activeKey:string }) => {
 
   return (
       <ProTable
-        rowKey='buyerId'
+        rowKey='id'
         columns={columns}
         options={false}
         formRef={form}

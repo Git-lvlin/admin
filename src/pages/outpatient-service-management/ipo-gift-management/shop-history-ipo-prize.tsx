@@ -189,6 +189,7 @@ const ShopHistoryIpoPrize:React.FC = () => {
 
   return (
       <ProTable
+        rowKey='id'
         columns={columns}
         options={false}
         params={{}}
