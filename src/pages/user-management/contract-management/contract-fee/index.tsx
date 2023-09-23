@@ -10,12 +10,10 @@ import Export from '@/components/export'
 import { orderContractPage, dictSub } from "@/services/setting/contract-management"
 import styles from '../styles.less'
 import Detail from '../../user-list/detail'
-import NormalOrder from '@/pages/order-management/normal-order/detail'
 
 const ContractFee:React.FC = () => {
   const [type, setType] = useState<any[]>([])
   const [visible, setVisible] = useState(false)
-  const [goodsVisible, setGoodsVisible] = useState(false)
   const [id, setId] = useState('')
   const form = useRef<FormInstance>()
 
@@ -98,13 +96,6 @@ const ContractFee:React.FC = () => {
       title: '订单号',
       dataIndex: 'orderSn',
       align: 'center',
-      render: (_, r) => {
-        if(r.orderSn) {
-          return <a onClick={()=> {setGoodsVisible(true); setId(r.orderId)}}>{_}</a>
-        } else {
-          return <span>{_}</span>
-        }
-      }
     },
     {
       title: '订单金额',
@@ -190,14 +181,6 @@ const ContractFee:React.FC = () => {
         <Detail
           visible={visible}
           setVisible={setVisible}
-          id={id}
-        />
-      }
-      {
-        goodsVisible &&
-        <NormalOrder
-          visible={goodsVisible}
-          setVisible={setGoodsVisible}
           id={id}
         />
       }
