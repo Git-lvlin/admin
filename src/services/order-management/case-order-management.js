@@ -4,13 +4,14 @@ import moment from 'moment';
 //病例订单管理列表
 export const getListByParams = async (params = {}, options = {}) => {
   const { current, pageSize, dateRange, area, ...rest } = params;
+  console.log('dateRange',dateRange)
   const res = await request('/auth/healthy/provide/getListByParams', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
       createTimeStart: dateRange?.[0]&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      createTimeEnd: dateRange?.[0]&& moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createTimeEnd: dateRange?.[1]&& moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       provinceId: area?.[0]&&area[0].value,
       cityId: area?.[1]&&area[1].value,
       regionId: area?.[2]&&area[2].value,
