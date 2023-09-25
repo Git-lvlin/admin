@@ -85,6 +85,19 @@ export default (props: any) => {
       },
     },
     {
+      title: '扣除通道费后收益',
+      dataIndex: 'trueCommission',
+      align: 'center',
+      hideInSearch: true,
+      render: (_,data)=>{
+        if(_){
+          return <span>￥{amountTransform(_,'/').toFixed(2)}</span>
+        }else{
+          return '-'
+        }
+      },
+    },
+    {
       title: '业绩范围',
       dataIndex: 'scope',
       align: 'center',
