@@ -70,7 +70,7 @@ const GenerationManagement =(props:DevicesProps) => {
       {
         title: '交易时间',
         dataIndex: 'dateRange',
-        renderFormItem: () => <TimeSelect showTime={false}/>,
+        renderFormItem: () => <TimeSelect/>,
         hideInTable: true
       },
       {

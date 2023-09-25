@@ -82,6 +82,12 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '订单号',
+      dataIndex: 'subOrderSn',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '所在地',
       dataIndex: 'address',
       align: 'center',

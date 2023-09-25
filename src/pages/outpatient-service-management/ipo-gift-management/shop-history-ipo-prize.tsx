@@ -1,8 +1,8 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import moment from 'moment'
 
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
-import { message } from 'antd'
+import { message, Spin } from 'antd'
 import type { FormInstance } from "antd"
 
 import ProTable from '@/components/pro-table'
@@ -15,6 +15,7 @@ import { amountTransform } from '@/utils/utils'
 const ShopHistoryIpoPrize:React.FC = () => {
   const form = useRef<FormInstance>()
   const ref= useRef<ActionType>()
+  const [loading, setLoading] = useState(false);
 
   const getFieldsValue = () => {
     const { dateRange, orderNums, ...rest } = form.current?.getFieldsValue()
@@ -159,14 +160,17 @@ const ShopHistoryIpoPrize:React.FC = () => {
       render:(text, record, _, action)=>{
         if(record?.status == 1){
           return  <a key='detail' onClick={()=>{ 
+            setLoading(true);
             ipoNotice({ awardId: record.awardId }).then(res=>{
               if(res.code==0){
                 ref.current?.reload()
                 message.success('操作成功')
               }
-            })
+            }).finally(() => {
+              setLoading(false); // 请求完成后，设置加载状态为false，隐藏加载动画
+            });
   
-          }}>通知<br/>领取</a>
+          }}>{loading? <Spin size="large" />:<span>通知<br/>领取</span>}</a>
         }else{
           return ''
         }
@@ -182,6 +186,7 @@ const ShopHistoryIpoPrize:React.FC = () => {
         params={{}}
         formRef={form}
         request={ipoHistoryMonth}
+        actionRef={ref}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
