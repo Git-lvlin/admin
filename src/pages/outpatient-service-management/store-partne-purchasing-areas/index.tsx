@@ -511,6 +511,7 @@ export default () => {
         }}
         onReset={() => {
           setTime(undefined)
+          setLoding(loding + 1);
         }}
         search={{
           defaultCollapsed: false,

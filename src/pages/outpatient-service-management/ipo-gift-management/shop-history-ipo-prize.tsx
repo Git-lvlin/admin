@@ -53,15 +53,7 @@ const ShopHistoryIpoPrize:React.FC = () => {
     {
       title: '业绩月份',
       dataIndex: 'months',
-      valueType: 'select',
-      valueEnum: {
-        1: '2023-07',
-        2: '2023-08',
-        3: '2023-09',
-        4: '2023-10',
-        5: '2023-11',
-        6: '2023-12',
-      },
+      valueType: 'dateMonth',
       hideInTable: true,
     },
     {
@@ -165,7 +157,7 @@ const ShopHistoryIpoPrize:React.FC = () => {
       key: 'option',
       valueType: 'option',
       render:(text, record, _, action)=>{
-        if(record?.awardId){
+        if(record?.status == 1){
           return  <a key='detail' onClick={()=>{ 
             ipoNotice({ awardId: record.awardId }).then(res=>{
               if(res.code==0){
