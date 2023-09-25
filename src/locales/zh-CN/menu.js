@@ -285,7 +285,7 @@ export default {
   'menu.outpatient-service-management.store-partne-purchasing-areas': '大健康供应链采集系统',
   'menu.outpatient-service-management.case-order-management': '病例订单管理',
   'menu.outpatient-service-management.ipo-gift-management': 'IPO赠送管理',
-  'menu.outpatient-service-management.digital-store-account-management': '数字化门店账号管理',
+  'menu.outpatient-service-management.digital-store-account-management': '服务商系统账号管理',
   'menu.outpatient-service-management.supply-chain-commodity-label-management': '供应链商品标签管理',
 
 
