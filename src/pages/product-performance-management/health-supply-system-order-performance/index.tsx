@@ -146,11 +146,11 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
   const getFieldValue = () => {
     const { dateRange, area, ...rest } = form.current?.getFieldsValue()
     return {
-      startTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime: dateRange && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area[0]?.value,
-      cityId: area[1]?.value,
-      areaId: area[2]?.value,
+      startTime: dateRange?.[0] && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: dateRange?.[1] && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area?.[0]&&area[0]?.value,
+      cityId: area?.[1]&&area[1]?.value,
+      areaId: area?.[2]&&area[2]?.value,
       ...rest,
     }
   }

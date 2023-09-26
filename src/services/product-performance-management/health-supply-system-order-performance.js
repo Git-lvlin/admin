@@ -7,11 +7,11 @@ export const providerGoodsPm = async (params, options = {}) => {
   const res = await request('/auth/healthy/provider/providerGoodsPm', {
     method: 'POST',
     data: {
-      startTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      endTime: dateRange && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: area[0]?.value,
-      cityId: area[1]?.value,
-      areaId: area[2]?.value,
+      startTime: dateRange?.[0] && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: dateRange?.[1] && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: area?.[0]&&area[0]?.value,
+      cityId: area?.[1]&&area[1]?.value,
+      areaId: area?.[2]&&area[2]?.value,
       page: current,
       size: pageSize,
       ...rest
