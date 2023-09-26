@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react';
 import { message, Form } from 'antd';
 import {
   ModalForm,
-  ProFormText
+  ProFormText,
+  ProFormRadio
 } from '@ant-design/pro-form';
 import { provideSaveClassTagData } from '@/services/outpatient-service-management/supply-chain-commodity-label-management'
 
@@ -93,6 +94,20 @@ export default (props:MyComponentProps) => {
           { pattern: /^[0-9]*$/, message: '只能输入数字' }
         ]}
         placeholder='请输入显示序号，越小越靠前'
+      />
+       <ProFormRadio.Group
+          name="status"
+          label="状态"
+          options={[
+            {
+              label: '显示',
+              value: 1,
+            },
+            {
+              label: '隐藏',
+              value: 0,
+            },
+          ]}
       />
     </ModalForm>
   );
