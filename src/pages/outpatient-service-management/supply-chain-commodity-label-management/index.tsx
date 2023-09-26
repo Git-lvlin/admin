@@ -40,12 +40,12 @@ export default () => {
       valueType: 'text',
     },
     {
-      title: '状态',
+      title: '显示状态',
       dataIndex: 'status',
       valueType: 'select',
       valueEnum: {
         1: '显示',
-        0: '隐藏'
+        0: '不显示'
       }
     },
    {
