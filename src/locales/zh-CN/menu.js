@@ -532,6 +532,8 @@ export default {
   'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
   'menu.product-performance-management.early-screening-statistics': '早筛额外奖领取统计',
   'menu.product-performance-management.health-store-partner-order-performance': '大健康门店合作商订单业绩',
+  'menu.product-performance-management.health-service-providers-order-performance': '大健康区县服务商订单业绩',
+  'menu.product-performance-management.health-supply-system-order-performance': '大健康供应链系统订单业绩',
 
 
 

@@ -1,10 +1,10 @@
 import request from '@/utils/request';
 import moment from 'moment';
 
-// 产品业绩管理-大健康门店合作商订单业绩
-export const providerStorePm = async (params, options = {}) => {
+// 产品业绩管理-大健康区县服务商订单业绩
+export const providerPm = async (params, options = {}) => {
   const { dateRange, pageSize, current, area = [], ...rest } = params
-  const res = await request('/auth/healthy/provider/storePm', {
+  const res = await request('/auth/healthy/provider/providerPm', {
     method: 'POST',
     data: {
       contractStartTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),

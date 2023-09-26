@@ -136,6 +136,18 @@ export default {
       path: '/product-performance-management/health-store-partner-order-performance',
       component: './product-performance-management/health-store-partner-order-performance',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-service-providers-order-performance',
+      path: '/product-performance-management/health-service-providers-order-performance',
+      component: './product-performance-management/health-service-providers-order-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-supply-system-order-performance',
+      path: '/product-performance-management/health-supply-system-order-performance',
+      component: './product-performance-management/health-supply-system-order-performance',
+      wrappers: [RouteWatcher],
     }
   ]
 }

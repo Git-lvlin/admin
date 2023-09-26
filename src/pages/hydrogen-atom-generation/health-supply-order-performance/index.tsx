@@ -45,8 +45,8 @@ const GenerationManagement =(props:DevicesProps) => {
       const { dateRange, ...rest } = searchConfig.form.getFieldsValue()
       const params = {
         ...rest,
-        startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD'),
-        endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD'),
+        startTime:dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        endTime:dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       }
       return params
     }

@@ -7,13 +7,15 @@ import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import Export from '@/components/export'
-import { providerStorePm } from '@/services/product-performance-management/health-store-partner-order-performance'
+import { providerPm } from '@/services/product-performance-management/health-service-providers-order-performance'
 import AddressCascader from '@/components/address-cascader'
 import type { FormInstance } from 'antd'
 
 const HealthStorePartnerOrderPerformance: React.FC = () => {
+  const [visible, setVisible] = useState(false)
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
+  const [visit, setVisit] = useState(false)
 
   const columns: ProColumns[] = [
     {
@@ -28,43 +30,13 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '大健康省代',
+      title: '大健康省代名称',
       dataIndex: 'hyProvinceAgent',
       valueType: 'text',
       hideInSearch: true
     },
     {
-      title: '汇智能通省代',
-      dataIndex: 'provinceAgent',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '汇智能通市代',
-      dataIndex: 'cityAgent',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '宾购市代',
-      dataIndex: 'bingouCityAgent',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '汇鸿鑫科技',
-      dataIndex: 'hhxAward',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '区县服务商',
-      dataIndex: 'healthyProvider',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
-      title: '合作商编号',
+      title: '服务商编号',
       dataIndex: 'houseNumber',
       align: 'center'
     },
@@ -86,13 +58,13 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所在地',
+      title: '服务区域',
       dataIndex: 'address',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '缴费金额(元)',
+      title: '业绩金额(元)',
       dataIndex: 'payAmountDesc',
       align: 'center',
       hideInSearch: true
@@ -104,7 +76,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所在地',
+      title: '服务区域',
       dataIndex: 'area',
       hideInTable: true,
       renderFormItem: () => <AddressCascader changeOnSelect/>
@@ -147,7 +119,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
         columns={columns}
         params={{}}
         actionRef={actRef}
-        request={providerStorePm}
+        request={providerPm}
         formRef={form}
         search={{
           labelWidth: 120,
@@ -155,7 +127,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
             ...dom.reverse(),
             <Export
              key='export'
-             type='providerStorePm'
+             type='providerPm'
              conditions={getFieldValue}
             />
           ]

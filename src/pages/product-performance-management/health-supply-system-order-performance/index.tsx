@@ -7,7 +7,7 @@ import PageContainer from '@/components/PageContainer'
 import ProTable from '@/components/pro-table'
 import TimeSelect from '@/components/time-select'
 import Export from '@/components/export'
-import { providerStorePm } from '@/services/product-performance-management/health-store-partner-order-performance'
+import { providerGoodsPm } from '@/services/product-performance-management/health-supply-system-order-performance'
 import AddressCascader from '@/components/address-cascader'
 import type { FormInstance } from 'antd'
 
@@ -46,12 +46,6 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '宾购市代',
-      dataIndex: 'bingouCityAgent',
-      valueType: 'text',
-      hideInSearch: true
-    },
-    {
       title: '汇鸿鑫科技',
       dataIndex: 'hhxAward',
       valueType: 'text',
@@ -60,6 +54,24 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
     {
       title: '区县服务商',
       dataIndex: 'healthyProvider',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '氢原子市代',
+      dataIndex: 'hyCityAgent',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '子公司',
+      dataIndex: 'subcompany',
+      valueType: 'text',
+      hideInSearch: true
+    },
+    {
+      title: '非子公司',
+      dataIndex: 'unsubcompany',
       valueType: 'text',
       hideInSearch: true
     },
@@ -80,60 +92,62 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '订单号',
-      dataIndex: 'subOrderSn',
-      align: 'center',
-      hideInSearch: true
-    },
-    {
-      title: '所在地',
+      title: '门店合作商所在地',
       dataIndex: 'address',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '缴费金额(元)',
-      dataIndex: 'payAmountDesc',
+      title: '商品skuID',
+      dataIndex: 'skuId',
       align: 'center',
-      hideInSearch: true
     },
     {
-      title: '合同签订时间',
-      dataIndex: 'contractSignTime',
+      title: '商品名称',
+      dataIndex: 'goodsName',
       align: 'center',
-      hideInSearch: true
     },
     {
-      title: '所在地',
+      title: '合作商所在地',
       dataIndex: 'area',
       hideInTable: true,
       renderFormItem: () => <AddressCascader changeOnSelect/>
     },
     {
-      title: '签订时间',
+      title: '订单号',
+      dataIndex: 'subOrderSn',
+      align: 'center',
+    },
+    {
+      title: '订单金额(元)',
+      dataIndex: 'payAmountDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '支付时间',
+      dataIndex: 'payTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '订单状态',
+      dataIndex: 'statusDesc',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '支付时间',
       dataIndex: 'dateRange',
       hideInTable: true,
       renderFormItem: () => <TimeSelect />
-    },
-    {
-      title: '合同ID',
-      dataIndex: 'contractId',
-      align: 'center',
-      hideInSearch: true,
-      render: (_, r) => {
-        if(r.contractUrl) {
-          return <a href={r.contractUrl} target='_blank' referrerPolicy='no-referrer'>{_}</a>
-        } else {
-          return <span>{_}</span>
-        }
-      }
     },
   ]
   const getFieldValue = () => {
     const { dateRange, area, ...rest } = form.current?.getFieldsValue()
     return {
-      contractStartTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
-      contractEndTime: dateRange && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
+      startTime: dateRange && moment(dateRange?.[0]).format('YYYY-MM-DD HH:mm:ss'),
+      endTime: dateRange && moment(dateRange?.[1]).format('YYYY-MM-DD HH:mm:ss'),
       provinceId: area[0]?.value,
       cityId: area[1]?.value,
       areaId: area[2]?.value,
@@ -147,7 +161,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
         columns={columns}
         params={{}}
         actionRef={actRef}
-        request={providerStorePm}
+        request={providerGoodsPm}
         formRef={form}
         search={{
           labelWidth: 120,
@@ -155,7 +169,7 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
             ...dom.reverse(),
             <Export
              key='export'
-             type='providerStorePm'
+             type='providerGoodsPm'
              conditions={getFieldValue}
             />
           ]
