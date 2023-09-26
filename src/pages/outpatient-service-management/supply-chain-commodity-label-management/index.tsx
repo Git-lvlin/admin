@@ -39,6 +39,15 @@ export default () => {
       dataIndex: 'sort',
       valueType: 'text',
     },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'select',
+      valueEnum: {
+        1: '显示',
+        0: '隐藏'
+      }
+    },
    {
       title: '操作',
       key: 'option',
