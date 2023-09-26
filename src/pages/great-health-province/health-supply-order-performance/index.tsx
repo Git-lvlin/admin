@@ -68,7 +68,7 @@ const HealthSupplyOrderPerformance: React.FC = () => {
     },
     {
       title: '大健康供应链系统订单提成 - 扣通道费后',
-      dataIndex: 'commission',
+      dataIndex: 'trueCommission',
       align: 'center',
       hideInSearch: true,
       render: (_,data)=>{
