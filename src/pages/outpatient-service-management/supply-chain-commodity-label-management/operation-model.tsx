@@ -97,14 +97,17 @@ export default (props:MyComponentProps) => {
       />
        <ProFormRadio.Group
           name="status"
-          label="状态"
+          label="显示状态"
+          rules={[
+            { required: true, message: '请选择显示状态' },
+          ]}
           options={[
             {
               label: '显示',
               value: 1,
             },
             {
-              label: '隐藏',
+              label: '不显示',
               value: 0,
             },
           ]}
