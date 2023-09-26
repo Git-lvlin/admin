@@ -92,12 +92,6 @@ export default (props) => {
       hideInSearch:true,
     },
     {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      align: 'center',
-      hideInSearch: true,
-    },
-    {
       title: '订单金额',
       dataIndex: 'payAmount',
       align: 'center',
