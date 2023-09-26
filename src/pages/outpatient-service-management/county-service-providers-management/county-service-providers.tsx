@@ -22,9 +22,9 @@ const CountyServiceProviders:React.FC = () => {
       ...rest,
       signStartTime: signTime && moment(signTime?.[0]).format('YYYY-MM-DD HH:mm:ss'),
       signEndTime: signTime && moment(signTime?.[1]).format('YYYY-MM-DD HH:mm:ss'),
-      provinceId: serviceArea && serviceArea?.[0].value,
-      cityId: serviceArea && serviceArea?.[1].value,
-      areaId: serviceArea && serviceArea?.[2].value,
+      provinceId: serviceArea && serviceArea?.[0]?.value,
+      cityId: serviceArea && serviceArea?.[1]?.value,
+      areaId: serviceArea && serviceArea?.[2]?.value,
     }
   }
 
