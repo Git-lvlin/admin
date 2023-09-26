@@ -25,7 +25,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     const { amount, months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      months: moment(months).format('YYYY-MM'),
+      months: months&&moment(months).format('YYYY-MM'),
       min: amount && amountTransform(amount?.min,'*'),
       max: amount && amountTransform(amount?.max,'*'),
     }
@@ -38,7 +38,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
     const api=activeKey=='1'?ipoAwardProviderDirectMemberSt:ipoAwardStoreDirectMemberSt
     await api({
       ...form,
-      months: moment(form?.months).format('YYYY-MM')
+      months: form?.months&&moment(form?.months).format('YYYY-MM')
     }).then(res => {
       setData(res.data?.[0])
     })

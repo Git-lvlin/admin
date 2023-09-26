@@ -30,7 +30,7 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
     return {
       ...rest,
       memberId: msgDetail?.memberId,
-      months: moment(months).format('YYYY-MM'),
+      months: months&&moment(months).format('YYYY-MM'),
       min: amount && amountTransform(amount?.min,'*'),
       max: amount && amountTransform(amount?.max,'*'),
     }

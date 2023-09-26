@@ -74,8 +74,8 @@ export const ipoAwardStoreDirectMember = async (params = {}, options = {}) => {
       data: {
         page: current,
         size: pageSize,
-        min: amount && amount?.min,
-        max: amount && amount?.max,
+        min: amount && amountTransform(amount?.min,'*'),
+        max: amount && amountTransform(amount?.max,'*'),
         ...rest
       },
       ...options
