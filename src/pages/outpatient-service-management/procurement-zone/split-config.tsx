@@ -74,7 +74,7 @@ const countyServiceProviderData = [
 
 type props = {
   meta: any, 
-  callback: ()=> void
+  callback: (data?: any)=> void
   visible: boolean
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
   id?: string
@@ -325,6 +325,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         }).then(res => {
           if(res.code === 0) {
             resolve()
+            callback(res.data)
           } else {
             reject()
           }
@@ -470,7 +471,6 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       onVisibleChange={setVisible}
       onFinish={async (v)=> {
         await submit(v)
-        callback()
         return true
       }}
       formRef={form}

@@ -111,6 +111,12 @@ export default {
           component: './product-performance-management/AED-performance-management/early-screening-sales-bonus',
           wrappers: [RouteWatcher],
         },
+        {
+          name: 'health-ipo-bonus-receiving-statistics',
+          path: '/product-performance-management/AED-performance-management/health-ipo-bonus-receiving-statistics',
+          component: './product-performance-management/AED-performance-management/health-ipo-bonus-receiving-statistics',
+          wrappers: [RouteWatcher],
+        },
       ]
     },
     {
@@ -123,6 +129,24 @@ export default {
       name: 'early-screening-statistics',
       path: '/product-performance-management/early-screening-statistics',
       component: './product-performance-management/early-screening-statistics',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-store-partner-order-performance',
+      path: '/product-performance-management/health-store-partner-order-performance',
+      component: './product-performance-management/health-store-partner-order-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-service-providers-order-performance',
+      path: '/product-performance-management/health-service-providers-order-performance',
+      component: './product-performance-management/health-service-providers-order-performance',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-supply-system-order-performance',
+      path: '/product-performance-management/health-supply-system-order-performance',
+      component: './product-performance-management/health-supply-system-order-performance',
       wrappers: [RouteWatcher],
     }
   ]

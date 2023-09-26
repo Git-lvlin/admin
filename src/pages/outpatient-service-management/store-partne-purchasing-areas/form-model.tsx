@@ -161,6 +161,12 @@ export default (props:MyComponentProps) => {
               "oldValue": msgDetail?.[0]?.batchNumber,
               "newValue": msgDetail?.[1]?.batchNumber,
               "id": 4
+            },
+            {
+              "parameterName": "引流品",
+              "oldValue": {1:'是',0:'否'}[msgDetail?.[0]?.drainageType],
+              "newValue": {1:'是',0:'否'}[msgDetail?.[1]?.drainageType],
+              "id": 4
             }
           ]}
          columnEmptyText={false}

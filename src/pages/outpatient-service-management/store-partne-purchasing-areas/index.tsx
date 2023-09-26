@@ -2,9 +2,10 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { EditableProTable } from '@ant-design/pro-table';
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
 import { amountTransform } from '@/utils/utils'
-import { provideGetListByParams } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
+import { provideGetListByParams, provideUpdateGoodsClassTag, provideUpdateGoodsState } from '@/services/outpatient-service-management/store-partne-purchasing-areas'
+import { provideGetClassTagListByParams } from '@/services/outpatient-service-management/supply-chain-commodity-label-management'
 import OperationModel from './operation-model'
-import { Button, InputNumber } from 'antd';
+import { Button, InputNumber, Select, Space, message } from 'antd';
 import RangeNumberInput from '@/components/range-number-input'
 import { PageContainer } from '@/components/PageContainer';
 import FormModel from './form-model'
@@ -36,6 +37,11 @@ export default () => {
   const [pageTotal, setPageTotal] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   const [pageSize, setPageSize] = useState<number | undefined>(10)
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const [selectItems, setSelectItems] = useState([]);
+  const [selectOptions, setSelectOptions] = useState([])
+  const [selectValueEnum, setSelectValueEnum] = useState({})
+  const [changeClassTag, setChangeClassTag] = useState<number | string>()
 
   const handleMenuClick = (key: string, data: ThematicEventItem) => {
     if (key === '1') {
@@ -58,19 +64,35 @@ export default () => {
     }
   }
 
-
   useEffect(() => {
+    const classTag=window.localStorage.getItem('classTag')
+    console.log('classTag',classTag)
     const params = {
+      classTag: classTag,
       ...time,
       pageSize: 9999,
     }
     provideGetListByParams(params).then(res => {
       if (res.code == 0) {
-        setDataSource(res.data.map((item: { actPrice: number; }) => ({ ...item, actPrice: amountTransform(item.actPrice, '/').toFixed(2) })))
+        setDataSource(res.data.records?.map((item: { actPrice: number; }) => ({ ...item, actPrice: amountTransform(item.actPrice, '/').toFixed(2) })))
         setPageTotal(res.total)
+        setSelectOptions(res.data.tagData?.map(item=>({ label:item.name, value:item.id})))
       }
     })
+    window.localStorage.removeItem('classTag')
   }, [loding, time])
+
+  useEffect(()=>{
+    provideGetClassTagListByParams({ pageSize:9999 }).then(res=>{
+      if (res.code == 0) {
+        let obj={}
+        res.data?.map(item=>{
+          obj[item.id]=item.name
+        })
+        setSelectValueEnum(obj)
+      }
+    })
+  },[])
 
   const debounceFetcher = useMemo(() => {
     // 定义数据加载函数
@@ -137,6 +159,43 @@ export default () => {
     setPageSize(b)
   }
 
+  const onChange = (value: string) => {
+    setChangeClassTag(value)
+  };
+
+  const onAddTag = () => {
+    if(selectItems.length==0){
+      return message.error('请先添加商品')
+    }
+    
+    const params={
+      idArr: selectItems.map(item=>item.id),
+      classTag: changeClassTag,
+    }
+    provideUpdateGoodsClassTag(params).then((res:{ code: number }) => {
+      if (res.code === 0) {
+        setLoding(loding + 1);
+        setSelectedRowKeys([])
+        setSelectItems([])
+        message.success('操作成功');
+      }
+    });
+  }
+
+  const batchSoldOut = () => {
+    const params={
+      idArr: selectItems.map(item=>item.id),
+      storeState: 0,
+    }
+    provideUpdateGoodsState(params).then((res:{ code: number }) => {
+      if (res.code === 0) {
+        setLoding(loding + 1);
+        setSelectedRowKeys([])
+        setSelectItems([])
+        message.success('操作成功');
+      }
+    });
+  }
 
   const columns: ProColumns<ThematicEventItem>[] = [
     {
@@ -152,6 +211,13 @@ export default () => {
       editable: false,
     },
     {
+      title: '标签',
+      dataIndex: 'tagName',
+      valueType: 'text',
+      editable: false,
+      hideInSearch: true,
+    },
+    {
       title: '商品图片',
       dataIndex: 'goodsImageUrl',
       valueType: 'image',
@@ -163,6 +229,14 @@ export default () => {
       dataIndex: 'goodsName',
       valueType: 'text',
       editable: false,
+    },
+    {
+      title: '标签',
+      dataIndex: 'classTag',
+      valueType: 'select',
+      editable: false,
+      valueEnum: selectValueEnum,
+      hideInTable: true
     },
     {
       title: '商品状态',
@@ -275,6 +349,30 @@ export default () => {
       },
     },
     {
+      title: '引流品',
+      dataIndex: 'drainageType',
+      valueType: 'text',
+      hideInSearch: true,
+      renderFormItem: (_) => {
+        return <Select
+                options={[
+                  {
+                    label: '是',
+                    value: 1
+                  },
+                  {
+                    label: '否',
+                    value: 0
+                  }
+                ]}
+              />
+      },
+      render: (_) => {
+        return {1:'是',0:'否'}[_]
+      },
+      
+    },
+    {
       title: '分成配置状态',
       dataIndex: 'divideState',
       valueType: 'text',
@@ -296,7 +394,9 @@ export default () => {
           return <a onClick={() => { setDivideVisible(true); setMsgDetail(data) }}>已配置</a>
         } else if (_ == 0 && data.actPrice) {
           return <a onClick={() => { setDivideVisible(true); setMsgDetail(data) }}><span style={{ color: 'red' }} >未配置</span>（点击配置）</a>
-        } else {
+        } else if(_==1){
+          return '已配置'
+        } else{
           return ''
         }
       }
@@ -371,6 +471,24 @@ export default () => {
   return (
     <PageContainer>
       <EditableProTable<ThematicEventItem>
+        headerTitle={
+         <Space>
+            添加到：
+            <Select
+              showSearch
+              placeholder="输入标签"
+              optionFilterProp="children"
+              onChange={onChange}
+              filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
+              style={{ width: 200 }}
+              options={selectOptions}
+            />
+            <Button type='primary' onClick={()=>{ onAddTag() }}>确定</Button>
+            <Button type='primary' onClick={()=>{ batchSoldOut() }}>批量从店铺下架</Button>
+         </Space>
+        }
         actionRef={ref}
         rowKey="skuId"
         options={false}
@@ -393,6 +511,7 @@ export default () => {
         }}
         onReset={() => {
           setTime(undefined)
+          setLoding(loding + 1);
         }}
         search={{
           defaultCollapsed: false,
@@ -414,7 +533,7 @@ export default () => {
           <Import
             change={(e: boolean | ((prevState: boolean) => boolean)) => {
               setImportVisit(e)
-              ref.current?.reload()
+              setLoding(loding + 1);
             }}
             key='import'
             code="goods-provide-input"
@@ -430,6 +549,14 @@ export default () => {
           showQuickJumper: true,
           total: pageTotal,
           onChange: pageChange
+        }}
+        rowSelection={{
+          preserveSelectedRowKeys: true,
+          selectedRowKeys,
+          onChange: (_,val) => {
+            setSelectedRowKeys(_);
+            setSelectItems(val)
+          }
         }}
       />
       {
@@ -454,10 +581,10 @@ export default () => {
         visible={divideVisible}
         setVisible={setDivideVisible}
         meta={msgDetail}
-        callback={() => { 
+        callback={(data) => { 
             const newData = dataSource?.map(item => {
-            if (item.skuId == msgDetail.skuId) {
-              return { ...item, divideState: 1 }
+            if (item.skuId == data.skuId) {
+              return { ...item, ...{ ...data, actPrice: amountTransform(data.actPrice, '/').toFixed(2), actPriceStr: amountTransform(data.actPrice, '/').toFixed(2)  }  }
             }
             return item
           })
