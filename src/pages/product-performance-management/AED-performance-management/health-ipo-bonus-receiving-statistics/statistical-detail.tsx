@@ -29,7 +29,8 @@ const Edit: FC<editProps> = ({visible, setVisible, msgDetail, callback, activeKe
     const { amount, months, ...rest } = form.current?.getFieldsValue()
     return {
       ...rest,
-      months: moment(months).format('YYYY-MM'),
+      memberId: msgDetail?.memberId,
+      months: months&&moment(months).format('YYYY-MM'),
       min: amount && amountTransform(amount?.min,'*'),
       max: amount && amountTransform(amount?.max,'*'),
     }
