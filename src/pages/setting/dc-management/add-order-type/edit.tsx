@@ -19,7 +19,8 @@ const Edit:React.FC<props> = ({ visible, setVisible, callback, id }) => {
     if(id) {
       form.current?.setFieldsValue({
         subCode: id.subCode,
-        subMsg: id.subMsg
+        subMsg: id.subMsg,
+        subName: id.subName,
       })
     }
   }, [id])
@@ -67,6 +68,12 @@ const Edit:React.FC<props> = ({ visible, setVisible, callback, id }) => {
         name='subMsg'
         width='sm'
         placeholder='请输入子订单名称'
+      />
+      <ProFormText
+        label='子订单分账名称'
+        name='subName'
+        width='sm'
+        placeholder='请输入子订单分账名称'
       />
     </ModalForm>
   )
