@@ -128,6 +128,12 @@ const IPOPrize = (props:{ activeKey:string }) => {
       hideInSearch: true
     },
     {
+      title: '订单号',
+      dataIndex: 'subOrderSn',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
       title: '复审时间',
       dataIndex: 'finishTime',
       align: 'center',

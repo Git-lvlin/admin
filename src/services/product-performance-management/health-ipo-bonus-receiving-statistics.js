@@ -90,12 +90,14 @@ export const ipoAwardStoreDirectMember = async (params = {}, options = {}) => {
   }
 
   export const ipoAwardStoreDirectMemberSt = async (params = {}, options = {}) => {
-    const { current, pageSize, ...rest } = params;
+    const { current, pageSize,amount, ...rest } = params;
     const res = await request('/auth/healthy/provider/ipoAwardStoreDirectMemberSt', {
       method: 'POST',
       data: {
         page: current,
         size: pageSize,
+        min: amount && amountTransform(amount?.min,'*'),
+        max: amount && amountTransform(amount?.max,'*'),
         ...rest
       },
       ...options
