@@ -210,3 +210,12 @@ export const dict = async (params, options = {}) => {
     ...options
   })
 }
+
+// 合同业务
+export const dictSub = async (params, options = {}) => {
+  return await request('/auth/java-admin/public/common/dictSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

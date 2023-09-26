@@ -24,12 +24,29 @@ import CountyServiceProvider from './county-service-provider'
 import { RATIO } from '@/constants'
 import { amountTransform } from '@/utils/utils'
 
+const feeName = {
+  'goodsAmount': '货款',
+  'platform': '运营费用',
+  'hyCityAgent': '氢原子市代收益',
+  'hyProvinceAgent': '大健康省代收益',
+  'provinceAgent': '汇智能通省代收益',
+  'cityAgent': '汇智能通市代收益',
+  'directMember': '大健康供应链-销售佣金',
+  'subcompany': '子公司收益',
+  'unsubcompany': '非子公司收益',
+  'businessCollege': '商学院收益',
+  'healthyProvider': '区县服务商业绩提成',
+  'companyManager': '管理收益',
+  'other': '其他收益',
+  'hhxAward': '汇鸿鑫科技管理奖'
+}
+
 const countyServiceProviderData = [
   {
     id: 1,
     roleCode: 'goodsAmount',
     roleName: '供应商',
-    name: '产品成本',
+    name: feeName['goodsAmount'],
     isChannelFee: 1,
     isChannelFeeDesc: '承担通道费',
     settleType: 1,
@@ -43,7 +60,7 @@ const countyServiceProviderData = [
     id: 2,
     roleCode: 'platform',
     roleName: '平台',
-    name: '运营费用',
+    name: feeName['platform'],
     isChannelFee: 1,
     isChannelFeeDesc: '承担通道费',
     settleType: 1,
@@ -108,7 +125,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 id: idx + 1,
                 billVal: amountTransform(item?.billVal, '/'),
-                name: '产品成本',
+                name: feeName['goodsAmount'],
                 isChannelFee: 1,
                 settleType: 1,
                 settleTypeDesc: '汇付',
@@ -122,7 +139,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 id: idx + 1,
                 billVal: amountTransform(item?.billVal, '/'),
-                name: '运营费用',
+                name: feeName['platform'],
                 isChannelFee: 1,
                 settleType: 1,
                 settleTypeDesc: '汇付',
@@ -137,7 +154,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 id: idx + 1,
                 billVal: amountTransform(item?.billVal, '/'),
                 settleType: 2,
-                name: '销售佣金',
+                name: feeName['directMember'],
                 settleTypeDesc: '线上代付',
                 trueUnfrezeeType: '6',
                 trueUnfrezeeTypeDesc: '满足业务解冻',
@@ -153,6 +170,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 billVal: amountTransform(item?.billVal, '/'),
                 id: idx + 1,
+                name: feeName[item?.roleCode],
                 settleType: 3,
                 settleTypeDesc: '线下',
                 trueUnfrezeeType: '6',
@@ -172,7 +190,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                name: '产品成本',
+                name: feeName['goodsAmount'],
                 isChannelFee: 1,
                 settleType: 1,
                 settleTypeDesc: '汇付',
@@ -185,7 +203,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
               return {
                 ...item,
                 id: idx + 1,
-                name: '运营费用',
+                name: feeName['platform'],
                 isChannelFee: 1,
                 settleType: 1,
                 settleTypeDesc: '汇付',
@@ -199,7 +217,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 id: idx + 1,
                 settleType: 2,
-                name: '销售佣金',
+                name: feeName['directMember'],
                 settleTypeDesc: '线上代付',
                 isChannelFee: 0,
                 trueUnfrezeeType: '6',
@@ -216,6 +234,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 ...item,
                 id: idx + 1,
                 settleType: 3,
+                name: feeName[item.roleCode],
                 settleTypeDesc: '线下',
                 isChannelFee: 0,
                 trueUnfrezeeType: '6',
@@ -272,7 +291,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         } else {
           return {
             ...res,
-            billVal: res.billVal ? amountTransform(res.billVal) : undefined
+            billVal: res.billVal?.toString() ? amountTransform(res.billVal) : undefined
           }
         }
       })
@@ -351,7 +370,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
         } else if(record.roleCode === 'platform'){
           return `${minPrice ?? 0}元`
         } else {
-          return <InputNumber placeholder='请输入' controls={false} stringMode/>
+          return <InputNumber min={0} placeholder='请输入' controls={false} stringMode/>
         }
       }
     },

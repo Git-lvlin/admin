@@ -18,19 +18,25 @@ const AddOrderType: React.FC = () => {
       title: '子订单code',
       dataIndex: 'subCode',
       align: 'center',
-      width: '40%'
+      width: '30%'
     },
     {
       title: '子订单名称',
       dataIndex: 'subMsg',
       align: 'center',
-      width: '40%'
+      width: '30%'
+    },
+    {
+      title: '子订单分账名称',
+      dataIndex: 'subName',
+      align: 'center',
+      width: '30%'
     },
     {
       title: '操作',
       valueType: 'option',
       align: 'center',
-      width: '20%',
+      width: '10%',
       render: (_, r) => <a onClick={() => { setVisible(true); setId(r) }}>编辑</a>
     }
   ]
