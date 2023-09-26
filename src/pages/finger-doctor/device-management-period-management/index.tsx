@@ -113,8 +113,8 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           align: 'center',
           hideInTable: true,
           valueEnum: {
-            1: '区县服务商店铺',
-            2: '门店合作商店铺',
+            2: '区县服务商店铺',
+            4: '门店合作商店铺',
             0: '其他来源',
           },
           fieldProps: {
