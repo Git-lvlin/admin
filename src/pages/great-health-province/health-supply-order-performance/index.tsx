@@ -83,7 +83,7 @@ const HealthSupplyOrderPerformance: React.FC = () => {
 
   return (
     <PageContainer>
-      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff', padding: '20px'}} column={3} layout="vertical" bordered>
+      <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff', padding: '20px'}} column={4} layout="vertical" bordered>
         <Descriptions.Item  label="大健康省代数量">{data?.agencyNum ?? 0}</Descriptions.Item>
         <Descriptions.Item  label="大健康供应链系统订单业绩">{amountTransform(data?.payAmount, '/').toFixed(2)}</Descriptions.Item>
         <Descriptions.Item  label="大健康供应链系统订单提成">{amountTransform(data?.commission, '/').toFixed(2)}</Descriptions.Item>

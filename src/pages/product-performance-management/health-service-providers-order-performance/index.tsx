@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useRef } from 'react'
 import moment from 'moment'
 
 import type { ProColumns, ActionType } from '@ant-design/pro-table'
@@ -12,10 +12,8 @@ import AddressCascader from '@/components/address-cascader'
 import type { FormInstance } from 'antd'
 
 const HealthStorePartnerOrderPerformance: React.FC = () => {
-  const [visible, setVisible] = useState(false)
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
-  const [visit, setVisit] = useState(false)
 
   const columns: ProColumns[] = [
     {
