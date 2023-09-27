@@ -173,7 +173,7 @@ const CountyShopIpoStatistics= (props:{ activeKey:string }) => {
             ...dom.reverse(),
             <Export
               key='1'
-              type='ipoAwardProviderDirectMember'
+              type={activeKey=='1'?'ipoAwardProviderDirectMember':'ipoAwardStoreDirectMember'}
               conditions={getFieldsValue}
             />
           ]
