@@ -15,10 +15,10 @@ const HealthIpoBonusReceivingStatistics: React.FC = () => {
           onChange: setActiveKey
         }}
       >
-        <ProCard.TabPane key='1' tab='区县服务商订单直推人IPO奖'>
+        <ProCard.TabPane key='1' tab='区县服务商及订单直推人领取IPO奖统计'>
           { activeKey === '1' && <CountyShopIpoStatistics activeKey={activeKey}/> }
         </ProCard.TabPane>
-        <ProCard.TabPane key='2' tab='门店合作商订单直推人IPO奖-本月'>
+        <ProCard.TabPane key='2' tab='门店合作商订单直推人领取IPO奖统计'>
           { activeKey === '2' && <CountyShopIpoStatistics activeKey={activeKey}/> }
         </ProCard.TabPane>
       </ProCard> 
