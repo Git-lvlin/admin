@@ -1,5 +1,5 @@
 import { useRef, useState } from "react"
-import { Form, Select } from 'antd';
+import { Form } from 'antd';
 import {
   DrawerForm,
 } from '@ant-design/pro-form';
@@ -10,11 +10,9 @@ import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import Export from '@/pages/export-excel/export'
 import ExportHistory from '@/pages/export-excel/export-history'
 import TimeSelect from '@/components/time-select'
-import {
-    ProFormFieldSet,
-  } from '@ant-design/pro-form';
 import { amountTransform } from "@/utils/utils";
 import RangeOvertime0rder from './range-overtime-order';
+import moment from "moment";
 
 const formItemLayout = {
     labelCol: { span: 4 },
@@ -30,8 +28,8 @@ export default (props:CumulativeProps)=>{
   const getFieldValue = (searchConfig) => {
     const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
     return {
-      startTime1:dateTimeRange&&dateTimeRange[0],
-      startTime2:dateTimeRange&&dateTimeRange[1],
+      payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }
@@ -39,8 +37,7 @@ export default (props:CumulativeProps)=>{
   const Columns: ProColumns[] = [
     {
       title: '订单类型',
-      dataIndex:'id',
-      valueType: 'indexBorder',
+      dataIndex:'orderType',
       hideInSearch: true
     },
     {
@@ -89,9 +86,9 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '支付时间',
-      dataIndex: 'optRole',
+      dataIndex: 'dateTimeRange',
       align: 'center',
-      renderFormItem: () => <TimeSelect />,
+      renderFormItem: () => <TimeSelect beforePlaceholder="最早时间" afterPlaceholder="最晚时间"/>,
       hideInTable: true
     },
     {
@@ -113,7 +110,7 @@ export default (props:CumulativeProps)=>{
     <DrawerForm
       layout="horizontal"
       title={<>
-               <p>首页 /  供应商管理 / 超时未发货供应商 / 超时未发货订单明细 / {activeKey=='1'?'普通订单':'集约订单'}</p>
+               <p>首页 /  供应商管理 / 超时未发货供应商 / 超时未发货订单明细 {activeKey=='1'?'（普通订单）':'（集约订单）'}</p>
                <p style={{ color:'#8D8D8D' }}>供应商ID：{msgDetail?.supplierId}    供应商名称：{msgDetail?.supplierName}</p>
              </>
       }

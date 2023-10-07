@@ -1,6 +1,6 @@
 import { useState, useRef,useEffect } from "react"
 import { PageContainer } from "@ant-design/pro-layout"
-import { Form, message, Button, Space,Spin} from 'antd';
+import { Form, message, Button, Space } from 'antd';
 
 import { getGoodsConfig, setGoodsConfig } from "@/services/cms/member/goos-reg"
 import ProCard from "@ant-design/pro-card"
@@ -18,11 +18,11 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
   const ref=useRef()
 
   useEffect(() => {
-    getGoodsConfig({ code:'chatTab' }).then(res=>{
+    getGoodsConfig({ code:activeKey=='1'?'roleLimit':'chatTab' }).then(res=>{
       if(res.code==0){
         console.log('res',res)
         form.setFieldsValue({
-          switch:`${res.data.switch}`
+          switch:`${res.data?.switch}`
         })
       }
     })
@@ -31,7 +31,7 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
 
   const onsubmit = (values) => {
     const params={
-      code: 'chatTab',
+      code:activeKey=='1'?'roleLimit':'chatTab',
       content: {
         switch: parseInt(values.switch)
       }
@@ -72,7 +72,7 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
   >
     {
       activeKey=='1'&&<ProFormRadio.Group
-        name="of"
+        name="switch"
         label='选择聊天可发送平台推荐商品的角色'
         layout="vertical"
         options={[
@@ -98,6 +98,7 @@ const ChatRecommendedProductRestrictionSwitch = (props) => {
           name="switch"
           label='APP端用户聊天发送商品里的平台推荐商品'
           layout="vertical"
+          labelCol={5}
           options={[
               {
                   label:'固定显示',
