@@ -23,12 +23,22 @@ const OrderList = (props:Statistics) => {
 
     const getFieldValue = (searchConfig) => {
         const {orderNum,orderAmount,...rest}=searchConfig.form.getFieldsValue()
-        return {
+        if(activeKey=='1'){
+          return {
+            orderCountMin:orderNum&&orderNum.min,
+            orderCountMax:orderNum&&orderNum.max,
+            payAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
+            payAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
+          ...rest,
+          }
+        }else{
+          return {
             orderNumMin:orderNum&&orderNum.min,
             orderNumMax:orderNum&&orderNum.max,
             orderAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
             orderAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
           ...rest,
+        }
         }
       }
     
