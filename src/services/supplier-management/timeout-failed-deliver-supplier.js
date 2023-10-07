@@ -25,6 +25,29 @@ export const purchaseUnshippedStats = async (params = {}, options = {}) => {
   }
 }
 
+export const undeliverList = async (params = {}, options = {}) => {
+  const { current, pageSize,orderNum,orderAmount, ...rest } = params;
+  const res = await request('/auth/java-admin/order/supplier/undeliver/list', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      orderCountMin:orderNum&&orderNum.min,
+      orderCountMax:orderNum&&orderNum.max,
+      payAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
+      payAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}
+
 
 export const purchaseUnshippedOrder = async (params = {}, options = {}) => {
     const { current, pageSize, dateTimeRange, ...rest } = params;
@@ -46,3 +69,24 @@ export const purchaseUnshippedOrder = async (params = {}, options = {}) => {
       total: res.data.total
     }
   }
+
+export const undeliverDetail = async (params = {}, options = {}) => {
+  const { current, pageSize, dateTimeRange, ...rest } = params;
+  const res = await request('/auth/java-admin/order/supplier/undeliver/detail', {
+    method: 'POST',
+    data: {
+      page: current,
+      size: pageSize,
+      payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+      payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    },
+    ...options
+  });
+
+  return {
+    data: res.data.records,
+    success: true,
+    total: res.data.total
+  }
+}

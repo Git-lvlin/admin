@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import ProCard from '@ant-design/pro-card';
 import { PageContainer } from '@/components/PageContainer';
 import ProTable from '@/components/pro-table';
-import { purchaseUnshippedStats } from '@/services/supplier-management/timeout-failed-deliver-supplier'
+import { purchaseUnshippedStats, undeliverList } from '@/services/supplier-management/timeout-failed-deliver-supplier'
 import type { ActionType } from "@ant-design/pro-table"
 import { amountTransform } from '@/utils/utils';
 import Export from '@/pages/export-excel/export'
@@ -58,7 +58,7 @@ const OrderList = (props:Statistics) => {
       },
       {
         title: '待发货订单金额',
-        dataIndex: 'orderAmount',
+        dataIndex: activeKey=='1'?'payAmount':'orderAmount',
         valueType: 'text',
         render: (_) => {
           return amountTransform(_,'/').toFixed(2)
@@ -74,25 +74,25 @@ const OrderList = (props:Statistics) => {
       },
       {
         title: '待发货订单数量',
-        dataIndex: 'orderNum',
+        dataIndex: activeKey=='1'?'orderCount':'orderNum',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '待发货订单最早支付时间距今已过天数',
-        dataIndex: 'earliestDay',
+        dataIndex: activeKey=='1'?'payTimeDay':'earliestDay',
         valueType: 'text',
         hideInSearch: true,
       },
       {
         title: '待发货订单最早支付时间',
-        dataIndex: 'earliestPayTime',
+        dataIndex: activeKey=='1'?'payTime':'earliestPayTime',
         valueType: 'text',
         hideInSearch: true,
       },
       { 
         title: '',
-        dataIndex: 'overDay',
+        dataIndex: activeKey=='1'?'payTimeDay':'overDay',
         hideInTable: true,
         renderFormItem: () => <RangeOvertime />
       },
@@ -111,7 +111,7 @@ const OrderList = (props:Statistics) => {
         <ProTable
           rowKey="id"
           options={false}
-          request={activeKey=='2'?purchaseUnshippedStats:''}
+          request={activeKey=='2'?purchaseUnshippedStats:undeliverList}
           search={{
             defaultCollapsed: true,
             labelWidth: 100,
@@ -120,10 +120,10 @@ const OrderList = (props:Statistics) => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={activeKey=='1'?'supplier-undeliver-list':''}
                 conditions={()=>{return getFieldValue(searchConfig)}}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-list':''}/>,
             ],
           }}
           postData={(data)=>{

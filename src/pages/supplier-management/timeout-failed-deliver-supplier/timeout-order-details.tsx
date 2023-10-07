@@ -4,7 +4,7 @@ import {
   DrawerForm,
 } from '@ant-design/pro-form';
 import ProTable from '@/components/pro-table'
-import { purchaseUnshippedOrder } from '@/services/supplier-management/timeout-failed-deliver-supplier'
+import { purchaseUnshippedOrder, undeliverDetail } from '@/services/supplier-management/timeout-failed-deliver-supplier'
 import type { CumulativeProps } from "./data"
 import type { ProColumns, ActionType  } from "@ant-design/pro-table"
 import Export from '@/pages/export-excel/export'
@@ -37,23 +37,23 @@ export default (props:CumulativeProps)=>{
   const Columns: ProColumns[] = [
     {
       title: '订单类型',
-      dataIndex:'orderType',
+      dataIndex:activeKey=='1'?'orderTypeDesc':'orderType',
       hideInSearch: true
     },
     {
       title: '订单号',
-      dataIndex: 'subOrderSn',
+      dataIndex: activeKey=='1'?'orderSn':'subOrderSn',
       align: 'center',
     },
     {
       title: '商品名称',
-      dataIndex: 'goodName',
+      dataIndex: activeKey=='1'?'goodsName':'goodName',
       align: 'center',
       width: 200
     },
     {
       title: '商品件数',
-      dataIndex: 'buySkuNum',
+      dataIndex: activeKey=='1'?'skuNum':'buySkuNum',
       align: 'center',
       hideInSearch: true
     },
@@ -68,19 +68,19 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '下单人手机号',
-      dataIndex: 'memberPhone',
+      dataIndex: activeKey=='1'?'phoneNumber':'memberPhone',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '下单用户ID',
-      dataIndex: 'memberId',
+      dataIndex: activeKey=='1'?'buyerId':'memberId',
       align: 'center',
       hideInSearch: true
     },
     {
       title: '支付时间距今已过天数',
-      dataIndex: 'earliestDay',
+      dataIndex: activeKey=='1'?'payTimeDay':'earliestDay',
       valueType: 'text',
       hideInSearch: true
     },
@@ -99,7 +99,7 @@ export default (props:CumulativeProps)=>{
     },
     {
         title: '',
-        dataIndex: 'overDay',
+        dataIndex: activeKey=='1'?'payTimeDay':'overDay',
         hideInTable: true,
         renderFormItem: () => <RangeOvertime0rder />
       },
@@ -134,12 +134,12 @@ export default (props:CumulativeProps)=>{
       <ProTable
         rowKey="id"
         columns={Columns}
-        request={purchaseUnshippedOrder}
+        request={activeKey=='1'?undeliverDetail:purchaseUnshippedOrder}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          supplierId: msgDetail?.id
+          supplierId:activeKey=='1'? msgDetail?.supplierId:msgDetail?.id
         }}
         options={false}
         search={{
@@ -150,10 +150,10 @@ export default (props:CumulativeProps)=>{
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={activeKey=='1'?'supplier-undeliver-detail':''}
                 conditions={()=>{return getFieldValue(searchConfig)}}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-detail':''}/>,
             ],
           }}
       />

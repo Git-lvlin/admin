@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-import { Form, Select } from 'antd';
+import React from 'react'
+import { Select } from 'antd';
 
 type RangeInputProps = {
   onChange?: ( v: number ) => void,
