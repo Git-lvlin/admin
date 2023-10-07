@@ -91,7 +91,7 @@ const Edit: React.FC<editProps> = ({id, visible, setVisible, callback}) => {
       goodsQlfDetail({id}).then(res => {
         if(res.code === 0) {
           res.data.category.map((item: any) => {
-            arr.push(item.gcId2)
+            arr.push(item)
           })
           formRef.current?.setFieldsValue({
             name: res.data.name,
