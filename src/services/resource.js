@@ -215,3 +215,27 @@ export const findFunctions = async (params, options = {}) => {
     success: res.success,
   }
 }
+
+// 分账订单类型列表
+export const getOrderTypeListByParams = async (params, options = {}) => {
+  const res = await request('/auth/finance/billConfig/getOrderTypeListByParams', {
+    method: 'POST',
+    data: params,  
+    ...options
+  });
+
+  return {
+    code: res.code,
+    data: res.data.records,
+    success: res.success,
+  }
+}
+
+// 分账订单类型保存
+export const saveOrderType = async (params, options = {}) => {
+  return await request('/auth/finance/billConfig/saveOrderType', {
+    method: 'POST',
+    data: params,  
+    ...options
+  })
+}

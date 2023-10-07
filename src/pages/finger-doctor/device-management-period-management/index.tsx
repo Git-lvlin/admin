@@ -53,6 +53,20 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           hideInSearch: true
         },
         {
+          title: '门店合作商编号',
+          dataIndex: 'areaStoreNo',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
+        {
+          title: '区县服务商编号',
+          dataIndex: 'areaProviderNo',
+          align: 'center',
+          hideInSearch: true,
+          hideInTable: false
+        },
+        {
           title: '设备状态',
           dataIndex: 'status',
           align: 'center',
@@ -92,6 +106,19 @@ const DeviceManagementPeriodManagement: FC = ()=>  {
           },
           fieldProps: {
             placeholder: '请选择管理期状态'
+          }
+        },
+        {
+          dataIndex: 'areaType',
+          align: 'center',
+          hideInTable: true,
+          valueEnum: {
+            2: '区县服务商店铺',
+            4: '门店合作商店铺',
+            0: '其他来源',
+          },
+          fieldProps: {
+            placeholder: '请选择订单来源'
           }
         },
         {

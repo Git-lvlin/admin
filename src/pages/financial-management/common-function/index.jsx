@@ -21,13 +21,17 @@ export const fashionableType = (data, amount, fee, couponAmount, realAmount, fre
         (realAmount !== '0' && realAmount)&&
         <div>到账金额: ¥{amountTransform(realAmount, '/')}</div>
       }
-      {
+      {/* {
         hnCollect&&
         <div>汇能代收：{hnCollect}</div>
-      }
+      } */}
       {
         statusDesc&&
         <div>解冻状态：{statusDesc}</div>
+      }
+      {
+        hnCollect&&
+        <div>结算方式：{hnCollect}</div>
       }
     </div>
   )

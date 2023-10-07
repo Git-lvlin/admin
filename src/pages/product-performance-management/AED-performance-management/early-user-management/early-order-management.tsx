@@ -73,6 +73,20 @@ const AEDEarlyOrderManagement: React.FC = () => {
       hideInSearch: true
     },
     {
+      title: '门店合作商编号',
+      dataIndex: 'storeHouseNumber',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: false
+    },
+    {
+      title: '区县服务商编号',
+      dataIndex: 'areaHouseNumber',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: false
+    },
+    {
       title: '早筛码',
       dataIndex: 'signCode',
       align: 'center', 
@@ -81,6 +95,17 @@ const AEDEarlyOrderManagement: React.FC = () => {
       title: '早筛人姓名',
       dataIndex: 'signUser',
       align: 'center'
+    },
+    {
+      title: '订单来源',
+      dataIndex: 'providerType',
+      align: 'center',
+      hideInTable: true,
+      valueEnum: {
+        'store': '门店合作商店铺',
+        'provider': '区县服务商店铺',
+        'other': '其他来源',
+      }
     },
     {
       title: '早筛人手机号',

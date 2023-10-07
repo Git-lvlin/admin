@@ -14,12 +14,13 @@ import Edit from './edit';
 import OffShelf from './off-shelf';
 import Putaway from './putaway'
 import { amountTransform, typeTransform } from '@/utils/utils'
-import Export from '@/pages/export-excel/export'
-import ExportHistory from '@/pages/export-excel/export-history'
+// import Export from '@/pages/export-excel/export'
+// import ExportHistory from '@/pages/export-excel/export-history'
 import moment from 'moment';
 import { useLocation } from 'umi';
 import { changeStoreState,getCommissionConfigBySpuId } from '@/services/product-management/product-list';
 import ImportFile from '@/components/ImportFile'
+import Export from '@/components/export'
 
 
 const SubTable = (props) => {
@@ -602,7 +603,16 @@ const TableList = (props) => {
           <Button key='1' type='primary' href='https://uat-yeahgo.oss-cn-shenzhen.aliyuncs.com/file/template/goods-share-content.xlsx'>
             下载享赚商品分享文案模板
           </Button>,
-          <ImportFile key='2' code='goods-share-content' title='导入享赚商品分享文案' />
+          <ImportFile 
+            key='2' 
+            code='goods-share-content' 
+            title='导入享赚商品分享文案' 
+          />,
+          <Export 
+            key='3' 
+            type='goods-share-output' 
+            text='导出享赚商品分享文案'
+          />
         ]}
         revalidateOnFocus={false}
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
@@ -629,11 +639,11 @@ const TableList = (props) => {
             </Button>,
             <Export
               key="3"
-              change={(e) => { setVisit(e) }}
+              // change={(e) => { setVisit(e) }}
               type="goods-export"
-              conditions={()=>{return getFieldValue()}}
+              conditions={getFieldValue}
             />,
-            <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />
+            // <ExportHistory key="4" show={visit} setShow={setVisit} type="goods-export" />
           ],
         }}
         // toolBarRender={()=>[

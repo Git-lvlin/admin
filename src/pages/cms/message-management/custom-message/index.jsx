@@ -60,13 +60,13 @@ const Index = () => {
       align: 'center' 
     },
     { 
-      title: '自定义类型',
+      title: '类型',
       dataIndex: 'type',
       align: 'center',
       valueEnum: {
-        1: '优惠促销',
-        2: '内容推广',
-        3: '系统公告'
+        // 1: '优惠促销',
+        2: '活动消息',
+        3: '系统消息'
       }, 
     },
     { 

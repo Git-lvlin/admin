@@ -253,13 +253,13 @@ export default ({visible, setVisible, id, callback}) => {
           />
           <ProFormSelect
             name="type"
-            label="自定义类型"
+            label="类型"
             width="md"
             valueType="select"
             valueEnum={{
-              1: '优惠促销',
-              2: '内容推广',
-              3: '系统公告'
+              // 1: '优惠促销',
+              2: '活动消息',
+              3: '系统消息'
             }}
             readonly
           />
@@ -310,7 +310,7 @@ export default ({visible, setVisible, id, callback}) => {
             }}
             readonly
           />
-          <DynamicProForm />
+          {/* <DynamicProForm /> */}
         </ProForm>
         <div className={styles.formlabel}>
           <Button 

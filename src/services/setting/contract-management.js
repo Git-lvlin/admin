@@ -180,3 +180,42 @@ export const contractList = async (params, options = {}) => {
     total: res.data?.total
   }
 }
+
+// 合同订单列表（当前合同）
+export const orderContractPage = async (params, options = {}) => {
+  const { pageSize=10, current=1, signTime, ...rest } = params
+  const res = await request('/auth/java-admin/report/config/orderContractPage', {
+    method: 'POST',
+    data:  {
+      page: current,
+      size: pageSize,
+      signTimeStart: signTime && moment(signTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      signTimeEnd: signTime && moment(signTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest
+    },
+    ...options
+  })
+  return {
+    data: res.data?.records,
+    success: res.success,
+    total: res.data?.total
+  }
+}
+
+// 合同业务
+export const dict = async (params, options = {}) => {
+  return await request('/auth/java-admin/public/common/dict', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 合同业务
+export const dictSub = async (params, options = {}) => {
+  return await request('/auth/java-admin/public/common/dictSub', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
