@@ -139,7 +139,7 @@ const OrderList = (props:Statistics) => {
             ],
           }}
           postData={(data)=>{
-            setDeadline(activeKey=='1'?moment().format('YYYY-MM-DD'):data[0]&&moment(data[0].createTime).format('YYYY-MM-DD'))
+            setDeadline(activeKey=='1'?moment().format('YYYY-MM-DD'):data[0]&&moment(data[0].createTime).format('YYYY-MM-DD HH:mm:ss'))
             return data
           }}
           columns={columns}
