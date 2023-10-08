@@ -21,15 +21,17 @@ const OrderList = (props:Statistics) => {
     const [visit, setVisit] = useState(false)
     const actionRef = useRef<ActionType>();
     const [deadline, setDeadline] = useState<string>('')
+    const [timeDay, setTimeDay] = useState<number>(5)
 
     const getFieldValue = (searchConfig) => {
-        const {orderNum,orderAmount,...rest}=searchConfig.form.getFieldsValue()
+        const {orderNum,orderAmount, payTimeDay=5, overDay=5, ...rest}=searchConfig.form.getFieldsValue()
         if(activeKey=='1'){
           return {
             orderCountMin:orderNum&&orderNum.min,
             orderCountMax:orderNum&&orderNum.max,
             payAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
             payAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
+            payTimeDay: payTimeDay,
           ...rest,
           }
         }else{
@@ -38,6 +40,7 @@ const OrderList = (props:Statistics) => {
             orderNumMax:orderNum&&orderNum.max,
             orderAmountMin:orderAmount&&amountTransform(orderAmount.min,'*'),
             orderAmountMax:orderAmount&&amountTransform(orderAmount.max,'*'),
+            overDay: overDay,
           ...rest,
         }
         }
@@ -117,7 +120,7 @@ const OrderList = (props:Statistics) => {
         ),
       },
     ];
-  
+
     return (
       <>
         <ProTable
@@ -134,9 +137,13 @@ const OrderList = (props:Statistics) => {
                 change={(e) => { setVisit(e) }}
                 type={activeKey=='1'?'supplier-undeliver-list':'export_supplier_purchaseUnshippedStats'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
+                fileName={`超过${timeDay}天未发货供应商`}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-list':'export_supplier_purchaseUnshippedStats'}/>,
             ],
+          }}
+          onSubmit={(params)=>{
+            setTimeDay(activeKey=='1'?params?.payTimeDay:params?.overDay)
           }}
           postData={(data)=>{
             setDeadline(activeKey=='1'?moment().format('YYYY-MM-DD'):data[0]&&moment(data[0].createTime).format('YYYY-MM-DD HH:mm:ss'))

@@ -24,13 +24,24 @@ export default (props:CumulativeProps)=>{
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState(false)
+  const [timeDay, setTimeDay] = useState<number>(5)
 
   const getFieldValue = (searchConfig) => {
-    const {dateTimeRange,...rest}=searchConfig.form.getFieldsValue()
-    return {
-      payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
-      payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-      ...rest,
+    const {dateTimeRange, payTimeDay=5, overDay=5, ...rest}=searchConfig.form.getFieldsValue()
+    if(activeKey=='1'){
+      return {
+        payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        payTimeDay: payTimeDay,
+        ...rest,
+      }
+    }else{
+      return {
+        payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
+        payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+        overDay: overDay,
+        ...rest,
+      }
     }
   }
 
@@ -152,10 +163,14 @@ export default (props:CumulativeProps)=>{
                 change={(e) => { setVisit(e) }}
                 type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
+                fileName={`供应商ID${activeKey=='1'? msgDetail?.supplierId:msgDetail?.id}超过${timeDay}天未发货订单明细`}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}/>,
             ],
           }}
+        onSubmit={(params)=>{
+          setTimeDay(activeKey=='1'?params?.payTimeDay:params?.overDay)
+        }}
       />
     </DrawerForm >
   )
