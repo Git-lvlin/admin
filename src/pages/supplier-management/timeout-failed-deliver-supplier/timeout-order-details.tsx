@@ -41,7 +41,7 @@ export default (props:CumulativeProps)=>{
         payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
         payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         overDay: overDay,
-        supplierId: msgDetail?.id,
+        supplierId: msgDetail?.supplierId,
         ...rest,
       }
     }
@@ -152,7 +152,7 @@ export default (props:CumulativeProps)=>{
         columnEmptyText={false}
         actionRef={ref}
         params={{
-          supplierId:activeKey=='1'? msgDetail?.supplierId:msgDetail?.id
+          supplierId:activeKey=='1'? msgDetail?.supplierId:msgDetail?.supplierId
         }}
         options={false}
         search={{
@@ -165,7 +165,7 @@ export default (props:CumulativeProps)=>{
                 change={(e) => { setVisit(e) }}
                 type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
-                fileName={`供应商ID${activeKey=='1'? msgDetail?.supplierId:msgDetail?.id}超过${timeDay}天未发货订单明细`}
+                fileName={`供应商ID${activeKey=='1'? msgDetail?.supplierId:msgDetail?.supplierId}超过${timeDay}天未发货订单明细`}
               />,
               <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}/>,
             ],
