@@ -420,9 +420,14 @@ export default (props) => {
             label: <>
                      <p>上架</p>
                      <ProFormDateTimePicker
-                       name='time1'
+                       name='dateTimeStart'
                        label='指定上架生效时间'
                        initialValue={moment()}
+                       fieldProps={{
+                         showTime: {
+                          defaultValue: moment('00:00:00', 'HH:mm:ss')
+                         }
+                       }}
                      />
                    </>,
             value: 1,
@@ -431,10 +436,15 @@ export default (props) => {
             label: <>
                     <p>下架</p>
                     <ProFormDateTimePicker
-                      name='time2'
+                      name='dateTimeEnd'
                       label='指定下架生效时间'
                       initialValue={moment('2099-12-31T23:59:59')}
                       extra={<span style={{ color:'#F1813E' }}>选中确认后将会立刻下架banner</span>}
+                      fieldProps={{
+                        showTime: {
+                         defaultValue: moment('23:59:59', 'HH:mm:ss')
+                        }
+                      }}
                     />
                   </>,
             value: 0,

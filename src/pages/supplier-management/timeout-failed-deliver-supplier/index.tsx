@@ -111,6 +111,7 @@ const OrderList = (props:Statistics) => {
         title: '操作',
         dataIndex: 'option',
         valueType: 'option',
+        hideInSearch: true,
         render: (_, data) => (
             <a onClick={() => { setMsgDetail(data); setVisible(true) }}>查看明细</a>
         ),
