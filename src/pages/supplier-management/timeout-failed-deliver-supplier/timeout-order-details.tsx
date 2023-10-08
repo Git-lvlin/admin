@@ -98,11 +98,11 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true
     },
     {
-        title: '',
-        dataIndex: activeKey=='1'?'payTimeDay':'overDay',
-        hideInTable: true,
-        renderFormItem: () => <RangeOvertime0rder />
-      },
+      title: '',
+      dataIndex: activeKey=='1'?'payTimeDay':'overDay',
+      hideInTable: true,
+      renderFormItem: () => <RangeOvertime0rder />,
+    },
   ]
 
 
@@ -143,7 +143,7 @@ export default (props:CumulativeProps)=>{
         }}
         options={false}
         search={{
-            defaultCollapsed: true,
+            defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),

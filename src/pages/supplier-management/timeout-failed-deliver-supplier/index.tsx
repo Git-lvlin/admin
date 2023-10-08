@@ -12,6 +12,7 @@ import TimeoutOrderDetails from './timeout-order-details'
 import RangeOvertime from './range-overtime';
 import type { Statistics } from "./data"
 import styles from './style.less'
+import moment from 'moment';
 
 const OrderList = (props:Statistics) => {
     const { activeKey } = props
@@ -104,7 +105,7 @@ const OrderList = (props:Statistics) => {
         title: '',
         dataIndex: activeKey=='1'?'payTimeDay':'overDay',
         hideInTable: true,
-        renderFormItem: () => <RangeOvertime />
+        renderFormItem: () => <RangeOvertime />,
       },
       {
         title: '操作',
@@ -123,7 +124,7 @@ const OrderList = (props:Statistics) => {
           options={false}
           request={activeKey=='2'?purchaseUnshippedStats:undeliverList}
           search={{
-            defaultCollapsed: true,
+            defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
                ...dom.reverse(),
@@ -137,7 +138,7 @@ const OrderList = (props:Statistics) => {
             ],
           }}
           postData={(data)=>{
-            setDeadline(data[0]&&data[0].createTime)
+            setDeadline(activeKey=='1'?moment().format('YYYY-MM-DD'):data[0]&&moment(data[0].createTime).format('YYYY-MM-DD'))
             return data
           }}
           columns={columns}
