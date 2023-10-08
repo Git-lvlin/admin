@@ -130,10 +130,10 @@ const OrderList = (props:Statistics) => {
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={activeKey=='1'?'supplier-undeliver-list':''}
+                type={activeKey=='1'?'supplier-undeliver-list':'export_supplier_purchaseUnshippedStats'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-list':''}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-list':'export_supplier_purchaseUnshippedStats'}/>,
             ],
           }}
           postData={(data)=>{

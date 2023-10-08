@@ -150,10 +150,10 @@ export default (props:CumulativeProps)=>{
                <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={activeKey=='1'?'supplier-undeliver-detail':''}
+                type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
               />,
-              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-detail':''}/>,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={activeKey=='1'?'supplier-undeliver-detail':'export_supplier_purchaseUnshippedOrder'}/>,
             ],
           }}
       />
