@@ -33,6 +33,7 @@ export default (props:CumulativeProps)=>{
         payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
         payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         payTimeDay: payTimeDay,
+        supplierId: msgDetail?.supplierId,
         ...rest,
       }
     }else{
@@ -40,6 +41,7 @@ export default (props:CumulativeProps)=>{
         payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
         payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
         overDay: overDay,
+        supplierId: msgDetail?.id,
         ...rest,
       }
     }
