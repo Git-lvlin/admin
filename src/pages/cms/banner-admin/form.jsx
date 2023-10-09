@@ -413,7 +413,7 @@ export default (props) => {
       />
       <ProFormRadio.Group
         name="state"
-        label="上线/下架"
+        label="上线/下架" 
         initialValue={0}
         options={[
           {
@@ -429,28 +429,27 @@ export default (props) => {
                          }
                        }}
                      />
-                   </>,
-            value: 1,
-          },
-          {
-            label: <>
-                    <p>下架</p>
-                    <ProFormDateTimePicker
+                     <ProFormDateTimePicker
                       name='dateTimeEnd'
                       label='指定下架生效时间'
                       initialValue={moment('2099-12-31T23:59:59')}
-                      extra={<span style={{ color:'#F1813E' }}>选中确认后将会立刻下架banner</span>}
                       fieldProps={{
                         showTime: {
                          defaultValue: moment('23:59:59', 'HH:mm:ss')
                         }
                       }}
                     />
+                   </>,
+            value: 1,
+          },
+          {
+            label: <>
+                    <p>下架</p>
+                    <span style={{ color:'#F1813E' }}>选中确认后将会立刻下架banner</span>
                   </>,
             value: 0,
           },
         ]}
-        direction="vertical"
       />
       <ProFormText
         name="id"
