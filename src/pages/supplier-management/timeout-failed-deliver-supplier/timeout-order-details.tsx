@@ -60,7 +60,7 @@ export default (props:CumulativeProps)=>{
     },
     {
       title: '商品名称',
-      dataIndex: activeKey=='1'?'goodsName':'goodName',
+      dataIndex: 'goodsName',
       align: 'center',
       width: 200
     },
