@@ -4,13 +4,15 @@ import { Select } from 'antd';
 type RangeInputProps = {
   onChange?: (v: number ) => void,
   beforePlaceholder?: string,
-  afterPlaceholder?: string
+  afterPlaceholder?: string,
+  defaultValue: number
 }
 
 const RangeOvertime0rder: React.FC<RangeInputProps> = ({
   onChange = () => { },
   beforePlaceholder = '请选择',
-  afterPlaceholder = '请选择'
+  afterPlaceholder = '请选择',
+  defaultValue = 5
 }) => {
 
   const front = useRef<number>()
@@ -31,7 +33,7 @@ const RangeOvertime0rder: React.FC<RangeInputProps> = ({
           { value: 60, label: '60天'},
           { value: 90, label: '90天'},
         ]}
-        defaultValue={5}
+        defaultValue={defaultValue}
         onChange={(e: number) => {
           onChange(e)
         }} />

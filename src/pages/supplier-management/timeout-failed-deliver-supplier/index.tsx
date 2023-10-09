@@ -145,6 +145,9 @@ const OrderList = (props:Statistics) => {
           onSubmit={(params)=>{
             setTimeDay(activeKey=='1'?params?.payTimeDay:params?.overDay)
           }}
+          onReset={()=>{
+            setTimeDay(5)
+          }}
           postData={(data)=>{
             setDeadline(activeKey=='1'?moment().format('YYYY-MM-DD'):data[0]&&moment(data[0].createTime).format('YYYY-MM-DD HH:mm:ss'))
             return data
@@ -161,6 +164,7 @@ const OrderList = (props:Statistics) => {
             visible={visible}
             msgDetail={msgDetail}
             activeKey={activeKey}
+            Day={timeDay}
           />
         }
       </>

@@ -20,14 +20,14 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible, msgDetail, activeKey } = props;
+  const { visible, setVisible, msgDetail, activeKey, Day } = props;
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
   const [visit, setVisit] = useState(false)
-  const [timeDay, setTimeDay] = useState<number>(5)
+  const [timeDay, setTimeDay] = useState<number>(Day)
 
   const getFieldValue = (searchConfig) => {
-    const {dateTimeRange, payTimeDay=5, overDay=5, ...rest}=searchConfig.form.getFieldsValue()
+    const {dateTimeRange, payTimeDay=Day, overDay=Day, ...rest}=searchConfig.form.getFieldsValue()
     if(activeKey=='1'){
       return {
         payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
@@ -114,7 +114,7 @@ export default (props:CumulativeProps)=>{
       title: '',
       dataIndex: activeKey=='1'?'payTimeDay':'overDay',
       hideInTable: true,
-      renderFormItem: () => <RangeOvertime0rder />,
+      renderFormItem: () => <RangeOvertime0rder  defaultValue={timeDay}/>,
     },
   ]
 
@@ -151,8 +151,12 @@ export default (props:CumulativeProps)=>{
         scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
         columnEmptyText={false}
         actionRef={ref}
-        params={{
-          supplierId:activeKey=='1'? msgDetail?.supplierId:msgDetail?.supplierId
+        params={activeKey=='1'?{
+          supplierId:msgDetail?.supplierId,
+          payTimeDay: timeDay,
+        }:{
+          supplierId:msgDetail?.supplierId,
+          overDay: timeDay
         }}
         options={false}
         search={{

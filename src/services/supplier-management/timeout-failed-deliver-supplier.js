@@ -52,7 +52,7 @@ export const undeliverList = async (params = {}, options = {}) => {
 
 
 export const purchaseUnshippedOrder = async (params = {}, options = {}) => {
-    const { current, pageSize, dateTimeRange, overDay=5, ...rest } = params;
+    const { current, pageSize, dateTimeRange, ...rest } = params;
     const res = await request('/auth/stats/purchaseOrder/purchaseUnshippedOrder', {
       method: 'GET',
       params: {
@@ -60,7 +60,6 @@ export const purchaseUnshippedOrder = async (params = {}, options = {}) => {
         size: pageSize,
         payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
         payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-        overDay: overDay,
         ...rest
       },
       ...options
@@ -74,7 +73,7 @@ export const purchaseUnshippedOrder = async (params = {}, options = {}) => {
   }
 
 export const undeliverDetail = async (params = {}, options = {}) => {
-  const { current, pageSize, dateTimeRange, payTimeDay=5, ...rest } = params;
+  const { current, pageSize, dateTimeRange, ...rest } = params;
   const res = await request('/auth/java-admin/order/supplier/undeliver/detail', {
     method: 'POST',
     data: {
@@ -82,7 +81,6 @@ export const undeliverDetail = async (params = {}, options = {}) => {
       size: pageSize,
       payTimeStart:dateTimeRange&&moment(dateTimeRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       payTimeEnd:dateTimeRange&&moment(dateTimeRange[1]).format('YYYY-MM-DD HH:mm:ss'),
-      payTimeDay: payTimeDay,
       ...rest
     },
     ...options
