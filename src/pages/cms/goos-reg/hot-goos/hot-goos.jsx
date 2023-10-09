@@ -268,11 +268,11 @@ const HotGoos = () => {
           <Export
               key='export'
               change={(e) => { setVisit(e) }}
-              type={'bind-box-use-detail-export'}
+              type={'hots-goods-output'}
               conditions={()=>{return getFieldValue(searchConfig)}}
               text="导出活动商品"
             />,
-          <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+          <ExportHistory key='task' show={visit} setShow={setVisit} type={'hots-goods-output'}/>,
         ],
       }}
       pagination={{

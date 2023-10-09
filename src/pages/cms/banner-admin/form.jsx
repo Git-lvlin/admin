@@ -415,6 +415,9 @@ export default (props) => {
         name="state"
         label="上线/下架" 
         initialValue={0}
+        fieldProps={{
+          direction: 'vertical'
+        }}
         options={[
           {
             label: <>

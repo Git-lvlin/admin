@@ -26,7 +26,7 @@ const CrazyDate = ( props ) => {
   const getFieldValue = (searchConfig) => {
     const { activityStartTime, ...rest }=searchConfig.form.getFieldsValue()
     return {
-      activityStartTime: moment(activityStartTime).format('YYYY-MM-DD HH:mm:ss'),
+      activityStartTime: moment(activityStartTime).format('YYYY-MM-DD'),
       ...rest,
     }
   }
@@ -147,11 +147,11 @@ const CrazyDate = ( props ) => {
             <Export
                 key='export'
                 change={(e) => { setVisit(e) }}
-                type={'bind-box-use-detail-export'}
+                type={'seckilling-goods-output'}
                 conditions={()=>{return getFieldValue(searchConfig)}}
                 text="导出活动商品"
               />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type={'bind-box-use-detail-export'}/>,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={'seckilling-goods-output'}/>,
           ],
         }}
         className={styles.crazy_date}
