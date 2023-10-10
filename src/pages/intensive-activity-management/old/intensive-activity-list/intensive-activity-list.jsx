@@ -209,8 +209,8 @@ const TableList = () => {
   const getFieldValue = (searchConfig) => {
     const { createTime, ...rest }=searchConfig.form.getFieldsValue()
     return {
-      createTimeStart: createTime[0]&&moment(createTime[0]).format('YYYY-MM-DD HH:mm:ss'),
-      createTimeEnd: createTime[1]&&moment(createTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      createTimeStart: createTime?.[0]&&moment(createTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createTimeEnd: createTime?.[1]&&moment(createTime[1]).format('YYYY-MM-DD HH:mm:ss'),
       ...rest,
     }
   }

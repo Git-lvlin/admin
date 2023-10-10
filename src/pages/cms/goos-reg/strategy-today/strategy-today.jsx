@@ -72,6 +72,8 @@ const StrategyToday = () => {
   const getFieldValue = (searchConfig) => {
     const { ...rest }=searchConfig.form.getFieldsValue()
     return {
+      tagCode:'day_yeahgo', 
+      verifyVersionId: verifyVersionId,
       ...rest,
     }
   }

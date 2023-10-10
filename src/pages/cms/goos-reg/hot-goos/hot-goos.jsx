@@ -57,6 +57,8 @@ const HotGoos = () => {
   const getFieldValue = (searchConfig) => {
     const { ...rest }=searchConfig.form.getFieldsValue()
     return {
+      tagCode:'hot_sale', 
+      verifyVersionId: verifyVersionId,
       ...rest,
     }
   }

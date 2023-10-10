@@ -25,6 +25,7 @@ export default () => {
   const getFieldValue = (searchConfig) => {
     const { ...rest }=searchConfig.form.getFieldsValue()
     return {
+      actCode:"subJectActiveCode",
       ...rest,
     }
   }
