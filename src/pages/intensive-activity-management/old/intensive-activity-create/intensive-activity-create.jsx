@@ -897,7 +897,7 @@ const IntensiveActivityCreate = () => {
             {...formItemLayout}
             onFinish={() => {
               // history.push('')
-              window.location.href = '/intensive-activity-management/intensive-activity-list'
+              window.location.href = '/intensive-activity-management/old/intensive-activity-list'
               return true;
             }}
             className={styles.center}
