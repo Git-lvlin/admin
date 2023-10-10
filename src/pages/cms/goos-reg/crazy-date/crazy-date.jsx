@@ -26,7 +26,7 @@ const CrazyDate = ( props ) => {
   const getFieldValue = (searchConfig) => {
     const { activityStartTime, ...rest }=searchConfig.form.getFieldsValue()
     return {
-      activityStartTime: moment(activityStartTime).format('YYYY-MM-DD'),
+      activityStartTime: activityStartTime&&moment(activityStartTime).format('YYYY-MM-DD'),
       status,
       ...rest,
     }
