@@ -39,6 +39,12 @@ export default {
       path: '/aed-team-leader/aed-early-screening-order-performance',
       component: './aed-team-leader/aed-early-screening-order-performance',
       wrappers: [RouteWatcher],
+    },
+    {
+      name: 'health-supply-order-performance',
+      path: '/aed-team-leader/health-supply-order-performance',
+      component: './aed-team-leader/health-supply-order-performance',
+      wrappers: [RouteWatcher],
     }
   ]
 }
