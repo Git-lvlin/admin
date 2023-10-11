@@ -15,6 +15,7 @@ import RegistForm from '@/common/components/early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
 import ImportReport from './import-report'
+import ImportFile from '@/components/ImportFile'
 
 import Sampling from './sampling'
 import ExpressList from './express-list'
@@ -448,6 +449,11 @@ const AEDEarlyOrderManagement: React.FC = () => {
               type='scrAdmCompanyUser'
               conditions={getFieldsValue}
               text={`导出${selectedRowKeys.length > 0 ? '（选中项）' : '（查询结果）'}`}
+            />,
+            <ImportFile
+              key='3'
+              code='supImpOrder'
+              title='导入已下单的检测订单'
             />
             // <Button 
             //   type='primary' 
