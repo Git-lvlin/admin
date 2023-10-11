@@ -118,3 +118,12 @@ export const waitDetectionUser = async (params, options = {}) => {
     total: res.data.total
   }
 }
+
+// 添加报告
+export const reportHandle = async (params, options = {}) => {
+  return await request('/auth/healthy/screening/reportHandle', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

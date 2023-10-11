@@ -14,6 +14,7 @@ import { subCompanyUser } from '@/services/product-performance-management/early-
 import RegistForm from '@/common/components/early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
+import ImportReport from './import-report'
 
 import Sampling from './sampling'
 import ExpressList from './express-list'
@@ -22,6 +23,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [cancelRegisterVisible, setCancelRegisterVisible] = useState<boolean>(false)
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
+  const [importReportVisible, setImportReportVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [expressVisible, setExpressVisible] = useState<boolean>(false)
   const [data, setData] = useState()
@@ -56,6 +58,9 @@ const AEDEarlyOrderManagement: React.FC = () => {
       </Menu.Item>
       <Menu.Item key='4' disabled={(data.process === 10 || data.process === 15 || data.process === 20)}>
         <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(data.subOrderSn); setType(false); setData(undefined)}}>申请退款备注</a>
+      </Menu.Item>
+      <Menu.Item key='2' disabled={!(data.process === 2 || data.process === 3 || data.process === 5)}>
+        <a onClick={()=> {setId(data.subOrderSn); setImportReportVisible(true); setData(data)}}>导入报告</a>
       </Menu.Item>
       <Menu.Item key='5' disabled={!data.refund}>
         <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(data.subOrderSn); setType(true); setData(data.refund)}}>查看申请退款备注</a>
@@ -501,6 +506,16 @@ const AEDEarlyOrderManagement: React.FC = () => {
           visible={expressVisible}
           setVisible={setExpressVisible}
           data={id}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        importReportVisible &&
+        <ImportReport
+          visible={importReportVisible}
+          setVisible={setImportReportVisible}
+          reportNo={id}
+          data={data}
           callback={()=> actRef.current?.reload()}
         />
       }
