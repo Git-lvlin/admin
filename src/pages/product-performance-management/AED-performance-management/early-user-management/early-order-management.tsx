@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import moment from 'moment'
-import { Space, Dropdown, Menu } from 'antd'
+import { Space, Dropdown, Menu, Button, message } from 'antd'
 import { useLocation } from 'umi'
 import { DownOutlined } from '@ant-design/icons'
 
@@ -15,9 +15,8 @@ import RegistForm from '@/common/components/early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
 import ImportReport from './import-report'
-import ImportFile from '@/components/ImportFile'
-
 import Sampling from './sampling'
+import UploadInspectionReport from './upload-inspection-report'
 import ExpressList from './express-list'
 
 const AEDEarlyOrderManagement: React.FC = () => {
@@ -25,6 +24,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
   const [cancelRegisterVisible, setCancelRegisterVisible] = useState<boolean>(false)
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
   const [importReportVisible, setImportReportVisible] = useState<boolean>(false)
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [expressVisible, setExpressVisible] = useState<boolean>(false)
   const [data, setData] = useState()
@@ -36,7 +36,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
-  const { query } = useLocation()
+  const { query } = useLocation() as any
 
   const menu = (data: any) => (
     <Menu>
@@ -450,11 +450,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
               conditions={getFieldsValue}
               text={`导出${selectedRowKeys.length > 0 ? '（选中项）' : '（查询结果）'}`}
             />,
-            <ImportFile
-              key='3'
-              code='supImpOrder'
-              title='导入已下单的检测订单'
-            />
+            <Button type='primary' onClick={()=> {setUploadVisible(true)}}>上传检测报告</Button>
             // <Button 
             //   type='primary' 
             //   key='2'
@@ -523,6 +519,14 @@ const AEDEarlyOrderManagement: React.FC = () => {
           reportNo={id}
           data={data}
           callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        uploadVisible &&
+        <UploadInspectionReport
+          visible={uploadVisible}
+          setVisible={setUploadVisible}
+          callback={(e: string)=> {message.success(e); actRef.current?.reload()}}
         />
       }
     </>

@@ -127,3 +127,12 @@ export const reportHandle = async (params, options = {}) => {
     ...options
   })
 }
+
+// 批量上传报告
+export const batchReport = async (params, options = {}) => {
+  return await request('/auth/healthy/screening/batchReport', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
