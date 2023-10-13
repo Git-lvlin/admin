@@ -70,8 +70,14 @@ export default function TransactionData () {
       hideInTable: true
     },
     {
-      title: '订单支付时间',
+      title: '订单分账时间',
       dataIndex: 'createTime',
+      align: 'center',
+      hideInSearch: true
+    },
+    {
+      title: '订单支付时间',
+      dataIndex: 'payTime',
       align: 'center',
       hideInSearch: true
     },
