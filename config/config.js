@@ -43,6 +43,7 @@ import productPerformanceManagement from './routers/product-performance-manageme
 import healthPackageActivities from './routers/health-package-activities'
 import loveFeedbackActivities from './routers/love-feedback-activities'
 import healthGiftPackageActivities from './routers/health-gift-package-activities'
+import outpatientServiceManagement from './routers/outpatient-service-management'
 
 const { REACT_APP_ENV } = process.env;
 
@@ -120,6 +121,7 @@ const config = {
             // pcm,
             // communityManagement,
             // businessSchool,
+            outpatientServiceManagement,
             ProductSharingManagement,
             financialManagement,
             dataBoard,

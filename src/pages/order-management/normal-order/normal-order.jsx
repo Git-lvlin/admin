@@ -340,6 +340,26 @@ const TableList = () => {
         >
           <TimeSelect/>
         </ProForm.Item>
+        <ProFormSelect
+          label="大健康供应系统交易"
+          name="objectId"
+          options={[
+            {
+              value: 'provide',
+              label: '是'
+            },
+            {
+              value:'!provide',
+              label: '否'
+            }
+          ]}
+          fieldProps={{
+            style: {
+              marginBottom: 20,
+              width: 180,
+            }
+          }}
+        />
       </ProForm>
       <Radio.Group
         style={{ marginTop: 20 }}
@@ -489,6 +509,9 @@ const TableList = () => {
                     </Tag>
                     {
                       item.relevant1688OrderId && <div>关联1688单号：{item.relevant1688OrderId}</div>
+                    }
+                     {
+                      item.objectName && <div>{item.objectName}</div>
                     }
                   </div>
                   <div style={{ textAlign: 'center' }}>

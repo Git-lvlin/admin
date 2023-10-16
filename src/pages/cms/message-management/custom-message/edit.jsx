@@ -4,7 +4,8 @@ import ProForm,{
   ProFormText,
   ProFormRadio,
   ProFormTextArea,
-  ProFormSelect
+  ProFormSelect,
+  ProFormDependency
 } from '@ant-design/pro-form'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -13,69 +14,59 @@ import { Form, Button, message } from 'antd'
 import { customMessageAdd, customMessageEdit } from '@/services/message-management/message-template-config'
 import Upload from '@/components/upload'
 
-const modules = {
-  toolbar: {
-    container: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],  
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
-      ['link'],
-      [{ 'align': [] }],
-      [{
-        'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
-          'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
-          'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
-          'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
-          'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
-          'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
-          'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
-          'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
-          'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
-          'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
-          'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
-          'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
-      }],
-      [{
-        'color': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
-          'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
-          'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
-          'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
-          'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
-          'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
-          'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
-          'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
-          'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
-          'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
-          'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
-          'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
-      }],
-      ['clean']
-    ]
-  }
-}
+// const modules = {
+//   toolbar: {
+//     container: [
+//       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+//       ['bold', 'italic', 'underline', 'strike'],  
+//       [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'indent': '-1' }, { 'indent': '+1' }],
+//       ['link'],
+//       [{ 'align': [] }],
+//       [{
+//         'background': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
+//           'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
+//           'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
+//           'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
+//           'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
+//           'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
+//           'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
+//           'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
+//           'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
+//           'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
+//           'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
+//           'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
+//       }],
+//       [{
+//         'color': ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
+//           'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
+//           'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
+//           'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
+//           'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
+//           'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
+//           'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
+//           'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
+//           'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
+//           'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
+//           'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
+//           'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)']
+//       }],
+//       ['clean']
+//     ]
+//   }
+// }
 
 const Edit = props => {
   const { visible, setVisible, callback, detailData, onClose } = props
   const [form] = Form.useForm()
-  const [showTab, setShowTab] = useState(1)
+  const [showTab, setShowTab] = useState(2)
   const [linkType, setLinkType] = useState(1)
   const apiMethods = detailData? customMessageEdit : customMessageAdd
 
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
-    layout: {
-      labelCol: {
-        span: 4
-      },
-      wrapperCol: {
-        span: 14
-      }
-    }
+    wrapperCol: { span: 14 }
   }
-  const selectLink = e => {
-    setLinkType(e.target.value)
-  }
+
   const DynamicTab =() => {
     if(showTab == 1) {
       return (
@@ -210,6 +201,10 @@ const Edit = props => {
       )
     }
   }
+
+  const selectLink = e => {
+    setLinkType(e.target.value)
+  }
   const selectType = e => {
     setShowTab(e.target.value)
   }
@@ -274,6 +269,7 @@ const Edit = props => {
         destroyOnClose: true,
         onClose: ()=> onClose()
       }}
+      layout='horizontal'
       initialValues={{
         pushType: ['1']
       }}
@@ -323,23 +319,23 @@ const Edit = props => {
       />
       <ProFormRadio.Group
         name="type"
-        label="自定义类型"
-        rules={[{ required: true, message: '请输入自定义类型'}]}
+        label="类型"
+        rules={[{ required: true, message: '请输入类型'}]}
         initialValue={showTab}
         fieldProps={{
           onChange: (e)=>{ selectType(e) }
         }}
         options={[
+          // {
+          //   label: '优惠促销',
+          //   value: 1
+          // },
           {
-            label: '优惠促销',
-            value: 1
-          },
-          {
-            label: '内容推广',
+            label: '活动消息',
             value: 2
           },
           {
-            label: '系统公告',
+            label: '系统消息',
             value: 3
           }
         ]}
@@ -365,28 +361,38 @@ const Edit = props => {
           showCount: true
         }}
       />
-      <ProForm.Item
-        label="封面图片"
-        name="cover"
-        rules={[{message: '请上传封面图片', required: true}]}
-        tooltip={
-          <dl>
-            <dt>图片要求</dt>
-            <dd>1.图片大小500KB以内</dd>
-            <dd>2.图片尺寸为 350 x 125</dd>
-            <dd>3.图片格式png/jpg/gif</dd>
-          </dl>
-        }
-      >
-        <Upload
-          code={304}
-          multiple
-          maxCount={1}
-          proportion={{width: '350', height:'125'}}
-          accept="image/*"
-          size={.5 * 1024}
-        />
-      </ProForm.Item>
+      <ProFormDependency name={['type']}>
+        {({type})=> {
+          if(type === 2) {
+            return (
+              <ProForm.Item
+                label="封面图片"
+                name="cover"
+                rules={[{message: '请上传封面图片', required: true}]}
+                tooltip={
+                  <dl>
+                    <dt>图片要求</dt>
+                    <dd>1.图片大小500KB以内</dd>
+                    <dd>2.图片尺寸为 350 x 125</dd>
+                    <dd>3.图片格式png/jpg/gif</dd>
+                  </dl>
+                }
+              >
+                <Upload
+                  code={304}
+                  multiple
+                  maxCount={1}
+                  proportion={{width: '350', height:'125'}}
+                  accept="image/*"
+                  size={.5 * 1024}
+                />
+              </ProForm.Item>
+            )
+          } else {
+            return
+          }
+        }}
+      </ProFormDependency>
       <ProFormSelect
         name="pushType"
         label="推送渠道"
@@ -433,7 +439,7 @@ const Edit = props => {
           }
         ]}
       />
-      <DynamicTab />
+      {/* <DynamicTab /> */}
     </DrawerForm>
   )
 }

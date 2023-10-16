@@ -178,6 +178,6 @@ export default {
       path: '/order-management/invoice-management',
       component: './order-management/invoice-management',
       wrappers: [RouteWatcher]
-    }
+    },
   ]
 }

@@ -98,6 +98,7 @@ export default {
   'menu.setting.dc-management.import-export': '导入导出配置',
   'menu.setting.dc-management.import-export.export-configuration': '导出配置',
   'menu.setting.dc-management.import-export.import-configuration': '导入配置',
+  'menu.setting.dc-management.add-order-type': '分账订单类型列表',
   'menu.setting.advert-config': '广告配置',
 
   'menu.finger-doctor': '手指医生',
@@ -279,6 +280,17 @@ export default {
   'menu.cms.business-ads': '商务广告',
   'menu.cms.business-ads.ads-management': '三方广告管理',
   'menu.cms.business-ads.tripartite-advertising-data-statistics': '三方广告位数据统计',
+
+  'menu.outpatient-service-management': '大健康服务项目',
+  'menu.outpatient-service-management.county-service-providers-management': '区县服务商管理',
+  'menu.outpatient-service-management.store-partners-management': '门店合作商管理',
+  'menu.outpatient-service-management.procurement-zone': '门店合作商店铺采购专区',
+  'menu.outpatient-service-management.store-partne-purchasing-areas': '大健康供应链采集系统',
+  'menu.outpatient-service-management.case-order-management': '咨询订单管理',
+  'menu.outpatient-service-management.ipo-gift-management': 'IPO赠送管理',
+  'menu.outpatient-service-management.digital-store-account-management': '服务商系统账号管理',
+  'menu.outpatient-service-management.supply-chain-commodity-label-management': '供应链商品标签管理',
+
 
   'menu.price-comparsion-management': '比价管理菜单',
   'menu.price-comparsion-management.price-management': '比价管理页面',
@@ -475,6 +487,7 @@ export default {
   'menu.aed-team-leader.aed-head-early-screening-order-performance': '团长订单业绩',
   'menu.aed-team-leader.aed-settlement-configuration': 'AED课程服务套餐业绩结算规则配置',
   'menu.aed-team-leader.aed-early-screening-order-performance': '早筛订单业绩管理',
+  'menu.aed-team-leader.health-supply-order-performance': '大健康供应链系统订单业绩',
 
 
   'menu.great-project-team': '大团队长',
@@ -486,6 +499,8 @@ export default {
   'menu.hydrogen-atom-generation.aed-training-service-achievement': 'AED培训服务套餐订单业绩',
   'menu.hydrogen-atom-generation.health-package-order-performance': '健康礼包订单业绩',
   'menu.hydrogen-atom-generation.settings-page': '设置',
+  'menu.hydrogen-atom-generation.health-supply-order-performance': '大健康供应链系统订单业绩',
+
 
   'menu.great-health-province': '大健康省代',
   'menu.great-health-province.hydrogen-atom-saved-management': '大健康省代管理',
@@ -493,6 +508,9 @@ export default {
   'menu.great-health-province.health-package-order-performance': '健康礼包订单业绩',
   'menu.great-health-province.settings-page': '设置',
   'menu.great-health-province.early-screening-order-performance': '早筛订单业绩',
+  'menu.great-health-province.health-supply-order-performance': '大健康供应链系统订单业绩',
+  'menu.great-health-province.health-store-partner-order-performance': '大健康门店合作商订单业绩',
+  'menu.great-health-province.health-service-providers-order-performance': '大健康区县服务商订单业绩',
 
   'menu.product-performance-management': '产品业绩管理',
   'menu.product-performance-management.new-intensive-performance': 'B端新集约业绩',
@@ -513,8 +531,12 @@ export default {
   'menu.product-performance-management.AED-performance-management.early-user-management': '早筛订单管理',
   'menu.product-performance-management.AED-performance-management.early-order-service-statistics': '早筛订单服务统计',
   'menu.product-performance-management.AED-performance-management.early-screening-sales-bonus': '早筛销售额外奖',
+  'menu.product-performance-management.AED-performance-management.health-ipo-bonus-receiving-statistics': '大健康IPO额外奖领取统计',
   'menu.product-performance-management.early-screening-reward-allocation': '早筛额外奖配置',
   'menu.product-performance-management.early-screening-statistics': '早筛额外奖领取统计',
+  'menu.product-performance-management.health-store-partner-order-performance': '大健康门店合作商订单业绩',
+  'menu.product-performance-management.health-service-providers-order-performance': '大健康区县服务商订单业绩',
+  'menu.product-performance-management.health-supply-system-order-performance': '大健康供应链系统订单业绩',
 
 
 
@@ -541,5 +563,4 @@ export default {
   'menu.health-gift-package-activities.health-package-performance-statistics': '健康礼包业绩统计',
   'menu.health-gift-package-activities.health-package-commission': '健康礼包推荐提成',
   'menu.health-gift-package-activities.divide-configure': '健康礼包分成配置',
-
 };

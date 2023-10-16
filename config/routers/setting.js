@@ -75,6 +75,11 @@ export default {
               component: './setting/dc-management/import-export/import-configuration'
             }
           ]
+        },
+        {
+          name: 'add-order-type',
+          path: '/setting/dc-management/add-order-type',
+          component: './setting/dc-management/add-order-type',
         }
       ]
     },
