@@ -136,3 +136,12 @@ export const batchReport = async (params, options = {}) => {
     ...options
   })
 }
+
+// 早筛订单修改报名表
+export const updateUserInfo = async (params, options = {}) => {
+  return await request('/auth/healthy/aedScr/updateUserInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}

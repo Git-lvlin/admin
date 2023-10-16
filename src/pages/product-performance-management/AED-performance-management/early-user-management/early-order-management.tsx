@@ -18,12 +18,14 @@ import ImportReport from './import-report'
 import Sampling from './sampling'
 import UploadInspectionReport from './upload-inspection-report'
 import ExpressList from './express-list'
+import ModifyInfo from './modify-info'
 
 const AEDEarlyOrderManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [cancelRegisterVisible, setCancelRegisterVisible] = useState<boolean>(false)
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
   const [importReportVisible, setImportReportVisible] = useState<boolean>(false)
+  const [modifyInfoVisible, setModifyInfoVisible] = useState<boolean>(false)
   const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [expressVisible, setExpressVisible] = useState<boolean>(false)
@@ -68,6 +70,9 @@ const AEDEarlyOrderManagement: React.FC = () => {
       </Menu.Item>
       <Menu.Item key='6' disabled={!(data.process === 10)}>
         <a href={`${data.reportUrl && data.reportUrl}`} target='_blank' referrerPolicy='no-referrer'>查看检测报告</a>
+      </Menu.Item>
+      <Menu.Item key='7' disabled={!(data.process === 1 || data.process === 2)}>
+        <a onClick={()=> {setModifyInfoVisible(true); setData(data)}}>修改早筛人信息</a>
       </Menu.Item>
     </Menu>
   )
@@ -440,6 +445,9 @@ const AEDEarlyOrderManagement: React.FC = () => {
             setSelectedRowKeys(_)
           }
         }}
+        toolBarRender={()=> [
+          <Button type='primary' onClick={()=> {setUploadVisible(true)}}>上传检测报告</Button>
+        ]}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
@@ -449,8 +457,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
               type='scrAdmCompanyUser'
               conditions={getFieldsValue}
               text={`导出${selectedRowKeys.length > 0 ? '（选中项）' : '（查询结果）'}`}
-            />,
-            <Button type='primary' onClick={()=> {setUploadVisible(true)}}>上传检测报告</Button>
+            />
             // <Button 
             //   type='primary' 
             //   key='2'
@@ -527,6 +534,15 @@ const AEDEarlyOrderManagement: React.FC = () => {
           visible={uploadVisible}
           setVisible={setUploadVisible}
           callback={(e: string)=> {message.success(e); actRef.current?.reload()}}
+        />
+      }
+      {
+        modifyInfoVisible &&
+        <ModifyInfo
+          visible={modifyInfoVisible}
+          setVisible={setModifyInfoVisible}
+          callback={()=> actRef.current?.reload()}
+          data={data}
         />
       }
     </>
