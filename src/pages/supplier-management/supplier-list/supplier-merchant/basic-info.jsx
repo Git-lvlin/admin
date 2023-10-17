@@ -112,6 +112,7 @@ export default (props) => {
       const apiMethod = detailData ? supplierEdit : supplierAdd;
 
       let gcArr = []
+      let hasError = ''
       if (gc?.length) {
         const parentIds = [];
 
@@ -180,6 +181,20 @@ export default (props) => {
 
       } else {
         gcArr = ''
+      }
+
+      if (gcArr) {
+        gcArr.forEach(item => {
+          if (item.children.length === 0) {
+            hasError = true
+          }
+        })
+      }
+
+      if (hasError) {
+        message.error('选择的一级分类下无二级分类，请到分类管理添加二级分类');
+        reject()
+        return;
       }
 
       const params = {
