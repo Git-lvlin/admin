@@ -59,5 +59,17 @@ export default {
       component: './supplier-management/switch-setting',
       wrappers: [RouteWatcher],
     },
+    {
+      name: 'timeout-failed-deliver-supplier',
+      path: '/supplier-management/timeout-failed-deliver-supplier',
+      component: './supplier-management/timeout-failed-deliver-supplier',
+      wrappers: [RouteWatcher],
+    },
+    {
+      name: 'balance-delivery-supplier',
+      path: '/supplier-management/balance-delivery-supplier',
+      component: './supplier-management/balance-delivery-supplier',
+      wrappers: [RouteWatcher],
+    },
   ]
 }

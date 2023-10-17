@@ -21,6 +21,9 @@ import Area from './area';
 import TimeSet from './time-set';
 import style from './area.less';
 import GcCascader from '@/components/gc-cascader'
+import Export from '@/pages/export-excel/export'
+import ExportHistory from '@/pages/export-excel/export-history'
+import moment from 'moment';
 
 const { confirm } = Modal;
 
@@ -201,6 +204,16 @@ const TableList = () => {
   const [detailData, setDetailData] = useState(null)
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
+  const [visit, setVisit] = useState(false)
+
+  const getFieldValue = (searchConfig) => {
+    const { createTime, ...rest }=searchConfig.form.getFieldsValue()
+    return {
+      createTimeStart: createTime?.[0]&&moment(createTime[0]).format('YYYY-MM-DD HH:mm:ss'),
+      createTimeEnd: createTime?.[1]&&moment(createTime[1]).format('YYYY-MM-DD HH:mm:ss'),
+      ...rest,
+    }
+  }
 
   const getDetail = (wholesaleId) => {
     getWholesaleDetail({
@@ -591,10 +604,18 @@ const TableList = () => {
           scroll={{ x: 'max-content', scrollToFirstRowOnChange: true, }}
           expandable={{ expandedRowRender: (_) => <SubTable wholesaleId={_.wholesaleId} wholesaleStatus={_.wholesaleStatus} wholesaleAuditStatus={_.wholesaleAuditStatus} /> }}
           search={{
-            defaultCollapsed: true,
+            defaultCollapsed: false,
             labelWidth: 100,
             optionRender: (searchConfig, formProps, dom) => [
               ...dom.reverse(),
+              <Export
+                  key='export'
+                  change={(e) => { setVisit(e) }}
+                  type={'exportWholesale'}
+                  conditions={()=>{return getFieldValue(searchConfig)}}
+                  text="导出活动商品"
+                />,
+              <ExportHistory key='task' show={visit} setShow={setVisit} type={'exportWholesale'}/>,
             ],
           }}
           columns={columns}

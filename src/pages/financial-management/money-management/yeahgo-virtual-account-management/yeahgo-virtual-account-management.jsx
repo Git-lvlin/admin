@@ -229,6 +229,8 @@ const YeahgoVirtualAccountManagement = () => {
                 </Button>
               </Space>
             </div>
+            <div>汇付余额：{`${amountTransform(account?.platform?.huifuBalance, '/')}元`}</div>
+            <div>差额：{`${amountTransform(account?.platform?.diffBalance, '/')}元`}</div>
           </div>
         </ProCard>
         <ProCard

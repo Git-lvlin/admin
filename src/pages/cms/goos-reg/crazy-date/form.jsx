@@ -237,9 +237,6 @@ export default (props) => {
           name="limitBuyType"
           label="限购"
           required
-          fieldProps={{
-            direction:"vertical"
-          }}
           options={[
             {
               label: '不限购',
