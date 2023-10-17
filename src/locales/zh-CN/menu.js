@@ -159,6 +159,8 @@ export default {
   'menu.supplier-management.supplier-detail': '供应商家详情',
   'menu.supplier-management.supplier-account-info': '供应商家资金账户信息',
   'menu.supplier-management.switch-setting': '阶梯价开关',
+  'menu.supplier-management.timeout-failed-deliver-supplier': '超时未发货供应商',
+  'menu.supplier-management.balance-delivery-supplier': '余额临期供应商',
 
   'menu.operation-management': '运营中心管理',
   'menu.operation-management.operation-list': '运营中心列表',
@@ -172,7 +174,7 @@ export default {
   'menu.operation-management.operation-account-info': '运营中心资金账户信息',
   'menu.operation-management.bind-audit-list': '运营中心绑定审核',
   'menu.operation-management.performance-report': '运营中心氢原子业绩表',
-  'menu.operation-management.new-intensive-wholesale-order': '新集约批发单业绩',
+  'menu.operation-management.new-intensive-wholesale-order': '超时未发货供应商',
 
   'menu.asset-management': '资产管理',
   'menu.asset-management.settlement-profit-list': '结算分润列表',
@@ -224,6 +226,7 @@ export default {
   'menu.cms.goos-reg.save-money': '集约优选',
   'menu.cms.goos-reg.strategy-today': '首页秒约爆品',
   'menu.cms.goos-reg.chat-recommended-products': '聊天推荐商品',
+  'menu.cms.goos-reg.recommended-products-configuration': '聊天推荐商品配置',
   'menu.cms.home-suspension': '首页悬浮窗',
   'menu.cms.home-activity': '首页活动图标',
   'menu.cms.home-classification': '首页分类管理',

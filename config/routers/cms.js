@@ -67,6 +67,12 @@ export default {
           path: '/cms/goos-reg/chat-recommended-products',
           component: './cms/goos-reg/chat-recommended-products',
           wrappers: [RouteWatcher],
+        },
+        {
+          name: 'recommended-products-configuration',
+          path: '/cms/goos-reg/recommended-products-configuration',
+          component: './cms/goos-reg/recommended-products-configuration',
+          wrappers: [RouteWatcher],
         }
       ]
     },

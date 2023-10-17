@@ -6,8 +6,9 @@ import {
 import { paramsEmptyFilter } from '@/utils/utils'
 
 import { createExportTask } from '@/services/export-excel/export-template'
+import moment from 'moment'
 
-const Export = ({ type, change, conditions, text='导出' }) => {
+const Export = ({ type, change, fileName, conditions, text='导出' }) => {
 
   const downExcel = () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -29,7 +30,7 @@ const Export = ({ type, change, conditions, text='导出' }) => {
 
     createExportTask({
       code: type,
-      fileName: type + +new Date() + '.xlsx',
+      fileName: ( fileName? fileName : type  ) + moment().format('YYYY-MM-DD HH:mm:ss')+ '.xlsx',
       queryParamStr: str,
       // querydesc: ''
     }).then(res => {

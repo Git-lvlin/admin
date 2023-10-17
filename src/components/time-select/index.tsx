@@ -9,6 +9,8 @@ const SelectDate:React.FC<DateProps> = (props) => {
   const {
     showTime = {defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')]},
     onChange = () => {},
+    beforePlaceholder = '开始日期',
+    afterPlaceholder = '结束日期',
     value
   } = props
 
@@ -36,6 +38,7 @@ const SelectDate:React.FC<DateProps> = (props) => {
       onChange={(e)=> {
         onChange(e)
       }}
+      placeholder={[beforePlaceholder,afterPlaceholder]}
       renderExtraFooter={()=> {
         if(showTime) {
           return (

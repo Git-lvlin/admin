@@ -6,10 +6,12 @@ import ProForm, {
   ProFormRadio,
   ProFormSelect,
   ProFormTextArea,
+  ProFormDateTimePicker
 } from '@ant-design/pro-form';
 import Upload from '@/components/upload';
 import CheckBox from '@/components/checkbox';
 import { bannerAdd, selAllVersion } from '@/services/cms/member/member';
+import moment from 'moment';
 
 export default (props) => {
   const { detailData, setVisible, onClose, visible, verifyVersionId, title } = props;
@@ -275,6 +277,10 @@ export default (props) => {
             {
               label: '仅普通店主可见',
               value: 4,
+            },
+            {
+              label: '仅VIP店主可见',
+              value: 5,
             }
           ]}
       />
@@ -407,15 +413,43 @@ export default (props) => {
       />
       <ProFormRadio.Group
         name="state"
-        label="上线/下架"
+        label="上线/下架" 
         initialValue={0}
+        fieldProps={{
+          direction: 'vertical'
+        }}
         options={[
           {
-            label: '上线',
+            label: <>
+                     <p>上架</p>
+                     <ProFormDateTimePicker
+                       name='dateTimeStart'
+                       label='指定上架生效时间'
+                       initialValue={moment()}
+                       fieldProps={{
+                         showTime: {
+                          defaultValue: moment('00:00:00', 'HH:mm:ss')
+                         }
+                       }}
+                     />
+                     <ProFormDateTimePicker
+                      name='dateTimeEnd'
+                      label='指定下架生效时间'
+                      initialValue={moment('2099-12-31T23:59:59')}
+                      fieldProps={{
+                        showTime: {
+                         defaultValue: moment('23:59:59', 'HH:mm:ss')
+                        }
+                      }}
+                    />
+                   </>,
             value: 1,
           },
           {
-            label: '下架',
+            label: <>
+                    <p>下架</p>
+                    <span style={{ color:'#F1813E' }}>选中确认后将会立刻下架banner</span>
+                  </>,
             value: 0,
           },
         ]}
