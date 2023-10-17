@@ -15,7 +15,7 @@ type props = {
 const ModifyInfo:React.FC<props> = ({visible, setVisible, data, callback}) => {
   const form = useRef<FormInstance>()
 
-  const operator = window.localStorage.getItem('nickName')
+  const operator = window.localStorage.getItem('nickname')
 
   useEffect(()=> {
     form.current?.setFieldsValue({
