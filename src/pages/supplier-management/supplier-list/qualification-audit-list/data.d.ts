@@ -30,6 +30,7 @@ export type CumulativeProps = {
   activeKey?: string;
   callback?: function;
   orderArr?: TableProps | undefined;
+  type?: string;
 }
 
 

@@ -16,7 +16,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible, msgDetail, onClose, type} = props;
   const [paymentVisible, setPaymentVisible] = useState<boolean>(false)
   const [remittanceId, setRemittanceId] = useState()
   const [form] = Form.useForm();
@@ -79,7 +79,7 @@ export default (props:CumulativeProps)=>{
       layout="horizontal"
       title={<>
         <strong>结算日志</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
+        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}   {type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}     结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    {type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}    申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}

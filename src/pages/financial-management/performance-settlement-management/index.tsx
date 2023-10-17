@@ -5,6 +5,7 @@ import ProTable from '@/components/pro-table'
 import type { ProColumns,ActionType } from "@ant-design/pro-table"
 import type { TableProps } from "./data.d"
 import RangeNumberInput from '@/components/range-number-input'
+import ProCard from '@ant-design/pro-card';
 
 import { applyPage } from "@/services/aed-team-leader/performance-settlement-management"
 import { amountTransform } from '@/utils/utils'
@@ -17,7 +18,8 @@ import Export from "@/pages/export-excel/export"
 import ExportHistory from "@/pages/export-excel/export-history"
 import moment from "moment"
 
-export default function TransactionData () {
+const TransactionData =(props: { type: string })=>{
+  const { type } = props
   const [visible, setVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
   const [settlementVisible, setSettlementVisible] = useState<boolean>(false)
@@ -37,6 +39,8 @@ export default function TransactionData () {
       title: '子公司ID',
       dataIndex: 'applyId',
       align: 'center',
+      hideInSearch: type == '2',
+      hideInTable: type == '2'
     },
     {
       title: '子公司名称',
@@ -45,6 +49,22 @@ export default function TransactionData () {
       fieldProps:{
         placeholder:'请输入子公司名称'
       },
+      hideInSearch: type == '2',
+      hideInTable: type == '2'
+    },
+    {
+      title: '账号ID',
+      dataIndex: 'applyId',
+      align: 'center',
+      hideInSearch: type == '1',
+      hideInTable: type == '1'
+    },
+    {
+      title: '账号名称',
+      dataIndex: 'applyName',
+      align: 'center',
+      hideInSearch: type == '1',
+      hideInTable: type == '1'
     },
     {
       title: '业绩金额',
@@ -196,12 +216,13 @@ export default function TransactionData () {
       lastRemittanceEnd: remittanceDate&&moment(remittanceDate[1]).format('YYYY-MM-DD HH:mm:ss'),
       confirmedAmountMin: confirmed&&amountTransform(confirmed.min,'*'),
       confirmedAmountMax: confirmed&&amountTransform(confirmed.max,'*'),
+      applyType: type
     }
     return params
   }
 
   return (
-    <PageContainer title={false}>
+    <>
       <ProTable
         rowKey="settlementId"
         columns={tableColumns}
@@ -211,6 +232,9 @@ export default function TransactionData () {
         pagination={{
           pageSize: 10,
           showQuickJumper: true,
+        }}
+        params={{
+          applyType: type
         }}
         scroll={{ x: 'max-content' }}
         options={false}
@@ -237,6 +261,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={type}
         />
       }
       {
@@ -247,6 +272,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={type}
         />
       }
       {
@@ -257,6 +283,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={type}
         />
       }
       {
@@ -267,6 +294,7 @@ export default function TransactionData () {
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           callback={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
+          type={type}
         />
       }
       {
@@ -279,6 +307,33 @@ export default function TransactionData () {
           callback={()=>{ }}
         />
       }
-    </PageContainer>
+    </>
+  )
+}
+
+
+export default ()=>{
+  const [activeKey, setActiveKey] = useState('1')
+  return (
+    <PageContainer title=" ">
+    <ProCard
+      tabs={{
+        type: 'card',
+        activeKey,
+        onChange: setActiveKey
+      }}
+    >
+      <ProCard.TabPane key="1" tab="子公司服务套餐">
+        {
+          activeKey == '1' && <TransactionData type={activeKey}/>
+        }
+      </ProCard.TabPane>
+      <ProCard.TabPane key="2" tab="区县服务商">
+        {
+          activeKey == '2' && <TransactionData type={activeKey}/>
+        }
+      </ProCard.TabPane>
+    </ProCard>
+  </PageContainer>
   )
 }

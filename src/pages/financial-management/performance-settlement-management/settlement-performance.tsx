@@ -21,7 +21,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible, msgDetail, onClose, type} = props;
   const [form] = Form.useForm();
   const ref = useRef<ActionType>()
   const [detailList,setDetailList]=useState<Statistics>()
@@ -40,7 +40,7 @@ export default (props:CumulativeProps)=>{
 
   const Columns: ProColumns[] = [
     {
-      title: '订单编号/子单号',
+      title: type=='1'?'订单编号/子单号':'订单编号',
       dataIndex: 'orderSn',
       align: 'center',
     },
@@ -119,7 +119,8 @@ export default (props:CumulativeProps)=>{
       fieldProps: {
         placeholder: '请输入团长手机号'
       },
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: type == '2'
     },
     {
       title: '商品名称',
@@ -197,8 +198,8 @@ export default (props:CumulativeProps)=>{
     <DrawerForm
       layout="horizontal"
       title={<>
-        <strong>结算业绩</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}   申请时间：{msgDetail?.applyTime} </p>
+        <strong>{type=='1'?'结算业绩':'结算查看'}</strong>
+        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}   {type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}     结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}   申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}

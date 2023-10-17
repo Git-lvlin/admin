@@ -12,6 +12,7 @@ export type MsgDetailProps = {
   subMobile?: string; 
   name?: string | undefined; 
   dateRange?: Array;
+  address?: string;
 } | undefined
 
 export type DrtailItem = {

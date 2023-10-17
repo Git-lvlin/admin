@@ -1,4 +1,4 @@
-import { Form, message, Divider } from 'antd';
+import { Form, message } from 'antd';
 import {
   ProFormText,
   ModalForm,
@@ -6,7 +6,6 @@ import {
 } from '@ant-design/pro-form';
 import styles from './styles.less'
 import { amountTransform } from "@/utils/utils";
-import { useEffect } from 'react';
 
 const formItemLayout = {
     labelCol: { span: 5 },

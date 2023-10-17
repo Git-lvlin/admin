@@ -23,7 +23,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps)=>{
-  const { visible, setVisible,msgDetail,onClose,callback} = props;
+  const { visible, setVisible, msgDetail, onClose, callback, type} = props;
   const [form] = Form.useForm();
   const [forbiddenVisible, setForbiddenVisible] = useState<boolean>(false)
   const [remittanceVisible, setRemittanceVisible] = useState<boolean>(false)
@@ -86,8 +86,8 @@ export default (props:CumulativeProps)=>{
     <DrawerForm
       layout="horizontal"
       title={<>
-        <strong>结算业绩</strong>
-        <p style={{ color:'#8D8D8D' }}>子公司ID：{msgDetail?.applyId}    子公司名称：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    订单类型：{msgDetail?.orderTypeDesc}   申请时间：{msgDetail?.applyTime} </p>
+        <strong>{type=='1'?'结算业绩':'结算汇款'}</strong>
+        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}   {type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}    结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    {type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}    申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -351,6 +351,7 @@ export default (props:CumulativeProps)=>{
                       minLength:5,
                       placeholder:'请输入5-50个字符'
                     }}
+                    extra={<span style={{ color:'red' }}>{type=='1'?'':'此备注内容将会在区县服务商系统展示，请注意隐私，谨慎填写。'}</span>}
                     width={400}
                   />
           }  
