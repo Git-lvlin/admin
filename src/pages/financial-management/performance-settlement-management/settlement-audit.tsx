@@ -51,10 +51,27 @@ export default (props:CumulativeProps)=>{
       align: 'center',
     },
     {
+      title: '订单类型',
+      dataIndex: 'orderTypeDesc',
+      align: 'center',
+      hideInSearch: true,
+      hideInTable: type == '1'
+    },
+    {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      hideInSearch: type == '1',
+      hideInTable: true,
+      valueEnum:{
+        "customProviderStore": '门店合作商招募订单',
+        "providerStoreGoods": '供应链系统交易订单'
+      }
+    },
+    {
       title: '下单用户ID',
       dataIndex: 'memberId',
       valueType: 'text',
-      hideInSearch: true
+      hideInSearch: type == '1'
     },
     {
       title: '下单人手机号',
@@ -121,7 +138,8 @@ export default (props:CumulativeProps)=>{
       fieldProps: {
         placeholder: '请输入团长手机号'
       },
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: type == '2'
     },
     {
       title: '商品名称',
@@ -160,6 +178,23 @@ export default (props:CumulativeProps)=>{
       align: 'center',
       hideInSearch: true
     },
+    {
+      title: '结算状态',
+      dataIndex: 'status',
+      align: 'center',
+      hideInSearch: type == '1',
+      hideInTable: true,
+      valueType: 'select',
+      valueEnum: {
+        10: '全部待审核，全部未汇款',
+        11: '部分待审核，全部未汇款',
+        12: '全部已审核，全部未汇款',
+        13: '部分待审核，部分已汇款',
+        14: '全部已审核，部分已汇款',
+        15: '全部已审核，全部已汇款',
+        16: '全部已拒绝',
+      }
+    }
   ]
 
   const handleSelectRows = (rows,arr) => {
@@ -207,8 +242,8 @@ export default (props:CumulativeProps)=>{
     <DrawerForm
       layout="horizontal"
       title={<>
-        <strong>{type=='1'?'结算业绩':'结算审核'}</strong>
-        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}   {type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}     结算申请单号：{msgDetail?.settlementId}    结算状态：{msgDetail?.settlementStatusDesc}    {type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}     申请时间：{msgDetail?.applyTime} </p>
+        <strong>结算审核</strong>
+        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}&nbsp;&nbsp;{type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}&nbsp;&nbsp;结算申请单号：{msgDetail?.settlementId}&nbsp;&nbsp;结算状态：{msgDetail?.settlementStatusDesc}&nbsp;&nbsp;{type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}&nbsp;&nbsp;申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}
@@ -318,7 +353,7 @@ export default (props:CumulativeProps)=>{
             { dom }
             <div className={styles.summary}>
               <div>
-                <p>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyName}，业绩总分账金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.amount, 0):pendingAmount,'/').toFixed(2)}</span>元，扣除通道费：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.fee, 0):pendingFee,'/').toFixed(2)}</span>元，提成金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.unfreezeAmount, 0):pendingUnfreezeAmount,'/').toFixed(2)}</span> 元（ {selectedRows.length?selectedRows.length:totalSum} 单）</p>
+                <p>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}，业绩总分账金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.amount, 0):pendingAmount,'/').toFixed(2)}</span>元，扣除通道费：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.fee, 0):pendingFee,'/').toFixed(2)}</span>元，提成金额 ：<span style={{ color:'red' }}>{amountTransform(selectedRows.length?selectedRows.reduce((sum, item) => sum + item?.unfreezeAmount, 0):pendingUnfreezeAmount,'/').toFixed(2)}</span> 元（ {selectedRows.length?selectedRows.length:totalSum} 单）</p>
               </div>
             </div>
           </>
