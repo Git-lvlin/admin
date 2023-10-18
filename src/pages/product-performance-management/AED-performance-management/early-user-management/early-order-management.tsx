@@ -113,8 +113,8 @@ const AEDEarlyOrderManagement: React.FC = () => {
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        'store': '门店合作商店铺',
-        'provider': '区县服务商店铺',
+        'store': '门店合作商',
+        'provider': '区县服务商',
         'other': '其他来源',
       }
     },
