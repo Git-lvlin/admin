@@ -67,8 +67,8 @@ const countyServiceProviderData = [
     settleTypeDesc: '汇付',
     trueUnfrezeeType: '1',
     trueUnfrezeeTypeDesc: '分账后即解冻',
-    businessUnfrezeeType: '1',
-    businessUnfrezeeTypeDesc: '分账后即解冻',
+    businessUnfrezeeType: '6',
+    businessUnfrezeeTypeDesc: '满足业务解冻',
   },
 ]
 
@@ -145,8 +145,8 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
                 settleTypeDesc: '汇付',
                 trueUnfrezeeType: '1',
                 trueUnfrezeeTypeDesc: '分账后即解冻',
-                businessUnfrezeeType: '1',
-                businessUnfrezeeTypeDesc: '分账后即解冻',
+                businessUnfrezeeType: '6',
+                businessUnfrezeeTypeDesc: '满足业务解冻',
               }
             } else if(item?.roleCode === 'directMember'){
               return {

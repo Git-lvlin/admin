@@ -88,14 +88,12 @@ const AEDEarlyOrderManagement: React.FC = () => {
       dataIndex: 'storeHouseNumber',
       align: 'center',
       hideInSearch: true,
-      hideInTable: false
     },
     {
       title: '区县服务商编号',
       dataIndex: 'areaHouseNumber',
       align: 'center',
       hideInSearch: true,
-      hideInTable: false
     },
     {
       title: '早筛码',
