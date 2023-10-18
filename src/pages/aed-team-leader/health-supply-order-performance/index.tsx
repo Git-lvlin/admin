@@ -41,11 +41,14 @@ export default function TransactionData () {
   }, [time])
 
   const getFieldValue = (searchConfig: any) => {
-    const { subName, dateRange } = searchConfig.form.getFieldsValue()
+    const { subName, dateRange, address } = searchConfig.form.getFieldsValue()
     const params = {
       subName: subName,
       startTime: dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: address?.[0]?.value,
+      cityId: address?.[1]?.value,
+      areaId: address?.[2]?.value,
     }
     return params
   }
