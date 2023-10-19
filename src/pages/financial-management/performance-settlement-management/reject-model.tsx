@@ -13,7 +13,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount,pendingFee,confirmedAmount} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,totalSum,unfreezeAmount,pendingFee,confirmedAmount,type} = props;
   const [form] = Form.useForm();
   const waitTime = (values) => {
     callback(values)
@@ -63,7 +63,7 @@ export default (props) => {
         readonly
       />
       <ProFormText
-        label='申请结算子公司'
+        label={type == '1'?'申请结算子公司':'申请结算人账号名称'}
         fieldProps={{
           value: msgDetail?.applyName
         }}

@@ -384,6 +384,7 @@ export default (props:CumulativeProps)=>{
           pendingFee={pendingFee}
           confirmedAmount={confirmedAmount}
           onClose={()=>{}}
+          type={type}
         />
       }
     </DrawerForm >
