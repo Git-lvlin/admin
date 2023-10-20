@@ -128,6 +128,7 @@ export default (props:CumulativeProps)=>{
           setVisible={setPaymentVisible}
           id={remittanceId}
           onClose={()=>{ setRemittanceId(undefined)}}
+          type={type}
         />
       }
     </DrawerForm >

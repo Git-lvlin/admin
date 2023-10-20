@@ -15,7 +15,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,id,onClose} = props;
+  const { visible, setVisible,id,onClose,type} = props;
   const [form] = Form.useForm();
   const [dataDatil, setDataDatil] = useState([])
   useEffect(()=>{
@@ -61,7 +61,7 @@ export default (props) => {
       className={styles.forbidden_model}
     >
       <ProFormText
-        label='收款子公司名称'
+        label={type=='1'?'收款子公司名称':'收款账号名称'}
         name="applyName"
         disabled
       />
