@@ -148,7 +148,7 @@ export default (props:CumulativeProps)=>{
     >
 
     <ProFormText
-      label='收款子公司名称'
+      label={type=='1'?'收款子公司名称':'收款账号名称'}
       name="applyName"
       width={400}
       disabled
