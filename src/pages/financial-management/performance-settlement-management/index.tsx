@@ -306,6 +306,7 @@ const TransactionData =(props: { type: string })=>{
           msgDetail={msgDetail}
           onClose={()=>{ form?.current?.reload();setMsgDetail(undefined)}}
           callback={()=>{ }}
+          type={type}
         />
       }
     </>

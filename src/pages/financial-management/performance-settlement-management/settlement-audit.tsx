@@ -367,6 +367,7 @@ export default (props:CumulativeProps)=>{
           totalSum={totalSum}
           onClose={()=>{}}
           dataStatus={dataStatus}
+          type={type}
         />
       }
        {

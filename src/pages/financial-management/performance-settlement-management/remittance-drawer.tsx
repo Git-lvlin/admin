@@ -388,6 +388,7 @@ export default (props:CumulativeProps)=>{
         orderArr={orderArr}
         callback={(values)=>{ setRemarkMsg(values); formRef.current?.submit()  }}
         onClose={()=>{}}
+        type={type}
       />
     }
     </DrawerForm >
