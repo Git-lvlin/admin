@@ -178,20 +178,6 @@ export default (props:CumulativeProps)=>{
       align: 'center',
       hideInSearch: true
     },
-    {
-      title: '结算状态',
-      dataIndex: 'status',
-      align: 'center',
-      hideInSearch: type == '1',
-      hideInTable: true,
-      valueType: 'select',
-      valueEnum: {
-        10: '待审核',
-        11: '待结算',
-        12: '审核拒绝',
-        21: '已结算',
-      }
-    }
   ]
 
   const handleSelectRows = (rows,arr) => {
