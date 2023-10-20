@@ -20,6 +20,7 @@ export type TableProps = {
     settlementStatusDesc: string;
     applyTime: string;
     companyName: string;
+    settlementStatus: number;
 }
 
 export type CumulativeProps = {

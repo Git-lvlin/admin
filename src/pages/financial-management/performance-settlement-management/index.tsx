@@ -248,6 +248,7 @@ const TransactionData =(props: { type: string })=>{
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
               type={'export_SettlementAudit_applyPage'}
               conditions={()=>{return getFieldValue(searchConfig)}}
+              fileName={type=='1'?'子公司服务套餐':'区县服务商'}
             />,
             <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applyPage'/>,
           ],

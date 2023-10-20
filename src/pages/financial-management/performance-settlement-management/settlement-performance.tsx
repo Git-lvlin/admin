@@ -176,7 +176,8 @@ export default (props:CumulativeProps)=>{
       title: '结算状态',
       dataIndex: 'statusDesc',
       align: 'center',
-      hideInSearch: true
+      hideInSearch: true,
+      hideInTable: msgDetail?.settlementStatus == 16
     },
   ]
 
