@@ -194,7 +194,7 @@ const TransactionData =(props: { type: string })=>{
           <a key='detail' onClick={()=>{setVisible(true);setMsgDetail(record)}}>查看</a>,
           <a key='record' onClick={()=>{setRecordVisible(true);setMsgDetail(record)}}>日志</a>
         ]
-        if(record.settlementStatus>10&&record.settlementStatus<15){
+        if(record.auditCount-record.remitCount>0){
            operateArr.unshift(<a key='remittance' onClick={()=>{setRemittanceVisible(true);setMsgDetail(record)}}>汇款</a>)
         }
         if(record.settlementStatus==10||record.settlementStatus==11||record.settlementStatus==13){
@@ -246,11 +246,11 @@ const TransactionData =(props: { type: string })=>{
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'export_SettlementAudit_applyPage'}
+              type={type=='1'?'export_SettlementAudit_applyPage':'export_SettlementAudit_applySubPage_provider'}
               conditions={()=>{return getFieldValue(searchConfig)}}
               fileName={type=='1'?'子公司服务套餐':'区县服务商'}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applyPage'/>,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type=='1'?'export_SettlementAudit_applyPage':'export_SettlementAudit_applySubPage_provider'}/>,
           ],
         }}
       />
