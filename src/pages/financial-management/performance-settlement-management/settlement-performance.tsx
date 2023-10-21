@@ -272,10 +272,10 @@ export default (props:CumulativeProps)=>{
             <Export
               key='export'
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
-              type={'export_SettlementAudit_applySubPage'}
+              type={type=='1'?'export_SettlementAudit_applySubPage':'export_SettlementAudit_applySubPage_provider'}
               conditions={()=>{return getFieldValue(searchConfig)}}
             />,
-            <ExportHistory key='task' show={visit} setShow={setVisit} type='export_SettlementAudit_applySubPage'/>,
+            <ExportHistory key='task' show={visit} setShow={setVisit} type={type=='1'?'export_SettlementAudit_applySubPage':'export_SettlementAudit_applySubPage_provider'}/>,
           ],
         }}
       />
