@@ -197,7 +197,7 @@ const TransactionData =(props: { type: string })=>{
         if(record.auditCount-record.remitCount>0){
            operateArr.unshift(<a key='remittance' onClick={()=>{setRemittanceVisible(true);setMsgDetail(record)}}>汇款</a>)
         }
-        if(record.settlementStatus==10||record.settlementStatus==11||record.settlementStatus==13){
+        if(record.subOrderCount-record.auditCount>0){
           operateArr.unshift( <a key='settlement' onClick={()=>{setSettlementVisible(true);setMsgDetail(record)}}>结算审核</a>)
         }
         return operateArr
