@@ -15,7 +15,7 @@ export const subCompanyStoreGoodsAdmSt = async (params = {}, options = {}) => {
 }
 
 export const subCompanyStoreGoodsAdm = async (params = {}, options = {}) => {
-    const { current, pageSize, dateRange, ...rest } = params;
+    const { current, pageSize, dateRange, address, ...rest } = params;
     const res = await request('/auth/healthy/provider/subCompanyStoreGoodsAdm', {
       method: 'POST',
       data: {
@@ -23,6 +23,9 @@ export const subCompanyStoreGoodsAdm = async (params = {}, options = {}) => {
         size: pageSize,
         startTime:dateRange&&dateRange[0],
         endTime:dateRange&&dateRange[1],
+        provinceId: address?.[0]?.value,
+        cityId: address?.[1]?.value,
+        areaId: address?.[2]?.value,
         ...rest
       },
       ...options

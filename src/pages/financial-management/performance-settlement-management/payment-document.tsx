@@ -85,7 +85,7 @@ const formItemLayout = {
   };
 
 export default (props:CumulativeProps) => {
-  const { visible, setVisible,msgDetail,onClose} = props;
+  const { visible, setVisible,msgDetail,onClose,type} = props;
   const [form] = Form.useForm();
   const [dataDatil, setDataDatil] = useState([])
   const [activeKey, setActiveKey] = useState<string>('1')
@@ -125,7 +125,7 @@ export default (props:CumulativeProps) => {
       className={styles.forbidden_model}
     >
       <ProFormText
-        label='收款子公司名称'
+        label={type=='1'?'收款子公司名称':'收款人账号名称'}
         name="applyName"
         disabled
       />

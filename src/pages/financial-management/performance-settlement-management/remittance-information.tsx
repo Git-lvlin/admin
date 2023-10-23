@@ -15,7 +15,7 @@ const formItemLayout = {
   };
 
 export default (props) => {
-  const { visible, setVisible,msgDetail,onClose,callback,orderArr} = props;
+  const { visible, setVisible,msgDetail,onClose,callback,orderArr,type} = props;
   const [form] = Form.useForm();
   useEffect(()=>{
     form.setFieldsValue({
@@ -28,7 +28,7 @@ export default (props) => {
   return (
     <ModalForm
       layout="horizontal"
-      title={<><span style={{ fontWeight:'bold' }}>确认AED业绩结算汇款信息</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
+      title={<><span style={{ fontWeight:'bold' }}>确认{type=='1'?'AED':''}业绩结算汇款信息</span> <span style={{ fontSize:'12px', color:'#929292' }}>辅助信息</span></>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

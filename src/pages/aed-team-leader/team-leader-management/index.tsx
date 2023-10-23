@@ -12,6 +12,7 @@ import { subCompanyGetList } from "@/services/aed-team-leader/team-leader-manage
 import { Button } from "antd"
 import Export from "@/pages/export-excel/export"
 import ExportHistory from "@/pages/export-excel/export-history"
+import AddressCascader from '@/components/address-cascader';
 
 export default function TransactionData () {
   const [visible, setVisible] = useState<boolean>(false)
@@ -67,6 +68,11 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
+      title: '地区',
+      dataIndex: 'address',
+      hideInSearch: true
+    },
+    {
       title: '负责人',
       dataIndex: 'manager',
       align: 'center',
@@ -118,6 +124,12 @@ export default function TransactionData () {
       }
     },
     {
+      title: '地区',
+      dataIndex: 'address',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect />)
+    },
+    {
       title: '操作',
       valueType: 'option',
       align: 'center',
@@ -130,9 +142,12 @@ export default function TransactionData () {
     },
   ]
   const getFieldValue = (searchConfig: any) => {
-    const {...rest}=searchConfig.form.getFieldsValue()
+    const { address, ...rest }=searchConfig.form.getFieldsValue()
     return {
         ...rest,
+        provinceId: address?.[0]?.value,
+        cityId: address?.[1]?.value,
+        areaId: address?.[2]?.value,
         }
     }
   return (
