@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import moment from 'moment'
-import { Space, Dropdown, Menu } from 'antd'
+import { Space, Dropdown, Menu, Button, message } from 'antd'
 import { useLocation } from 'umi'
 import { DownOutlined } from '@ant-design/icons'
 
@@ -14,14 +14,19 @@ import { subCompanyUser } from '@/services/product-performance-management/early-
 import RegistForm from '@/common/components/early-screening'
 import CancelRegister from './cancel-register'
 import RefundRequestRemarks from './refund-request-remarks'
-
+import ImportReport from './import-report'
 import Sampling from './sampling'
+import UploadInspectionReport from './upload-inspection-report'
 import ExpressList from './express-list'
+import ModifyInfo from './modify-info'
 
 const AEDEarlyOrderManagement: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false)
   const [cancelRegisterVisible, setCancelRegisterVisible] = useState<boolean>(false)
   const [refundRequestRemarksVisible, setRefundRequestRemarksVisible] = useState<boolean>(false)
+  const [importReportVisible, setImportReportVisible] = useState<boolean>(false)
+  const [modifyInfoVisible, setModifyInfoVisible] = useState<boolean>(false)
+  const [uploadVisible, setUploadVisible] = useState<boolean>(false)
   const [samplingVisivle, setSamplingVisivle] = useState<boolean>(false)
   const [expressVisible, setExpressVisible] = useState<boolean>(false)
   const [data, setData] = useState()
@@ -33,7 +38,7 @@ const AEDEarlyOrderManagement: React.FC = () => {
   const form = useRef<FormInstance>()
   const actRef = useRef<ActionType>()
 
-  const { query } = useLocation()
+  const { query } = useLocation() as any
 
   const menu = (data: any) => (
     <Menu>
@@ -57,11 +62,17 @@ const AEDEarlyOrderManagement: React.FC = () => {
       <Menu.Item key='4' disabled={(data.process === 10 || data.process === 15 || data.process === 20)}>
         <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(data.subOrderSn); setType(false); setData(undefined)}}>申请退款备注</a>
       </Menu.Item>
+      <Menu.Item key='2' disabled={!(data.process === 2 || data.process === 3 || data.process === 5)}>
+        <a onClick={()=> {setId(data.subOrderSn); setImportReportVisible(true); setData(data)}}>导入报告</a>
+      </Menu.Item>
       <Menu.Item key='5' disabled={!data.refund}>
         <a onClick={()=> {setRefundRequestRemarksVisible(true); setId(data.subOrderSn); setType(true); setData(data.refund)}}>查看申请退款备注</a>
       </Menu.Item>
       <Menu.Item key='6' disabled={!(data.process === 10)}>
         <a href={`${data.reportUrl && data.reportUrl}`} target='_blank' referrerPolicy='no-referrer'>查看检测报告</a>
+      </Menu.Item>
+      <Menu.Item key='7' disabled={!(data.process === 1 || data.process === 2)}>
+        <a onClick={()=> {setModifyInfoVisible(true); setData(data)}}>修改早筛人信息</a>
       </Menu.Item>
     </Menu>
   )
@@ -77,14 +88,12 @@ const AEDEarlyOrderManagement: React.FC = () => {
       dataIndex: 'storeHouseNumber',
       align: 'center',
       hideInSearch: true,
-      hideInTable: false
     },
     {
       title: '区县服务商编号',
       dataIndex: 'areaHouseNumber',
       align: 'center',
       hideInSearch: true,
-      hideInTable: false
     },
     {
       title: '早筛码',
@@ -102,8 +111,8 @@ const AEDEarlyOrderManagement: React.FC = () => {
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        'store': '门店合作商店铺',
-        'provider': '区县服务商店铺',
+        'store': '门店合作商',
+        'provider': '区县服务商',
         'other': '其他来源',
       }
     },
@@ -434,6 +443,9 @@ const AEDEarlyOrderManagement: React.FC = () => {
             setSelectedRowKeys(_)
           }
         }}
+        toolBarRender={()=> [
+          <Button type='primary' onClick={()=> {setUploadVisible(true)}}>上传检测报告</Button>
+        ]}
         search={{
           labelWidth: 120,
           optionRender: (search, props, dom) => [
@@ -502,6 +514,33 @@ const AEDEarlyOrderManagement: React.FC = () => {
           setVisible={setExpressVisible}
           data={id}
           callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        importReportVisible &&
+        <ImportReport
+          visible={importReportVisible}
+          setVisible={setImportReportVisible}
+          reportNo={id}
+          data={data}
+          callback={()=> actRef.current?.reload()}
+        />
+      }
+      {
+        uploadVisible &&
+        <UploadInspectionReport
+          visible={uploadVisible}
+          setVisible={setUploadVisible}
+          callback={(e: string)=> {message.success(e); actRef.current?.reload()}}
+        />
+      }
+      {
+        modifyInfoVisible &&
+        <ModifyInfo
+          visible={modifyInfoVisible}
+          setVisible={setModifyInfoVisible}
+          callback={()=> actRef.current?.reload()}
+          data={data}
         />
       }
     </>

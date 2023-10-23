@@ -31,3 +31,11 @@ export type noticeProps = {
   getFields?: any
   selectedKeys?: React.Key[]
 }
+
+export type importReportProps = {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  reportNo?: string
+  data?: any
+  callback: () => void
+}

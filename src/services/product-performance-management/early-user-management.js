@@ -118,3 +118,30 @@ export const waitDetectionUser = async (params, options = {}) => {
     total: res.data.total
   }
 }
+
+// 添加报告
+export const reportHandle = async (params, options = {}) => {
+  return await request('/auth/healthy/screening/reportHandle', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 批量上传报告
+export const batchReport = async (params, options = {}) => {
+  return await request('/auth/healthy/screening/batchReport', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
+
+// 早筛订单修改报名表
+export const updateUserInfo = async (params, options = {}) => {
+  return await request('/auth/healthy/aedScr/updateUserInfo', {
+    method: 'POST',
+    data: params,
+    ...options
+  })
+}
