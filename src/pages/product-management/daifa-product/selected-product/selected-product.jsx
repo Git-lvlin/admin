@@ -30,7 +30,7 @@ const SubTable = (props) => {
       dataIndex: 'attributesTwo',
     },
     {
-      title: '供货价(元)',
+      title: '商家结算价(元)',
       dataIndex: 'consignPrice',
       render: (_) => amountTransform(_, '/')
     },

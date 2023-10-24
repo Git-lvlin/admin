@@ -61,7 +61,7 @@ export default (props: any) => {
       align: 'center'
     },
     {
-      title: '零售供货价(元)',
+      title: '零售商家结算价(元)',
       dataIndex: 'minRetailSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
@@ -69,7 +69,7 @@ export default (props: any) => {
       render: (_, r) => amountTransform(_, '/').toFixed(2)
     },
     {
-      title: '批发供货价',
+      title: '批发商家结算价',
       dataIndex: 'minWholesaleSupplyPrice',
       valueType: 'text',
       hideInSearch: true,

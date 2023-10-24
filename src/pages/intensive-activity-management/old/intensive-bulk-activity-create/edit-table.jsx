@@ -247,7 +247,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       editable: false,
     },
     {
-      title: '批发供货价(元)',
+      title: '批发商家结算价(元)',
       dataIndex: 'wholesaleSupplyPrice',
       valueType: 'text',
       hideInSearch: true,
@@ -351,7 +351,7 @@ export default function EditTable({ onSelect, sku, wholesale }) {
       title: (
         <>
           集约价
-          {/* <Tooltip placement="top" title="集约价最低=(批发供货价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
+          {/* <Tooltip placement="top" title="集约价最低=(批发商家结算价+配送费补贴) ÷（100%-集约分成比例-0.68%）">
             <QuestionCircleOutlined style={{ marginLeft: 4 }} />
           </Tooltip> */}
         </>

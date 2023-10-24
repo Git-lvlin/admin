@@ -381,7 +381,7 @@ export default (props) => {
             if (_?.entry?.id == 8) {
               return <>
                 <p>{recordId?amountTransform(recordId?.retailSupplyPrice, '/').toFixed(2):amountTransform(recordList?.retailSupplyPrice, '/').toFixed(2)}元</p>
-                <p style={{ color: '#F88000' }}>（取供应商提供的零售供货价）</p>
+                <p style={{ color: '#F88000' }}>（取供应商提供的零售商家结算价）</p>
               </>
             } else if (_?.entry?.id == 13) {
               return <>

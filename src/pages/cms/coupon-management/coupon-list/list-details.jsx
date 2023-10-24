@@ -57,7 +57,7 @@ export default props => {
       },
     },
     {
-      title: '供货价',
+      title: '商家结算价',
       dataIndex: 'retailSupplyPrice',
       render: (_)=> amountTransform(_, '/').toFixed(2)
     },

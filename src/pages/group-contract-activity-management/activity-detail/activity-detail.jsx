@@ -59,7 +59,7 @@ const ActivityDetail = () => {
       }
     },
     {
-      title: '供货价',
+      title: '商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       render: (_) => _ > 0 ? amountTransform(_, '/') : 0,

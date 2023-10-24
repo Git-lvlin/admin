@@ -73,7 +73,7 @@ const TableList = () => {
 
   const getFieldValue = () => {
     const { time, orderStatusSet, payTime, ...rest } = form.getFieldsValue();
-
+    console.log('time',time);
     return {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
@@ -266,7 +266,7 @@ const TableList = () => {
           name="time"
           label="下单时间"
         >
-          <TimeSelect/>
+          <TimeSelect defaultValue="过去90天"/>
         </ProForm.Item>
         <ProFormText
           name="consignee"
@@ -463,7 +463,7 @@ const TableList = () => {
                             {item.activityName && <div>参与活动名称：<span>{item.activityName}</span></div>}
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                             {!isDocumentary &&<div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>}
-                            {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
+                            {isPurchase && <div>零售商家结算价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                             {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
                           </div>
                         </div>

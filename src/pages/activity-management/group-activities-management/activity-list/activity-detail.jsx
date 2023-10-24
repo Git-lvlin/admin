@@ -47,7 +47,7 @@ const ActivityDetail = ({visible, onClose, id}) => {
       )
     },
     {
-      title: '零售供货价',
+      title: '零售商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       render: (_) => _ > 0 ? amountTransform(_, '/') : 0,

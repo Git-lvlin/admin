@@ -41,7 +41,7 @@ const  ProcurementZone:React.FC = () => {
       align: 'center'
     },  
     {
-      title: '零售供货价(元)',
+      title: '零售商家结算价(元)',
       dataIndex: 'retailSupplyPriceStr',
       align: 'center',
       hideInSearch: true

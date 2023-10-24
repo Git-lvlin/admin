@@ -100,7 +100,7 @@ const TableList = () => {
       render: (_) => _ === 1 ? '支持' : '不支持'
     },
     {
-      title: '供货价',
+      title: '商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch: true,

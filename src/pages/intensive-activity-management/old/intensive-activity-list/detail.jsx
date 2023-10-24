@@ -43,7 +43,7 @@ const columns = [
     render: (_) => `${amountTransform(_)}%`
   },
   {
-    title: '供货价',
+    title: '商家结算价',
     dataIndex: 'wholesaleSupplyPrice',
     render: (_) => amountTransform(_, '/')
   },

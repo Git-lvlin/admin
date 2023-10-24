@@ -91,7 +91,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
         }
       },
       {
-        title: '阶梯供货价',
+        title: '阶梯商家结算价',
         dataIndex: 'wsSupplyPrice',
         valueType: 'text',
         editable: false,
@@ -103,7 +103,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
         }
       },
       {
-        title: <><div>多阶梯盈亏金额(元/{unit})</div><div>(固定供货价 - 阶梯供货价)</div></>,
+        title: <><div>多阶梯盈亏金额(元/{unit})</div><div>(固定商家结算价 - 阶梯商家结算价)</div></>,
         dataIndex: 'wsProfit',
         valueType: 'text',
         editable: false,
@@ -179,7 +179,7 @@ export default function EditTable({ data, setData, unit, wsUnit, batchNumber, sk
       title={() => {
         return (
           <Row gutter={100}>
-            <Col>固定集采供货价：{skuData?.wholesaleSupplyPrice} 元 / {unit}</Col>
+            <Col>固定集采商家结算价：{skuData?.wholesaleSupplyPrice} 元 / {unit}</Col>
             <Col>集约价：{skuData?.price} 元 / {unit}</Col>
             <Col>盈利金额：{skuData?.beforeProfit} 元 / {unit}</Col>
           </Row>

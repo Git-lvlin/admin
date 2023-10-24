@@ -24,7 +24,7 @@ const SubTable = (props) => {
       dataIndex: 'skuNameDisplay',
     },
     {
-      title: '供货价(元)',
+      title: '商家结算价(元)',
       dataIndex: 'retailSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },
@@ -130,13 +130,13 @@ export default function EditTable() {
       search: true,
     },
     {
-      title: '最低供货价',
+      title: '最低商家结算价',
       dataIndex: 'minRetailSupplyPrice',
       valueType: 'text',
       editable: false,
     },
     {
-      title: '最高供货价',
+      title: '最高商家结算价',
       dataIndex: 'maxRetailSupplyPrice',
       valueType: 'text',
       editable: false,

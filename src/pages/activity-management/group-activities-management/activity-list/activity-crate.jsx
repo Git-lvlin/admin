@@ -143,7 +143,7 @@ export default (props) => {
       )
     },
     {
-      title: '零售供货价（元）',
+      title: '零售商家结算价（元）',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable: false,
@@ -267,7 +267,7 @@ export default (props) => {
           return
         }
         if (amountTransform(tableData[i].activityPrice, '*') < tableData[i].retailSupplyPrice) {
-          message.error(`skuId:${tableData[i].skuId}拼团价必须要大于零售供货价`)
+          message.error(`skuId:${tableData[i].skuId}拼团价必须要大于零售商家结算价`)
           reject()
           return
         }

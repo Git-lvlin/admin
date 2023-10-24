@@ -154,7 +154,7 @@ export default (props) => {
             </Form.Item>
 
             <Form.Item
-              label="零售供货价"
+              label="零售商家结算价"
             >
               {goods.retailSupplyPrice}
             </Form.Item>

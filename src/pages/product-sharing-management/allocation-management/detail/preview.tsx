@@ -70,7 +70,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       hideInTable: data?.billType == 1,
       render: (_, r) => {
         if(r.roleCode === 'goodsAmount') {
-          return r.billVal == 1 ? '批发供货价' : '零售供货价'
+          return r.billVal == 1 ? '批发商家结算价' : '零售商家结算价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
         } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
@@ -87,7 +87,7 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       hideInTable: data?.billType != 1,
       render: (_, r) => {
         if(r.roleCode === 'goodsAmount') {
-          return r.billVal == 1 ? '批发供货价' : '零售供货价'
+          return r.billVal == 1 ? '批发商家结算价' : '零售商家结算价'
         } if(r.roleCode === 'platform') {
           return amountTransform(data?.platformLeastFee, '/')
         } else if(r.roleCode === 'hyCityAgent' && r.scope === 'nation'){
@@ -203,13 +203,13 @@ const Preview:React.FC<previewProps> = ({visible, setVisible, data, callback, ta
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
-      title: '零售供货价',
+      title: '零售商家结算价',
       dataIndex: 'retailSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)
     },
     {
-      title: '批发供货价',
+      title: '批发商家结算价',
       dataIndex: 'wholesaleSupplyPrice',
       align: 'center',
       render: (_) => amountTransform(_, '/').toFixed(2)

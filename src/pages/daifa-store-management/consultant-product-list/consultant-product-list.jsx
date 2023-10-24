@@ -27,7 +27,7 @@ const SubTable = (props) => {
       render: (_)=> amountTransform(_, '/').toFixed(2),
     },
     {
-      title: '供应链供货价',
+      title: '供应链商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType:'money',
       render: (_)=> amountTransform(_, '/').toFixed(2),
@@ -116,7 +116,7 @@ const consultantProductList = props => {
       ),
     },
     {
-      title: '供应链供货价（元）',
+      title: '供应链商家结算价（元）',
       dataIndex: 'minRetailSupplyPrice',
       valueType:'money',
       hideInSearch: true,

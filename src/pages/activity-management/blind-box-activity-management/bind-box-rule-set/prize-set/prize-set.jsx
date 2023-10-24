@@ -96,7 +96,7 @@ const SelectProductModal=(props) => {
       hideInTable: true,
     },
     {
-      title: '供货价(元)',
+      title: '商家结算价(元)',
       dataIndex: 'retailSupplyPriceDisplay',
       valueType: 'text',
       hideInSearch: true,
@@ -252,7 +252,7 @@ export default (props) => {
        render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
-      title: '零售供货价',
+      title: '零售商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch:true,

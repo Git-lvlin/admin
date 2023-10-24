@@ -74,7 +74,7 @@ const bloodData = [
     id: 5,
     name: <>
           <div>供应商-货款</div>
-          <div>批发供货价+平均运费，销售订单承担通道费</div>
+          <div>批发商家结算价+平均运费，销售订单承担通道费</div>
           </>,
   },
   {
@@ -256,7 +256,7 @@ export default (props) => {
                 id: 5,
                 name: <>
                       <div>供应商-货款</div>
-                      <div>批发供货价+平均运费，销售订单承担通道费</div>
+                      <div>批发商家结算价+平均运费，销售订单承担通道费</div>
                       </>,
               },
               {
@@ -546,7 +546,7 @@ export default (props) => {
                 {commType==2&&<span>{proportion2(_)}{commType==1?'元':'%'} </span>}
                 {commType==2&&<span style={{marginLeft:'415px'}}> =  {recordId?myToFixed(amountTransform((recordId?.wholesaleSupplyPrice+recordId?.wholesaleFreight), '/')):myToFixed(amountTransform((recordList?.wholesaleSupplyPrice+recordList?.wholesaleFreight), '/'))}{commType==2?'元':'%'} </span>}
                 </p>
-                <p style={{ color: '#F88000' }}>（取供应商提供的批发供货价+平均运费）</p>
+                <p style={{ color: '#F88000' }}>（取供应商提供的批发商家结算价+平均运费）</p>
               </>
             } else if (_?.entry?.id == 12) {
               return <FromWrap

@@ -73,7 +73,7 @@ export default (props) => {
       width: 80,
     },
     {
-      title: '供货价',
+      title: '商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable: false,

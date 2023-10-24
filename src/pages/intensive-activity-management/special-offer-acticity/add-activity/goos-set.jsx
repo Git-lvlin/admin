@@ -77,7 +77,7 @@ const GoosModel=(props)=>{
           hideInSearch:true
       },
       {
-          title: '批发供货价',
+          title: '批发商家结算价',
           dataIndex: 'wholesaleSupplyPrice',
           hideInSearch: true,
           render:(_,data)=>{
@@ -317,7 +317,7 @@ export default (props) => {
       editable:false
     },
     {
-      title: '批发供货价',
+      title: '批发商家结算价',
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
       editable:false,

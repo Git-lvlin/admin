@@ -367,7 +367,7 @@ const SplitConfig: React.FC<props> = ({visible, setVisible, meta, callback})=> {
       align: 'center',
       renderFormItem: (_, {record}) => {
         if(record.roleCode === 'goodsAmount') {
-          return `${meta?.retailSupplyPriceStr ?? 0}（零售供货价）`
+          return `${meta?.retailSupplyPriceStr ?? 0}（零售商家结算价）`
         } else if(record.roleCode === 'platform'){
           return `${minPrice ?? 0}元`
         } else {
