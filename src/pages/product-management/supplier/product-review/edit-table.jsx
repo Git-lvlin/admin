@@ -32,13 +32,13 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '零售供货价(元)',
+        title: '零售商家结算价(元)',
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
       },
       {
-        title: '批发供货价(元)',
+        title: '批发商家结算价(元)',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 2,
@@ -55,7 +55,7 @@ export default function EditTable(props) {
         hideInTable: goodsSaleType === 2,
       },
       {
-        title: '样品供货价(元)',
+        title: '样品商家结算价(元)',
         dataIndex: 'sampleSupplyPrice',
         hideInTable: isSample !== 1,
       },

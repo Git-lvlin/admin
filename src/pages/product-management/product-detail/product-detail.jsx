@@ -172,7 +172,7 @@ export default () => {
                   {detailData?.goods?.supplierSkuId}
                 </Form.Item>
                 <Form.Item
-                  label="批发供货价(元)"
+                  label="批发商家结算价(元)"
                 >
                   {amountTransform(detailData?.goods?.wholesaleSupplyPrice, '/')}
                 </Form.Item>

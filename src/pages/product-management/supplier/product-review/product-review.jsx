@@ -24,8 +24,8 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '零售供货价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
-    { title: '批发供货价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '零售商家结算价', dataIndex: 'retailSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
+    { title: '批发商家结算价', dataIndex: 'wholesaleSupplyPrice', render: (_) => _ > 0 ? amountTransform(_, '/') : '-' },
     { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },
     { title: '市场价', dataIndex: 'marketPriceDisplay' },
@@ -209,7 +209,7 @@ const TableList = () => {
       hideInSearch: true,
     },
     {
-      title: '批发供货价(元)',
+      title: '批发商家结算价(元)',
       dataIndex: 'wholesaleSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,
@@ -217,7 +217,7 @@ const TableList = () => {
       width: 120,
     },
     {
-      title: '零售供货价(元)',
+      title: '零售商家结算价(元)',
       dataIndex: 'retailSupplyPriceRange',
       valueType: 'text',
       hideInSearch: true,

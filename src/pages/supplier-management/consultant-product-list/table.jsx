@@ -27,7 +27,7 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '零售供货价',
+        title: '零售商家结算价',
         dataIndex: 'retailSupplyPrice',
       },
       {

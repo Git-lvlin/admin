@@ -98,7 +98,7 @@ const Associated0Goods= (props: { id: string; detailList: any; callback: any; })
       editable:false,
     },
     {
-      title: '批发供货价',
+      title: '批发商家结算价',
       dataIndex: 'wholesaleSupplyPrice',
       valueType: 'text',
       editable:false,
@@ -108,7 +108,7 @@ const Associated0Goods= (props: { id: string; detailList: any; callback: any; })
       hideInSearch: true,
     },
     {
-      title: '零售供货价',
+      title: '零售商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable:false,

@@ -64,7 +64,7 @@ export default props => {
       hideInSearch:true
     },
     {
-      title: '批发供货价',
+      title: '批发商家结算价',
       dataIndex: 'wholesaleSupplyPrice',
       hideInSearch: true,
       render:(_,data)=>{

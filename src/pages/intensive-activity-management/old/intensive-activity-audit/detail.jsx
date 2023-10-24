@@ -128,7 +128,7 @@ const Detail = ({ id, detailVisible, setDetailVisible, callback }) => {
       render: (_) => `${amountTransform(_)}%`
     },
     {
-      title: `批发供货价(元/${detailData?.sku?.[0]?.unit})`,
+      title: `批发商家结算价(元/${detailData?.sku?.[0]?.unit})`,
       dataIndex: 'wholesaleSupplyPrice',
       render: (_) => amountTransform(_, '/')
     },

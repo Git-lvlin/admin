@@ -256,7 +256,7 @@ export default () => {
       editable: false,
     },
     {
-      title: '零售供货价(元)',
+      title: '零售商家结算价(元)',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       editable: false,

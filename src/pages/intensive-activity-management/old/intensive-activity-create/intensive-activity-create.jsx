@@ -517,7 +517,7 @@ const IntensiveActivityCreate = () => {
 
             {!!selectItem.length && <>
               <Form.Item
-                label="批发供货价"
+                label="批发商家结算价"
               >
                 {selectItem[0].wholesaleSupplyPrice}元
               </Form.Item>

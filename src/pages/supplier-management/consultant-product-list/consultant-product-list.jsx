@@ -18,7 +18,7 @@ const SubTable = (props) => {
   const columns = [
     { title: 'skuID', dataIndex: 'skuId' },
     { title: '规格', dataIndex: 'skuNameDisplay' },
-    { title: '供货价', dataIndex: 'retailSupplyPrice', render: (_) => amountTransform(_, '/') },
+    { title: '商家结算价', dataIndex: 'retailSupplyPrice', render: (_) => amountTransform(_, '/') },
     // { title: '批发价', dataIndex: 'wholesalePriceDisplay' },
     // { title: '批发起购量', dataIndex: 'wholesaleMinNum' },
     // { title: '建议零售价', dataIndex: 'suggestedRetailPriceDisplay' },

@@ -40,7 +40,7 @@ const Store: React.FC<props> = ({columns, dataSource, setDataSource, info, setMi
         ()=> [
           <div>
             <Tooltip 
-              title='价差 = 门店价 - 零售供货价'
+              title='价差 = 门店价 - 零售商家结算价'
             >
               商品skuID
             </Tooltip>：

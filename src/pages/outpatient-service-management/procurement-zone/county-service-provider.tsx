@@ -43,7 +43,7 @@ const CountyServiceProvider: React.FC<props> = ({ columns, dataSource, setDataSo
     } if(res.roleCode === 'goodsAmount') {
       return {
         ...res,
-        billVal: `${meta?.retailSupplyPriceStr ?? 0}（零售供货价）`
+        billVal: `${meta?.retailSupplyPriceStr ?? 0}（零售商家结算价）`
       }
     } else {
       return res

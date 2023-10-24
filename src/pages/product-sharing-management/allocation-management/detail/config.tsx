@@ -305,12 +305,12 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
           if(type === 'supplier' && sign === 1) {
             return (
               <div>
-                <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+                <Select defaultValue={2} options={[{label: '零售商家结算价', value: 2}, {label: '批发商家结算价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
                 <div>减5 元 合同费</div>
               </div>
             )
           } else {
-            return <Select defaultValue={2} options={[{label: '零售供货价', value: 2}, {label: '批发供货价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
+            return <Select defaultValue={2} options={[{label: '零售商家结算价', value: 2}, {label: '批发商家结算价', value: 1}]} placeholder='请选择' style={{width: '120px'}}/>
           }
         } else if(recordKey === '2'){
           if(type === 'platform' && sign === 1) {
@@ -828,7 +828,7 @@ const Config: React.FC<{meta: any, formCallback: any, tableCallback: any, detail
               参与分成角色：{dataSource.length} 位，
               参与分成商品 {meta.length} 款，
               <Tooltip 
-                title='价差 = 销售价 - 已选供货价'
+                title='价差 = 销售价 - 已选商家结算价'
               >
                 价差最少商品skuID
               </Tooltip>：

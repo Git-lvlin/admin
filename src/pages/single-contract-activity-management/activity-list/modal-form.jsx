@@ -90,7 +90,7 @@ export default (props) => {
       hideInTable: true,
     },
     {
-      title: '供货价',
+      title: '商家结算价',
       dataIndex: 'retailSupplyPriceDisplay',
       valueType: 'text',
       hideInSearch: true,

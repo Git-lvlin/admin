@@ -111,7 +111,7 @@ export default props=>{
         />
         <ProFormText
             width={100}
-            label="零售供货价"
+            label="零售商家结算价"
             readonly
             fieldProps={{
                 value:`￥${amountTransform(data?.retailSupplyPrice,'/')}`

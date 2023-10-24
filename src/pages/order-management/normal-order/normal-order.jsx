@@ -463,7 +463,7 @@ const TableList = () => {
                             {item.activityName && <div>参与活动名称：<span>{item.activityName}</span></div>}
                             <div>数量： <span>{it.skuNum}{it.unit}</span></div>
                             {!isDocumentary &&<div>小计： <span>{amountTransform(it.totalAmount, '/')}</span>元</div>}
-                            {isPurchase && <div>零售供货价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
+                            {isPurchase && <div>零售商家结算价： ¥{amountTransform(it.retailSupplyPrice, '/')}</div>}
                             {it.afterSalesStatus !== 0 && <Tag style={{ borderRadius: 10 }} color="#f59a23"><span style={{ color: '#fff' }}>{it.afterSalesStatusStr}</span></Tag>}
                           </div>
                         </div>

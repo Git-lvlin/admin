@@ -313,7 +313,7 @@ export default (props) => {
               goods?.goodsSaleType !== 2 &&
               <>
                 <Form.Item
-                  label="集采供货价(元)"
+                  label="集采商家结算价(元)"
                 >
                   {amountTransform(goods.wholesaleSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>
@@ -342,7 +342,7 @@ export default (props) => {
                   &&
                   <>
                     <Form.Item
-                      label="样品供货价"
+                      label="样品商家结算价"
                     >
                       {goods?.sampleSupplyPrice / 100}元/{goods.unit}
                     </Form.Item>
@@ -379,7 +379,7 @@ export default (props) => {
               goods?.goodsSaleType !== 1 &&
               <>
                 <Form.Item
-                  label="一件代发供货价"
+                  label="一件代发商家结算价"
                 >
                   {amountTransform(goods?.retailSupplyPrice, '/')}元/{goods.unit}
                 </Form.Item>

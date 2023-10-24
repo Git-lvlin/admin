@@ -110,7 +110,7 @@ const IntensiveActivityProfitDetail=(props:{type:string}) => {
       //   hideInSearch: true,
       // },
       {
-        title: '供货价',
+        title: '商家结算价',
         dataIndex: 'wholesaleSupplyPrice',
         valueType: 'text',
         hideInSearch: true,

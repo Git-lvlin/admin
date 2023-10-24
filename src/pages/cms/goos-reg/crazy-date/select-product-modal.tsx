@@ -35,7 +35,7 @@ export default (props) => {
         },
       },
       {
-        title: '批发供货价',
+        title: '批发商家结算价',
         dataIndex: 'wholesaleSupplyPrice',
         valueType: 'text',
         editable:false,
@@ -45,7 +45,7 @@ export default (props) => {
         hideInSearch: true,
       },
       {
-        title: '零售供货价',
+        title: '零售商家结算价',
         dataIndex: 'retailSupplyPrice',
         valueType: 'text',
         editable:false,

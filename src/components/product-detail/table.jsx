@@ -41,14 +41,14 @@ export default function EditTable(props) {
       },
       ...arr,
       {
-        title: '一件代发供货价',
+        title: '一件代发商家结算价',
         dataIndex: 'retailSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 1,
         render: _ => `${_}元/${unit}`
       },
       {
-        title: '集采供货价',
+        title: '集采商家结算价',
         dataIndex: 'wholesaleSupplyPrice',
         editable: false,
         hideInTable: goodsSaleType === 2,
@@ -69,7 +69,7 @@ export default function EditTable(props) {
         render: _ => `${_}${unit}`
       },
       {
-        title: '样品供货价',
+        title: '样品商家结算价',
         dataIndex: 'sampleSupplyPrice',
         hideInTable: isSample !== 1,
         render: _ => `${_}元/${unit}`

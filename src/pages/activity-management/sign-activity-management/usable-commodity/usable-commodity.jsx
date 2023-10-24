@@ -61,7 +61,7 @@ export default () => {
       render: (_)=> amountTransform(parseInt(_), '/').toFixed(2)
     },
     {
-      title: '零售供货价',
+      title: '零售商家结算价',
       dataIndex: 'retailSupplyPrice',
       valueType: 'text',
       hideInSearch:true,

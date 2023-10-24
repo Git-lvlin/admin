@@ -35,9 +35,9 @@ export default (props) => {
         <ProFormText
           width="md"
           name="retailSupplyPrice"
-          label="供货价"
-          placeholder="请输入供货价"
-          rules={[{ required: true, message: '请输入供货价' }]}
+          label="商家结算价"
+          placeholder="请输入商家结算价"
+          rules={[{ required: true, message: '请输入商家结算价' }]}
         />
         <ProFormText
           width="md"

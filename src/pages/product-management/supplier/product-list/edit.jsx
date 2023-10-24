@@ -273,7 +273,7 @@ export default (props) => {
       }
 
       // if (item.retailSupplyPrice > item.salePrice || item.retailSupplyPrice > item.marketPrice) {
-      //   errorMsg = '秒约价和市场价不能小于供货价';
+      //   errorMsg = '秒约价和市场价不能小于商家结算价';
       // }
     })
 
@@ -365,7 +365,7 @@ export default (props) => {
       }
 
       // if (retailSupplyPrice > salePrice || retailSupplyPrice > marketPrice) {
-      //   message.error('秒约价和市场价不能小于供货价');
+      //   message.error('秒约价和市场价不能小于商家结算价');
       //   reject();
       // }
     }
@@ -1572,9 +1572,9 @@ export default (props) => {
                 <>
                   <ProFormText
                     name="wholesaleSupplyPrice"
-                    label="批发供货价"
-                    placeholder="请输入批发供货价"
-                    rules={[{ required: true, message: '请输入批发供货价' }]}
+                    label="批发商家结算价"
+                    placeholder="请输入批发商家结算价"
+                    rules={[{ required: true, message: '请输入批发商家结算价' }]}
                     disabled
                     fieldProps={{
                       addonAfter: `元/${goods.unit}`
@@ -1622,8 +1622,8 @@ export default (props) => {
                     <>
                       <ProFormText
                         name="sampleSupplyPrice"
-                        label="样品供货价"
-                        placeholder="请输入集采样品供货价,0.01-99999.99"
+                        label="样品商家结算价"
+                        placeholder="请输入集采样品商家结算价,0.01-99999.99"
                         disabled
                         fieldProps={{
                           addonAfter: `元/${goods.unit}`
@@ -1632,7 +1632,7 @@ export default (props) => {
                       <ProFormText
                         name="sampleSalePrice"
                         label="样品价"
-                        placeholder="大于等于(样品供货价*1.1),小于等于100倍样品供货价,保留2位小数"
+                        placeholder="大于等于(样品商家结算价*1.1),小于等于100倍样品商家结算价,保留2位小数"
                         validateFirst
                         fieldProps={{
                           addonAfter: `元/${goods.unit}`
@@ -1699,9 +1699,9 @@ export default (props) => {
                 <>
                   <ProFormText
                     name="retailSupplyPrice"
-                    label="零售供货价"
-                    placeholder="请输入零售供货价"
-                    rules={[{ required: true, message: '请输入零售供货价' }]}
+                    label="零售商家结算价"
+                    placeholder="请输入零售商家结算价"
+                    rules={[{ required: true, message: '请输入零售商家结算价' }]}
                     disabled
                     fieldProps={{
                       addonAfter: `元/${goods.unit}`
@@ -1729,7 +1729,7 @@ export default (props) => {
                                 })
                               ]}
                               extra={<>
-                                {operateType === 2 && <span style={{ color: 'orange' }}>分享补贴价不得低于{+new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)}元(零售供货价 / 94%)</span>}
+                                {operateType === 2 && <span style={{ color: 'orange' }}>分享补贴价不得低于{+new Big(amountTransform(goods.retailSupplyPrice, '/')).div(0.94).toFixed(2)}元(零售商家结算价 / 94%)</span>}
                                 {salePriceFloat < 0 && preferential !== 0 && <div style={{ color: 'red' }}>{`此${operateType === 2 ? '分享补贴价' : '秒约价'}导致平台亏损，请调高${operateType === 2 ? '分享补贴价' : '秒约价'}`}</div>}
                               </>}
                               disabled={detailData?.settleType === 1}
@@ -1932,7 +1932,7 @@ export default (props) => {
                 name="wholesalePrice"
                 label="批发价"
                 placeholder="请输入批发价"
-                rules={[{ required: true, message: '请输入供货价' }]}
+                rules={[{ required: true, message: '请输入商家结算价' }]}
               /> */}
               {/* <ProFormText
                 name="wholesaleMinNum"

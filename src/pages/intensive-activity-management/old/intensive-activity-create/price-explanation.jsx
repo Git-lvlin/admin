@@ -38,7 +38,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
       }
     },
     {
-      title: '阶梯供货价',
+      title: '阶梯商家结算价',
       dataIndex: 'b',
       key: 'b',
       align: 'center',
@@ -65,31 +65,31 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
       }
     },
     {
-      title: '固定供货价订单金额(元)',
+      title: '固定商家结算价订单金额(元)',
       dataIndex: 'd',
       key: 'd',
       align: 'center',
       render: (_) => {
         if (_ === '-0') {
-          return '= 固定集采供货价 X 阶梯最低量';
+          return '= 固定集采商家结算价 X 阶梯最低量';
         }
         return parseDot(_);
       }
     },
     {
-      title: '阶梯供货价订单金额(元)',
+      title: '阶梯商家结算价订单金额(元)',
       dataIndex: 'e',
       key: 'e',
       align: 'center',
       render: (_) => {
         if (_ === '-0') {
-          return '= 阶梯供货价 X 阶梯最低量';
+          return '= 阶梯商家结算价 X 阶梯最低量';
         }
         return parseDot(_);
       }
     },
     {
-      title: '固定供货价订单盈亏金额(元)',
+      title: '固定商家结算价订单盈亏金额(元)',
       dataIndex: 'f',
       key: 'f',
       align: 'center',
@@ -99,7 +99,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
             <>
               <div>=  集约价 X 阶梯最低量</div>
               <div>—</div>
-              <div>固定集采供货价 X 阶梯最低量</div>
+              <div>固定集采商家结算价 X 阶梯最低量</div>
             </>
           )
         }
@@ -107,7 +107,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
       }
     },
     {
-      title: '阶梯供货价订单盈亏金额(元)',
+      title: '阶梯商家结算价订单盈亏金额(元)',
       dataIndex: 'g',
       key: 'g',
       align: 'center',
@@ -117,7 +117,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
             <>
               <div>=  集约价 X 阶梯最低量</div>
               <div>—</div>
-              <div>阶梯供货价 X 阶梯最低量</div>
+              <div>阶梯商家结算价 X 阶梯最低量</div>
             </>
           )
         }
@@ -133,7 +133,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
         if (_ === '-0') {
           return (
             <>
-              <div>= （固定供货价 - 阶梯供货价）</div>
+              <div>= （固定商家结算价 - 阶梯商家结算价）</div>
               <div>X</div>
               <div>阶梯最低量</div>
             </>
@@ -151,7 +151,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
         if (_ === '-0') {
           return (
             <>
-              <div>= 集约价 - 阶梯供货价</div>
+              <div>= 集约价 - 阶梯商家结算价</div>
             </>
           )
         }
@@ -167,7 +167,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
         if (_ === '-0') {
           return (
             <>
-              <div>= 固定供货价 - 阶梯供货价</div>
+              <div>= 固定商家结算价 - 阶梯商家结算价</div>
             </>
           )
         }
@@ -230,7 +230,7 @@ const PriceExplanation = ({ skuData = {}, ladderData = [] }) => {
     >
       <Title level={5}>现有单件盈利信息</Title>
       <Row gutter={100}>
-        <Col>固定集采供货价：{skuData.wholesaleSupplyPrice} 元 / {skuData.unit}</Col>
+        <Col>固定集采商家结算价：{skuData.wholesaleSupplyPrice} 元 / {skuData.unit}</Col>
         <Col>集约价：{skuData.price} 元 / {skuData.unit}</Col>
         <Col>盈利金额：{skuData.profit} 元 / {skuData.unit}</Col>
       </Row>
