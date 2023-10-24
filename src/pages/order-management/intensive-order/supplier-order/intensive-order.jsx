@@ -256,7 +256,7 @@ const TableList = () => {
           name="time"
           label="下单时间"
         >
-          <TimeSelect/>
+          <TimeSelect defaultValue="过去90天"/>
         </ProForm.Item>
         {
           !isPurchase && <ProFormSelect

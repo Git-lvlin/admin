@@ -73,7 +73,7 @@ const TableList = () => {
 
   const getFieldValue = () => {
     const { time, orderStatusSet, payTime, ...rest } = form.getFieldsValue();
-
+    console.log('time',time);
     return {
       orderStatus: orderType === 0 ? '' : orderType,
       startCreateTime: time?.[0]?.format('YYYY-MM-DD HH:mm:ss'),
@@ -266,7 +266,7 @@ const TableList = () => {
           name="time"
           label="下单时间"
         >
-          <TimeSelect/>
+          <TimeSelect defaultValue="过去90天"/>
         </ProForm.Item>
         <ProFormText
           name="consignee"

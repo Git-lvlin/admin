@@ -6,4 +6,5 @@ export type DateProps = {
   value?: RangeValue<Moment>
   beforePlaceholder?: string
   afterPlaceholder?: string
+  defaultValue?: string
 }
