@@ -12,6 +12,7 @@ import StoreInformation from './store-information'
 import Export from "@/pages/export-excel/export"
 import ExportHistory from "@/pages/export-excel/export-history"
 import moment from "moment"
+import AddressCascader from '@/components/address-cascader';
 
 export default function TransactionData () {
   const [type, setType] = useState<number>(0)
@@ -26,7 +27,10 @@ export default function TransactionData () {
     const params={
       name:time?.name,
       startTime:time?.dateRange&&time?.dateRange[0],
-      endTime:time?.dateRange&&time?.dateRange[1]
+      endTime:time?.dateRange&&time?.dateRange[1],
+      provinceId: time?.address?.[0]?.value,
+      cityId: time?.address?.[1]?.value,
+      areaId: time?.address?.[2]?.value,
     }
     subCompanyStoreGoodsAdmSt(params).then(res=>{
       if(res.code==0){
@@ -37,11 +41,14 @@ export default function TransactionData () {
   }, [time])
 
   const getFieldValue = (searchConfig: any) => {
-    const { subName, dateRange } = searchConfig.form.getFieldsValue()
+    const { subName, dateRange, address } = searchConfig.form.getFieldsValue()
     const params = {
       subName: subName,
       startTime: dateRange&&moment(dateRange[0]).format('YYYY-MM-DD HH:mm:ss'),
       endTime: dateRange&&moment(dateRange[1]).format('YYYY-MM-DD HH:mm:ss'),
+      provinceId: address?.[0]?.value,
+      cityId: address?.[1]?.value,
+      areaId: address?.[2]?.value,
     }
     return params
   }
@@ -63,10 +70,21 @@ export default function TransactionData () {
       },
     },
     {
+      title: '地区',
+      dataIndex: 'address',
+      hideInSearch: true
+    },
+    {
       title: '交易分账时间',
       dataIndex: 'dateRange',
       renderFormItem: () => <TimeSelect />,
       hideInTable: true
+    },
+    {
+      title: '地区',
+      dataIndex: 'address',
+      hideInTable: true,
+      renderFormItem: () => (<AddressCascader placeholder="请选择" changeOnSelect />)
     },
     {
       title: '大健康供应链系统订单业绩',
@@ -126,6 +144,7 @@ export default function TransactionData () {
           setTime({
             name: val?.name,
             dateRange: val?.dateRange,
+            address: val?.address
           })
         }}
         onReset={()=>{

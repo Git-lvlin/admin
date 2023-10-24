@@ -9,10 +9,12 @@ import { QuestionCircleOutlined } from '@ant-design/icons'
 import Form from './form';
 import Drawer from './store-review-detail';
 import RangeInput from '@/components/range-input';
+import CancelModel from './cancel-model'
 
 const StoreReview = () => {
   const [formVisible, setFormVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [selectItem, setSelectItem] = useState(null);
   const actionRef = useRef();
   const formRef = useRef();
@@ -252,7 +254,10 @@ const StoreReview = () => {
       valueType: 'text',
       hideInSearch: true,
       render: (_, data) => {
-        return _ !== 1 && <a onClick={() => { setDrawerVisible(true); setSelectItem(data); }}>审核</a>;
+        return <>
+                {_ !== 1 && <a onClick={() => { setDrawerVisible(true); setSelectItem(data); }}>审核 &nbsp;&nbsp;</a>}
+                {_ == 3 && data.deposit==0 && data.serviceFee==0 && <a onClick={() => { setVisible(true); setSelectItem(data); }}>申请注销</a>}
+               </>
       }
     },
   ];
@@ -294,6 +299,12 @@ const StoreReview = () => {
       {formVisible && <Form
         visible={formVisible}
         setVisible={setFormVisible}
+        data={selectItem}
+        callback={() => { actionRef.current.reload() }}
+      />}
+       {visible && <CancelModel
+        visible={visible}
+        setVisible={setVisible}
         data={selectItem}
         callback={() => { actionRef.current.reload() }}
       />}

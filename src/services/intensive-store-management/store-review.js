@@ -73,3 +73,12 @@ export const pageByStoreNo = async (params = {}, options = {}) => {
     total: res.data.total
   }
 }
+
+
+export const memberShopCancelPost = async (params = {}, options = {}) => {
+  return request('/auth/store/memberShopCancel/post', {
+    method: 'POST',
+    data: params,
+    ...options
+  });
+}

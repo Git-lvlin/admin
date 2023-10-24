@@ -2,12 +2,15 @@ import request from "@/utils/request";
 
 //子公司列表
 export const subCompanyGetList = async (params = {}, options = {}) => {
-  const { current, pageSize, ...rest } = params;
+  const { current, pageSize, address, ...rest } = params;
   const res = await request('/auth/agency/subCompany/getList', {
     method: 'POST',
     data: {
       page: current,
       size: pageSize,
+      provinceId: address?.[0]?.value,
+      cityId: address?.[1]?.value,
+      areaId: address?.[2]?.value,
       ...rest
     },
     ...options

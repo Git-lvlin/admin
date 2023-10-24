@@ -25,6 +25,7 @@ export type TableProps = {
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
     onClose: Function;
     callback: Function;
+    type: string;
   }
 
   export interface OrderArrEntity {
