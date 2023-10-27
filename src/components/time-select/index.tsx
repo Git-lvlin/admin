@@ -27,12 +27,12 @@ const SelectDate:React.FC<DateProps> = (props) => {
     '上月': [moment().startOf('month').subtract(1, 'months'), moment().startOf('month').subtract(1, 'seconds')],
     '本年': [moment().startOf('year'), moment().endOf('year')],
     '去年': [moment().startOf('year').subtract(1, 'years'), moment().startOf('year').subtract(1, 'seconds')],
-    '过去7天': [moment().startOf('day').subtract(7, 'days'), moment().endOf('day').subtract(1, 'days')],
-    '过去14天': [moment().startOf('day').subtract(14, 'days'), moment().endOf('day').subtract(1, 'days')],
-    '过去30天': [moment().startOf('day').subtract(30, 'days'), moment().endOf('day').subtract(1, 'days')],
-    '过去60天': [moment().startOf('day').subtract(60, 'days'), moment().endOf('day').subtract(1, 'days')],
+    '过去7天': [moment().startOf('day').subtract(7, 'days'), moment().endOf('day')],
+    '过去14天': [moment().startOf('day').subtract(14, 'days'), moment().endOf('day')],
+    '过去30天': [moment().startOf('day').subtract(30, 'days'), moment().endOf('day')],
+    '过去60天': [moment().startOf('day').subtract(60, 'days'), moment().endOf('day')],
     '过去90天': [moment().startOf('day').subtract(90, 'days'), moment().endOf('day')],
-    '过去180天': [moment().startOf('day').subtract(180, 'days'), moment().endOf('day').subtract(1, 'days')]
+    '过去180天': [moment().startOf('day').subtract(180, 'days'), moment().endOf('day')]
   }
 
   useEffect(()=>{
