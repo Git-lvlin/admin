@@ -31,7 +31,7 @@ const SelectDate:React.FC<DateProps> = (props) => {
     '过去14天': [moment().startOf('day').subtract(14, 'days'), moment().endOf('day').subtract(1, 'days')],
     '过去30天': [moment().startOf('day').subtract(30, 'days'), moment().endOf('day').subtract(1, 'days')],
     '过去60天': [moment().startOf('day').subtract(60, 'days'), moment().endOf('day').subtract(1, 'days')],
-    '过去90天': [moment().startOf('day').subtract(90, 'days'), moment().endOf('day').subtract(1, 'days')],
+    '过去90天': [moment().startOf('day').subtract(90, 'days'), moment().endOf('day')],
     '过去180天': [moment().startOf('day').subtract(180, 'days'), moment().endOf('day').subtract(1, 'days')]
   }
 
