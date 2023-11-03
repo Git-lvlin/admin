@@ -102,7 +102,7 @@ export default function TransactionData (props:RegimentProps) {
   return (
     <DrawerForm
       layout="horizontal"
-      title='首页  /  AED 子公司  /  子公司管理 / 团长管理'
+      title='首页  /  AED 合作公司  /  合作公司管理 / 团长管理'
       onVisibleChange={setVisible}
       visible={visible}
       width={1400}
@@ -120,7 +120,7 @@ export default function TransactionData (props:RegimentProps) {
       }}
       {...formItemLayout}    
     >
-      <p>子公司名称：{listDetail?.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 类型：{listDetail?.typeDesc}</p>
+      <p>合作公司名称：{listDetail?.name} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 类型：{listDetail?.typeDesc}</p>
       <ProTable<TableProps>
         headerTitle='列表'
         rowKey="id"

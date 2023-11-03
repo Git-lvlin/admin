@@ -78,12 +78,12 @@ const SalesPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司ID',
+      title: '所属合作公司ID',
       dataIndex: 'subId',
       align: 'center'
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       align: 'center'
     }

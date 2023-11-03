@@ -61,12 +61,12 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'name',
       align: 'center',
       order: 4,
       fieldProps:{
-        placeholder:'请输入子公司名称'
+        placeholder:'请输入合作公司名称'
       },
     },
     {

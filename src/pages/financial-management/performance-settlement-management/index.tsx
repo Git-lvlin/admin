@@ -36,18 +36,18 @@ const TransactionData =(props: { type: string })=>{
       align: 'center',
     },
     {
-      title: '子公司ID',
+      title: '合作公司ID',
       dataIndex: 'applyId',
       align: 'center',
       hideInSearch: type == '2',
       hideInTable: type == '2'
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'applyName',
       align: 'center',
       fieldProps:{
-        placeholder:'请输入子公司名称'
+        placeholder:'请输入合作公司名称'
       },
       hideInSearch: type == '2',
       hideInTable: type == '2'
@@ -248,7 +248,7 @@ const TransactionData =(props: { type: string })=>{
               change={(e: boolean | ((prevState: boolean) => boolean)) => { setVisit(e) }}
               type={'export_SettlementAudit_applyPage'}
               conditions={()=>{return getFieldValue(searchConfig)}}
-              fileName={type=='1'?'子公司服务套餐':'区县服务商'}
+              fileName={type=='1'?'合作公司服务套餐':'区县服务商'}
             />,
             <ExportHistory key='task' show={visit} setShow={setVisit} type={'export_SettlementAudit_applyPage'}/>,
           ],
@@ -325,7 +325,7 @@ export default ()=>{
         onChange: setActiveKey
       }}
     >
-      <ProCard.TabPane key="1" tab="子公司服务套餐">
+      <ProCard.TabPane key="1" tab="合作公司服务套餐">
         {
           activeKey == '1' && <TransactionData type={activeKey}/>
         }

@@ -74,7 +74,7 @@ const Performance = () => {
       hideInSearch: true
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'subName',
       align: 'center',
       hideInSearch: true
@@ -151,14 +151,14 @@ const Performance = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司',
+      title: '所属合作公司',
       dataIndex: 'subType',
       align: 'center',
       hideInTable: true,
       valueType: 'select',
       valueEnum: {
-        0: '没有所属子公司',
-        1: '已有所属子公司'
+        0: '没有所属合作公司',
+        1: '已有所属合作公司'
       }
     }
   ]

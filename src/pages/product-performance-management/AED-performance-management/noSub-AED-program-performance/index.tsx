@@ -100,13 +100,13 @@ const NoSubAEDProgramPerformance = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司ID',
+      title: '合作公司ID',
       dataIndex: 'subId',
       align: 'center',
       hideInSearch: true

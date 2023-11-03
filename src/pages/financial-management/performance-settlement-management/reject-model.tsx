@@ -63,7 +63,7 @@ export default (props) => {
         readonly
       />
       <ProFormText
-        label={type == '1'?'申请结算子公司':'申请结算人账号名称'}
+        label={type == '1'?'申请结算合作公司':'申请结算人账号名称'}
         fieldProps={{
           value: msgDetail?.applyName
         }}

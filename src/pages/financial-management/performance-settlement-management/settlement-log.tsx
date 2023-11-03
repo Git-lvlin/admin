@@ -79,7 +79,7 @@ export default (props:CumulativeProps)=>{
       layout="horizontal"
       title={<>
         <strong>结算日志</strong>
-        <p style={{ color:'#8D8D8D' }}>{type=='1'?'子公司ID':'账号ID'}：{msgDetail?.applyId}&nbsp;&nbsp;{type=='1'?' 子公司名称':'账号名称'}：{msgDetail?.applyName}&nbsp;&nbsp;结算申请单号：{msgDetail?.settlementId}&nbsp;&nbsp;结算状态：{msgDetail?.settlementStatusDesc}&nbsp;&nbsp;{type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}&nbsp;&nbsp;申请时间：{msgDetail?.applyTime} </p>
+        <p style={{ color:'#8D8D8D' }}>{type=='1'?'合作公司ID':'账号ID'}：{msgDetail?.applyId}&nbsp;&nbsp;{type=='1'?' 合作公司名称':'账号名称'}：{msgDetail?.applyName}&nbsp;&nbsp;结算申请单号：{msgDetail?.settlementId}&nbsp;&nbsp;结算状态：{msgDetail?.settlementStatusDesc}&nbsp;&nbsp;{type=='1'?`订单类型：${msgDetail?.orderTypeDesc}`:''}&nbsp;&nbsp;申请时间：{msgDetail?.applyTime} </p>
       </>}
       onVisibleChange={setVisible}
       visible={visible}

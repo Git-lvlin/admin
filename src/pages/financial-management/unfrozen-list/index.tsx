@@ -77,13 +77,13 @@ const UnfrozenList: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subCompanyName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '所属子公司类型',
+      title: '所属合作公司类型',
       dataIndex: 'teamLeaderTypeDesc',
       align: 'center',
       hideInSearch: true

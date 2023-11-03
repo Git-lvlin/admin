@@ -212,13 +212,13 @@ const AEDEarlyOrderManagement: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司地址',
+      title: '合作公司地址',
       dataIndex: 'subAddress',
       align: 'center',
       hideInSearch: true
@@ -272,12 +272,12 @@ const AEDEarlyOrderManagement: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司状态',
+      title: '所属合作公司状态',
       dataIndex: 'isSub',
       valueType: 'select',
       valueEnum: {
-        0: '无所属子公司',
-        1: '有所属子公司'
+        0: '无所属合作公司',
+        1: '有所属合作公司'
       },
       hideInTable: true
     },

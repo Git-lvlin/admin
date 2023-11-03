@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 import moment from 'moment';
 
-// 无子公司AED课程业绩
+// 无合作公司AED课程业绩
 export const aednoSubOrder = async (params, options = {}) => {
   const { pageSize, current, payTime, ...rest } = params
   const res = await request('/auth/stats/report/aed/aednoSubOrder', {

@@ -480,23 +480,23 @@ const AEDProgramTransaction: React.FC = () => {
       align: 'center'
     },
     {
-      title: '所属子公司类型',
+      title: '所属合作公司类型',
       dataIndex: 'subType',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'subType',
       valueType: 'select',
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '合作公司',
+        2: '非合作公司'
       },
       hideInTable: true
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       align: 'center',
       hideInSearch: true

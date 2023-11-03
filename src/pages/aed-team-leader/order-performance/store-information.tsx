@@ -417,7 +417,7 @@ export default (props:CumulativeProps)=>{
   return (
     <DrawerForm
       layout="horizontal"
-      title={`AED子公司：${msgDetail?.name} （${msgDetail?.managerPhone}） ${divideName()} （ID:${msgDetail?.agencyId}）`}
+      title={`AED合作公司：${msgDetail?.name} （${msgDetail?.managerPhone}） ${divideName()} （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

@@ -95,7 +95,7 @@ export default (props:CumulativeProps)=>{
       hideInSearch: true,
     },
     {
-      title: '原子公司ID',
+      title: '原合作公司ID',
       dataIndex: 'sourceAgencyId',
       valueType: 'text',
       hideInSearch: true
@@ -138,7 +138,7 @@ export default (props:CumulativeProps)=>{
   return (
     <DrawerForm
       layout="horizontal"
-      title={`子公司：${msgDetail?.name} （${msgDetail?.managerPhone}）提成明细 （ID:${msgDetail?.agencyId}）`}
+      title={`合作公司：${msgDetail?.name} （${msgDetail?.managerPhone}）提成明细 （ID:${msgDetail?.agencyId}）`}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}

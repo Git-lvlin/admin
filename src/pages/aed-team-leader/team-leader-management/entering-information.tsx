@@ -37,7 +37,7 @@ export default (props:EnteringProps) => {
   return (
     <ModalForm
       layout="horizontal"
-      title={<p><strong>录入{type==1?'子公司':'团长'}</strong> <span style={{ color:type==1?'#B5B2B2':'red',fontSize:'10px' }}>{type==1?'辅助信息':`所属子公司名称：${name}`}</span></p>}
+      title={<p><strong>录入{type==1?'合作公司':'团长'}</strong> <span style={{ color:type==1?'#B5B2B2':'red',fontSize:'10px' }}>{type==1?'辅助信息':`所属合作公司名称：${name}`}</span></p>}
       onVisibleChange={setVisible}
       visible={visible}
       form={form}
@@ -83,7 +83,7 @@ export default (props:EnteringProps) => {
       {
         type?<ProFormText
         width={250}
-        label='子公司名称'
+        label='合作公司名称'
         name="name"
         placeholder='请输入3-50个字符'
         fieldProps={{
@@ -115,11 +115,11 @@ export default (props:EnteringProps) => {
         label='类型'
         options={[
           {
-            label: '子公司',
+            label: '合作公司',
             value: 1,
           },
           {
-            label: '非子公司',
+            label: '非合作公司',
             value: 2,
           },
         ]}

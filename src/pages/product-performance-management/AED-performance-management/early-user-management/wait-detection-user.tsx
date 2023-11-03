@@ -125,7 +125,7 @@ const WaitDetectionUser: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       align: 'center',
       hideInSearch: true

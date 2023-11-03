@@ -70,41 +70,41 @@ const AedHeadPerformance = () => {
       hideInSearch: true
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'type',
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '合作公司',
+        2: '非合作公司'
       }
     },
     {
-      title: '所属子公司类型',
+      title: '所属合作公司类型',
       dataIndex: 'typeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司ID',
+      title: '合作公司ID',
       dataIndex: 'subId',
       valueType: 'text',
       hideInTable: true,
     },
     {
-      title: '所属子公司ID',
+      title: '所属合作公司ID',
       dataIndex: 'subId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'subName',
       valueType: 'text',
       hideInTable: true,
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       valueType: 'text',
       hideInSearch: true,
@@ -146,7 +146,7 @@ const AedHeadPerformance = () => {
         tableExtraRender={() => 
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={5} layout="horizontal" bordered>
             <Descriptions.Item  label="团长数">{detailList?.teamNum} 名</Descriptions.Item>
-            <Descriptions.Item  label="所属子公司数">{detailList?.subNum} 家</Descriptions.Item>
+            <Descriptions.Item  label="所属合作公司数">{detailList?.subNum} 家</Descriptions.Item>
             <Descriptions.Item  label="业绩单数">{detailList?.orderNum} 单</Descriptions.Item>
             <Descriptions.Item  label="团长业绩">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  元</Descriptions.Item>
             <Descriptions.Item  label="团长提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  元</Descriptions.Item>
@@ -246,41 +246,41 @@ const AedHeadEarlyScreeningOrderPerformance = () => {
       hideInSearch: true
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'type',
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '合作公司',
+        2: '非合作公司'
       }
     },
     {
-      title: '所属子公司类型',
+      title: '所属合作公司类型',
       dataIndex: 'typeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司ID',
+      title: '合作公司ID',
       dataIndex: 'subId',
       valueType: 'text',
       hideInTable: true,
     },
     {
-      title: '所属子公司ID',
+      title: '所属合作公司ID',
       dataIndex: 'subId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'subName',
       valueType: 'text',
       hideInTable: true,
     },
     {
-      title: '所属子公司名称',
+      title: '所属合作公司名称',
       dataIndex: 'subName',
       valueType: 'text',
       hideInSearch: true,
@@ -322,7 +322,7 @@ const AedHeadEarlyScreeningOrderPerformance = () => {
         tableExtraRender={() => 
           <Descriptions labelStyle={{fontWeight:'bold'}} style={{background:'#fff'}} column={5} layout="horizontal" bordered>
             <Descriptions.Item  label="团长数">{detailList?.teamNum} 名</Descriptions.Item>
-            <Descriptions.Item  label="所属子公司数">{detailList?.subNum} 家</Descriptions.Item>
+            <Descriptions.Item  label="所属合作公司数">{detailList?.subNum} 家</Descriptions.Item>
             <Descriptions.Item  label="业绩单数">{detailList?.orderNum} 单</Descriptions.Item>
             <Descriptions.Item  label="团长业绩">{amountTransform(detailList?.payAmount,'/').toFixed(2)}  元</Descriptions.Item>
             <Descriptions.Item  label="团长提成">{amountTransform(detailList?.commission,'/').toFixed(2)}  元</Descriptions.Item>
