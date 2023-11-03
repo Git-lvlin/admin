@@ -161,23 +161,23 @@ const ProgramPerformance: FC = () => {
       align: 'center',
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'teamLeaderTypeDesc',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'teamLeaderType',
       valueType: 'select',
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '合作公司',
+        2: '非合作公司'
       },
       hideInTable: true
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'subCompanyName',
       align: 'center',
     },

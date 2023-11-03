@@ -266,7 +266,7 @@ const formItemLayout = {
     return (
       <DrawerForm
         layout="horizontal"
-        title={`AED子公司：${msgDetail?.subName} （${msgDetail?.subMobile}） ${divideName()} （ID:${msgDetail?.subId}）`}
+        title={`AED合作公司：${msgDetail?.subName} （${msgDetail?.subMobile}） ${divideName()} （ID:${msgDetail?.subId}）`}
         onVisibleChange={setVisible}
         visible={visible}
         form={form}

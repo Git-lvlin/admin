@@ -137,7 +137,7 @@ export const wholeSaleOrderDetailSummary = async (params = {}, options = {}) => 
 
 
 
-// 集约订单明细-子公司名单
+// 集约订单明细-合作公司名单
 export const wholeSaleOrderSubCompany = async (params = {}, options = {}) => {
   const { ...rest } = params;
   const res = await request('/auth/java-admin/report/config/wholeSaleOrderSubCompany', {

@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-//子公司列表
+//合作公司列表
 export const subCompanyGetList = async (params = {}, options = {}) => {
   const { current, pageSize, address, ...rest } = params;
   const res = await request('/auth/agency/subCompany/getList', {
@@ -82,7 +82,7 @@ export const openSubsidiary = async (params = {}, options = {}) => {
   }
 }
 
-//子公司账号开关
+//合作公司账号开关
 export const subCompanySwitch = async (params = {}, options = {}) => {
   const { ...rest } = params;
   const res = await request('/auth/agency/subCompany/accountSwitch', {
@@ -118,7 +118,7 @@ export const accountSwitch = async (params = {}, options = {}) => {
   }
 }
 
-//添加子公司
+//添加合作公司
 export const subCompanyAdd = async (params = {}, options = {}) => {
   const {...rest } = params;
   const res = await request('/auth/agency/subCompany/add', {

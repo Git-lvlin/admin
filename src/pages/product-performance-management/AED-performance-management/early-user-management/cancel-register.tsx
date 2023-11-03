@@ -98,7 +98,7 @@ const CancelRegister: React.FC<cancelRegisterProps> = ({visible, setVisible, dat
         name='operator'
         readonly
       />
-      <div>确认取消报名前，请与下单人和对应子公司沟通确认清楚，以防下单人钱款或子公司耗材及精力损失。</div>
+      <div>确认取消报名前，请与下单人和对应合作公司沟通确认清楚，以防下单人钱款或合作公司耗材及精力损失。</div>
     </ModalForm>
   )
 }

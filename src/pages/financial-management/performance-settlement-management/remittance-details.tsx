@@ -61,7 +61,7 @@ export default (props) => {
       className={styles.forbidden_model}
     >
       <ProFormText
-        label={type=='1'?'收款子公司名称':'收款人账号名称'}
+        label={type=='1'?'收款合作公司名称':'收款人账号名称'}
         name="applyName"
         disabled
       />

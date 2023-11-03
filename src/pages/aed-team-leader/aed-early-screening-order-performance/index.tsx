@@ -96,18 +96,18 @@ export default function TransactionData () {
       valueType: 'text',
     },
     {
-      title: '子公司ID',
+      title: '合作公司ID',
       dataIndex: 'subId',
       valueType: 'text',
       hideInSearch: true,
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'subName',
       align: 'center',
     },
     {
-      title: '子公司类型',
+      title: '合作公司类型',
       dataIndex: 'subTypeDesc',
       align: 'center',
       hideInSearch: true

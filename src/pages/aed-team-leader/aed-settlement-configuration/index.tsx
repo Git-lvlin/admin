@@ -99,7 +99,7 @@ export default function TransactionData () {
     <PageContainer title={false}>
       <ProTable
         rowKey="id"
-        headerTitle='AED子公司的4300课程培训服务套餐交易业绩结算规则配置'
+        headerTitle='AED合作公司的4300课程培训服务套餐交易业绩结算规则配置'
         columns={tableColumns}
         dataSource={tableData}
         columnEmptyText={false}

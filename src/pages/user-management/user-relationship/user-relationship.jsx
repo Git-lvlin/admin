@@ -357,7 +357,7 @@ const UserRelationship = () => {
           &nbsp;&nbsp;是否为大团队长：{indexData?.isTeamLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属大团队长：{indexData?.teamLeaderPhone?indexData?.teamLeaderPhone:'-'}
         </ProForm.Group>
         <ProForm.Group>
-          &nbsp;&nbsp;是否为AED团长：{indexData?.isAEDLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.aedLeaderPhone?indexData?.aedLeaderPhone:'-'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED子公司：{indexData?.subsidiaryName?indexData?.subsidiaryName:'-'}
+          &nbsp;&nbsp;是否为AED团长：{indexData?.isAEDLeader ? '是' : '不是'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED团长：{indexData?.aedLeaderPhone?indexData?.aedLeaderPhone:'-'}&nbsp;&nbsp;&nbsp;&nbsp;所属AED合作公司：{indexData?.subsidiaryName?indexData?.subsidiaryName:'-'}
         </ProForm.Group>
         <ProForm.Group>
           &nbsp;&nbsp;用户ID：{indexData?.id}

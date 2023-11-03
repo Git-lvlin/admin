@@ -124,13 +124,13 @@ const AEDVolunteerExamInfo = () => {
       hideInSearch: true
     },
     {
-      title: '所属子公司类型',
+      title: '所属合作公司类型',
       dataIndex: 'teamTypeStr',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '所属子公司ID',
+      title: '所属合作公司ID',
       dataIndex: 'subId',
       align: 'center',
     },

@@ -64,13 +64,13 @@ const HealthStorePartnerOrderPerformance: React.FC = () => {
       hideInSearch: true
     },
     {
-      title: '子公司',
+      title: '合作公司',
       dataIndex: 'subcompany',
       valueType: 'text',
       hideInSearch: true
     },
     {
-      title: '非子公司',
+      title: '非合作公司',
       dataIndex: 'unsubcompany',
       valueType: 'text',
       hideInSearch: true

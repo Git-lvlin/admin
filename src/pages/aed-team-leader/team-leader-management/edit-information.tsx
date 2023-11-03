@@ -121,7 +121,7 @@ export default (props: CumulativeProps) => {
         hidden
       />
       <ProFormText
-        label="子公司名称"
+        label="合作公司名称"
         name="name"
         readonly
       />

@@ -31,11 +31,11 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: 'AED子公司名称',
+      title: 'AED合作公司名称',
       dataIndex: 'name',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入子公司名称'
+        placeholder: '请输入合作公司名称'
       },
       hideInTable: true
     },
@@ -45,11 +45,11 @@ export default function TransactionData () {
       align: 'center',
       hideInTable: true,
       valueEnum: {
-        1: '子公司',
-        2: '非子公司'
+        1: '合作公司',
+        2: '非合作公司'
       },
       fieldProps: {
-        placeholder: '请选择子公司类型'
+        placeholder: '请选择合作公司类型'
       }
     },
     {
@@ -59,11 +59,11 @@ export default function TransactionData () {
       hideInSearch: true
     },
     {
-      title: '子公司名称',
+      title: '合作公司名称',
       dataIndex: 'name',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入子公司名称'
+        placeholder: '请输入合作公司名称'
       },
       hideInSearch: true
     },
@@ -120,7 +120,7 @@ export default function TransactionData () {
       dataIndex: 'accountName',
       align: 'center',
       fieldProps: {
-        placeholder: '请输入子公司登录账号'
+        placeholder: '请输入合作公司登录账号'
       }
     },
     {

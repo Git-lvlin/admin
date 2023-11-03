@@ -131,13 +131,13 @@ const QueryPaidOrderDetails = () => {
       align: 'center'
     },
     {
-      title: '运营中心归属子公司',
+      title: '运营中心归属合作公司',
       dataIndex: 'operationsSubCompanyName',
       align: 'center',
       hideInSearch: true
     },
     {
-      title: '归属子公司',
+      title: '归属合作公司',
       dataIndex: 'operationsSubCompanyName',
       align: 'center',
       valueType:'select',
